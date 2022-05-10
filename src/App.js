@@ -20,16 +20,16 @@ import UserLikesView from './views/User/UserLikesView';
 const App = () => (
   <Routes>
     <Route path="/" element={ <MainListView /> } />
-    <Route path="/building:id" element={ <MainItemView /> } />
+    <Route path="/building/:id" element={ <MainItemView /> } />
 
     <Route path="/news" element={ <NewsListView /> } />
-    <Route path="/news:id" element={ <NewsItemView /> } />
+    <Route path="/news/:id" element={ <NewsItemView /> } />
 
     <Route path="/sales" element={ <SalesListView /> } />
-    <Route path="/sales:id" element={ <SalesItemView /> } />
+    <Route path="/sales/:id" element={ <SalesItemView /> } />
 
     <Route path="/recommend" element={ <RecommendListView /> } />
-    <Route path="/recommend:id" element={ <RecommendItemView /> } />
+    <Route path="/recommend/:id" element={ <RecommendItemView /> } />
 
     <Route path="/user" element={ <UserMenuView /> } />
     <Route path="/user/infos" element={ <UserInfoView /> } />

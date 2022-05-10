@@ -7,6 +7,7 @@ const AppStyle = createGlobalStyle`
     * {
         box-sizing: content-box;
     }
+
 `;
 
 export default AppStyle;
