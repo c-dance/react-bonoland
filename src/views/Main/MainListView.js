@@ -10,9 +10,12 @@
 - 유틸 퀵메뉴
 
 */
+
+import MapContainer from '../../containers/Map/MapContainer';
+
 const MainListView = () => (
     <div>
-        main list view
+        <MapContainer />
     </div>
 );
 

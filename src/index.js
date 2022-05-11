@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import Root from './Root';
 // import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Root />);
 
 // reportWebVitals();

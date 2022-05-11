@@ -1,7 +1,7 @@
+import NewsListContainer from '../../containers/News/NewsListContainer';
+
 const NewsListView = () => (
-    <div>
-        main Item view
-    </div>
+    <NewsListContainer />
 );
 
 export default NewsListView;
