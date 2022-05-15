@@ -5,7 +5,7 @@ const AppStyle = createGlobalStyle`
     ${reset}
 
     * {
-        box-sizing: content-box;
+        box-sizing: border-box;
     }
 
 `;

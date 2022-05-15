@@ -5,4 +5,5 @@ const store = createStore(combinedReducer);
 
 export default store;
 
-console.log(store.getState());
+
+

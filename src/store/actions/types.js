@@ -1,10 +1,12 @@
 export const MAP = {
-    UPDATE_GEOLOCATION : 'map/geolocation',
-    UPDATE_ZOOMLEVEL : 'map/zoomlevel'
+    UPDATE_PROPS: 'map/',
+    UPDATE_LATLNG : 'map/latlng',
+    UPDATE_ZOOM : 'map/zoom',
+    UPDATE_REGION: 'map/region'
 };
 
-export const USER = {
+// export const USER = {
 
-};
+// };
 
 
