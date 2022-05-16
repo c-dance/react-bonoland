@@ -1,4 +1,4 @@
-import MobileTabBar from '../../../components/global/MobileTabBar/MobileTabBar';
+import MobileTabBar from "../../../components/global/MobileTabBar/MobileTabBar";
 
 const MobileTabBarContainer = () => {
 
@@ -8,3 +8,5 @@ const MobileTabBarContainer = () => {
         <MobileTabBar />
     )
 }
+
+export default MobileTabBarContainer;

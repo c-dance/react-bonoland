@@ -3,13 +3,17 @@ import { Provider } from 'react-redux';
 import store from "./store";
 import App from './App';
 import AppStyle from './AppStyle';
+import { ThemeProvider } from "styled-components";
+import theme from './theme';
 
 
 const Root = () => (
     <BrowserRouter>
-        <AppStyle />
         <Provider store={ store }>
-            <App />
+            <ThemeProvider theme={ theme }>
+                <AppStyle />
+                <App />
+            </ThemeProvider>
         </Provider>
     </BrowserRouter>
 );

@@ -1,4 +1,4 @@
-import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate } from './GlobalHeaderStyle';
+import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Button } from './GlobalHeaderStyle';
 import { Link } from 'react-router-dom';
 
 const GlobalHeader = () => {
@@ -7,10 +7,10 @@ const GlobalHeader = () => {
             <HomeLink to="/" />
             <Menu>
                 <NavMenu>
-                    <Nav theme="accent">
+                    <Nav accent>
                         <Link to="/sales">시설매매</Link>
                     </Nav>
-                    <Nav theme="accent">
+                    <Nav accent>
                         <Link to="/recommend">추천매물</Link>
                     </Nav>
                     <Nav>
@@ -20,14 +20,15 @@ const GlobalHeader = () => {
                         <Link to="/contact">매물문의</Link>
                     </Nav>
                     <Nav>
-                        <Link to="/news">매물문의</Link>
+                        <Link to="/news">뉴스</Link>
                     </Nav>
                 </NavMenu>
                 <UtilMenu>
-                    <button className='btn'>로그인</button>
-                    <button className='btn signup-btn'>회원가입</button>
+                    <Button>로그인</Button>
+                    <Button accent>회원가입</Button>
+                    {/* <Hello>안녕하세요, 홍길동 님!</Hello> */}
+                    <Calculate>수익계산기</Calculate>
                 </UtilMenu>
-                <Calculate>수익계산기</Calculate>
             </Menu>
         </Header>
     )

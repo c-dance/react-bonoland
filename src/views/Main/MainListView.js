@@ -13,14 +13,19 @@
 
 import MapContainer from '../../containers/Map/MapContainer';
 import GlobalHeaderContainer from '../../containers/global/GlobalHeader/GlobalHeaderContainer';
-import QuickUserMenuContainer from '../../containers/global/QuickUserMenu/QuickUserMenuContainer';
+// import QuickUserMenuContainer from '../../containers/global/QuickUserMenu/QuickUserMenuContainer';
 import QuickUtilMenuContainer from '../../containers/global/QuickUtilMenu/QuickUtilMenuContainer';
+import MobileTabBarContainer from '../../containers/global/MobileTabBar/MobileTabBarContainer';
+import SideContaier from '../../containers/Side/SideContainer';
+import MainListContainer from '../../containers/Main/MainListContainer';
 
 const MainListView = () => (
     <div>
         <GlobalHeaderContainer />
-        <QuickUserMenuContainer />
+        <MobileTabBarContainer />
         <QuickUtilMenuContainer />
+        {/* <SideContaier /> */}
+        <MainListContainer />
         {/* <MapContainer /> */}
     </div>
 );
