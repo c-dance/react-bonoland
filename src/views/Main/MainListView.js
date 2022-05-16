@@ -12,10 +12,16 @@
 */
 
 import MapContainer from '../../containers/Map/MapContainer';
+import GlobalHeaderContainer from '../../containers/global/GlobalHeader/GlobalHeaderContainer';
+import QuickUserMenuContainer from '../../containers/global/QuickUserMenu/QuickUserMenuContainer';
+import QuickUtilMenuContainer from '../../containers/global/QuickUtilMenu/QuickUtilMenuContainer';
 
 const MainListView = () => (
     <div>
-        <MapContainer />
+        <GlobalHeaderContainer />
+        <QuickUserMenuContainer />
+        <QuickUtilMenuContainer />
+        {/* <MapContainer /> */}
     </div>
 );
 

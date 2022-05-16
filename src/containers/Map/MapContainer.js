@@ -5,6 +5,7 @@ import Map from '../../components/Map/Map';
 import MapChart from '../../components/MapChart/MapChart';
 import MapRegion from '../../components/MapRegion/MapRegion';
 
+// 차트, 주소, 맵 분리 필요
 
 const MapContainer = () => {
     const mapProps = useSelector(state => state.Map);
@@ -13,7 +14,7 @@ const MapContainer = () => {
 
     const { naver } = window; 
 
-    // (1) 지도를 생성
+    // (1) 지도 생성
     const initMap = () => {
         const map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(mapProps.latlng[0], mapProps.latlng[1]),
@@ -30,7 +31,7 @@ const MapContainer = () => {
         naver.maps.Event.addListener(map, 'bounds_changed', () => { resetMap(map) });
     };
 
-    // (2) 지도 경계, 줌레벨이 바뀌면 데이터/차트/마커 갱신
+    // (2) 지도 업데이트
     const resetMap = async (map) => {
         const zoom = map.getZoom();
         const latlng = [map.getCenter()._lat, map.getCenter()._lng];
@@ -41,6 +42,7 @@ const MapContainer = () => {
         // resetMarkers();
     };
 
+    // 스토어 업데이트
     const resetMapProps = (latlng = mapProps.latlng, zoom = mapProps.zoom, region = '') => {
         let props = {
             latlng: latlng,
@@ -50,6 +52,7 @@ const MapContainer = () => {
         dispatch(updateMapProps(props));
     };
 
+    // 차트 데이터 갱신
     const resetCharts = async (region, zoom) => {
         let data = null;
         if(zoom < 16 && zoom >= 14) {
@@ -60,9 +63,9 @@ const MapContainer = () => {
         setChart(data);
     };
 
-    // (3) 지역이 바뀌면 [목록, 차트] 데이터를 다시 불러온다. 
+    // (3) 차트 데이터
     const fetchChart = (region) => {
-        // 더미 데이터
+
         const datas = {
             old: {
                 total: 300
@@ -74,9 +77,11 @@ const MapContainer = () => {
             }, 1000);
         })
     }
+
+    // (4) 마커 데이터
     const fetchMarkers = () => {}
 
-
+    // 시, 군, 구 가져오기
     const getRegion = (regions, zoom) => {
         let result = ''; 
 
@@ -88,6 +93,7 @@ const MapContainer = () => {
         return result;
     };
    
+    // 위도경도 > 주소 변환
     const fetchReverseGeocode = (center) => {
         return new Promise((resolve, reject) => {
             naver.maps.Service.reverseGeocode({
