@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import LayoutContainer from './containers/Layout/LayoutContainer';
 // VIEWS
 import MainListView from './views/Main/MainListView';
-// import MainItemView from './views/Main/MainItemView';
+import MainItemView from './views/Main/MainItemView';
 // import NewsListView from './views/News/NewsListView';
 // import NewsItemView from './views/News/NewsItemView';
 // import SalesListView from './views/Sales/SalesListView';
@@ -23,9 +23,9 @@ const App = () => (
   <LayoutContainer>
     <Routes>
       <Route exact path="/" element={ <MainListView /> } />
-      {/* <Route exact path="/center/:id" element={ <MainItemView /> } />
+      <Route exact path="/center/:id" element={ <MainItemView /> } />
 
-      <Route exact path="/news" element={ <NewsListView /> } />
+      {/* <Route exact path="/news" element={ <NewsListView /> } />
       <Route exact path="/news/:id" element={ <NewsItemView /> } />
 
       <Route exact path="/sales" element={ <SalesListView /> } />

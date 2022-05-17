@@ -17,6 +17,7 @@ const AppStyle = createGlobalStyle`
 
     a {
         text-decoration: none;
+        color: #000;
     }
     
     button {
@@ -30,7 +31,6 @@ const AppStyle = createGlobalStyle`
         border: 0;
         outline: 0;
     }
-
 `;
 
 export default AppStyle;

@@ -11,14 +11,14 @@
 
 */
 import MainListContainer from '../../containers/Main/MainListContainer';
-import SidePannelContaier from '../../containers/SidePannel/SidePannelContainer';
+import PannelContainer from '../../containers/Pannel/PannelContainer';
 import MapContainer from '../../containers/Map/MapContainer';
 
 const MainListView = () => (
     <div>
-        <SidePannelContaier type={"main"}>
+        <PannelContainer type={ "floating" }>
             <MainListContainer />
-        </SidePannelContaier>
+        </PannelContainer>
         {/* <MapContainer /> */}
     </div>
 );

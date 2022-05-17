@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import SidePannel from "../../components/Sidepannel/Sidepannel";
+import Pannel from "../../components/Pannel/Pannel";
 
-const SidePannelContaier = ({ type, children }) => {
+const PannelContaier = ({ type, children }) => {
 
     const [ active, setActive ] = useState(true);
     
@@ -11,14 +11,14 @@ const SidePannelContaier = ({ type, children }) => {
     };
 
     return (
-        <SidePannel 
+        <Pannel 
             type = { type } 
             active = { active } 
             clickHandler = { toggleActive }
         >
             { children }
-        </SidePannel>
+        </Pannel>
     )
 }
 
-export default SidePannelContaier;
+export default PannelContaier;
