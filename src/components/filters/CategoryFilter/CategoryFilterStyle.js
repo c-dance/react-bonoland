@@ -7,6 +7,7 @@ export const CategoryForm = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 16px 30px;
+    box-shadow: 3px 3px 6px rgba(0,0,0,.06);
 `;
 
 export const Category = styled.div`
@@ -14,6 +15,7 @@ export const Category = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
     input {
         position: absolute;
@@ -23,6 +25,11 @@ export const Category = styled.div`
     }
 
     label {
+        font-size: 16px;
+        color: ${ props => props.theme.colors.gray800 };
+    }
 
+    input:checked + label {
+        color: ${ props => props.theme.colors.primary };
     }
 `;

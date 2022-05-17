@@ -1,5 +1,7 @@
-import KeywordSearch from "../../components/search/KeywordSearch/KeywordSearch";
-import CategorySearch from "../../components/search/CategorySearch/CategorySearch";
+import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
+import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
+import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
+
 const MainListContainer = () => {
     /*
         search(1) 키워드 : 지역구, 지역명
@@ -15,9 +17,10 @@ const MainListContainer = () => {
 
     return (
         <>
-            <KeywordSearch />
-            <CategorySearch />
-            <div>검색 필터</div>
+            <KeywordFilter />
+            <CategoryFilter />
+            <CapacityFilter />
+
             <div>추천 프리미엄 더보기</div>
             <div>검색 목록</div>
         </>

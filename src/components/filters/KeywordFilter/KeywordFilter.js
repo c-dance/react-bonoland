@@ -1,6 +1,6 @@
-import { KeywordForm } from "./keywordSearchStyle";
+import { KeywordForm } from "./keywordFilterStyle";
 
-const KeywordSearch = () => {
+const KeywordFilter = () => {
     return (
         <KeywordForm>
             <input 
@@ -13,4 +13,4 @@ const KeywordSearch = () => {
     )
 }
 
-export default KeywordSearch;
+export default KeywordFilter;
