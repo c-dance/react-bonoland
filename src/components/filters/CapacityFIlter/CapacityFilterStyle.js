@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import ResetIcon from '../../../assets/images/icon/ico-reset.svg';
 
 export const CapacityForm = styled.div`
-    position: fixed;
-    top: 160px;
-    left: 430px;
-    display: flex;
+    position: absolute;
+    top: 56px;
+    left: 400px;
     flex-direction: column;
     gap: 24px;
     width: 340px;
@@ -13,6 +12,7 @@ export const CapacityForm = styled.div`
     padding: 25px;
     background-color: #fff;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+    display: ${ props => props.active?  `flex` : `none` }
 `;
 
 export const Legend = styled.div`

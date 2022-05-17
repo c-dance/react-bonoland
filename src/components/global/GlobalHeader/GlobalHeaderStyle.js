@@ -4,6 +4,7 @@ import HomeLogo from '../../../assets/images/logo/ico-bonoland.svg';
 import Calculator from '../../../assets/images/icon/ico-calculator.svg';
 
 export const Header = styled.header`
+    z-index: 30;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -10,22 +10,15 @@
 - 유틸 퀵메뉴
 
 */
-
-import MapContainer from '../../containers/Map/MapContainer';
-import GlobalHeaderContainer from '../../containers/global/GlobalHeader/GlobalHeaderContainer';
-// import QuickUserMenuContainer from '../../containers/global/QuickUserMenu/QuickUserMenuContainer';
-import QuickUtilMenuContainer from '../../containers/global/QuickUtilMenu/QuickUtilMenuContainer';
-import MobileTabBarContainer from '../../containers/global/MobileTabBar/MobileTabBarContainer';
-import SideContaier from '../../containers/Side/SideContainer';
 import MainListContainer from '../../containers/Main/MainListContainer';
+import SidePannelContaier from '../../containers/SidePannel/SidePannelContainer';
+import MapContainer from '../../containers/Map/MapContainer';
 
 const MainListView = () => (
     <div>
-        <GlobalHeaderContainer />
-        <MobileTabBarContainer />
-        <QuickUtilMenuContainer />
-        {/* <SideContaier /> */}
-        <MainListContainer />
+        <SidePannelContaier type={"main"}>
+            <MainListContainer />
+        </SidePannelContaier>
         {/* <MapContainer /> */}
     </div>
 );
