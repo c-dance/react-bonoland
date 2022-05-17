@@ -4,8 +4,6 @@ import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilt
 import CenterList from "../../components/Center/CenterList/CenterList";
 import React, { useState, useEffect } from "react";
 
-import centerDatas from '../../datas/centerlist.json';
-
 
 const MainListContainer = () => {
     /*
@@ -23,7 +21,7 @@ const MainListContainer = () => {
     const [ capacityActive, setCapacityActive ] = useState(false);
     const [ capacityValues, setCapacityValues ] = useState([0, 100]);
     const [ category, setCategory ] = useState(null);
-    const [ centers, setSenters ] = useState([{}, {}, {}]);
+    const [ centers, setCenters ] = useState([]);
 
     const toggleCapacity = () => {
         setCapacityActive(!capacityActive);
@@ -52,12 +50,18 @@ const MainListContainer = () => {
     };
 
     const fetchCenters = () => {
-        const datas = JSON.parse(centerDatas);
-        console.log(datas);
-
+        fetch('./data/centers.json')
+            .then(res => res.json())
+            .then(data => {
+                setCenters(data);
+            })
+            .catch(err => console.err(err));
     };
 
-    // fetchCenters();
+    useEffect(() => {
+        fetchCenters();
+    }, [])
+
 
 
     return (

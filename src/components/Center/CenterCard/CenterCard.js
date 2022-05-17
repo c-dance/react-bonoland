@@ -20,7 +20,7 @@ import CorpImg from '../../../assets/test/card-corp.png';
 
 const CenterCard = ({ center }) => (
     <Card>
-        <Wrap to="/">
+        <Wrap to={ '/center/' + center.id }>
             <Thumbnail>
                 <img src={ ThumbImg } alt="보노매물" />
             </Thumbnail>
