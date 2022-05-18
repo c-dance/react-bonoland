@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+const fontSizes = {
+    l: '1.125rem',
+    xl:'1.25rem',
+    base: '1rem',
+    s: '0.875rem',
+    xs: '0.75rem',
+    xxs: '0.625rem'
+};
+
+const fontWeights = {
+    light: '300',
+    regular: '400',
+    medium: '500',
+    bold: '700'
+};
+
 const breakPoints = {
     desktopL: "1920px",
     desktopM: "1440px",
@@ -32,9 +48,37 @@ const colors = {
     gray900:"#212121", 
 };
 
-const theme = {
+const scrollWrapper = styled.div`
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+        width: 8px;
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        width: 8px;
+        border: 2px solid white;
+        border-radius: 6px;
+        background-color: #bdbdbd;
+    }
+
+    > * {
+        height: auto;
+    }
+`;
+
+
+export const theme = {
+    fontSizes,
+    fontWeights,
     colors,
-    device
+    device,
 };
 
-export default theme;
+export const module = {
+    scrollWrapper,
+};

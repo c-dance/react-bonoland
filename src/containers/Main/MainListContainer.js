@@ -2,6 +2,7 @@ import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter"
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
 import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
 import CenterList from "../../components/Center/CenterList/CenterList";
+import ListMore from "../../components/List/ListMore/ListMore";
 import React, { useState, useEffect } from "react";
 
 
@@ -76,6 +77,7 @@ const MainListContainer = () => {
                 confirmHandler={ toggleCapacity } 
                 selectHandler = { selectCapacity } 
             />
+            <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
             <CenterList type={"main"} centers= { centers } />
         </>
     )

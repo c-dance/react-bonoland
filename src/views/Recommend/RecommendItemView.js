@@ -1,5 +1,10 @@
+import CenterItemContainer from "../../containers/Center/CenterItemContainer";
+import PannelContainer from "../../containers/Pannel/PannelContainer";
+
 const RecommendItemView = () => (
-    <div>추천매물 상세</div>
+    <PannelContainer>
+        <CenterItemContainer />
+    </PannelContainer>
 );
 
 export default RecommendItemView;

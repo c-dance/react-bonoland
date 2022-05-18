@@ -13,6 +13,8 @@ const AppStyle = createGlobalStyle`
     #root {
         width: 100%;
         height: 100%;
+        font: 400 1rem/1 'Noto Sans KR', sans-serif;
+        letter-spacing: -1px;
     }
 
     a {

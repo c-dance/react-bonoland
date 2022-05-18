@@ -5,12 +5,13 @@ import LayoutContainer from './containers/Layout/LayoutContainer';
 // VIEWS
 import MainListView from './views/Main/MainListView';
 import MainItemView from './views/Main/MainItemView';
+import SalesListView from './views/Sales/SalesListView';
+import SalesItemView from './views/Sales/SalesItemView';
+import RecommendListView from './views/Recommend/RecommendListView';
+import RecommendItemView from './views/Recommend/RecommendItemView';
+
 // import NewsListView from './views/News/NewsListView';
 // import NewsItemView from './views/News/NewsItemView';
-// import SalesListView from './views/Sales/SalesListView';
-// import SalesItemView from './views/Sales/SalesItemView';
-// import RecommendListView from './views/Recommend/RecommendListView';
-// import RecommendItemView from './views/Recommend/RecommendItemView';
 // import RegisterView from './views/Register/RegisterView';
 // import ContactView from './views/Contact/ContactView';
 // import CalculatorView from './views/Calculator/CalculatorView';
@@ -25,14 +26,14 @@ const App = () => (
       <Route exact path="/" element={ <MainListView /> } />
       <Route exact path="/center/:id" element={ <MainItemView /> } />
 
-      {/* <Route exact path="/news" element={ <NewsListView /> } />
-      <Route exact path="/news/:id" element={ <NewsItemView /> } />
-
       <Route exact path="/sales" element={ <SalesListView /> } />
       <Route exact path="/sales/:id" element={ <SalesItemView /> } />
 
       <Route exact path="/recommend" element={ <RecommendListView /> } />
       <Route exact path="/recommend/:id" element={ <RecommendItemView /> } />
+
+      {/* <Route exact path="/news" element={ <NewsListView /> } />
+      <Route exact path="/news/:id" element={ <NewsItemView /> } />
 
       <Route exact path="/user" element={ <UserMenuView /> } />
       <Route exact path="/user/infos" element={ <UserInfoView /> } />

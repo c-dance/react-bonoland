@@ -27,6 +27,7 @@ export const Thumbnail = styled.div`
 
 export const Sales = styled.div`
     display: flex;
+    flex: 1;
     flex-direction: column;
     height: 100%
 `;
@@ -60,6 +61,8 @@ export const Num = styled.div`
         padding: 6px 8px;
         border: 1px solid ${ props => props.theme.colors.gray300 };
         border-radius: 2px;
+        font-size: ${ ({theme}) => theme.fontSizes.xs };
+        color: ${ ({theme}) => theme.colors.grqy600 };
     }
 `;
 
@@ -70,7 +73,7 @@ export const Badges = styled.div`
 
     div {
         padding: 4px 8px;
-        font-size: 10px;
+        font-size: ${ ({theme}) => theme.fontSizes.xxs };
         color: #fff;
         border-radius: 2px;
         &.recommend { background-color: #E91E63; }
@@ -80,18 +83,20 @@ export const Badges = styled.div`
 
 export const Region = styled.div`
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: ${ ({theme}) => theme.fontSizes.xs };
 `;
 
 export const Price = styled.div`
     margin-bottom: 12px;
-    font-size: 18px;
+    font-size: ${ ({theme}) => theme.fontSizes.l };
+    font-weigth: ${ ({theme}) => theme.fontWeights.medium };
 `;
 
 export const Infos = styled.div`
     display: flex;
     flex-direction: column;
-    font-size: 14px;
+    font-size: ${ ({theme}) => theme.fontSizes.xs };
+    color: ${ ({theme}) => theme.colors.gray700 };
     line-height: 1.2;
     margin-bottom: 16px;
 `;
@@ -108,7 +113,7 @@ export const Assets = styled.div`
 
         em {
             padding: 4px 8px;
-            font-size: 12px;
+            font-size: ${ ({theme}) => theme.fontSizes.xs };
             border-radius: 2px;
             color: #fff;
             &.invest { background-color: #D15F2E; }
@@ -116,7 +121,7 @@ export const Assets = styled.div`
         }
 
         span {
-            font-size: 14px;
+            font-size: ${ ({theme}) => theme.fontSizes.s };
         }
     }
 `;

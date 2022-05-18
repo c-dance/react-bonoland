@@ -1,11 +1,11 @@
 import CenterItemContainer from "../../containers/Center/CenterItemContainer";
-import PannelContaier from "../../containers/Pannel/PannelContainer";
+import PannelContainer from "../../containers/Pannel/PannelContainer";
 
 const MainItemView = () => {
     return (
-        <PannelContaier>
+        <PannelContainer>
             <CenterItemContainer />
-        </PannelContaier>
+        </PannelContainer>
     )
 }
 

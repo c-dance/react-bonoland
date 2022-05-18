@@ -6,9 +6,11 @@ export const KeywordForm = styled.div`
     justify-content: start;
     align-items: center;
     gap: 10px;
-    width: 390px;
+    ${'' /* width: 390px; */}
+    width: 100%;
     height: 56px;
     padding: 0 24px;
+    background-color: #fff;
     box-shadow: 3px 0 6px rgba(0,0,0,.06);
 
     input {

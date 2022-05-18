@@ -7,4 +7,4 @@ export const useInput = initialValue => {
         { value, onChange: e => setValue(e.currentTarget.value) },
         () => setValue(initialValue)
     ];
-}
+};

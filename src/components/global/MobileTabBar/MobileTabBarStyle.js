@@ -40,11 +40,11 @@ export const TabBtn = styled(Link)`
     height: 100%;
     padding-top: 36px;
     background: url(${ props => (
-            props.sales && salesIcon 
-        || props.rcmd && rcmdIcon 
-        || props.register && registerIcon
-        || props.contact && contactIcon
-        || props.user && userIcon
+            props.icon === "sales" && salesIcon 
+        || props.icon === "rcmd" && rcmdIcon 
+        || props.icon === "register" && registerIcon
+        || props.icon === "contact" && contactIcon
+        || props.icon === "user" && userIcon
         )
     }) center 9px / 24px 24px no-repeat;
     font-size: 10px;

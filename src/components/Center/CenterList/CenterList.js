@@ -6,11 +6,11 @@ const CenterList = ({ type, centers }) => {
         centers.length > 0 && <CardList type={ type }>
             <ListWrap>
             {
-                centers.map(center => 
-                    <>
-                        <CenterCard center= { center } />
+                centers.map(( center, idx ) => 
+                    <div key={ idx }>
+                        <CenterCard center = { center } />
                         <CardDivider />
-                    </>
+                    </div>
                 )
             }
             </ListWrap>

@@ -2,11 +2,12 @@ import styled from 'styled-components';
 
 export const CategoryForm = styled.div`
     display: flex;
-    width: 390px;
-    height: 48px;
     justify-content: space-between;
     align-items: center;
+    width: 390px;
+    height: 48px;
     padding: 16px 30px;
+    margin-bottom: 16px;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
 `;
 
