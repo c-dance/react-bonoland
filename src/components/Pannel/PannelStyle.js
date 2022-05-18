@@ -6,13 +6,19 @@ export const PannelBox = styled.div`
     z-index: 40;
     position: fixed;    
     left: ${ props => 
-        props.type === "floating"? ( props.active? `14px` : `-390px`) : ( props.active? `0` : `-390px`)
+        props.position === 'right'? 'auto'
+        : props.type === "floating"? ( props.active? `14px` : `-390px`) : ( props.active? `0` : `-390px`)
+    };
+    right: ${ props =>
+        props.position === 'right'? '0px' : 'auto'
     };
     top: ${ props => props.type === "floating"? `104px` : `80px` };
     width: 390px;
     height: ${ props => props.type === "floating"? `900px` : `calc(100% - 80px)` };
     overflow: show;
+    background-color: ${ props => props.type === 'floating'? 'transparent' : '#fff' };
     transition: left .3s;
+    box-shadow: ${ props => props.type === "side"  && '3px 3px 6px rgba(0,0,0,.06)'};
 `;
 
 export const PannelWrap = styled.div`

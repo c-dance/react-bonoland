@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { TabNavs, TabConts } from './ListTabStyle';
+import { Tab, TabNavs, TabConts } from './ListTabStyle';
 import CenterList from '../../Center/CenterList/CenterList';
 import { logRoles } from '@testing-library/react';
 
 const ListTab = ({ navs, contents, tabClick, activeIdx }) => {
-
 
     const toggleTab = () => {
         console.log('click');
@@ -26,14 +25,14 @@ const ListTab = ({ navs, contents, tabClick, activeIdx }) => {
     ))
 
     return (
-        <div>
+        <Tab>
             <TabNavs>
                 { tabNavs }
             </TabNavs>
             <TabConts>
                 { tabConts }
             </TabConts>
-        </div>
+        </Tab>
     )
 }
 

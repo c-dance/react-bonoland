@@ -1,12 +1,25 @@
+import { useState } from 'react';
 import { PannelBox, PannelWrap, PannelBtn } from './PannelStyle';
 
-const Pannel = ({ type, active, clickHandler, children }) => {
+const Pannel = ({ type, position, fold, children }) => {
+    // UI FUNCTION
+    const [ active, setActive ] = useState(true);
+    const togglePannel = () => {
+        setActive(!active); 
+    };
+
+    console.log(fold);
+
     return (
-        <PannelBox type={ type } active={ active }>
+        <PannelBox 
+            type={ type } 
+            position={ position }
+            active={ active }
+        >
             <PannelWrap>
                 { children }
             </PannelWrap>
-            <PannelBtn onClick={ event => clickHandler(event) } active={ active }></PannelBtn>
+            { fold && <PannelBtn onClick={ () => togglePannel() } active={ active }></PannelBtn> }
         </PannelBox>
     )
 }

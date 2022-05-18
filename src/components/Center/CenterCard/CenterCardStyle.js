@@ -10,6 +10,13 @@ export const Card = styled.article`
     padding: 16px 0;
 `;
 
+export const Head = styled.h3`
+    padding-bottom: 16px;
+    border-bottom: 2px solid ${ ({theme}) => theme.colors.gray800 };
+    color: ${ ({theme}) => theme.colors.gray900 };
+    font-weight: ${ ({theme}) => theme.fontWeights.medium };
+`;
+
 export const Wrap = styled(Link)`
     position: relative;
     display: flex;

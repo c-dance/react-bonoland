@@ -2,13 +2,14 @@ import { CardList, CardDivider, ListWrap } from './CenterListStyle';
 import CenterCard from "../CenterCard/CenterCard";
 
 const CenterList = ({ type, centers }) => {
+    console.log(type);
     return (
-        centers.length > 0 && <CardList type={ type }>
+        centers.length > 0 && <CardList>
             <ListWrap>
             {
                 centers.map(( center, idx ) => 
                     <div key={ idx }>
-                        <CenterCard center = { center } />
+                        <CenterCard type={ type } center = { center } />
                         <CardDivider />
                     </div>
                 )

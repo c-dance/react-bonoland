@@ -51,12 +51,17 @@ const MainListContainer = () => {
     };
 
     const fetchCenters = () => {
-        fetch('./data/centers.json')
-            .then(res => res.json())
-            .then(data => {
-                setCenters(data);
-            })
-            .catch(err => console.err(err));
+        fetch('/data/centers.json', {
+            headers: {
+                'Accept' : 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            setCenters(data);
+        })
+        .catch(err => console.log(err));
     };
 
     useEffect(() => {

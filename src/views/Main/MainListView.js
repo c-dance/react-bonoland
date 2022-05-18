@@ -11,14 +11,18 @@
 
 */
 import MainListContainer from '../../containers/Main/MainListContainer';
-import PannelContainer from '../../containers/Pannel/PannelContainer';
+import Pannel from '../../components/Pannel/Pannel';
 import MapContainer from '../../containers/Map/MapContainer';
 
 const MainListView = () => (
     <div>
-        <PannelContainer type={ "floating" }>
+        <Pannel
+            type={ "floating" }
+            position={ "left" }
+            fold={ true }
+        >
             <MainListContainer />
-        </PannelContainer>
+        </Pannel>
         {/* <MapContainer /> */}
     </div>
 );

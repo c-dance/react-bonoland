@@ -1,10 +1,14 @@
 import CenterItemContainer from "../../containers/Center/CenterItemContainer";
-import PannelContainer from "../../containers/Pannel/PannelContainer";
+import Pannel from "../../components/Pannel/Pannel";
 
 const SalesItemView = () => {
-    <PannelContainer>
+    <Pannel
+        type={ "side" }
+        position={ "left" }
+        fold={ true }
+    >
         <CenterItemContainer />
-    </PannelContainer>
+    </Pannel>
 };
 
 export default SalesItemView;

@@ -1,5 +1,6 @@
 import {
     Card,
+    Head,
     Wrap,
     Thumbnail,
     Sales,
@@ -18,8 +19,9 @@ import {
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 
-const CenterCard = ({ center }) => (
+const CenterCard = ({ type, center }) => (
     <Card>
+        { type ==="sub" && <Head>{center.id}</Head> }
         <Wrap to={ '/center/' + center.id }>
             <Thumbnail>
                 <img src={ ThumbImg } alt="보노매물" />

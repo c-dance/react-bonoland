@@ -1,11 +1,15 @@
 import CenterItemContainer from "../../containers/Center/CenterItemContainer";
-import PannelContainer from "../../containers/Pannel/PannelContainer";
+import Pannel from "../../components/Pannel/Pannel";
 
 const MainItemView = () => {
     return (
-        <PannelContainer>
+        <Pannel
+            type={ "side" }
+            position={ "left" }
+            fold={ true }
+        >
             <CenterItemContainer />
-        </PannelContainer>
+        </Pannel>
     )
 }
 

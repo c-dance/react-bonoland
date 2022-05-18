@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { module } from '../../../theme';
+
+export const Tab = styled.div`
+    display: block;
+    height: 100%;
+`;
 
 export const TabNavs = styled.div`
     display: flex;
@@ -8,6 +12,7 @@ export const TabNavs = styled.div`
     height: 48px;
     line-height: 48px;
     text-align: center;
+    background-color: #fff;
     .tabNav{
         flex: 1;
         background-color: ${({theme}) => theme.colors.gray100 };
@@ -17,11 +22,13 @@ export const TabNavs = styled.div`
     }
 `;
 
-export const TabConts = styled(module.scrollWrapper)`
+export const TabConts = styled.div`
     display: block;
-    height: calc(100% - 140px);
+    height: 100%;
+
     .tabCont {
         display: none;
+        ${'' /* height: calc(100% - 146px); */}
         &.on {
             display: block;
         }
