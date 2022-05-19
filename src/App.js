@@ -16,6 +16,7 @@ import UserMenuContainer from './containers/User/UserMenuContainer';
 import UserRecentContainer from './containers/User/UserRecentContainer';
 import UserScrapContainer from './containers/User/UserScrapContainer';
 import UserAlarmContainer from './containers/User/UserAlarmContainer';
+import UserInfoContainer from './containers/User/UserInfoContainer';
 
 // import RegisterView from './views/Register/RegisterView';
 // import ContactView from './views/Contact/ContactView';
@@ -38,6 +39,7 @@ const App = () => (
         <Route exact path="/user/recent" element={ <UserRecentContainer /> } />
         <Route exact path="/user/scrap" element={ <UserScrapContainer /> } />
         <Route exact path="/user/alarm" element={ <UserAlarmContainer /> } />
+        <Route exact path="/user/info" element={ <UserInfoContainer /> } />
       </Route>
       <Route element={ <BaseView list={ false } /> }>
         <Route exact path="/sales" element={ <SalesListView /> } />

@@ -1,6 +1,12 @@
 import styled from 'styled-components';
+import { module } from '../../../theme';
+import defualtCheckIcon from '../../../assets/images/form/ico-checkbox_default.svg';
+import checkedCheckIcon from '../../../assets/images/form/ico-checkbox_checked.svg';
+import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';
+
 
 export const AlarmForm = styled.div`
+    height: 100%;
     hr {
         width: 100%;
         height: 10px;
@@ -25,22 +31,49 @@ export const Head = styled.div`
     }
 `;
 
-export const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+export const Body = styled(module.scrollWrapper)`
+    height: 100%;
 
-    fieldset {
+    form {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 12px;
-        width: 100%;
+        padding: 24px;
+
+        fieldset {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            width: 100%;
+        }
+    }
+
+`;
+
+export const CheckWrap = styled.div`
+    position: relative;
+    width: calc(50% - 6px);
+
+    input { 
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    label {
+        padding-left: 22px;
+        background: url(${ defualtCheckIcon }) left center no-repeat;
+    }
+
+    input:checked + label {
+        background: url(${ checkedCheckIcon }) left center no-repeat;
     }
 `;
 
-export const RadioBox = styled.div`
+export const CheckBox = styled.div`
     position: relative;
-    flex: 1;
+    width: calc(50% - 6px);
     height: 40px;
     overflow: hidden;
     border-radius: 2px;
@@ -48,10 +81,9 @@ export const RadioBox = styled.div`
 
     input {
         position: absolute;
-        top: 0;
-        left: 0;
         width: 0;
         height: 0;
+        opacity: 0;
     }
 
     label {
@@ -62,4 +94,39 @@ export const RadioBox = styled.div`
         text-align: center;
         font-size: ${ ({theme}) => theme.fontSizes.s };
     }
+
+    input:checked + label {
+        background-color: ${ ({theme}) => theme.colors.primary };
+        color: #fff;
+    }
+`;
+
+export const Accordion = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+`;
+
+export const AccordionSummary = styled.div`
+    width: 100%;
+    heigth: 40px;
+    border-radius: 2px;
+    background: url(${ accordionIcon }) calc(100% - 36px) center no-repeat;
+
+    > div {
+        width: 100%;
+    }
+`;
+export const AccordionDetails = styled.div`
+    width: 100%;
+    height: ${ props => props.active? '220px' : '0px' };
+    transition: height .3s;
+    overflow: hidden;
+
+    fieldset {
+        padding: 15px 0;
+        gap: 30px 12px !important;
+    }
+    
 `;

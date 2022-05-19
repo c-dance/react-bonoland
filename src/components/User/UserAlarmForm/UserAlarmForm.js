@@ -1,10 +1,25 @@
+import { useState } from 'react';
+import { Regions } from '../../../sheme/alarm';
 import {
     AlarmForm, 
     Head,
-    Form,
+    Body,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    CheckWrap,
+    CheckBox,
 } from './UserAlarmFormStyle';
 
 const UserAlarmForm = ({ data }) => {
+
+    const [ accordion, setAccordion ] = useState(false);
+
+    const toggleAccordion = () => {
+        console.log('click');
+        setAccordion(!accordion);
+    };
+
     return (
         <AlarmForm>
             <Head>
@@ -14,6 +29,40 @@ const UserAlarmForm = ({ data }) => {
                 </p>
             </Head>
             <hr/>
+            <Body>
+                <form>
+                    <Accordion>
+                        <AccordionSummary active={ accordion }>
+                            <CheckBox>
+                                <input type="checkbox" name="aRegion" id={"aRegion0"} value="경기도" readOnly />
+                                <label htmlFor={"aRegion0"} onClick={ () => toggleAccordion() }>경기도</label>
+                            </CheckBox>
+                        </AccordionSummary>
+                        <AccordionDetails active={ accordion }>
+                            <fieldset>
+                            {
+                                Regions["gyeonggiDo"].map((si, idx) => (
+                                    <CheckWrap key={ idx }>
+                                        <input type="checkbox" name="aRegion" id={`aRegion0_${idx}`} value={ si } />
+                                        <label htmlFor={`aRegion0_${idx}`}>{ si }</label>
+                                    </CheckWrap>
+                                ))
+                            }
+                            </fieldset>
+                        </AccordionDetails>
+                    </Accordion>
+                    <fieldset>
+                        {
+                            Regions["sidos"].map((sido, idx) => (
+                                <CheckBox key={ idx }>
+                                    <input type="checkbox" name="aRegion" id={`aRegion${idx + 1}`} value={ sido } />
+                                    <label htmlFor={`aRegion${idx + 1}`}>{ sido }</label>
+                                </CheckBox>
+                            ))
+                        }
+                    </fieldset>
+                </form>
+            </Body>
         </AlarmForm>
     )
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useFetch } from '../../hooks/form';
+import { useFetch } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
 import UserAlarmForm from '../../components/User/UserAlarmForm/UserAlarmForm';
@@ -28,7 +28,6 @@ const UserAlarmContainer = () => {
             {
                 (!alarm || alarm && tabIdx === 0)&& 
                 <Section
-                    title={ "지역 알림 설정" }
                     themeColor={ "primary" }
                     close={ true }
                     action={ true }

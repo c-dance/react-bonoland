@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useInput } from '../../hooks/form/index';
+import { useInput } from '../../hooks/index';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 
 const CalculatorFormContainer = () => {

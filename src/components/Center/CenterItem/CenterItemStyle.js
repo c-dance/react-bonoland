@@ -8,7 +8,7 @@ import marketIcon from '../../../assets/images/envs/ico-market.svg';
 import roadIcon from '../../../assets/images/envs/ico-road.svg';
 import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
-import accrIcon from '../../../assets/images/icon/ico-accordian.svg';
+import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
 
 export const Center = styled.article`
     position: relative;

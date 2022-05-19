@@ -1,6 +1,6 @@
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
-import { useFetch } from '../../hooks/form';
+import { useFetch } from '../../hooks';
 import { Loading, NoResult, Fail } from '../../components/ui/Inform/Inform';
 
 const UserScrapContainer = () => {
