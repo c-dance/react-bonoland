@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import ScrapIcon from '../../../assets/images/icon/ico-star.svg';
-import ShareIcon from '../../../assets/images/icon/ico-share.svg';
+import scrapIcon from '../../../assets/images/icon/ico-star.svg';
+import shareIcon from '../../../assets/images/icon/ico-share.svg';
 
 export const Card = styled.article`
     display: flex;
@@ -145,7 +145,7 @@ export const Action = styled.button`
     border-radius: 2px;
     font-size: 0;
     background: url(${ props => 
-        (props.icon === "scrap" && ScrapIcon) 
-        || (props.icon === "share" && ShareIcon)  
+        (props.icon === "scrap" && scrapIcon) 
+        || (props.icon === "share" && shareIcon)  
     }) center no-repeat #fff;
 `;

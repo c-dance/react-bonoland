@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
 import CenterCard from '../../components/Center/CenterCard/CenterCard';
-import SideSection from "../../components/SideSection/SideSection";
+import Section from "../../components/ui/Section/Section";
 
 const UserRecentContainer = () => {
 
@@ -26,8 +26,8 @@ const UserRecentContainer = () => {
     }, []);
 
     return (
-        <SideSection
-            title={ "찜 매물" }
+        <Section
+            title={ `최근 본 매물(${recent.length})` }
             themeColor={ "primary" }
             close={ true }
             action={ false }
@@ -36,7 +36,7 @@ const UserRecentContainer = () => {
                 type={ "sub" } 
                 centers={ recent }
             />
-        </SideSection>
+        </Section>
     )
 }
 

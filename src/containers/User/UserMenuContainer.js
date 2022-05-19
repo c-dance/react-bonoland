@@ -1,15 +1,15 @@
-import SideSection from "../../components/SideSection/SideSection";
+import Section from "../../components/ui/Section/Section";
 import UserMenu from "../../components/User/UserMenu/UserMenu";
 
 const UserMenuContainer = () => {
     return (
-        <SideSection
+        <Section
             title={ "메뉴" }
             themeColor={ "primary" }
             close={ true }
         >
             <UserMenu />
-        </SideSection>
+        </Section>
     )
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Pannel from "../../components/Pannel/Pannel";
+import Panel from "../../components/ui/Panel/Panel";
 
-const PannelContaier = ({ type, children }) => {
+const PanelContaier = ({ type, children }) => {
 
     const [ active, setActive ] = useState(true);
     
@@ -11,14 +11,14 @@ const PannelContaier = ({ type, children }) => {
     };
 
     return (
-        <Pannel 
+        <Panel 
             type = { type } 
             active = { active } 
             clickHandler = { toggleActive }
         >
             { children }
-        </Pannel>
+        </Panel>
     )
 }
 
-export default PannelContaier;
+export default PanelContaier;

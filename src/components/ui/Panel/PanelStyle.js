@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import leftIcon from '../../assets/images/icon/ico-side_left.svg'
-import rightIcon from '../../assets/images/icon/ico-side_left.svg'
+import leftIcon from '../../../assets/images/icon/ico-side_left.svg'
+import rightIcon from '../../../assets/images/icon/ico-side_left.svg'
 
-export const PannelBox = styled.div`
-    z-index: 40;
+export const PanelBox = styled.div`
+    z-index: 30;
     position: fixed;    
     left: ${ props => 
         props.position === 'right'? 'auto'
@@ -21,13 +21,13 @@ export const PannelBox = styled.div`
     box-shadow: ${ props => props.type === "side"  && '3px 3px 6px rgba(0,0,0,.06)'};
 `;
 
-export const PannelWrap = styled.div`
+export const PanelWrap = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
 `;
 
-export const PannelBtn = styled.button`
+export const PanelBtn = styled.button`
     position: absolute;
     top: 50%;
     right: -24px;

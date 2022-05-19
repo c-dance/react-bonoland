@@ -1,17 +1,15 @@
 import { List, Card } from './NewsListStyle';
 import NewsCard from '../NewsCard/NewsCard';
-import { Link } from 'react-router-dom';
 
-const NewsList = ({ newsList }) => {
-    console.log(newsList);
+const NewsList = ({ datas }) => {
     return (
         <List>
             <div>
                 {
-                    newsList.map((news, idx) => (
+                    datas.map((data, idx) => (
                         <div key={ idx }>
-                            <NewsCard data={ news } ></NewsCard>
-                            { idx < (newsList.length-1) && <hr />}
+                            <NewsCard data={ data } ></NewsCard>
+                            { idx < (datas.length-1) && <hr />}
                         </div>
                     ))
                 }

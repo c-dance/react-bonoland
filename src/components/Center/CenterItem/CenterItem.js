@@ -26,7 +26,7 @@ import CorpImg from '../../../assets/test/card-corp.png';
 
 const CenterItem = ({ center }) => {
     
-    // 상세정보|부동산 탭 & 상단 아코디언
+    // UI FUNCTION
     const [ tabIdx, setTabIdx ] = useState(0);
     const [ accordian, setAccordian ] = useState(true);
 

@@ -1,10 +1,10 @@
-import PannelContainer from '../../containers/Pannel/PannelContainer';
+import Panel from '../../components/ui/Panel/Panel'
 import SalesListContainer from '../../containers/Sales/SalesListContainer';
 
 const SalesListView = () => (
-    <PannelContainer>
+    <Panel>
         <SalesListContainer />
-    </PannelContainer>
+    </Panel>
 )
 
 export default SalesListView;

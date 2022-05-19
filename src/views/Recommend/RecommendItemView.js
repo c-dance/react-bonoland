@@ -1,10 +1,10 @@
 import CenterItemContainer from "../../containers/Center/CenterItemContainer";
-import PannelContainer from "../../containers/Pannel/PannelContainer";
+import Panel from '../../components/ui/Panel/Panel'
 
 const RecommendItemView = () => (
-    <PannelContainer>
+    <Panel>
         <CenterItemContainer />
-    </PannelContainer>
+    </Panel>
 );
 
 export default RecommendItemView;

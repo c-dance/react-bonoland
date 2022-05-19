@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ResetIcon from '../../../assets/images/icon/ico-reset.svg';
+import resetIcon from '../../../assets/images/icon/ico-reset.svg';
 
 export const CapacityForm = styled.div`
     position: absolute;
@@ -64,7 +64,7 @@ export const Reset = styled.button`
     top: 25px;
     right: 25px;
     padding-left: 20px;
-    background: url(${ ResetIcon }) left center no-repeat #fff;
+    background: url(${ resetIcon }) left center no-repeat #fff;
     font-size: 14px;
     color: ${ props => props.theme.colors.gray600 };
 `;

@@ -1,12 +1,17 @@
 import styled from 'styled-components';
-import PrimaryCloseIcon from '../../assets/images/icon/ico-x.svg';
-import secondaryCloseIcon from '../../assets/images/icon/ico-x_white.svg';
-import secondaryBackIcon from '../../assets/images/icon/ico-back_white.svg';
+import PrimaryCloseIcon from '../../../assets/images/icon/ico-x.svg';
+import secondaryCloseIcon from '../../../assets/images/icon/ico-x_white.svg';
+import secondaryBackIcon from '../../../assets/images/icon/ico-back_white.svg';
 
 export const Section = styled.section`
-    position: relative;
-    width: 100%;
-    height: 100%
+    z-index: 30;
+    position: fixed;
+    top: 82px;
+    right: 0;
+    width: 390px;
+    height: calc(100% - 82px);
+    background-color: #fff;
+    box-shadow: -3px 0 6px rgba(0,0,0, .06); 
 `;
 
 export const Title = styled.h2`
@@ -53,12 +58,14 @@ export const Close = styled.div`
 
 export const Back = styled.div`
     position: absolute;
-    top: 16px;
+    top: ${ props => props.icon? '16px' : '22px' };;
     left: 24px;
-    width: 24px;
+    width: ${ props => props.icon? '24px' : 'auto' };
     height: 24px;
-    background: url(${ props =>
-        props.themeColor === "primary" && PrimaryCloseIcon
-        || props.themeColor === "secondary" && secondaryBackIcon
-    }) center no-repeat;
+    font-size: ${ ({theme}) => theme.fontSizes.s };
+    color: ${ ({theme}) => theme.colors.gray600 };
+    background:${ props =>
+        props.icon? `url(${secondaryBackIcon}) center no-repeat`
+        : '#fff'
+    };
 `;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import SideSection from '../../components/SideSection/SideSection';
+import Section from '../../components/ui/Section/Section';
 import NewsCard from '../../components/News/NewsCard/NewsCard';
 
 const NewsItemContainer = () => {
@@ -28,17 +28,17 @@ const NewsItemContainer = () => {
     }, []);
 
     return(
-        <SideSection
+        <Section
             title={ "뉴스" }
             themeColor={ "secondary" }
             back = { true }
-            clickBack= { backToList }
+            onBackClick= { backToList }
             action={ true }
             actionText={ "출처 링크" }
-            clickAction={ openNews }
+            onActionClick={ openNews }
         >
             <NewsCard data={ news } />
-        </SideSection>
+        </Section>
     )
 };
 

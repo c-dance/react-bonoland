@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import NewsList from '../../components/News/NewsList/NewsList';
-import SideSection from '../../components/SideSection/SideSection';
+import Section from '../../components/ui/Section/Section';
 
 const NewsListContainer = () => {
     const [ newsList, setNewsList ] = useState([]);
-    const clickClose = () => {
+
+    const onCloseClick = () => {
         console.log('close');
     }
 
@@ -14,21 +15,22 @@ const NewsListContainer = () => {
             .then(data => setNewsList(data))
             .catch(err => console.log(err))
     };
+
     useEffect(() => {
         fetchNewsList();
     }, []);
     
     return (
-        <SideSection
+        <Section
             title={ "뉴스" }
             themeColor={ "secondary" }
             close={ true }
-            clickClose={ clickClose }
+            onCloseClick={ onCloseClick }
         >
             <NewsList 
-                newsList = { newsList }   
+                datas = { newsList }   
             />
-        </SideSection>
+        </Section>
     )
 
 };

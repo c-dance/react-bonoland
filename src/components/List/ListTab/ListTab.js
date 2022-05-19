@@ -5,12 +5,6 @@ import { logRoles } from '@testing-library/react';
 
 const ListTab = ({ navs, contents, tabClick, activeIdx }) => {
 
-    const toggleTab = () => {
-        console.log('click');
-    }
-
-    console.log(navs, contents, tabClick, activeIdx);
-
     const tabNavs = navs.map((nav, idx) => (
         <div
             className={ idx === activeIdx? 'tabNav on' : 'tabNav' } 

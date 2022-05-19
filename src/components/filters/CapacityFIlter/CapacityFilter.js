@@ -1,7 +1,7 @@
 import { CapacityForm, SliderWrap, RadioWrap, RadioBox, Legend, Reset, Confirm } from "./CapacityFilterStyle";
 import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
-import SliderIcon from '../../../assets/images/icon/ico-slider.svg';
+import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
 
 const marks = { 0: 0, 20: 20, 40: 40, 60: 60, 80: 80, 100: 100 };
@@ -28,7 +28,7 @@ const CapacityFilter = ({ active, values, confirmHandler, selectHandler }) => {
                         marginTop: -14,
                         border: 0,
                         opacity: 1,
-                        background: `url(${ SliderIcon }) center no-repeat #fff`
+                        background: `url(${ sliderIcon }) center no-repeat #fff`
                     }}
                     allowCross= { true }
                 />
