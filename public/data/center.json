@@ -4,12 +4,29 @@
     "no": 123456,
     "recommend" : true,
     "premium": false,
-    "region": "서울시 강남구",
-    "price": "999억",
+    "region": "서울시 마포구 공덕동",
     "category": "주야간 보호센터",
     "size" : "연면적 1,452m",
     "nowCapacity": 39,
     "capacity": 39,
+    "price": "20억",
     "invest": "13억",
-    "loan": "7억"
+    "loan": "7억",
+    "description" : "서초역과 인접해 있는 신도시 인근 최고의 위치. 39인 주야간 보호센터로 운영 중",
+    "environment": {
+        "nursing": true,
+        "cluster": true,
+        "newtown": true,
+        "rising" : true,
+        "traffic" : true,
+        "market": true,
+        "road": true
+    }, 
+    "시장현황": {
+        "고령인구": [345, 56, 32, 24],
+        "등급인원": [4272, 1236, 3036],
+        "요양시설": [900, 114, 8, 1, 8] 
+
+    },
+    "보노지수": [90, 80, 70]
 }

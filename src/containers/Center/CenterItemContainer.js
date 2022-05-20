@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useFetch } from '../../hooks';
 import CenterItem from "../../components/Center/CenterItem/CenterItem";
+import DoughnutChart from "../../components/Chart/DoughnutChart/DoughnutChart";
+import RadarChart from "../../components/Chart/RadarChart/RadarChart";
 
 const CenterItemContainer = () => {
     const { id } = useParams();
-    const [ centerID, setCenterID ] = useState(id);
-    const [ center, setCenter ] = useState({});
-
-    const fetchCenter = () => {
-        fetch('./data/center.json')
-            .then(res => res.json)
-            .then(data => setCenter(data))
-            .catch(err => {
-                console.log(err);
-                setCenter(null);
-            })
-    };
-
-    useEffect(() => {
-        fetchCenter();
-    }, [centerID])
+    const [page, data] = useFetch({}, '/data/center.json');
 
     return (
-        <CenterItem center= { center } />
+        <>
+        { page === "success" &&         
+            <CenterItem 
+                data = { data } 
+            />
+        }
+        {
+            page !== "success" &&
+            <div>none</div>
+        }
+        </>
     )
 };
 

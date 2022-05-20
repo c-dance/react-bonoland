@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+/* ===== VARIABLES ===== */
 const fontSizes = {
     l: '1.125rem',
     xl:'1.25rem',
@@ -48,6 +49,7 @@ const colors = {
     gray900:"#212121", 
 };
 
+/* ===== MODULES ===== */
 const scrollWrapper = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;
@@ -69,6 +71,38 @@ const scrollWrapper = styled.div`
     > * {
         height: auto;
     }
+`;
+
+const Button = styled.button`
+    width: 100%;
+    border-radius: 2px;
+    text-align: center;
+`;
+
+const Input = styled.input`
+    width: 100%;
+    height: 44px;
+    padding: ${ props => props.border? '0 16px' : '0 8px' };
+    border-color: '#E0E0E0';
+    border-width: ${ props => props.border? '1px 1px 1px' : '0 0 2px' };
+    font-size: ${ props => props.border? '14px' : '16px' }; 
+
+    &:focus,
+    &:active {
+        border-color: '#BD9369';
+    }
+
+    &:placeholder {
+        color: ${ props => props.border? '#BDBDBD' : '#757575' }; 
+    }
+`;
+
+const SubmitButton = styled.button`
+    height: 48px;
+    line-height: 48px;
+    background-color: ${ props => props.disabled? '#f4f4f4' : '#BD9369' };
+    color: ${ props => props.disabled? '#BDBDBD' : '#fff' };
+
 `;
 
 

@@ -15,6 +15,7 @@ export const PanelBox = styled.div`
     top: ${ props => props.type === "floating"? `104px` : `80px` };
     width: 390px;
     height: ${ props => props.type === "floating"? `900px` : `calc(100% - 80px)` };
+    max-height: ${ props => props.type === "floating"? `calc(100% - 124px)` : `calc(100% - 80px)` };
     overflow: show;
     background-color: ${ props => props.type === 'floating'? 'transparent' : '#fff' };
     transition: left .3s;

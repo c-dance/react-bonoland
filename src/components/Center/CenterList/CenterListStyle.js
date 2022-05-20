@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import { module } from '../../../theme';
 
 export const CardList = styled(module.scrollWrapper)`
-    height: 100%;
+    height: ${ props => props.type === "main" ? '720px' : '100%' };
+    max-height: ${ props => props.type === "main" ? 'calc(100% - 176px)' : '100%' };
     padding: 0 16px 0 24px;
-    overflow: scroll; 
+    overflow-x: hidden;
+    overflow-y: scroll; 
     background-color: #fff;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
 `;
