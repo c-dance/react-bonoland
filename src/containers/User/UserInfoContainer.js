@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFetch } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
+import UserAuthForm from '../../components/User/UserAuthForm/UserAuthForm';
 
 
 const UserInfoContainer = () => {
@@ -17,7 +18,7 @@ const UserInfoContainer = () => {
                     close={ true }
                     themeColor={ "primary" }
                 >
-    
+                    <UserAuthForm />
                 </Section>
             }
             {
