@@ -9,6 +9,7 @@ import roadIcon from '../../../assets/images/envs/ico-road.svg';
 import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
 import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
+import { calculateNewValue } from '@testing-library/user-event/dist/utils';
 
 export const Center = styled.article`
     position: relative;
@@ -251,4 +252,12 @@ export const TabNav = styled.div`
 export const TabCont = styled.div`
     padding: 16px;
     display: ${ props => props.active? 'block' : 'none' };
+`;
+
+export const ChartWrap = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: calc(100% + 32px);
+    transform: translateX(-16px);
+    background-color: ${({ theme }) => theme.colors.secondary };
 `;

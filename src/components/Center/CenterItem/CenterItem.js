@@ -19,7 +19,8 @@ import {
     Back,
     TabNavs,
     TabNav,
-    TabCont
+    TabCont, 
+    ChartWrap
 } from './CenterItemStyle';
 
 import ItemImg from '../../../assets/test/item-thumbnail.png';
@@ -143,20 +144,23 @@ const CenterItem = ({ data }) => {
                         </Section>
                         <Section>
                             <h3>시장현황</h3>
-                            { 
-                                data["시장현황"] && 
-                                Object.keys(data["시장현황"]).map((key, idx) => (
-                                    data["시장현황"][`${key}`].length > 0 && 
-                                    <DoughnutChart 
-                                        key={ idx }
-                                        scheme={ key } 
-                                        data={ data["시장현황"][`${key}`] }     
-                                    />
-                                ))
-                            }
+                            <ChartWrap>
+                                { 
+                                    data["시장현황"] && 
+                                    Object.keys(data["시장현황"]).map((key, idx) => (
+                                        data["시장현황"][`${key}`].length > 0 && 
+                                        <DoughnutChart 
+                                            key={ idx }
+                                            scheme={ key } 
+                                            data={ data["시장현황"][`${key}`] }     
+                                        />
+                                    ))
+                                }
+                            </ChartWrap>
                         </Section>
                         <Section>
                             <h3>보노지수</h3>
+                            <hr />
                             {
                                 data["보노지수"] &&
                                 data["보노지수"].length &&

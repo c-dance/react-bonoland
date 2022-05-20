@@ -1,8 +1,11 @@
-import { Chart as chartJs, ArcElement, Legend, Title, DoughnutController } from 'chart.js';
+import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
-import helpers from 'chart.js/helpers';
+import { MARKETS } from '../../../sheme/chart';
+import { ChartBox } from './DoughnutChartStyle';
+import 'chartjs-plugin-doughnut-innertext'
 
-const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686'];
+
+const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];
 const doughnutOptions = {
     plugins: {
         legend: {
@@ -24,78 +27,65 @@ const doughnutOptions = {
             text: '',
             position: 'top',
             padding: {
-                bottom: 15
+                bottom: 20
             },
             color: '#fff',
             font: {
                 size: 16,
+                family: "'Noto Sans KR', Sans-serif"
             },
-        },
+        }
+    },
+    cutout: 70,
+    radius: 90,
+    circumference: 360, 
+    elements: {
+        arc: {
+            borderWidth: 10,
+        }
+    }, 
+    centerText: {
+        value: '',
+        color: '#FFF',
+        fontSizeAdjust: -0.5
     }
 }
 
 
 const DoughnutChart = ({ scheme, data }) => {
 
-    chartJs.register(ArcElement, Legend, Title, DoughnutController );
+    ChartJs.register(ArcElement, Legend, Title, DoughnutController );
 
-
-    const labels = [ '고령', '남자', '여자' ]; // shcheme keys
-
+    //get data
+    const dataScheme = MARKETS[scheme.toString()];
+    const chartLabels = dataScheme.labels.map((item, idx) =>`${item}${data[idx]}명`);
+    const chartTitle = dataScheme.title;
     const datasets = data.map((item, idx) => (
         {
-            data: [Number(data)],
-            backgroundColor: [doughnutColors[idx], 'transparent'],
-            borderColor: []
+            label: idx ===0 ? '' : chartLabels[idx - 1],
+            data: idx===0? [Number(item)].concat(new Array(data.length - 2)) : [Number(item), Number(data[0]) - Number(item) ],
+            backgroundColor: idx===0? doughnutColors : [doughnutColors[idx], 'transparent'],
+            borderColor: 'transparent',
+            borderRadius: idx===0? 0 : 30,  
+            borderWidth: 2,
         }
     ));
-
-    console.log(datasets);
-
-    doughnutOptions.plugins.title.text = scheme;
-
-
-
-
-    const dataset = {
-        labels: labels,
-        datasets: [
-            {
-                data: [345],
-                backgroundColor: [ '#fff'],
-                borderColor: ['transparent'],
-            },
-            {
-                data: [56, (345-56)],
-                backgroundColor: [ '#E4B251', 'transparent' ],
-                borderColor: ['transparent', 'transparent'],
-                borderRadius: 30
-            },
-            {
-                data: [345, (345-32)],
-                backgroundColor: [ '#7BF5BB', 'transparent' ],
-                borderColor:['transparent', 'transparent'],
-                borderRadius: 30
-            },
-            {
-                data: [24, (345-24)],
-                backgroundColor: [ '#E98686', 'transparent' ],
-                borderColor: ['transparent', 'transparent'],
-                borderRadius: 30
-            },
-    
-        ]
-    }
-
-
+    const chartOptions = Object.assign({}, doughnutOptions);
+    chartOptions.plugins.title.text = chartTitle;
+    chartOptions.centerText.value = `총 \n ${data[0]}명`;
 
 
     return (
-        <Chart
-            type="doughnut"
-            data= { dataset } 
-            options = { doughnutOptions }
-        />
+        <ChartBox>
+            <Chart
+                type="doughnut"
+                data= {{
+                    datasets: datasets,
+                    labels: chartLabels
+                }} 
+                options = { chartOptions }
+            />
+        </ChartBox>
     )
 };
 
