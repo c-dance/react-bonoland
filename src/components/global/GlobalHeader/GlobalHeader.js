@@ -1,7 +1,9 @@
 import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Button } from './GlobalHeaderStyle';
 import { Link } from 'react-router-dom';
 
-const GlobalHeader = ({}) => {
+const GlobalHeader = ({
+    onCalcClick
+}) => {
     return (
         <Header>
             <HomeLink to="/" />
@@ -27,7 +29,9 @@ const GlobalHeader = ({}) => {
                     <Button>로그인</Button>
                     <Button className="highlight">회원가입</Button>
                     {/* <Hello>안녕하세요, 홍길동 님!</Hello> */}
-                    <Calculate>수익계산기</Calculate>
+                    <Calculate
+                        onClick={ () => onCalcClick() }
+                    >수익계산기</Calculate>
                 </UtilMenu>
             </Menu>
         </Header>

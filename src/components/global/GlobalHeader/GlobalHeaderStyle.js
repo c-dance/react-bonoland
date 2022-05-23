@@ -87,7 +87,7 @@ export const Button = styled.button`
         color: #fff;
     }
 `
-export const Calculate = styled(Button)`
+export const Calculate = styled.button`
     width: 140px;
     padding: 16px 0 16px 50px;
     background: url(${ calcIcon }) 20px center / 24px 24px no-repeat;

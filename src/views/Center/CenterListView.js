@@ -10,21 +10,21 @@
 - 유틸 퀵메뉴
 
 */
-import MainListContainer from '../../containers/Main/MainListContainer';
+import CenterListContainer from '../../containers/Center/CenterListContainer';
 import Panel from '../../components/ui/Panel/Panel';
-import MapContainer from '../../containers/Map/MapContainer';
+// import MapContainer from '../../containers/Map/MapContainer';
 
-const MainListView = () => (
+const CenterListView = () => (
     <div>
         <Panel
             type={ "floating" }
             position={ "left" }
             fold={ true }
         >
-            <MainListContainer />
+            <CenterListContainer />
         </Panel>
         {/* <MapContainer /> */}
     </div>
 );
 
-export default MainListView;
+export default CenterListView;

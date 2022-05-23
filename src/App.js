@@ -1,58 +1,64 @@
 import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
-//
+// LAYOUT
 import LayoutContainer from './containers/Layout/LayoutContainer';
-// VIEWS
-import MainListView from './views/Main/MainListView';
-import MainItemView from './views/Main/MainItemView';
+// MAP
+import MapContainer from './containers/Map/MapContainer';
+// CENTERS
+import CenterListView from './views/Center/CenterListView';
+import CenterItemView from './views/Center/CenterItemView';
+// SALES && RECOMMENDS
 import SalesListView from './views/Sales/SalesListView';
 import SalesItemView from './views/Sales/SalesItemView';
 import RecommendListView from './views/Recommend/RecommendListView';
 import RecommendItemView from './views/Recommend/RecommendItemView';
-import NewsListView from './views/News/NewsListView';
-import NewsItemView from './views/News/NewsItemView';
-
+// NEWS
+import NewsListContainer from './containers/News/NewsListContainer';
+import NewsItemContainer from './containers/News/NewsItemContainer';
+// USER
 import UserMenuContainer from './containers/User/UserMenuContainer';
 import UserRecentContainer from './containers/User/UserRecentContainer';
 import UserScrapContainer from './containers/User/UserScrapContainer';
 import UserAlarmContainer from './containers/User/UserAlarmContainer';
 import UserInfoContainer from './containers/User/UserInfoContainer';
+// REIGSTER
+import RegisterContainer from './containers/Register/RegisterContainer';
+//CONTACT
+import ContactContainer from './containers/Contact/ContactContainer';
+// TERMS
+import TermsContainer from './containers/Terrms/TermsContainer';
 
-// import RegisterView from './views/Register/RegisterView';
-// import ContactView from './views/Contact/ContactView';
-// import CalculatorView from './views/Calculator/CalculatorView';
 
-const BaseView = ({ map, list }) => (
+
+// BASE LAYOUT : NAVIGATION & MAP & CENTER LIST
+const RootContainer = ({ map, list }) => (
   <LayoutContainer>
-      { list && <MainListView /> } 
+      { list && <CenterListView /> } 
+      { map && <MapContainer /> }
       <Outlet />
   </LayoutContainer>
 );
 
 const App = () => (
     <Routes>
-      <Route element={ <BaseView list={ true } /> }>
+      <Route element={ <RootContainer list={ true } map={ false } /> }>
         <Route exact path="/"/>
-        <Route exact path="/news" element={ <NewsListView /> } />
-        <Route exact path="/news/:id" element={ <NewsItemView /> } />
+        <Route exact path="/news" element={ <NewsListContainer /> } />
+        <Route exact path="/news/:id" element={ <NewsItemContainer /> } />
         <Route exact path="/user" element={ <UserMenuContainer /> } />
         <Route exact path="/user/recent" element={ <UserRecentContainer /> } />
         <Route exact path="/user/scrap" element={ <UserScrapContainer /> } />
         <Route exact path="/user/alarm" element={ <UserAlarmContainer /> } />
         <Route exact path="/user/info" element={ <UserInfoContainer /> } />
+        <Route exact path="/register" element={ <RegisterContainer /> } />
+        <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
-      <Route element={ <BaseView list={ false } /> }>
+      <Route element={ <RootContainer list={ false } map={ false } /> }>
         <Route exact path="/sales" element={ <SalesListView /> } />
-        <Route exact path="/center/:id" element={ <MainItemView /> } />
+        <Route exact path="/center/:id" element={ <CenterItemView /> } />
         <Route exact path="/recommend" element={ <RecommendListView /> } />
       </Route>
-      {/* <Route exact path="/sales/:id" element={ <SalesItemView /> } /> */}
-      {/* <Route exact path="/recommend/:id" element={ <RecommendItemView /> } /> */}
-
-
-      {/* <Route exact path="/register" element={ <RegisterView /> } /> */}
-      {/* <Route exact path="/contact" element={ <ContactView /> } /> */}
-      {/* <Route exact path="/calculator" element={ <CalculatorView /> } /> */}
+      <Route exact path="/terms" element={ <TermsContainer /> } />
     </Routes>
 );
 

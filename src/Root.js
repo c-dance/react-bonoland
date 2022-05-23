@@ -4,8 +4,7 @@ import store from "./store";
 import App from './App';
 import AppStyle from './AppStyle';
 import { ThemeProvider } from "styled-components";
-import { theme, module } from './theme';
-
+import { theme, module } from './theme'
 
 const Root = () => (
     <BrowserRouter>

@@ -1,7 +1,7 @@
 import CenterItemContainer from "../../containers/Center/CenterItemContainer";
 import Panel from "../../components/ui/Panel/Panel";
 
-const MainItemView = () => {
+const CenterItemView = () => {
     return (
         <Panel
             type={ "side" }
@@ -13,4 +13,4 @@ const MainItemView = () => {
     )
 }
 
-export default MainItemView;
+export default CenterItemView;

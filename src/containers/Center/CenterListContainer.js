@@ -6,7 +6,7 @@ import ListMore from "../../components/List/ListMore/ListMore";
 import React, { useState, useEffect } from "react";
 
 
-const MainListContainer = () => {
+const CenterListContainer = () => {
     /*
         search(1) 키워드 : 지역구, 지역명
         search(2) 카레고리: 단독 요양원, 상가 요양원, 주간 보호
@@ -58,7 +58,6 @@ const MainListContainer = () => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             setCenters(data);
         })
         .catch(err => console.log(err));
@@ -88,4 +87,4 @@ const MainListContainer = () => {
     )
 };
 
-export default MainListContainer;
+export default CenterListContainer;
