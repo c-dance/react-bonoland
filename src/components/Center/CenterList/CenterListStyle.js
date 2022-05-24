@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { module } from '../../../theme';
+import { module } from '../../../themes/module';
 
 export const CardList = styled(module.scrollWrapper)`
     height: ${ props => props.type === "main" ? '720px' : '100%' };

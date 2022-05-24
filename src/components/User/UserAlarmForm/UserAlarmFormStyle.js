@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { module } from '../../../theme';
+import { module } from '../../../themes/module';
 import defualtCheckIcon from '../../../assets/images/form/ico-checkbox_default.svg';
 import checkedCheckIcon from '../../../assets/images/form/ico-checkbox_checked.svg';
 import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';

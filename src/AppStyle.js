@@ -14,6 +14,7 @@ const AppStyle = createGlobalStyle`
         width: 100%;
         height: 100%;
         font: 400 1rem/1 'Noto Sans KR', sans-serif;
+        color: #212121;
         letter-spacing: -1px;
     }
 

@@ -1,4 +1,4 @@
-import { module } from '../../theme';
+import { module } from '../../themes/module';
 
 const Register = () => {
     return (

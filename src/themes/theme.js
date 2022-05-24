@@ -1,34 +1,37 @@
-export const fontSizes = {
-    l: '1.125rem',
+import styled from 'styled-components';
+
+/* ===== VARIABLES ===== */
+const fontSizes = {
     xl:'1.25rem',
+    l: '1.125rem',
     base: '1rem',
     s: '0.875rem',
     xs: '0.75rem',
     xxs: '0.625rem'
 };
 
-export const fontWeights = {
+const fontWeights = {
     light: '300',
     regular: '400',
     medium: '500',
     bold: '700'
 };
 
-export const breakPoints = {
+const breakPoints = {
     desktopL: "1920px",
     desktopM: "1440px",
     desktopS: "1240px",
     tablet: "1024px",
 };
 
-export const device = {
+const device = {
     desktopL: `screen and (max-width: ${ breakPoints.desktopL })`,
     desktopM: `screen and (max-width: ${ breakPoints.desktopM })`,
     desktopS: `screen and (max-width: ${ breakPoints.desktopS })`,
     tablet: `screen and (max-width: ${ breakPoints.tablet })`
 };
 
-export const colors = {
+const colors = {
     primary: "#BD9369",
     primaryD: "#8b653e",
     secondary: "#001f60",
@@ -44,4 +47,11 @@ export const colors = {
     gray700:"#616161", 
     gray800:"#424242", 
     gray900:"#212121", 
+};
+
+export const theme = {
+    fontSizes,
+    fontWeights,
+    colors,
+    device,
 };

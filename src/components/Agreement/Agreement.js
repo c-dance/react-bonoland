@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AgreementBox, Form, Terms } from './AgreementStyle';
-import { module } from '../../theme';
+import { module } from '../../themes/module';
 
 const Agreement = ({ 
     subTitle, 

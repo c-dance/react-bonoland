@@ -1,5 +1,5 @@
 import { Form } from './CalculatorFormStyle';
-import { module } from '../../../theme';
+import { module } from '../../../themes/module';
 
 const CalculatorForm = ({ onFormSubmit }) => {
     return (

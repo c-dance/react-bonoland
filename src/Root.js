@@ -4,12 +4,12 @@ import store from "./store";
 import App from './App';
 import AppStyle from './AppStyle';
 import { ThemeProvider } from "styled-components";
-import { theme, module } from './theme'
+import { theme } from './themes/theme'
 
 const Root = () => (
     <BrowserRouter>
         <Provider store={ store }>
-            <ThemeProvider theme={ theme } module={ module }>
+            <ThemeProvider theme={ theme }>
                 <AppStyle />
                 <App />
             </ThemeProvider>

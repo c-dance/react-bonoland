@@ -1,4 +1,4 @@
-import { module } from '../../../theme';
+import { module } from '../../../themes/module';
 import { Form, Inform } from './UserAuthFormStyle';
 
 const UserAuthForm = () => {

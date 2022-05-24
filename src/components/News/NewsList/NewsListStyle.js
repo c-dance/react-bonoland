@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { module } from '../../../theme';
+import { module } from '../../../themes/module';
 
 export const List = styled(module.scrollWrapper)`
     height: calc(100% - 56px);

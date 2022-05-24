@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { module } from '../../theme';
+import { module } from '../../themes/module';
 
 export const AgreementBox = styled.div`
     h3 {

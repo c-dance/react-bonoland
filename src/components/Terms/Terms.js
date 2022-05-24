@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { TabNav } from '../Center/CenterItem/CenterItemStyle';
-import { Tab, Wrap, TabHead, TabNavs, TabConts } from './TermsStyle';
+import { Tab, Logo, TabNavs, TabConts } from './TermsStyle';
 
 const Terms = ({ data }) => {
 
@@ -9,37 +8,46 @@ const Terms = ({ data }) => {
         setTabIdx(idx);
     };
 
+    const responsiveWords = (word) => {
+        if(word.length <= 10) return word;
+
+        let words = word.split(' ');
+        return words.map((word, idx) => (
+            idx < 1 ? <span>{ word }</span> 
+            : <span className="pc">{ word }</span>
+        ))
+    };
+
     return (
         <Tab>
-            <TabHead>
-                <div>
-                    <a></a>
-                    <h2>약관 보기</h2>
-                </div>
+            <header>
+                <Logo to="/" />
                 <TabNavs>
                     {
                         Object.keys(data).map((key, idx) => (
-                            <span
+                            <div
                                 key={ key }
-                                className={ tabIdx && "active" }
+                                className={ tabIdx === idx && "active" }
                                 onClick={ () => toggleTab(idx) }
-                            >{ key }</span>
+                            >{ responsiveWords(key) }</div>
                         ))
                     }
                 </TabNavs>
-            </TabHead>
-            <TabConts>
-                {
-                    Object.keys(data).map((key, idx) => (
-                        <div
-                            className={ tabIdx && "active" }
-                        >
-                            <span>{ data[key]["개정일"] }</span>
-                            <p>{ data[key]["내용"] }</p>
-                        </div>
-                    ))
-                }
-            </TabConts>
+            </header>
+            <main>
+                <TabConts>
+                    {
+                        Object.keys(data).map((key, idx) => (
+                            <div
+                                className={ tabIdx === idx && "active" }
+                            >
+                                <span>{ data[key]["개정일"] }</span>
+                                <p>{ data[key]["내용"] }</p>
+                            </div>
+                        ))
+                    }
+                </TabConts>
+            </main>
         </Tab>
     )
 };
