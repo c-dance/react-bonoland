@@ -94,7 +94,7 @@ export const TabNavs = styled.div`
             @media ${ ({theme}) => theme.device.tablet } { 
                 height: 100%;
                 color: ${ ({theme}) => theme.colors.primary };
-                border-bottom: 1px solid ${ ({theme}) => theme.colors.primary };
+                border-bottom: 2px solid ${ ({theme}) => theme.colors.primary };
             }
         }
 

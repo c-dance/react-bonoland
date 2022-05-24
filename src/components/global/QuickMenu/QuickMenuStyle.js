@@ -23,7 +23,7 @@ const quickCSS = css`
         || props.icon === "alarm" && alarmIcon
         || props.icon ==="calc" && calcIcon
         )
-    }) center no-repeat;
+    }) center no-repeat #fff;
     color: ${ props => props.theme.colors.gray700 };
     font-size: ${ props => props.icon === "news"? `12px` : `0` };
     line-height: 38px;

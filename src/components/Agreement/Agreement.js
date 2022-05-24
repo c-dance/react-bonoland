@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AgreementBox, Form, Terms } from './AgreementStyle';
+import { AgreementBox, Terms } from './AgreementStyle';
 import { module } from '../../themes/module';
 
 const Agreement = ({ 
@@ -8,18 +8,19 @@ const Agreement = ({
     label, 
     isChecked, 
     onAgreeClick,
-    onAgreeSubmit 
+    onAgreeSubmit,
+    device
 }) => {
 
     return (
-        <AgreementBox>
+        <AgreementBox className={ device==="mobile" && "mobile"}>
             <h3>{ subTitle }</h3>
-            <Terms>
+            <Terms className={ device==="mobile" && "mobile"}>
                 <div>
                     { content }
                 </div>
             </Terms>
-            <Form onSubmit={ event => onAgreeSubmit(event) }>
+            <form onSubmit={ event => onAgreeSubmit(event) }>
                 <fieldset>
                     <input
                         type="checkbox"
@@ -39,7 +40,7 @@ const Agreement = ({
                 >
                     다음
                 </module.SubmitButton>
-            </Form>
+            </form>
         </AgreementBox>
     )
 };

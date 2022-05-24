@@ -5,25 +5,27 @@ import calcIcon from '../../../assets/images/icon/ico-calculator.svg';
 
 export const Header = styled.header`
     z-index: 40;
+    position: fixed;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    min-width: 1240px;
     height: 80px;
     padding: 0 32px;
+    background-color: #fff;
     box-shadow: 0 3px 3px rgba(0,0,0,.06);
-
-    @media ${({ theme }) => theme.device.tablet} {
-       display: none;
-    }
 `;
 
 export const HomeLink = styled(Link)`
+    z-index: 40;
     width: 195px;
     height: 38px;
     background: url(${ logoIcon }) center no-repeat;
 `;
 
 export const Menu = styled.div`
+    z-index: 40;
     display: flex;
     gap: 150px;
     height: 100%;
@@ -93,7 +95,4 @@ export const Calculate = styled.button`
     background: url(${ calcIcon }) 20px center / 24px 24px no-repeat;
     border: 1px solid ${({ theme }) => theme.colors.gray400 };
     color: ${({ theme }) => theme.colors.primary };
-    @media ${({ theme }) => theme.device.desktopS} {
-       display: none;
-    }
 `;

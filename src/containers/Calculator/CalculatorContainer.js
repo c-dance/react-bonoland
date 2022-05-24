@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { BrowserView, MobileView } from 'react-device-detect';
+import Modal from '../../components/Modal/Modal';
+import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
-import Modal from '../../components/Modal/Modal';
+import { LayoutContext } from '../../hooks/layout';
 
 const CalculatorContainer = ({ active, onCloseClick }) => {
+
+    const DEVICE = useContext(LayoutContext);
 
     // form
     // formData
@@ -31,32 +36,45 @@ const CalculatorContainer = ({ active, onCloseClick }) => {
 
     return (
         <> 
+        {
+            active && DEVICE === "browser" &&
+            <Modal
+                open={ active }
+                close={ true }
+                title="수익 계산"
+                width="970"
+            >
             {
-                active && !formSubmitted && <Modal
-                    open={ !formSubmitted }
-                    close={ true }
-                    onCloseClick={ onCloseClick }
-                    title="수익 계산"
-                    width="970"
-                >
-                    <CalculatorForm
+                !formSubmitted && <CalculatorForm
+                    onFormSubmit={ onFormSubmit }
+                    device="browser"
+                />
+            }
+            {
+                formSubmitted && <CalculatorResult 
+                    onFormReset={ onFormReset }
+                    device="browser"
+                />
+            }
+            </Modal>
+        }
+        {
+            active && DEVICE === "mobile" &&
+            <MobileSection title="수익 계산">
+                {
+                    !formSubmitted && <CalculatorForm
                         onFormSubmit={ onFormSubmit }
+                        device="mobile"
                     />
-                </Modal>
-            }
-            {
-                active && formSubmitted && <Modal
-                    open={ formSubmitted }
-                    close={ true }
-                    onCloseClick={ onCloseClick }
-                    title="수익계산"
-                    height="700"
-                >
-                    <CalculatorResult 
+                }
+                {
+                    formSubmitted && <CalculatorResult 
                         onFormReset={ onFormReset }
+                        device="mobile"
                     />
-                </Modal>
-            }
+                }
+            </MobileSection>
+        }
         </>
     )
 }

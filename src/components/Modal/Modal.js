@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ReactModal from "react-modal";
 import { ModalWrap, Close, Title, Hr } from './ModalStyle';
+import { useNavigate } from 'react-router';
 
 const modalStyle = {
     overlay: {
@@ -32,6 +33,8 @@ const Modal  = ({
     children 
 }) => {
 
+    const navigate = useNavigate();
+
     const customStyle = Object.assign({}, modalStyle);
     if(width) customStyle.content.maxWidth = width + 'px';
     if(height) customStyle.content.maxHeight = height + 'px';
@@ -44,7 +47,9 @@ const Modal  = ({
             <ModalWrap>
                 { title && <Title> { title }</Title> }
                 { title && <Hr /> }
-                { close && <Close /> }
+                { close && <Close
+                    onClick={ () => { onCloseClick? onCloseClick() :  navigate(-1) } }
+                /> }
                 { children }
             </ModalWrap>
         </ReactModal>

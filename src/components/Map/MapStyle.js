@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const MAP = styled.div`
-    z-index: 10;
+    z-index: 1;
     position: fixed !important;
     top: 0;
     left: 0;

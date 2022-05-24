@@ -1,9 +1,9 @@
 import styled from 'styled-components';
+import { theme } from './theme';
 
-/* ===== MODULES ===== */
 const scrollWrapper = styled.div`
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     &::-webkit-scrollbar {
         width: 8px;
@@ -140,10 +140,84 @@ const TableForm = styled.form`
     }
 `;
 
+const MobileForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-bottom: 52px;
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+
+        &.cols {
+            flex-wrap: wrap;
+            flex-direction: row;
+            gap: 32px 20px;
+
+            .wrap {
+                flex: inherit;
+                justify-content: space-between;
+                width: calc(50% - 10px);
+
+                label {
+                    font-size: ${theme.fontSizes.s};
+                }
+            }
+        }
+
+        legend {
+            display: block;
+            width: 100%;
+            padding-bottom: 12px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid ${ theme.colors.primary };
+            font-size: ${theme.fontSizes.l};
+            font-weight: ${theme.fontWeights.medium};
+        }
+
+        .wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        label {
+            font-weight: ${theme.fontWeights.medium};
+        }
+
+        input, 
+        select {
+            width: 100%;
+            height: 44px;
+            padding: 0 8px;
+            border-radius: 2px;
+            border: 1px solid ${theme.colors.gray200};
+        }
+        textarea {
+            width: 100%;
+            height: 160px;
+            border-radius: 2px;
+            border: 1px solid ${theme.colors.gray200};
+            resize: none;
+        }
+    }
+
+    button {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 52px;
+    }
+`;
+
 export const module = {
     scrollWrapper,
     Fieldset,
     Input,
     SubmitButton,
-    TableForm
+    TableForm,
+    MobileForm
 };

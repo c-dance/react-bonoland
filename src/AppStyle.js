@@ -30,10 +30,17 @@ const AppStyle = createGlobalStyle`
 
     input,
     input:focus,
-    input:active {
+    input:active,
+    select,
+    select:focus,
+    select:active,
+    textarea,
+    textarea:focus,
+    textarea:active {
         border: 0;
         outline: 0;
     }
+    
 `;
 
 export default AppStyle;

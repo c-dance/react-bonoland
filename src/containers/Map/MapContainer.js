@@ -90,6 +90,8 @@ const MapContainer = () => {
         if(zoom < 14 && zoom >= 11) result = regions.area1.name; // 시도
         if(zoom < 11) result = ''; // 3km 이상 : 시도 구별 어려움
 
+        console.log(result);
+
         return result;
     };
    

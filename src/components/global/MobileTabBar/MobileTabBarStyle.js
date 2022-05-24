@@ -15,12 +15,8 @@ export const TabBar = styled.nav`
     justify-content: space-between;
     width: 100%;
     height: 56px;
+    background-color: #fff;
     box-shadow: -3px 0 6px rgba(0,0,0,.06);
-
-    display: none;
-    @media ${({ theme }) => theme.device.tablet } {
-        display: flex;
-    }
 
     ul {
         display: flex;

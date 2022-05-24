@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import Agreement from "../../components/Agreement/Agreement";
+import { BrowserView, MobileView } from 'react-device-detect';
 import Modal from '../../components/Modal/Modal';
+import MobileSection from '../../components/global/MobileSection/MobileSection';
+import Agreement from "../../components/Agreement/Agreement";
 import Contact from '../../components/Contact/Contact';
 
 const ContactContainer = () => {
@@ -37,45 +39,59 @@ const ContactContainer = () => {
 
     return (
         <>
-            {
-                !agreeSubmitted && 
+            <BrowserView>
                 <Modal
-                    open={ !agreeSubmitted }
+                    open={ true }
                     close={ true }
                     width="890"
                     title="매수 문의"
                 >
-                    <Agreement
-                        subTitle="개인정보 수집 동의"
-                        label="개인정보수집에 대한 내용에 동의합니다."
-                        content={ term }
-                        isChecked={ agreed }
-                        onAgreeClick={ onAgreeClick }
-                        onAgreeSubmit={ onAgreeSubmit }
-                    />
+                    {
+                        !agreeSubmitted && <Agreement
+                            subTitle="개인정보 수집 동의"
+                            label="개인정보수집에 대한 내용에 동의합니다."
+                            content={ term }
+                            isChecked={ agreed }
+                            onAgreeClick={ onAgreeClick }
+                            onAgreeSubmit={ onAgreeSubmit }
+                        />
+                    }
+                    {
+                        agreeSubmitted && 
+                        !formSubmitted &&
+                        <Contact />
+                    }
+                    {
+                        formSubmitted &&
+                        <div>{ "접수 완료" }</div>
+                    }
                 </Modal>
-            }
-            {
-                agreeSubmitted && 
-                !formSubmitted && <Modal
-                    open={ agreeSubmitted }
-                    close={ true }
-                    width="890"
-                    title="매수 문의"
-                >
-                    <Contact />
-                </Modal>
-
-            }
-            {
-                formSubmitted && <Modal
-                    open={ formSubmitted }
-                    width="380px"
-                    title="접수완료"
-                >
-                <div>{ "접수 완료" }</div>   
-                </Modal>
-            }
+            </BrowserView>
+            <MobileView>
+                <MobileSection title="매물접수" >
+                    {
+                        !agreeSubmitted && <Agreement
+                            subTitle="개인정보 수집 동의"
+                            label="개인정보수집에 대한 내용에 동의합니다."
+                            content={ term }
+                            isChecked={ agreed }
+                            onAgreeClick={ onAgreeClick }
+                            onAgreeSubmit={ onAgreeSubmit }
+                            device="mobile"
+                        />
+                    }
+                    {
+                        agreeSubmitted && 
+                        !formSubmitted &&
+                        <Contact device="mobile" />
+                    }
+                    {
+                        formSubmitted &&
+                        <div>{ "접수 완료" }</div>
+                    }
+                </MobileSection>
+            </MobileView>
+            
         </>
         )
 };
