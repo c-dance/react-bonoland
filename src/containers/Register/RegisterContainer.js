@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { LayoutContext } from '../../hooks/layout';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
@@ -7,17 +8,30 @@ import Register from '../../components/Register/Register';
 
 const RegisterContainer = () => {
 
-    // agreement
+    // 매물접수 디바이스별 레이아웃 처리
+    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+
+    // 개인정보 활용동의 (1) 약관 받아오기
+    const [ term, setTerm ] = useState('');
+
+    // 개인정보 활용동의 (1) 활용동의 체크 (2) 활용동의 저장
     const [ agreed, setAgreed ] = useState(false);
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
-    const [ term, setTerm ] = useState('');
-    // form
+
+    // 매물 접수폼 작성 (1) 접수 입력폼 (2) 접수 입력폼 검사 (3) 접수 입력폼 submit
     const [ form, setForm ] = useState({});
     const [ formFilled, setFormFilled ] = useState(false);
     const [ formSubmitted, setFormSubmitted ] = useState(false);
-    // send form
+
+    // 매물 접수폼 전송
     const [ registered, setRegistered ] = useState(false);
     
+    // 매물접수 닫기
+    const navigate = useNavigate();
+    const deactivateRegister = () => {
+        navigate('/');
+    }
+
 
     const onAgreeClick = (event) => {
         setAgreed(!agreed);
@@ -39,37 +53,15 @@ const RegisterContainer = () => {
     
     return (
         <>
-            <BrowserView>
+            {
+                !MOBILE_DEVICE &&
                 <Modal
-                    open={ true }
-                    close={ true }
-                    width="890"
-                    title="매물 접수"
-                >
-                {
-                    !agreeSubmitted &&
-                    <Agreement
-                        subTitle="개인정보 수집 동의"
-                        label="개인정보수집에 대한 내용에 동의합니다."
-                        content={ term }
-                        isChecked={ agreed }
-                        onAgreeClick={ onAgreeClick }
-                        onAgreeSubmit={ onAgreeSubmit }
-                    />
-                }
-                {
-                    agreeSubmitted && 
-                    !formSubmitted && 
-                    <Register device="browser" />
-                }
-                {
-                    formSubmitted && 
-                    <div>{ "접수 완료" }</div>   
-                }
-                </Modal>
-            </BrowserView>
-            <MobileView>
-                <MobileSection title="매물접수">
+                        open={ true }
+                        close={ true }
+                        onCloseClick={ deactivateRegister }
+                        width="890"
+                        title="매물 접수"
+                    >
                     {
                         !agreeSubmitted &&
                         <Agreement
@@ -79,22 +71,49 @@ const RegisterContainer = () => {
                             isChecked={ agreed }
                             onAgreeClick={ onAgreeClick }
                             onAgreeSubmit={ onAgreeSubmit }
-                            device={ "mobile" }
                         />
                     }
                     {
                         agreeSubmitted && 
                         !formSubmitted && 
-                        <Register device="mobile" />
+                        <Register device="browser" />
                     }
                     {
                         formSubmitted && 
                         <div>{ "접수 완료" }</div>   
                     }
+                </Modal>
+            }
+            {
+                MOBILE_DEVICE &&
+                <MobileSection 
+                        title="매물접수"
+                        onBackClick={ deactivateRegister }
+                    >
+                        {
+                            !agreeSubmitted &&
+                            <Agreement
+                                subTitle="개인정보 수집 동의"
+                                label="개인정보수집에 대한 내용에 동의합니다."
+                                content={ term }
+                                isChecked={ agreed }
+                                onAgreeClick={ onAgreeClick }
+                                onAgreeSubmit={ onAgreeSubmit }
+                            />
+                        }
+                        {
+                            agreeSubmitted && 
+                            !formSubmitted && 
+                            <Register />
+                        }
+                        {
+                            formSubmitted && 
+                            <div>{ "접수 완료" }</div>   
+                        }
                 </MobileSection>
-            </MobileView>
+            }
         </>
-        )
+    );
 };
 
 export default RegisterContainer;

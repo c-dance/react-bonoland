@@ -57,7 +57,7 @@ const Fieldset = styled.fieldset`
     display: flex;
     flex-direction: column;
     gap: 16px;
-`
+`;
 
 const SubmitButton = styled(Button)`
     height: 48px;
@@ -213,11 +213,92 @@ const MobileForm = styled.form`
     }
 `;
 
+export const AccountForm = styled.form`
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .wrap {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: ${ theme.fontWeights.medium };
+        }
+
+        input {
+            width: 100%;
+            height: 44px;
+            border-bottom: 1px solid ${ theme.colors.gray200 };
+            &:focus { border-color: ${ theme.colors.primary }; }
+
+            &.bd {
+                border-width: 1px 1px 1px;
+                border-radius: 2px;
+            }
+        }
+
+        .warn {
+            display: block;
+            padding-top: 8px;
+            margin-top: -1px;
+            border-top: 2px solid ${ theme.colors.red };
+            font-size: ${ theme.fontSizes.xs };
+            color: ${ theme.colors.red };
+        }
+    }
+
+    .action {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+
+        button {
+            width: 100%;
+            height: 56px;
+            border-radius: 2px;
+            text-align: center;
+            line-height: 56px;
+            background-color: ${ theme.colors.primary };
+            color: #fff;
+            font-weight: ${ theme.fontWeights.medium };
+
+            &.disabled {
+                background-color: ${ theme.colors.gray100 };
+                color: ${ theme.colors.gray400 };
+            }
+        }
+
+        span, a {
+            text-decoration: underline;
+            font-size: ${ theme.fontSizes.s };
+        }
+    }
+`;
+
+
 export const module = {
     scrollWrapper,
     Fieldset,
     Input,
     SubmitButton,
     TableForm,
-    MobileForm
+    MobileForm, 
+    AccountForm,
 };

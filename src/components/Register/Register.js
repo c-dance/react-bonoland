@@ -1,14 +1,17 @@
+import { useContext } from 'react';
+import { LayoutContext } from '../../hooks/layout';
 import { module } from '../../themes/module';
-import Modal from '../../components/Modal/Modal';
-import { BrowserView, MobileView } from 'react-device-detect';
 
 const Register = ({
-    device
+    
 }) => {
+
+    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+    
     return (
         <>
             {
-                device === "mobile" && <module.MobileForm>
+                MOBILE_DEVICE && <module.MobileForm>
                     <fieldset>
                         <legend>의뢰인 정보</legend>
                         <div className="wrap">
@@ -85,7 +88,7 @@ const Register = ({
                 </module.MobileForm>
             }
             {
-                device === "browser" && <module.TableForm>
+                !MOBILE_DEVICE && <module.TableForm>
                     <fieldset>
                         <legend>의뢰인 정보</legend>
                         <table>

@@ -1,10 +1,12 @@
+import React, { useState, useContext } from 'react';
+import { LayoutContext } from '../../hooks/layout';
 import GlobalHeader from '../../components/global/GlobalHeader/GlobalHeader';
 import MobileTabBar from '../../components/global/MobileTabBar/MobileTabBar';
 import GlobalMain from '../../components/global/GlobalMain/GlobalMain';
 import QuickMenu from '../../components/global/QuickMenu/QuickMenu';
 import CalculatorContainer from '../Calculator/CalculatorContainer';
-import React, { useState, useContext } from 'react';
-import { LayoutContext } from '../../hooks/layout';
+import signUpContainer from '../Account/SignUpContainer';
+import SignUpContaienr from '../Account/SignUpContainer';
 
 const LayoutContainer = ({ children }) => {
 
@@ -19,10 +21,9 @@ const LayoutContainer = ({ children }) => {
     /* === 로그인 인증 === */
 
     /* === 회원가입 ==== */
-    const [ joinActive, setJoinActive ] = useState(false);
-    const [ joinForm, setJoinForm ] = useState({});
-    const toggleJoinActive = () => {
-        setJoinActive(!joinActive);
+    const [ signUpActive, setSignUpnActive ] = useState(false);
+    const togglesignUp = () => {
+        setSignUpnActive (!signUpActive);
     };
 
 
@@ -30,7 +31,10 @@ const LayoutContainer = ({ children }) => {
         <>
             {
                 DEVICE === "browser" && <>
-                    <GlobalHeader onCalcClick={ toggleCalculator }/>
+                    <GlobalHeader 
+                        onCalcClick={ toggleCalculator }
+                        onSignUpClick={ togglesignUp }
+                    />
                     <GlobalMain>
                         { children }
                     </GlobalMain>
@@ -42,8 +46,17 @@ const LayoutContainer = ({ children }) => {
                     { children }
                 </>
             }
-            <CalculatorContainer active={ calcActive } onCloseClick={ toggleCalculator } />
-            <QuickMenu onCalcClick={ toggleCalculator } />
+            <CalculatorContainer 
+                active={ calcActive } 
+                toggleActive={ toggleCalculator } 
+            />
+            <QuickMenu 
+                onCalcClick={ toggleCalculator } 
+            />
+            <SignUpContaienr
+                active={ signUpActive }
+                toggleActive={ togglesignUp }
+            />
         </>
     )
 }

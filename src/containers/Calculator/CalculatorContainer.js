@@ -6,33 +6,37 @@ import CalculatorForm from '../../components/Calculator/CalculatorForm/Calculato
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
 import { LayoutContext } from '../../hooks/layout';
 
-const CalculatorContainer = ({ active, onCloseClick }) => {
+const CalculatorContainer = ({ active, toggleActive }) => {
 
     const DEVICE = useContext(LayoutContext);
 
-    // form
-    // formData
-    // formSubmitted
+    // 수익계산기 입력폼, 입력폼 subtmit
     const [ formData, setFormData ] = useState({});
     const [ formSubmitted, setFormSubmitted ] = useState(false);
 
-    // result
+    // 수익계산기 결과폼
     const [ result, setResult ] = useState({});
-    // resultData
 
-    // equation
-
+    // 수익계산기 submit
     const onFormSubmit = (event) => {
         event.preventDefault();
-        // 필수 입력값 검사
         setFormSubmitted(true);
     };
 
+    // 수익계산기 초기화
     const onFormReset = (event) => {
         event.preventDefault();
         setFormData({});
         setFormSubmitted(false);
     };
+
+    // 수익계산기 닫기
+    const deactiveCaclulator = () => {
+        setFormData({});
+        setFormSubmitted(false);
+        toggleActive();
+    };
+
 
     return (
         <> 
@@ -41,36 +45,36 @@ const CalculatorContainer = ({ active, onCloseClick }) => {
             <Modal
                 open={ active }
                 close={ true }
+                onCloseClick={ deactiveCaclulator }
                 title="수익 계산"
                 width="970"
             >
-            {
-                !formSubmitted && <CalculatorForm
-                    onFormSubmit={ onFormSubmit }
-                    device="browser"
-                />
-            }
-            {
-                formSubmitted && <CalculatorResult 
-                    onFormReset={ onFormReset }
-                    device="browser"
-                />
-            }
-            </Modal>
-        }
-        {
-            active && DEVICE === "mobile" &&
-            <MobileSection title="수익 계산">
                 {
                     !formSubmitted && <CalculatorForm
                         onFormSubmit={ onFormSubmit }
-                        device="mobile"
                     />
                 }
                 {
                     formSubmitted && <CalculatorResult 
                         onFormReset={ onFormReset }
-                        device="mobile"
+                    />
+                }
+            </Modal>
+        }
+        {
+            active && DEVICE === "mobile" &&
+            <MobileSection 
+                title="수익 계산"
+                onBackClick={ deactiveCaclulator }
+            >
+                {
+                    !formSubmitted && <CalculatorForm
+                        onFormSubmit={ onFormSubmit }
+                    />
+                }
+                {
+                    formSubmitted && <CalculatorResult 
+                        onFormReset={ onFormReset }
                     />
                 }
             </MobileSection>

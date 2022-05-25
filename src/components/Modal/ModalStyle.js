@@ -18,8 +18,11 @@ export const Close = styled.div`
 
 export const Title = styled.h2`
     font-size: 24px;
-    text-align: center;
     font-weight: ${({theme}) => theme.fontWeights.medium };
+
+    &.a-c {
+        text-align: center;
+    }
 `;
 
 export const Hr = styled.hr`
@@ -29,4 +32,9 @@ export const Hr = styled.hr`
     margin: 24px 0;
     border: 0;
     background-color: ${({ theme }) => theme.colors.primary };
+`;
+
+export const Contents = styled.div`
+    width: 100%;
+    margin-top: 16px;
 `;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ReactModal from "react-modal";
-import { ModalWrap, Close, Title, Hr } from './ModalStyle';
+import { ModalWrap, Close, Title, Hr, Contents } from './ModalStyle';
 import { useNavigate } from 'react-router';
 
 const modalStyle = {
@@ -39,18 +39,20 @@ const Modal  = ({
     if(width) customStyle.content.maxWidth = width + 'px';
     if(height) customStyle.content.maxHeight = height + 'px';
 
+    const SIZE_LARGE = Number(width) > 390;
+
     return (
         <ReactModal
             isOpen={ open }
             style={ customStyle }
         >
             <ModalWrap>
-                { title && <Title> { title }</Title> }
-                { title && <Hr /> }
-                { close && <Close
-                    onClick={ () => { onCloseClick? onCloseClick() :  navigate(-1) } }
-                /> }
-                { children }
+                { title && <Title className={ SIZE_LARGE && "a-c" }> { title }</Title> }
+                { SIZE_LARGE && <Hr /> }
+                { close && <Close onClick={ () => { onCloseClick? onCloseClick() :  navigate(-1) } } /> }
+                <Contents>
+                    { children }
+                </Contents>
             </ModalWrap>
         </ReactModal>
     )

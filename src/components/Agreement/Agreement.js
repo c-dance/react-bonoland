@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { AgreementBox, Terms } from './AgreementStyle';
+import { useContext } from 'react';
+import { LayoutContext } from '../../hooks/layout';
 import { module } from '../../themes/module';
+import { AgreementBox, Terms } from './AgreementStyle';
 
 const Agreement = ({ 
     subTitle, 
@@ -9,13 +10,14 @@ const Agreement = ({
     isChecked, 
     onAgreeClick,
     onAgreeSubmit,
-    device
 }) => {
 
+    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+
     return (
-        <AgreementBox className={ device==="mobile" && "mobile"}>
+        <AgreementBox className={ MOBILE_DEVICE && "mobile" }>
             <h3>{ subTitle }</h3>
-            <Terms className={ device==="mobile" && "mobile"}>
+            <Terms className={ MOBILE_DEVICE && "mobile" }>
                 <div>
                     { content }
                 </div>

@@ -2,7 +2,8 @@ import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Butto
 import { Link } from 'react-router-dom';
 
 const GlobalHeader = ({
-    onCalcClick
+    onCalcClick,
+    onSignUpClick
 }) => {
     return (
         <Header>
@@ -27,7 +28,10 @@ const GlobalHeader = ({
                     </NavMenu>
                     <UtilMenu>
                         <Button>로그인</Button>
-                        <Button className="highlight">회원가입</Button>
+                        <Button 
+                            className="highlight"
+                            onClick={ () => onSignUpClick() }
+                        >회원가입</Button>
                         {/* <Hello>안녕하세요, 홍길동 님!</Hello> */}
                         <Calculate
                             onClick={ () => onCalcClick() }
