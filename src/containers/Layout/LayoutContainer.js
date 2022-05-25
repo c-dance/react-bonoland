@@ -7,6 +7,9 @@ import QuickMenu from '../../components/global/QuickMenu/QuickMenu';
 import CalculatorContainer from '../Calculator/CalculatorContainer';
 import signUpContainer from '../Account/SignUpContainer';
 import SignUpContaienr from '../Account/SignUpContainer';
+import FindPwdContainer from '../Account/FindPwdContainer';
+import FindIdContainer from '../Account/FindIdContainer';
+import LoginContainer from '../Account/LoginContainer';
 
 const LayoutContainer = ({ children }) => {
 
@@ -18,13 +21,23 @@ const LayoutContainer = ({ children }) => {
         setCalcActive(!calcActive);
     };
     
-    /* === 로그인 인증 === */
+    /* === 아이디 찾기 인증 === */
+    const [ findIdActive, setFindIdActive ] = useState(false);
+    const toggleFindId = () => {
+        setFindIdActive(!findIdActive);
+    }
 
     /* === 회원가입 ==== */
     const [ signUpActive, setSignUpnActive ] = useState(false);
     const togglesignUp = () => {
         setSignUpnActive (!signUpActive);
     };
+
+    /* === 비밀번호 찾기 === */
+    const [ findPwdActive, setFindPwdActive ] = useState(false);
+    const toggleFindPwd = () => {
+        setFindPwdActive(!findPwdActive);
+    }
 
 
     return(
@@ -56,6 +69,13 @@ const LayoutContainer = ({ children }) => {
             <SignUpContaienr
                 active={ signUpActive }
                 toggleActive={ togglesignUp }
+            />
+            <FindPwdContainer
+                active={ findPwdActive }
+                toggleActive={ toggleFindPwd }
+            />
+            <FindIdContainer
+                active={ findIdActive }
             />
         </>
     )

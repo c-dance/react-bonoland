@@ -218,10 +218,26 @@ export const AccountForm = styled.form`
     width: 100%;
     height: 100%;
 
+    .desc {
+        margin-bottom: 40px;
+        line-height: 1.4;
+        font-size: ${ theme.fontSizes.xs };
+        color: ${ theme.colors.gray500 };
+    }
+
     fieldset {
         display: flex;
         flex-direction: column;
         gap: 16px;
+    }
+
+    hr {
+        display: block;
+        width: 100%;
+        height: 1px;
+        margin: 24px 0;
+        border: 0;
+        background-color: ${ theme.colors.gray200 };
     }
 
     .wrap {
@@ -240,10 +256,11 @@ export const AccountForm = styled.form`
             width: 100%;
             height: 44px;
             border-bottom: 1px solid ${ theme.colors.gray200 };
+            padding: 0 16px;
             &:focus { border-color: ${ theme.colors.primary }; }
 
             &.bd {
-                border-width: 1px 1px 1px;
+                border: 1px solid ${ theme.colors.gray200 };
                 border-radius: 2px;
             }
         }
@@ -292,6 +309,33 @@ export const AccountForm = styled.form`
     }
 `;
 
+const ModalAction = styled.div`
+    display: flex;
+    flex-directin: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    .btn {
+        margin-top: 56px;
+        width: 100%;
+        height: 56px;
+        border-radius: 2px;
+        text-align: center;
+        line-height: 56px;
+        background-color: ${ theme.colors.primary };
+        color: #fff;
+        font-weight: ${ theme.fontWeights.medium };
+    }
+
+    .link {
+        margin-top: 16px;
+        text-decoration: underline;
+        font-size: ${ theme.fontSizes.s };
+        background-color: transparent;
+    }
+`;
+
 
 export const module = {
     scrollWrapper,
@@ -301,4 +345,5 @@ export const module = {
     TableForm,
     MobileForm, 
     AccountForm,
+    ModalAction
 };

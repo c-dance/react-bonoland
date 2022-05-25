@@ -8,7 +8,7 @@ const Authentication = ({
     authCount,
     authNumber,
     onAuthChange,
-    onAuthSubmit
+    onAuthSubmit, 
 }) => {
     return (
         <Form onSubmit={ event => {

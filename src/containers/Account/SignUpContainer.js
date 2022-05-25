@@ -1,10 +1,9 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router';
 import { LayoutContext } from '../../hooks/layout';
 import SignUpType from "../../components/Account/SignUpType/SignUpType";
 import Authentication from '../../components/Authentication/Authentication';
 import SignUpForm from "../../components/Account/SignUpForm/SignUpForm";
-import Alert from "../../components/ui/Alert/Alert";
+import SignUpSuccess from '../../components/Account/SignUpSuccess/SignUpSuccess';
 import Modal from "../../components/Modal/Modal";
 
 const SignUpContaienr = ({
@@ -13,7 +12,6 @@ const SignUpContaienr = ({
 }) => {
 
     const BROWSER_DEVICE = useContext(LayoutContext) === "browser";
-
 
     // type 입력
     const [ type, setType ] = useState('');
@@ -75,55 +73,86 @@ const SignUpContaienr = ({
         event.preventDefault();
         // 입력폼 유효성 검사
         setFormSubmitted(true);
+        console.log(formSubmitted);
     };
 
-    const navigate = useNavigate();
+    // 회원가입 닫기
     const deactiveSignUp = () => {
-        // toggleActive();
-        navigate(0);
+        toggleActive();
+        setType('');
+        setTypeSubmitted(false);
+        setPhoneNumber('');
+        setPhoneSubmitted(false);
+        setAuthCount(0);
+        setAuthNumber('');
+        setAuthPassed(false);
+        setFormSubmitted(false);
+    };
+
+    const modalProps = {
+        open: active ,
+        close: true,
+        onCloseClick: deactiveSignUp,
+        width: "360",
+        title: "회원가입"
+    };
+
+    const alertProps = Object.assign(modalProps, { title: "회원가입 완료!" });
+
+    const typeProps = {
+        type: type,
+        onTypeChange: onTypeChange,
+        onTypeSubmit: onTypeSubmit
+    };
+
+    const authProps = {
+        phoneNumber: phoneNumber,
+        onPhoneChange: setPhoneNumber,
+        onPhoneSubmit: onPhoneSubmit,
+        onAuth: phoneSubmitted,
+        authCount: authCount,
+        authNumber: authNumber,
+        onAuthChange: setAuthNumber,
+        onAuthSubmit: onAuthSubmit,
     };
 
     return (
         <>
             {
                 BROWSER_DEVICE && 
-                <Modal
-                    open={ active }
-                    close={ true }
-                    onCloseClick={ deactiveSignUp }
-                    width="360"
-                    height="434"
-                    title="회원가입"
-                >
+                <>
                 {
                     !typeSumitted &&
-                    <SignUpType
-                        type = { type }
-                        onTypeChange = { onTypeChange }
-                        onTypeSubmit = { onTypeSubmit }
-                    />
+                    <Modal {...modalProps}>
+                        <SignUpType {...typeProps}/>
+                    </Modal>
                 }
                 {
                     typeSumitted && !authPassed &&
-                    <Authentication
-                        phoneNumber={ phoneNumber }
-                        onPhoneChange= { setPhoneNumber }
-                        onPhoneSubmit={ onPhoneSubmit }
-                        onAuth={ phoneSubmitted }
-                        authCount={ authCount }
-                        authNumber={ authNumber }
-                        onAuthChange={ setAuthNumber }
-                        onAuthSubmit={ onAuthSubmit }
-                    />
+                    <Modal {...modalProps}>
+                        <Authentication {...authProps}/>
+                    </Modal>
                 }
                 {
-                    authPassed &&
-                    <SignUpForm
-                        phoneNumber={ phoneNumber }
-                        onFormSubmit={ onFormSubmit }
-                    />
+                    authPassed && !formSubmitted &&
+                    <Modal {...modalProps}>
+                        <SignUpForm
+                            onFormSubmit={ onFormSubmit }
+                        />
+                    </Modal>
                 }
-                </Modal>
+                {
+                    formSubmitted &&
+                    <Modal {...alertProps}>
+                        <SignUpSuccess />
+                    </Modal>
+                }
+                </>
+            }
+            {
+                !BROWSER_DEVICE && <>
+
+                </>
             }
         </>
     )

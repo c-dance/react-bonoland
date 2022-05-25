@@ -7,6 +7,9 @@ const SignUpType = ({
 }) => {
     return (
         <Form onSubmit={ event => onTypeSubmit(event) } >
+            <div className="desc">
+                매도/매수중 하나를 선택해주세요.
+            </div>
             <TypeBoxes>
                 <div>
                     <input type="radio" name="sType" id="sType01" value="매도희망" onChange={ event => onTypeChange(event) } checked={ type === "매도희망" } />

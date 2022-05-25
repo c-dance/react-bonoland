@@ -25,6 +25,13 @@ export const Title = styled.h2`
     }
 `;
 
+export const Description = styled.p`
+    margin: 16px 0 40px;
+    line-height: 1.4;
+    font-size: ${({theme}) => theme.fontSizes.xs };
+    color: ${({theme}) => theme.colors.gray500 };
+`;
+
 export const Hr = styled.hr`
     display: block;
     width: 100%;
