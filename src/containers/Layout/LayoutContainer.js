@@ -1,82 +1,42 @@
-import React, { useState, useContext } from 'react';
-import { LayoutContext } from '../../hooks/layout';
+import React from 'react';
+import { BrowserView, MobileView } from 'react-device-detect';
+import { useSelector } from 'react-redux';
 import GlobalHeader from '../../components/global/GlobalHeader/GlobalHeader';
 import MobileTabBar from '../../components/global/MobileTabBar/MobileTabBar';
 import GlobalMain from '../../components/global/GlobalMain/GlobalMain';
 import QuickMenu from '../../components/global/QuickMenu/QuickMenu';
 import CalculatorContainer from '../Calculator/CalculatorContainer';
-import signUpContainer from '../Account/SignUpContainer';
-import SignUpContaienr from '../Account/SignUpContainer';
+import SignupContaienr from '../Account/SignupContainer';
 import FindPwdContainer from '../Account/FindPwdContainer';
 import FindIdContainer from '../Account/FindIdContainer';
 import LoginContainer from '../Account/LoginContainer';
 
 const LayoutContainer = ({ children }) => {
 
-    const DEVICE = useContext(LayoutContext);
-
-    /* === 예상수익 계산기 === */
-    const [ calcActive, setCalcActive ] = useState(false);
-    const toggleCalculator = () => {
-        setCalcActive(!calcActive);
-    };
-    
-    /* === 아이디 찾기 인증 === */
-    const [ findIdActive, setFindIdActive ] = useState(false);
-    const toggleFindId = () => {
-        setFindIdActive(!findIdActive);
-    }
-
-    /* === 회원가입 ==== */
-    const [ signUpActive, setSignUpnActive ] = useState(false);
-    const togglesignUp = () => {
-        setSignUpnActive (!signUpActive);
-    };
-
-    /* === 비밀번호 찾기 === */
-    const [ findPwdActive, setFindPwdActive ] = useState(false);
-    const toggleFindPwd = () => {
-        setFindPwdActive(!findPwdActive);
-    }
-
+    let SIGNUP_MODE  = useSelector(state => state.Mode.signup);
+    let LOGIN_MODE  = useSelector(state => state.Mode.login);
+    let FIND_ID_MODE  = useSelector(state => state.Mode.findId);
+    let FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
+    let CALCULATOR_MODE = useSelector(state => state.Mode.Calculator);
 
     return(
         <>
-            {
-                DEVICE === "browser" && <>
-                    <GlobalHeader 
-                        onCalcClick={ toggleCalculator }
-                        onSignUpClick={ togglesignUp }
-                    />
-                    <GlobalMain>
-                        { children }
-                    </GlobalMain>
-                </>
-            }
-            {
-                DEVICE === "mobile" && <>
-                    <MobileTabBar />
+            <BrowserView>
+                <GlobalHeader />
+                <GlobalMain>
                     { children }
-                </>
-            }
-            <CalculatorContainer 
-                active={ calcActive } 
-                toggleActive={ toggleCalculator } 
-            />
-            <QuickMenu 
-                onCalcClick={ toggleCalculator } 
-            />
-            <SignUpContaienr
-                active={ signUpActive }
-                toggleActive={ togglesignUp }
-            />
-            <FindPwdContainer
-                active={ findPwdActive }
-                toggleActive={ toggleFindPwd }
-            />
-            <FindIdContainer
-                active={ findIdActive }
-            />
+                </GlobalMain>
+            </BrowserView>
+            <MobileView>
+                <MobileTabBar />
+                { children }
+            </MobileView>
+            <QuickMenu />
+            { SIGNUP_MODE && <SignupContaienr /> }
+            { LOGIN_MODE && <LoginContainer /> }
+            { FIND_ID_MODE && <FindPwdContainer /> }
+            { FIND_PWD_MODE && <FindIdContainer /> }
+            { CALCULATOR_MODE && <CalculatorContainer /> }
         </>
     )
 }

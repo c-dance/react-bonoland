@@ -1,30 +1,23 @@
-import { useState, useContext } from 'react';
-import { LayoutContext } from '../../hooks/layout';
-import SignUpType from "../../components/Account/SignUpType/SignUpType";
-import Authentication from '../../components/Authentication/Authentication';
-import SignUpForm from "../../components/Account/SignUpForm/SignUpForm";
-import SignUpSuccess from '../../components/Account/SignUpSuccess/SignUpSuccess';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { BrowserView, MobileView } from 'react-device-detect';
+import SignupType from "../../components/Account/SignupType/SignupType";
+import AuthenticationContaienr from '../Authentifiction/AuthentificationContainer';
+import SignupForm from "../../components/Account/SignupForm/SignupForm";
+import SignupSuccess from '../../components/Account/SignupSuccess/SignupSuccess';
 import Modal from "../../components/Modal/Modal";
+import { deactivateSignup } from '../../store/actions/mode';
 
-const SignUpContaienr = ({
-    active,
-    toggleActive
-}) => {
+const SignupContaienr = () => {
 
-    const BROWSER_DEVICE = useContext(LayoutContext) === "browser";
+    const dispatch = useDispatch();
 
     // type 입력
     const [ type, setType ] = useState('');
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
-    // 전화번호 입력
-    const [ phoneNumber, setPhoneNumber ] = useState('');
-    const [ phoneSubmitted, setPhoneSubmitted ] = useState(false);
-
-    // 인증번호 입력
-    const [ authCount, setAuthCount ] = useState(0);
-    const [ authNumber, setAuthNumber ] = useState('');
-    const [ authPassed, setAuthPassed ] = useState(false);
+    // 인증
+    const [ auth, setAuth ] = useState('');
 
     // 회원가입 입력폼
     const [ form , setForm ] = useState({});
@@ -42,31 +35,6 @@ const SignUpContaienr = ({
         else alert('매도/매수중 하나를 선택해주세요.');
     };
 
-    // 전화번호 폼 제출
-    const onPhoneSubmit = (event) => {
-        event.preventDefault();
-        // 전화번호 유효성 검증
-        setPhoneSubmitted(true);
-        setAuthCount(100);
-    }; 
-
-    // 인증번호 폼 제출
-    const onAuthSubmit = (event) => {
-        event.preventDefault();
-        // 인증번호 받아오기 fetch
-        const authPassword = '01234';
-
-        if(authCount <= 0) {
-            alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
-            setAuthNumber('');
-            setAuthCount(0);
-            setPhoneSubmitted(false);
-            return;
-        }
-
-        if(authNumber === authPassword) {setAuthPassed(true);}
-        else alert('인증번호가 맞지 않습니다.')
-    };
 
     // 회원가입 폼 제출
     const onFormSubmit = (event) => {
@@ -76,23 +44,22 @@ const SignUpContaienr = ({
         console.log(formSubmitted);
     };
 
+    const handleAuth = (result) => {
+        setAuth(result);
+    };
+
     // 회원가입 닫기
-    const deactiveSignUp = () => {
-        toggleActive();
+    const deactiveSignup = () => {
+        dispatch(deactivateSignup());
         setType('');
         setTypeSubmitted(false);
-        setPhoneNumber('');
-        setPhoneSubmitted(false);
-        setAuthCount(0);
-        setAuthNumber('');
-        setAuthPassed(false);
         setFormSubmitted(false);
     };
 
     const modalProps = {
-        open: active ,
+        open: true ,
         close: true,
-        onCloseClick: deactiveSignUp,
+        onCloseClick: deactiveSignup,
         width: "360",
         title: "회원가입"
     };
@@ -105,38 +72,25 @@ const SignUpContaienr = ({
         onTypeSubmit: onTypeSubmit
     };
 
-    const authProps = {
-        phoneNumber: phoneNumber,
-        onPhoneChange: setPhoneNumber,
-        onPhoneSubmit: onPhoneSubmit,
-        onAuth: phoneSubmitted,
-        authCount: authCount,
-        authNumber: authNumber,
-        onAuthChange: setAuthNumber,
-        onAuthSubmit: onAuthSubmit,
-    };
-
     return (
         <>
-            {
-                BROWSER_DEVICE && 
-                <>
+            <BrowserView>
                 {
                     !typeSumitted &&
                     <Modal {...modalProps}>
-                        <SignUpType {...typeProps}/>
+                        <SignupType {...typeProps}/>
                     </Modal>
                 }
                 {
-                    typeSumitted && !authPassed &&
+                    typeSumitted && !auth &&
                     <Modal {...modalProps}>
-                        <Authentication {...authProps}/>
+                        <AuthenticationContaienr handleAuth={ handleAuth } />
                     </Modal>
                 }
                 {
-                    authPassed && !formSubmitted &&
+                    !formSubmitted && auth &&
                     <Modal {...modalProps}>
-                        <SignUpForm
+                        <SignupForm
                             onFormSubmit={ onFormSubmit }
                         />
                     </Modal>
@@ -144,18 +98,13 @@ const SignUpContaienr = ({
                 {
                     formSubmitted &&
                     <Modal {...alertProps}>
-                        <SignUpSuccess />
+                        <SignupSuccess />
                     </Modal>
                 }
-                </>
-            }
-            {
-                !BROWSER_DEVICE && <>
+            </BrowserView>
 
-                </>
-            }
         </>
     )
 };
 
-export default SignUpContaienr;
+export default SignupContaienr;

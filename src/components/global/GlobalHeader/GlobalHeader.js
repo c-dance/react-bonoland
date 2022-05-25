@@ -1,10 +1,16 @@
 import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Button } from './GlobalHeaderStyle';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { 
+    activateSignup,
+    activateLogin,
+    activateCalculator,
+} from '../../../store/actions/mode';
 
-const GlobalHeader = ({
-    onCalcClick,
-    onSignUpClick
-}) => {
+const GlobalHeader = () => {
+
+    const dispatch = useDispatch();
+
     return (
         <Header>
             <HomeLink to="/" />
@@ -27,14 +33,16 @@ const GlobalHeader = ({
                         </Nav>
                     </NavMenu>
                     <UtilMenu>
-                        <Button>로그인</Button>
+                        <Button
+                            onClick={ () => dispatch(activateLogin()) }
+                        >로그인</Button>
                         <Button 
                             className="highlight"
-                            onClick={ () => onSignUpClick() }
+                            onClick={ () => dispatch(activateSignup()) }
                         >회원가입</Button>
                         {/* <Hello>안녕하세요, 홍길동 님!</Hello> */}
                         <Calculate
-                            onClick={ () => onCalcClick() }
+                            onClick={ () => dispatch(activateCalculator()) }
                         >수익계산기</Calculate>
                     </UtilMenu>
             </Menu>

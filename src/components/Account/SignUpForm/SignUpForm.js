@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Agreement } from './SignUpFormStyle';
+import { Form, Agreement } from './SignupFormStyle';
 
-const SignUpForm = ({
+const SignupForm = ({
     onFormSubmit
 }) => {
 
@@ -131,4 +131,4 @@ const SignUpForm = ({
     )
 };
 
-export default SignUpForm;
+export default SignupForm;

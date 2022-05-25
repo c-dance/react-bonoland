@@ -1,4 +1,4 @@
-import { Form, Metas, SignUp } from './LoginStyle';
+import { Form, Metas, Signup } from './LoginStyle';
 
 const Login = ({
     id,
@@ -32,10 +32,10 @@ const Login = ({
             <div className="action">
                 <button type="submit">로그인</button>
             </div>
-            <SignUp>
+            <Signup>
                 <span>아직 회원이 아니신가요?</span>
                 <button>회원가입</button>
-            </SignUp>
+            </Signup>
         </Form>
     )
 };

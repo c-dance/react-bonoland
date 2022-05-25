@@ -1,6 +1,6 @@
-import { Form } from './SignUpSuccessStyle';
+import { Form } from './SignupSuccessStyle';
 
-const SignUpSuccess = ({ onLoginClick }) => {
+const SignupSuccess = ({ onLoginClick }) => {
     return (
         <Form>
             <div className="desc">
@@ -17,4 +17,4 @@ const SignUpSuccess = ({ onLoginClick }) => {
     )
 }
 
-export default SignUpSuccess;
+export default SignupSuccess;

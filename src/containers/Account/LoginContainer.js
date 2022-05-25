@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deactivateLogin } from '../../store/actions/mode';
 import { BrowserView, MobileView } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
-import { module } from '../../themes/module';
-import { LOGIN } from '../../sheme/modal';
 import Login from '../../components/Account/Login/Login';
+import { module } from '../../themes/module';
 
-const LoginContainer = ({ active }) => {
+const LoginContainer = () => {
+
+    const dispatch = useDispatch();
 
     const [ id, setId ] = useState('');
     const [ pwd, setPwd ] = useState('');
@@ -20,19 +23,37 @@ const LoginContainer = ({ active }) => {
     };
 
     const onSaveIdChange = (event) => {
-        setSaveId(event.currentTarget.value);
+        const checked = event.currentTarget.checked;
+        setSaveId(checked);
+    };
+
+    const closeLogin = () => {
+        dispatch(deactivateLogin());
+    };
+
+
+    const modalProps = {
+        open: true,
+        close: true,
+        onCloseClick: closeLogin,
+        title: "로그인"
     };
     
-
     return (
-        <Login
-            id={ id }
-            pwd={ pwd }
-            saveId={ saveId }
-            onIdChange={ onIdChange }
-            onPwdChange={ onPwdChange }
-            onSaveIdChange={ onSaveIdChange }
-        />
+        <>
+            <BrowserView>
+                <Modal {...modalProps} >
+                    <Login
+                        id={ id }
+                        pwd={ pwd }
+                        saveId={ saveId }
+                        onIdChange={ onIdChange }
+                        onPwdChange={ onPwdChange }
+                        onSaveIdChange={ onSaveIdChange }
+                    />
+                </Modal>
+            </BrowserView>
+        </>
     )
 };
 

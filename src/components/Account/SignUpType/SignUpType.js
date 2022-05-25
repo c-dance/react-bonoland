@@ -1,6 +1,6 @@
-import { Form, TypeBoxes } from './SignUpTypeStyle';
+import { Form, TypeBoxes } from './SignupTypeStyle';
 
-const SignUpType = ({
+const SignupType = ({
     type,
     onTypeChange,
     onTypeSubmit
@@ -27,4 +27,4 @@ const SignUpType = ({
     )
 };
 
-export default SignUpType;
+export default SignupType;

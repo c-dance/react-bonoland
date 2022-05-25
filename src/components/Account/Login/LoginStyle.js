@@ -40,7 +40,7 @@ export const Metas = styled.div`
     }
 `;
 
-export const SignUp = styled.div`
+export const Signup = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 24px;

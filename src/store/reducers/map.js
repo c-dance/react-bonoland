@@ -1,4 +1,4 @@
-import { MAP } from '../actions/types';
+import { MAP } from '../actions/map';
 
 const initialState = {
     latlng: [37.5036875, 126.7869375],

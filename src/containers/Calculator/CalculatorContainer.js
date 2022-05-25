@@ -37,7 +37,6 @@ const CalculatorContainer = ({ active, toggleActive }) => {
         toggleActive();
     };
 
-
     return (
         <> 
         {

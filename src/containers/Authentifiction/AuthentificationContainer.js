@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
+import { useSelector } from "react-redux";
 
 const AuthenticationContaienr = ({ handleAuth }) => {
     
@@ -16,6 +17,7 @@ const AuthenticationContaienr = ({ handleAuth }) => {
     const onPhoneSubmit = (event) => {
         event.preventDefault();
         // 전화번호 유효성 검증
+        console.log(phoneNumber);
         setPhoneSubmitted(true);
         setAuthCount(100);
     }; 
@@ -23,6 +25,7 @@ const AuthenticationContaienr = ({ handleAuth }) => {
     // 인증번호 폼 제출
     const onAuthSubmit = (event) => {
         event.preventDefault();
+        console.log(phoneNumber);
         // 인증번호 받아오기 fetch
         const authPassword = '1234';
 

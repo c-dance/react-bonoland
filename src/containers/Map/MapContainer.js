@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateMapProps } from '../../store/actions';
+import { updateMapProps } from '../../store/actions/map';
 import Map from '../../components/Map/Map';
 import MapChart from '../../components/MapChart/MapChart';
 import MapRegion from '../../components/MapRegion/MapRegion';
