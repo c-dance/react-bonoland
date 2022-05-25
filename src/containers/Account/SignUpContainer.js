@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { AUTH_USER } from '../../store/actions/auth';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SignupType from "../../components/Account/SignupType/SignupType";
 import AuthenticationContaienr from '../Authentifiction/AuthentificationContainer';
