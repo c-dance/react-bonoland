@@ -7,7 +7,7 @@ const AuthenticationContainer = ({ onAuthSend }) => {
 
     const dispatch = useDispatch();
     let authentificated = useSelector(state => state.Auth.authentificated);
-    let phone = useSelector(state => state.Auth.phoneNumber);
+    let mode = useSelector(state => state.Mode);
     
     // 전화번호 입력
     const [ phoneNumber, setPhoneNumber ] = useState('');
@@ -26,7 +26,7 @@ const AuthenticationContainer = ({ onAuthSend }) => {
         event.preventDefault();
         
         // 스토어에 전화번호 저장 ( 서버에 post + 저장 )
-        dispatch(addAuth(phoneNumber));
+        // dispatch(addAuth(phoneNumber));
         setTimer(100);
         setPhoneSubmitted(true);
     }; 
@@ -43,23 +43,24 @@ const AuthenticationContainer = ({ onAuthSend }) => {
     const onAuthSubmit = (event) => {
         event.preventDefault();
 
-        console.log(event);
+        dispatch(updateAuth(true));
 
-        dispatch(updateAuth(authNumber));
+        setTimeOut(function(){
+            if(timeOut) {
+                alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
+                resetAuthentification();
+                return;
+            };
+    
+            if(!authentificated) {
+                alert("인증에 실패했습니다.");  
+                resetAuthentification();
+                return;
+            };
+        }, 3000);
 
-        if(timeOut) {
-            alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
-            resetAuthentification();
-            return;
-        };
 
-        if(!authentificated) {
-            alert("인증에 실패했습니다.");  
-            resetAuthentification();
-            return;
-        };
-
-        onAuthSend(authentificated);
+        // onAuthSend(authentificated);
     };
 
     const authProps = {

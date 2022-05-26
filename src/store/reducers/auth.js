@@ -13,9 +13,9 @@ const AuthReducer = (state = initialState, action) => {
             return {...state, phoneNumber: phone }
         case AUTH.UPDATE: 
             const result = action.payload;
-            return {...state, authentificated: true }
+            return {...state, authentificated: result }
         case AUTH.DELETE: 
-            return initialState;
+            return { state, phoneNumber: '', authentificated: null };
         default :
             return state;
     }

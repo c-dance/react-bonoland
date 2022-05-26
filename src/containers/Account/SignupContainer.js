@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AUTH_USER } from '../../store/actions/auth';
 import { BrowserView, MobileView } from 'react-device-detect';
@@ -12,13 +12,14 @@ import { deactivateSignup } from '../../store/actions/mode';
 const SignupContaienr = () => {
 
     const dispatch = useDispatch();
+    const authentificated = useSelector(state => state.Auth.authentificated);
 
     // type 입력
     const [ type, setType ] = useState('');
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
     // 인증 
-    const [ auth, setAuth ] = useState(false);
+    const [ auth, setAuth ] = useState(null);
 
     // 회원가입 입력폼
     const [ form , setForm ] = useState({});
@@ -79,13 +80,13 @@ const SignupContaienr = () => {
                     </Modal>
                 }
                 {
-                    typeSumitted && !auth &&
+                    typeSumitted && auth === null &&
                     <Modal {...modalProps}>
-                        <AuthenticationContainer onAuthSend={ setAuth } />
+                        <AuthenticationContainer/>
                     </Modal>
                 }
                 {
-                    auth && !formSubmitted &&
+                    typeSumitted && auth === true &&
                     <Modal {...modalProps}>
                         <SignupForm
                             onFormSubmit={ onFormSubmit }
