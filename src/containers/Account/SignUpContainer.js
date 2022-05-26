@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AUTH_USER } from '../../store/actions/auth';
 import { BrowserView, MobileView } from 'react-device-detect';
 import SignupType from "../../components/Account/SignupType/SignupType";
-import AuthenticationContaienr from '../Authentifiction/AuthentificationContainer';
+import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import SignupForm from "../../components/Account/SignupForm/SignupForm";
 import SignupSuccess from '../../components/Account/SignupSuccess/SignupSuccess';
 import Modal from "../../components/Modal/Modal";
@@ -17,8 +17,8 @@ const SignupContaienr = () => {
     const [ type, setType ] = useState('');
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
-    // 인증
-    const [ auth, setAuth ] = useState('');
+    // 인증 
+    const [ auth, setAuth ] = useState(false);
 
     // 회원가입 입력폼
     const [ form , setForm ] = useState({});
@@ -43,10 +43,6 @@ const SignupContaienr = () => {
         // 입력폼 유효성 검사
         setFormSubmitted(true);
         console.log(formSubmitted);
-    };
-
-    const handleAuth = (result) => {
-        setAuth(result);
     };
 
     // 회원가입 닫기
@@ -85,11 +81,11 @@ const SignupContaienr = () => {
                 {
                     typeSumitted && !auth &&
                     <Modal {...modalProps}>
-                        <AuthenticationContaienr handleAuth={ handleAuth } />
+                        <AuthenticationContainer onAuthSend={ setAuth } />
                     </Modal>
                 }
                 {
-                    !formSubmitted && auth &&
+                    auth && !formSubmitted &&
                     <Modal {...modalProps}>
                         <SignupForm
                             onFormSubmit={ onFormSubmit }

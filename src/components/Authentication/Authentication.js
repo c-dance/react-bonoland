@@ -5,7 +5,7 @@ const Authentication = ({
     onPhoneChange,
     onPhoneSubmit,
     onAuth,
-    authCount,
+    timer,
     authNumber,
     onAuthChange,
     onAuthSubmit, 
@@ -33,7 +33,7 @@ const Authentication = ({
                             value={ authNumber }  
                             onChange={ event => onAuthChange(event.currentTarget.value) }
                         />
-                        <Time>{ authCount }</Time>
+                        <Time>{ timer }</Time>
                     </div>
                 }
             </fieldset>

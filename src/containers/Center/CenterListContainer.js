@@ -1,9 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { BrowserView, MobileView } from "react-device-detect";
+import Panel from '../../components/ui/Panel/Panel';
 import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
 import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
 import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
-import React, { useState, useEffect } from "react";
 
 
 const CenterListContainer = () => {
@@ -19,9 +21,10 @@ const CenterListContainer = () => {
         list(1) : search 조합 조회 목록
    */
 
-    const [ capacityActive, setCapacityActive ] = useState(false);
-    const [ capacityValues, setCapacityValues ] = useState([0, 100]);
-    const [ category, setCategory ] = useState(null);
+    const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
+    const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
+    const [ capacityValues, setCapacityValues ] = useState([0, 100]); // 정원필터 값 설정
+    
     const [ centers, setCenters ] = useState([]);
 
     const toggleCapacity = () => {
@@ -71,7 +74,26 @@ const CenterListContainer = () => {
 
     return (
         <>
-            <KeywordFilter />
+        <BrowserView>
+            <Panel
+                type={ "floating" }
+                position={ "left" }
+                fold={ true }
+            >
+                <KeywordFilter />
+                <CategoryFilter 
+                    selectHandler={ selectCategory }     
+                />
+                <CapacityFilter 
+                    values={ capacityValues } 
+                    active={ capacityActive }
+                    confirmHandler={ toggleCapacity } 
+                    selectHandler = { selectCapacity } 
+                />
+                <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
+            </Panel>
+        </BrowserView>
+        <MobileView>
             <CategoryFilter 
                 selectHandler={ selectCategory }     
             />
@@ -81,8 +103,8 @@ const CenterListContainer = () => {
                 confirmHandler={ toggleCapacity } 
                 selectHandler = { selectCapacity } 
             />
-            <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
             <CenterList type={"main"} centers= { centers } />
+        </MobileView>
         </>
     )
 };

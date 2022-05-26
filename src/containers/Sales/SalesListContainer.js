@@ -3,6 +3,8 @@ import CenterList from '../../components/Center/CenterList/CenterList';
 import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
 import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
+import Panel from '../../components/ui/Panel/Panel'
+import { isMobile } from 'react-device-detect';
 
 const SalesListContainer = () => {
     const [ nursings, setNursings ] = useState([]);
@@ -30,7 +32,7 @@ const SalesListContainer = () => {
     }, []);
 
     return (
-        <>  
+        <Panel>
             <ListHeader title="시설매매">
                 <KeywordFilter />
             </ListHeader>
@@ -43,7 +45,7 @@ const SalesListContainer = () => {
                     <CenterList centers={ daycares } />,
                 ]}
             />
-        </>
+        </Panel>
     )
 }
 

@@ -5,13 +5,11 @@ import LayoutContainer from './containers/Layout/LayoutContainer';
 // MAP
 import MapContainer from './containers/Map/MapContainer';
 // CENTERS
-import CenterListView from './views/Center/CenterListView';
+import CenterListContainer from './containers/Center/CenterListContainer';
 import CenterItemView from './views/Center/CenterItemView';
 // SALES && RECOMMENDS
-import SalesListView from './views/Sales/SalesListView';
-import SalesItemView from './views/Sales/SalesItemView';
+import SalesListContainer from './containers/Sales/SalesListContainer';
 import RecommendListView from './views/Recommend/RecommendListView';
-import RecommendItemView from './views/Recommend/RecommendItemView';
 // NEWS
 import NewsListContainer from './containers/News/NewsListContainer';
 import NewsItemContainer from './containers/News/NewsItemContainer';
@@ -33,7 +31,7 @@ import TermsContainer from './containers/Terrms/TermsContainer';
 // BASE LAYOUT : NAVIGATION & MAP & CENTER LIST
 const RootContainer = ({ map, list }) => (
   <LayoutContainer>
-      { list && <CenterListView /> } 
+      { list && <CenterListContainer /> } 
       { map && <MapContainer /> }
       <Outlet />
   </LayoutContainer>
@@ -54,7 +52,7 @@ const App = () => (
         <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
       <Route element={ <RootContainer list={ false } map={ false } /> }>
-        <Route exact path="/sales" element={ <SalesListView /> } />
+        <Route exact path="/sales" element={ <SalesListContainer /> } />
         <Route exact path="/center/:id" element={ <CenterItemView /> } />
         <Route exact path="/recommend" element={ <RecommendListView /> } />
       </Route>

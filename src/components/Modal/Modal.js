@@ -44,8 +44,9 @@ const Modal  = ({
 
     return (
         <ReactModal
-            isOpen={ open }
+            isOpen={ open? open : true }
             style={ customStyle }
+            appElement={document.getElementById('root') || undefined}
         >
             <ModalWrap>
                 { 

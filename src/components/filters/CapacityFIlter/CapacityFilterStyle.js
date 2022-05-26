@@ -12,7 +12,20 @@ export const CapacityForm = styled.div`
     padding: 25px;
     background-color: #fff;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
-    display: ${ props => props.active?  `flex` : `none` }
+    display: ${ props => props.active?  `flex` : `none` };
+
+    &.mobile {
+        z-index: 20;
+        position: fixed;
+        left: 0;
+        top: auto;
+        bottom: ${ props => props.active?  `56px` : `-370px` };
+        display: flex;
+        width: 100%;
+        height: 308px;
+        box-shadow: 0 -3px 6px rgba(0,0,0,.06);
+        transition: bottom .5s;
+    }
 `;
 
 export const Legend = styled.div`

@@ -1,9 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { BrowserView, MobileView } from "react-device-detect";
+import Panel from '../../components/ui/Panel/Panel';
 import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
 import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
 import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
-import React, { useState, useEffect } from "react";
 
 
 const MainListContainer = () => {
@@ -72,18 +74,29 @@ const MainListContainer = () => {
 
     return (
         <>
-            <KeywordFilter />
-            <CategoryFilter 
-                selectHandler={ selectCategory }     
-            />
-            <CapacityFilter 
-                values={ capacityValues } 
-                active={ capacityActive }
-                confirmHandler={ toggleCapacity } 
-                selectHandler = { selectCapacity } 
-            />
-            <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
-            <CenterList type={"main"} centers= { centers } />
+            <BrowserView>
+                <Panel
+                    type={ "floating" }
+                    position={ "left" }
+                    fold={ true }
+                >
+                    <KeywordFilter />
+                    <CategoryFilter 
+                        selectHandler={ selectCategory }     
+                    />
+                    <CapacityFilter 
+                        values={ capacityValues } 
+                        active={ capacityActive }
+                        confirmHandler={ toggleCapacity } 
+                        selectHandler = { selectCapacity } 
+                    />
+                    <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
+                    <CenterList type={"main"} centers= { centers } />
+                </Panel>
+            </BrowserView>
+            <MobileView>
+
+            </MobileView>
         </>
     )
 };

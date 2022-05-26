@@ -10,32 +10,43 @@ const quickCSS = css`
     right: 32px;
     width: 38px;
     height: 38px;
+    padding: 0;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
-    display: ${ props => props.display==="mobile"? 'none' : 'block' };
-    top: ${ props => (
-        props.icon === "user" && `104px`
-        || props.icon === "alarm" && `154px`
-        || props.icon ==="news" && `392px`
-        || props.icon ==="calc" && `264px`
-    )};
-    background: url(${ props => (
-        props.icon === "user"&& userIcon
-        || props.icon === "alarm" && alarmIcon
-        || props.icon ==="calc" && calcIcon
-        )
-    }) center no-repeat #fff;
+    background-color: #fff;
     color: ${ props => props.theme.colors.gray700 };
-    font-size: ${ props => props.icon === "news"? `12px` : `0` };
+    font-size: ${({theme}) => theme.fontSizes.xs };
     line-height: 38px;
     text-align: center;
+    white-space: nowrap;
 
-    @media ${({ theme }) => theme.device.tablet} {
+    &.user {
+        top: 104px;
+        font-size: 0;
+        background: url(${userIcon}) center no-repeat #fff;
+    }
+    &.alarm {
+        top: 154px;
+        font-size: 0;
+        background: url(${alarmIcon}) center no-repeat #fff;
+    }
+    &.chart {
+        top: 342px;
+        &.mobile { top: 138px; }
+    }
+    &.news {
+        top: 392px;
+        &.mobile { top: 222px; }
+    }
+    &.calc {
+        top: 264px;
+        font-size: 0;
+        background: url(${calcIcon}) center no-repeat #fff;
+    }
+    &.mobile {
         right: 14px;
-        display: ${ props => (
-            props.display === "pc" && `none`
-            || props.display ==="mobile" && 'block'
-        )};
-        top: ${ props => props.icon ==="news" && `222px`};
+        width: 32px; 
+        height: 32px; 
+        line-height: 32px;
     }
 `;
 

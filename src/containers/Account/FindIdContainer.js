@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
-import AuthenticationContaienr from '../Authentifiction/AuthentificationContainer';
+import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import { module } from '../../themes/module';
 import { FIND_ID } from '../../sheme/modal';
 import FindIdSuccess from '../../components/Account/FindIdSuccess/FindIdSuccess';
 
  
-const FindIdContainer = ({ active }) => {
+const FindIdContainer = () => {
 
     const modalBaseProps = {
-        open: active,
+        open: true,
         width: "360",
         close: true,
     };
@@ -38,7 +38,7 @@ const FindIdContainer = ({ active }) => {
                 <Modal {...modalProps}>
                     {
                         auth === null && 
-                        <AuthenticationContaienr
+                        <AuthenticationContainer
                             handleAuth = { handleAuth }
                         />
                     }

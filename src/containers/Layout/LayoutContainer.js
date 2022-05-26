@@ -34,8 +34,8 @@ const LayoutContainer = ({ children }) => {
             <QuickMenu />
             { SIGNUP_MODE && <SignupContaienr /> }
             { LOGIN_MODE && <LoginContainer /> }
-            { FIND_ID_MODE && <FindPwdContainer /> }
-            { FIND_PWD_MODE && <FindIdContainer /> }
+            { FIND_ID_MODE && <FindIdContainer /> }
+            { FIND_PWD_MODE && <FindPwdContainer /> }
             { CALCULATOR_MODE && <CalculatorContainer /> }
         </>
     )

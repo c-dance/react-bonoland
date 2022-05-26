@@ -6,6 +6,7 @@ import Modal from "../../components/Modal/Modal";
 import Login from '../../components/Account/Login/Login';
 import { module } from '../../themes/module';
 
+
 const LoginContainer = () => {
 
     const dispatch = useDispatch();
@@ -26,9 +27,23 @@ const LoginContainer = () => {
         const checked = event.currentTarget.checked;
         setSaveId(checked);
     };
+    
+    const resetLogin = () => {
+        setId('');
+        setPwd('');
+        setSaveId('');
+    };
 
     const closeLogin = () => {
         dispatch(deactivateLogin());
+        resetLogin();
+    };
+
+    const onModeChange = (callback) => {
+        console.log(callback);
+        dispatch(deactivateLogin());
+        resetLogin();
+        dispatch(callback());
     };
 
 
@@ -50,6 +65,7 @@ const LoginContainer = () => {
                         onIdChange={ onIdChange }
                         onPwdChange={ onPwdChange }
                         onSaveIdChange={ onSaveIdChange }
+                        onModeChange={ onModeChange }
                     />
                 </Modal>
             </BrowserView>

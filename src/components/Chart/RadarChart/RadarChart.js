@@ -1,7 +1,8 @@
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, defaults } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 import { BONOSCORE } from '../../../sheme/chart';
-import { ChartWrap } from './RadarChartStyle';
+import { ChartWrap, Average } from './RadarChartStyle';
+import { isBrowser } from 'react-device-detect';
 
 const radarOptions = {
     plugins: {
@@ -15,7 +16,7 @@ const radarOptions = {
             align: "start",
             color: '#212121',
             font: {
-                size: 20,
+                size: isBrowser? 16 : 20,
                 family: "'Noto Sans KR', Sans-serif"
             },
         }
@@ -74,10 +75,11 @@ const RadarChart = ({ scheme, data }) => {
     }];
     const average = 80;
     const chartOptions = Object.assign({}, radarOptions);
-    chartOptions.plugins.title.text = average.toString();
+    // chartOptions.plugins.title.text = average.toString();
 
     return (
         <ChartWrap>
+            <Average>{ average }</Average>
             <Radar
                 options={ radarOptions }
                 data = {{

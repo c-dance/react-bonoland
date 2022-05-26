@@ -20,6 +20,15 @@ export const PanelBox = styled.div`
     background-color: ${ props => props.type === 'floating'? 'transparent' : '#fff' };
     transition: left .3s;
     box-shadow: ${ props => props.type === "side"  && '3px 3px 6px rgba(0,0,0,.06)'};
+
+    &.mobile {
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        max-heigh: 100%;
+    }
 `;
 
 export const PanelWrap = styled.div`

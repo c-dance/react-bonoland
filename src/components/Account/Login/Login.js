@@ -1,4 +1,7 @@
 import { Form, Metas, Signup } from './LoginStyle';
+import { useDispatch } from 'react-redux';
+import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
+
 
 const Login = ({
     id,
@@ -7,8 +10,12 @@ const Login = ({
     onPwdChange,
     saveId,
     onSaveIdChange,
-    onFormSubmit
+    onFormSubmit,
+    onModeChange
 }) => {
+
+    const dispatch = useDispatch();
+
     return (
         <Form onSubmit={ event => onFormSubmit(event) }>
             <fieldset>
@@ -25,8 +32,8 @@ const Login = ({
                     <label htmlFor="uSaveId">아이디 저장</label>
                 </div>
                 <div className="finds">
-                    <button>아이디 찾기</button>
-                    <button>비밀번호 찾기</button>
+                    <button onClick={ () => onModeChange(activateFindId) }>아이디 찾기</button>
+                    <button onClick={ () => onModeChange(activateFindPwd) }>비밀번호 찾기</button>
                 </div>
             </Metas>
             <div className="action">
@@ -34,7 +41,7 @@ const Login = ({
             </div>
             <Signup>
                 <span>아직 회원이 아니신가요?</span>
-                <button>회원가입</button>
+                <button onClick={ () => onModeChange(activateSignup) }>회원가입</button>
             </Signup>
         </Form>
     )

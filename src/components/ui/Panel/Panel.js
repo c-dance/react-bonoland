@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PanelBox, PanelWrap, PanelBtn } from './PanelStyle';
+import { isMobile } from 'react-device-detect';
 
 const Panel = ({ type, position, fold, children }) => {
     // UI FUNCTION
@@ -13,6 +14,7 @@ const Panel = ({ type, position, fold, children }) => {
             type={ type } 
             position={ position }
             active={ active }
+            className={ isMobile && "mobile" }
         >
             <PanelWrap>
                 { children }

@@ -1,44 +1,65 @@
 import { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";
 
-const AuthenticationContaienr = ({ handleAuth }) => {
+const AuthenticationContainer = ({ onAuthSend }) => {
+
+    const dispatch = useDispatch();
+    let authentificated = useSelector(state => state.Auth.authentificated);
+    let phone = useSelector(state => state.Auth.phoneNumber);
     
     // 전화번호 입력
     const [ phoneNumber, setPhoneNumber ] = useState('');
+    const [ validPhoneNumber, setValidPhoneNumber ] = useState(true);
     const [ phoneSubmitted, setPhoneSubmitted ] = useState(false);
+
+    // 입력 시간
+    const [ timer, setTimer ] = useState(0);
+    const [ timeOut, setTimeOut ] = useState(false);
     
     // 인증번호 입력
-    const [ authCount, setAuthCount ] = useState(0);
     const [ authNumber, setAuthNumber ] = useState('');
-    const [ authPassed, setAuthPassed ] = useState(false);
 
     // 전화번호 폼 제출
     const onPhoneSubmit = (event) => {
         event.preventDefault();
-        // 전화번호 유효성 검증
-        console.log(phoneNumber);
+        
+        // 스토어에 전화번호 저장 ( 서버에 post + 저장 )
+        dispatch(addAuth(phoneNumber));
+        setTimer(100);
         setPhoneSubmitted(true);
-        setAuthCount(100);
     }; 
+
+    const resetAuthentification = () => {
+        dispatch(deleteAuth());
+        setPhoneSubmitted(false);
+        setAuthNumber('');
+        setTimer(0);
+        setTimeOut(false);
+    };
 
     // 인증번호 폼 제출
     const onAuthSubmit = (event) => {
         event.preventDefault();
-        console.log(phoneNumber);
-        // 인증번호 받아오기 fetch
-        const authPassword = '1234';
 
-        if(authCount <= 0) {
+        console.log(event);
+
+        dispatch(updateAuth(authNumber));
+
+        if(timeOut) {
             alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
-            setAuthNumber('');
-            setAuthCount(0);
-            setPhoneSubmitted(false);
+            resetAuthentification();
             return;
-        }
+        };
 
-        if(authNumber === authPassword) {handleAuth(true);}
-        else alert('인증번호가 맞지 않습니다.')
+        if(!authentificated) {
+            alert("인증에 실패했습니다.");  
+            resetAuthentification();
+            return;
+        };
+
+        onAuthSend(authentificated);
     };
 
     const authProps = {
@@ -46,7 +67,7 @@ const AuthenticationContaienr = ({ handleAuth }) => {
         onPhoneChange: setPhoneNumber,
         onPhoneSubmit: onPhoneSubmit,
         onAuth: phoneSubmitted,
-        authCount: authCount,
+        timer: timer,
         authNumber: authNumber,
         onAuthChange: setAuthNumber,
         onAuthSubmit: onAuthSubmit
@@ -58,4 +79,4 @@ const AuthenticationContaienr = ({ handleAuth }) => {
     
 };
 
-export default AuthenticationContaienr;
+export default AuthenticationContainer;

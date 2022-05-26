@@ -22,13 +22,16 @@ import {
     TabCont, 
     ChartWrap
 } from './CenterItemStyle';
-
+import { isMobile } from 'react-device-detect';
+import { useNavigate } from 'react-router';
 import ItemImg from '../../../assets/test/item-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import DoughnutChart from '../../Chart/DoughnutChart/DoughnutChart';
 import RadarChart from '../../Chart/RadarChart/RadarChart';
 
 const CenterItem = ({ data }) => {
+
+    const navifate = useNavigate();
     
     // UI FUNCTION
     const [ tabIdx, setTabIdx ] = useState(0);
@@ -37,21 +40,19 @@ const CenterItem = ({ data }) => {
     const toggleTab = (idx) => { setTabIdx(idx); };
     const toggleAccordian = () => { setAccordian(!accordian); };
 
-    console.log(data.environment);
-
     return (
-        <Center>
+        <Center className={ isMobile && "mobile" }>
             <Top>
-                <Back></Back>
                 <Accordian>
-                    <AccordianSummary>
-                        <h2 className="name" onClick={ () => toggleAccordian() }>{`${data.category}(${data.capacity}인)`}</h2>
+                    <AccordianSummary  onClick={ () => toggleAccordian() }>
+                        <h2 className="name">{`${data.category}(${data.capacity}인)`}</h2>
                     </AccordianSummary>
                     <AccordianDetails active={ accordian }>
                         <div className="num">{`매물번호:${data.no}`}</div>
                         <div className="addr">{ data.region }</div>
                     </AccordianDetails>
                 </Accordian>
+                <Back onClick={ () => navifate(-1)} ></Back>
                 <TabNavs>
                     <TabNav active={tabIdx === 0} onClick={() => toggleTab(0)}>상세정보</TabNav>
                     <TabNav active={tabIdx === 1} onClick={() => toggleTab(1)} >부동산</TabNav>
@@ -179,7 +180,10 @@ const CenterItem = ({ data }) => {
                                     <tbody>
                                         <tr>
                                             <th>면적</th>
-                                            <td>평 or m² 단위로 전환가능</td>
+                                            <td>
+                                                평 or m² 단위로 전환가능
+                                                <button className="sync"></button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>지목</th>
@@ -228,11 +232,17 @@ const CenterItem = ({ data }) => {
                                         </tr>
                                         <tr>
                                             <th>건축물 연면적</th>
-                                            <td>m² or 평</td>
+                                            <td>
+                                                m² or 평
+                                                <button className="sync"></button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>3층 면적</th>
-                                            <td>m² or 평</td>
+                                            <td>
+                                                m² or 평
+                                                <button className="sync"></button>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>규모</th>

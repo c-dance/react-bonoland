@@ -9,7 +9,10 @@ import roadIcon from '../../../assets/images/envs/ico-road.svg';
 import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
 import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
+import syncIcon from '../../../assets/images/icon/ico-sync.svg';
 import { calculateNewValue } from '@testing-library/user-event/dist/utils';
+import { fontString } from 'chart.js/helpers';
+import { ThemeProvider } from 'styled-components';
 
 export const Center = styled.article`
     position: relative;
@@ -17,6 +20,15 @@ export const Center = styled.article`
     height: 100%;
     background-color: #fff;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+
+    &.mobile {
+        z-index: 40;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 export const Top = styled.div`
@@ -28,7 +40,7 @@ export const Accordian = styled.div`
     height: 110px;
     background-color: #fff;
 
-    @media ${({ theme }) => theme.device.tablet } {
+    .mobile & {
         height: auto;
         background-color: ${ ({theme}) => theme.colors.primary };
         color: #fff;
@@ -45,7 +57,7 @@ export const AccordianSummary = styled.div`
     width: 100%;
     font-size: 18px;
 
-    @media ${({ theme }) => theme.device.tablet } {
+    .mobile & {
         position: relative;
         top: 0;
         height: 56px;
@@ -72,7 +84,7 @@ export const AccordianDetails = styled.div`
     overflow: hidden;
     transition: height .3s;
     font-size: 14px;
-    @media ${({ theme }) => theme.device.tablet } {
+    .mobile & {
         padding-top: 0;
         gap: 8px;
         height: ${ props => props.active? '56px' : '0px' }
@@ -91,16 +103,19 @@ export const Assets = styled.div`
 
         em {
             padding: 8px;
-            font-size: 14px;
+            font-size: ${ ({theme}) => theme.fontSizes.s };
             color: #fff;
             border-radius: 2px;
             &.price { background-color: ${ ({theme}) => theme.colors.secondary } }
             &.invest { background-color: #D15F2E; }
             &.loan { background-color: ${ ({theme}) => theme.colors.secondary } }
+            
+            .mobile & { font-size: ${ ({theme}) => theme.fontSizes.xs }; }
         }
 
         span {
-
+            .mobile & { font-size: ${ ({theme}) => theme.fontSizes.s };} 
+            
         }
     }
 `;
@@ -122,7 +137,18 @@ export const Contents = styled.div`
 `;
 
 export const Thumbnail = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 280px;
+    overflow: hidden;
+    img {
+        width: 100%;
+    }
+
+    .mobile & {
+        height: 260px;
+    }
 `;
 
 export const Section = styled.section`
@@ -144,6 +170,8 @@ export const Section = styled.section`
         margin-bottom: 24px;
     }
 
+    h3 + hr { margin-top: 0; }
+
 `;
 
 export const Actions = styled.div`
@@ -153,30 +181,51 @@ export const Table = styled.table`
     width: 100%;
     border: 1px solid ${ ({theme}) => theme.colors.gray200 };
 
+    .mobile & {
+        font-size: ${({theme}) => theme.fontSizes.s };
+    }
+
     tr {
         border-bottom: 1px solid ${ ({theme}) => theme.colors.gray200 };
     }
 
     th {
-        width: 100px;
+        width: 114px;
         padding: 12px 16px;
         vertical-align: middle;
         border-right: 1px solid ${ ({theme}) => theme.colors.gray200 };
         font-weight: 500;
+        white-space: nowrap;
+
+        .mobile & { width: 100px; }
     }
 
     td {
-        width: calc(100% - 100px);
+        position: relative;
+        width: calc(100% - 114px);
         padding: 12px 16px;
         vertical-align: middle;
+
+        .sync {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 38px;
+            height: 38px;
+            background: url(${ syncIcon }) center no-repeat ${ ({theme}) => theme.colors.gray100 };
+        }
+
+        .mobile & { width: calc(100% - 100px);}
     }
 `;
 
 export const Description = styled.p`
     padding: 16px;
     border-radius: 10px;
+    color: ${ ({theme}) => theme.colors.gray700 };
     background-color: ${ ({theme}) => theme.colors.gray200 };
     line-height: 1.625;
+    .mobile & { font-size: ${ ({theme}) => theme.fontSizes.s } }
 `;
 
 export const Envs = styled.div`
@@ -210,6 +259,18 @@ export const Env = styled.div`
     &.traffic::before { background: url(${ trafficIcon }) center no-repeat #eee; }
     &.market::before { background: url(${ marketIcon }) center no-repeat #eee; }
     &.road::before { background: url(${ roadIcon }) center no-repeat #eee; }
+
+    .mobile & { 
+        padding-top: 64px;
+        &::before { height: 56px; }
+        &.nursing::before { background: url(${ nursingIcon }) center no-repeat #FFF; }
+        &.cluster::before { background: url(${ houseIcon }) center no-repeat #FFF; }
+        &.newTown::before { background: url(${ townIcon }) center no-repeat #FFF; }
+        &.rising::before { background: url(${ risingIcon }) center no-repeat #FFF; }
+        &.traffic::before { background: url(${ trafficIcon }) center no-repeat #FFF; }
+        &.market::before { background: url(${ marketIcon }) center no-repeat #FFF; }
+        &.road::before { background: url(${ roadIcon }) center no-repeat #FFF; }
+    }
 `;
 
 export const Contact = styled.button`
@@ -226,7 +287,7 @@ export const Back = styled.div`
     width: 24px;
     height: 24px;
     background: url(${ closeIcon }) center no-repeat;
-    @media ${ ({theme}) => theme.device.tablet } {
+    .mobile & {
         left: 16px;
         background: url(${ backIcon }) center no-repeat;
     }
