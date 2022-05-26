@@ -2,14 +2,12 @@ import React from 'react';
 import { Routes, Route, Outlet } from 'react-router-dom';
 // LAYOUT
 import LayoutContainer from './containers/Layout/LayoutContainer';
-// MAP
-import MapContainer from './containers/Map/MapContainer';
 // CENTERS
 import CenterListContainer from './containers/Center/CenterListContainer';
-import CenterItemView from './views/Center/CenterItemView';
+import CenterItemContainer from './containers/Center/CenterItemContainer';
 // SALES && RECOMMENDS
 import SalesListContainer from './containers/Sales/SalesListContainer';
-import RecommendListView from './views/Recommend/RecommendListView';
+import RecommendListContainer from './containers/Recommend/RecommendListConatiner';
 // NEWS
 import NewsListContainer from './containers/News/NewsListContainer';
 import NewsItemContainer from './containers/News/NewsItemContainer';
@@ -26,20 +24,23 @@ import ContactContainer from './containers/Contact/ContactContainer';
 // TERMS
 import TermsContainer from './containers/Terrms/TermsContainer';
 
+import MapChartContainer from './containers/MapChart/MapChartContainer';
+import MapContainer from './containers/Map/MapContainer';
 
 
 // BASE LAYOUT : NAVIGATION & MAP & CENTER LIST
 const RootContainer = ({ map, list }) => (
   <LayoutContainer>
       { list && <CenterListContainer /> } 
-      { map && <MapContainer /> }
+      <MapContainer />
+      <MapChartContainer />
       <Outlet />
   </LayoutContainer>
 );
 
 const App = () => (
     <Routes>
-      <Route element={ <RootContainer list={ true } map={ false } /> }>
+      <Route element={ <RootContainer list={ true }/> }>
         <Route exact path="/"/>
         <Route exact path="/news" element={ <NewsListContainer /> } />
         <Route exact path="/news/:id" element={ <NewsItemContainer /> } />
@@ -51,10 +52,10 @@ const App = () => (
         <Route exact path="/register" element={ <RegisterContainer /> } />
         <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
-      <Route element={ <RootContainer list={ false } map={ false } /> }>
+      <Route element={ <RootContainer list={ false }/> }>
         <Route exact path="/sales" element={ <SalesListContainer /> } />
-        <Route exact path="/center/:id" element={ <CenterItemView /> } />
-        <Route exact path="/recommend" element={ <RecommendListView /> } />
+        <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
+        <Route exact path="/recommend" element={ <RecommendListContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
     </Routes>

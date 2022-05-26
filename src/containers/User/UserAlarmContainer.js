@@ -4,14 +4,15 @@ import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
 import UserAlarmForm from '../../components/User/UserAlarmForm/UserAlarmForm';
 import { Loading, NoResult, Fail } from '../../components/ui/Inform/Inform';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const UserAlarmContainer = () => {
 
     const [ page, alarms ] = useFetch([], '/data/centers.json');
     // 알람 설정 여부
-    const [ alarm, setAlarm ] = useState(false);
+    const [ alarm, setAlarm ] = useState(true);
     // 페이지 전환 여부
-    const [ tabIdx, setTabIdx ] = useState(0);
+    const [ tabIdx, setTabIdx ] = useState(1);
     // 설정 폼
     const [ formState, formData ] = useFetch({}, '/data/center/.json');
 
@@ -28,8 +29,10 @@ const UserAlarmContainer = () => {
             {
                 (!alarm || alarm && tabIdx === 0)&& 
                 <Section
+                    title={ isBrowser? "" : "지역알림" }
                     themeColor={ "primary" }
-                    close={ true }
+                    close={ isBrowser && true }
+                    back={ isMobile && true }
                     action={ true }
                     actionText={ "확인" }
                     onActionClick = { submitAlarmForm }
@@ -42,10 +45,10 @@ const UserAlarmContainer = () => {
                 alarm && tabIdx === 1 &&
                 <Section
                     title={ `알림 매물(${alarms.length})` }
-                    themeColor={ "primary" }
-                    close={ true }
-                    action={ false }
+                    themeColor={ isBrowser? "primary" : "secondary" }
+                    close={ isMobile && true }
                     back={ true }
+                    action={ false }
                     backText = { "지역 설정" }
                     onBackClick={ goToAlarmSetting }
                 >

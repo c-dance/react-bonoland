@@ -8,5 +8,6 @@ export const MoreLink = styled(Link)`
     width: 100%;
     height: 57px;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+    background-color: #fff;
     color: ${ ({ theme }) => theme.colors.primary };
 `;

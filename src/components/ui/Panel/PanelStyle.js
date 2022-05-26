@@ -21,7 +21,8 @@ export const PanelBox = styled.div`
     transition: left .3s;
     box-shadow: ${ props => props.type === "side"  && '3px 3px 6px rgba(0,0,0,.06)'};
 
-    &.mobile {
+    .mobile & {
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;

@@ -14,8 +14,8 @@ export const CapacityForm = styled.div`
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
     display: ${ props => props.active?  `flex` : `none` };
 
-    &.mobile {
-        z-index: 20;
+    .mobile & {
+        z-index: 30;
         position: fixed;
         left: 0;
         top: auto;

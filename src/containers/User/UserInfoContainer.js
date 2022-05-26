@@ -13,7 +13,8 @@ const UserInfoContainer = () => {
     return (
         <>
             {
-                !auth && <Section
+                !auth && 
+                <Section
                     title={"회원 정보 변경"}
                     close={ true }
                     themeColor={ "primary" }
@@ -22,7 +23,8 @@ const UserInfoContainer = () => {
                 </Section>
             }
             {
-                auth && <Section
+                auth && 
+                <Section
                     title={"회원 정보 변경"}
                     close={ true }
                     themeColor={ "primary" }

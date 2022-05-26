@@ -1,15 +1,33 @@
 import { Card } from './NewsCardStyle';
 import { Link } from 'react-router-dom';
 
-const NewsCard = ({ data }) => {
+const NewsCard = ({ data, type }) => {
+
+    const CONTENTS = () => (
+        <div>
+            <h3>{ data.title }</h3>
+            { data.file && <img /> }
+            <p>{ data.abstract || data.contents }</p>
+        </div>
+    );
+
     return (
-        <Card>
-            <Link to="/news/asd">
-                <h3>{ data.title }</h3>
-                { data.file && <img /> }
-                <p>{ data.abstract || data.contents }</p>
-            </Link>
-        </Card>
+        <>
+            {
+                type === "list" &&
+                <Card>
+                    <Link to={`/news/${data.id}`}>
+                        { CONTENTS() }
+                    </Link>
+                </Card>
+            }
+            {
+                type !== "list" && 
+                <Card className="wrapper">
+                    { CONTENTS() }
+                </Card>
+            }
+        </>
     )
 };
 

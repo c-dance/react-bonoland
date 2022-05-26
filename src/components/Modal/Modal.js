@@ -47,6 +47,7 @@ const Modal  = ({
             isOpen={ open? open : true }
             style={ customStyle }
             appElement={document.getElementById('root') || undefined}
+            onRequestClose={ () => { onCloseClick && onCloseClick()} }
         >
             <ModalWrap>
                 { 

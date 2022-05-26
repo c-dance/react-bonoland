@@ -10,18 +10,15 @@ import {
     CheckWrap,
     CheckBox,
 } from './UserAlarmFormStyle';
+import { isMobile } from 'react-device-detect';
 
 const UserAlarmForm = ({ data }) => {
 
     const [ accordion, setAccordion ] = useState(false);
-
-    const toggleAccordion = () => {
-        console.log('click');
-        setAccordion(!accordion);
-    };
+    const toggleAccordion = () => { setAccordion(!accordion); };
 
     return (
-        <AlarmForm>
+        <AlarmForm class={ isMobile && "mobile" }>
             <Head>
                 <h2>지역 알림 설정</h2>
                 <p>

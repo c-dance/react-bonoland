@@ -1,6 +1,6 @@
 import { KeywordForm } from "./keywordFilterStyle";
 
-const KeywordFilter = () => {
+const KeywordFilter = ({ type }) => {
     return (
         <KeywordForm>
             <input 

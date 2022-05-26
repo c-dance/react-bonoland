@@ -3,14 +3,13 @@ import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
-import { isMobile } from "react-device-detect";
 
 const marks = { 0: 0, 20: 20, 40: 40, 60: 60, 80: 80, 100: 100 };
 
 const CapacityFilter = ({ active, values, confirmHandler, selectHandler }) => {
 
     return (
-        <CapacityForm active={ active } className={ isMobile && "mobile" }>
+        <CapacityForm active={ active }>
             <Legend>인가정원</Legend>
             <SliderWrap>
                 <Slider 

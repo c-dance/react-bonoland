@@ -1,4 +1,5 @@
 import { Section as SectionBlock, Title, Body, Close, Back, Action } from './SectionStyle';
+import { useNavigate } from 'react-router';
 
 const Section = ({ 
     title,
@@ -13,6 +14,10 @@ const Section = ({
     onActionClick,
     children
  }) => {
+
+    const navigate = useNavigate();
+    const goBack = () => { navigate(-1); };
+
     return(
         <SectionBlock>
             <Title themeColor={ themeColor }>{ title }</Title>
@@ -20,10 +25,18 @@ const Section = ({
                 <Back 
                     icon={ !backText && true }
                     themeColor={ themeColor } 
-                    onClick={ () => onBackClick() }
+                    onClick={ () => {
+                        onBackClick? onBackClick() : goBack()
+                    }}
                     >{ backText && backText }</Back> 
             }
-            { close && <Close themeColor={ themeColor } onClick={ () => onCloseClick() }></Close> }
+            { close && 
+                <Close 
+                    themeColor={ themeColor } 
+                    onClick={ () => {
+                        onCloseClick? onCloseClick() : goBack()
+                    } }></Close> 
+            }
             <Body className={ action? '' : 'full' }>
                 { children }
             </Body>

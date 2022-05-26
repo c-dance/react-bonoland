@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 import { useSelector } from 'react-redux';
 import GlobalHeader from '../../components/global/GlobalHeader/GlobalHeader';
 import MobileTabBar from '../../components/global/MobileTabBar/MobileTabBar';
-import GlobalMain from '../../components/global/GlobalMain/GlobalMain';
+import Main from '../../components/ui/Main/Main';
 import QuickMenu from '../../components/global/QuickMenu/QuickMenu';
 import CalculatorContainer from '../Calculator/CalculatorContainer';
 import SignupContaienr from '../Account/SignupContainer';
@@ -21,22 +21,32 @@ const LayoutContainer = ({ children }) => {
 
     return(
         <>
-            <BrowserView>
-                <GlobalHeader />
-                <GlobalMain>
-                    { children }
-                </GlobalMain>
-            </BrowserView>
-            <MobileView>
-                <MobileTabBar />
-                { children }
-            </MobileView>
-            <QuickMenu />
+            {
+                isBrowser &&
+                <>
+                    <GlobalHeader />
+                    <Main>
+                        <QuickMenu />
+                        { children }
+                    </Main> 
+                </>
+            }
+            {
+                isMobile &&
+                <>
+                    <MobileTabBar />
+                        <QuickMenu /> 
+                        { children }
+                    <div className="mobile">
+                    </div>
+                </>
+            }
             { SIGNUP_MODE && <SignupContaienr /> }
             { LOGIN_MODE && <LoginContainer /> }
             { FIND_ID_MODE && <FindIdContainer /> }
             { FIND_PWD_MODE && <FindPwdContainer /> }
             { CALCULATOR_MODE && <CalculatorContainer /> }
+            
         </>
     )
 }

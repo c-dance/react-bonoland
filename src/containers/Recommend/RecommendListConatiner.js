@@ -5,16 +5,16 @@ import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
 import Panel from '../../components/ui/Panel/Panel'
 
-const SalesListContainer = () => {
-    const [ nursings, setNursings ] = useState([]);
-    const [ daycares, setDayCares ] = useState([]);
+const RecommendListContainer = () => {
+    const [ bizs, setBizs ] = useState([]);
+    const [ remodelings, setremodelings ] = useState([]);
 
     const fetchSalesList = () => {
-        fetch('./data/sales.json')
+        fetch('./data/recommends.json')
             .then(res => res.json())
             .then(data => {
-                setNursings(data["요양원"]);
-                setDayCares(data["주간보호"]);
+                setremodelings(data["신규 사업지"]);
+                setBizs(data["신규 리모델링"]);
             })
             .catch(err => console.log(err));
     };
@@ -25,18 +25,18 @@ const SalesListContainer = () => {
 
     return (
         <Panel>
-            <ListHeader title="시설매매">
+            <ListHeader title="추천매물">
                 <KeywordFilter type="sub" />
             </ListHeader>
             <ListTab 
-                navs={["요양원", "주간보호"]} 
+                navs={["신규 사업지", "신규 리모델링"]} 
                 contents={[
-                    <CenterList centers={ nursings } />,
-                    <CenterList centers={ daycares } />,
+                    <CenterList centers={ bizs } />,
+                    <CenterList centers={ remodelings } />,
                 ]}
             />
         </Panel>
     )
 }
 
-export default SalesListContainer;
+export default RecommendListContainer;

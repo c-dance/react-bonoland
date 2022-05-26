@@ -1,25 +1,28 @@
 import { useState } from 'react';
 import { Tab, TabNavs, TabConts } from './ListTabStyle';
-import CenterList from '../../Center/CenterList/CenterList';
-import { logRoles } from '@testing-library/react';
 
-const ListTab = ({ navs, contents, tabClick, activeIdx }) => {
+const ListTab = ({ navs, contents, type }) => {
+
+    const [ activeIdx, setActiveIdx ] = useState(0);
+    const toggleActive = idx => setActiveIdx(idx);
 
     const tabNavs = navs.map((nav, idx) => (
         <div
             className={ idx === activeIdx? 'tabNav on' : 'tabNav' } 
-            onClick={ () => tabClick(idx) }
+            onClick={ () => toggleActive(idx) }
+            key={ idx }
         >{ nav }</div>
     ));
 
     const tabConts = contents.map((content, idx) => (
         <div 
             className={ idx === activeIdx? 'tabCont on' : 'tabCont' } 
+            key={ idx }
         >{ content }</div>
     ))
 
     return (
-        <Tab>
+        <Tab className={ type? type : "" }>
             <TabNavs>
                 { tabNavs }
             </TabNavs>

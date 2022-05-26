@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import NewsList from '../../components/News/NewsList/NewsList';
 import Section from '../../components/ui/Section/Section';
+import { useNavigate } from 'react-router';
 
 const NewsListContainer = () => {
+    const navigate = useNavigate();
+    const onCloseClick = () => { navigate('/'); }
+
     const [ newsList, setNewsList ] = useState([]);
 
-    const onCloseClick = () => {
-        console.log('close');
-    }
 
     const fetchNewsList = () => {
         fetch('/data/newsList.json')

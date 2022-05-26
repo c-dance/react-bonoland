@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
-import CenterCard from '../../components/Center/CenterCard/CenterCard';
 import Section from "../../components/ui/Section/Section";
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const UserRecentContainer = () => {
 
@@ -28,8 +28,9 @@ const UserRecentContainer = () => {
     return (
         <Section
             title={ `최근 본 매물(${recent.length})` }
-            themeColor={ "primary" }
-            close={ true }
+            themeColor={  isBrowser? "primary" : "secondary" }
+            close={ isBrowser && true }
+            back={ isMobile && true }
             action={ false }
         >
             <CenterList 

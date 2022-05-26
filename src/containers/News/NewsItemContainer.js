@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import Section from '../../components/ui/Section/Section';
 import NewsCard from '../../components/News/NewsCard/NewsCard';
+import { useNavigate } from 'react-router';
 
 const NewsItemContainer = () => {
+
+    const navigate = useNavigate();
+    const onBackClick = () => { navigate(-1); };
+    const onActionClick = () => { window.open(news.url); };
 
     const [ news, setNews ] = useState({});
     const { newsID } = useParams();
@@ -15,13 +20,7 @@ const NewsItemContainer = () => {
             .catch(err => console.log(err));
     };
 
-    const openNews = () => {
-        window.open(news.url);
-    };
     
-    const backToList = () => {
-        window.history.back();
-    };
 
     useEffect(() => {
         fetchNews(newsID);
@@ -32,10 +31,10 @@ const NewsItemContainer = () => {
             title={ "뉴스" }
             themeColor={ "secondary" }
             back = { true }
-            onBackClick= { backToList }
+            onBackClick= { onBackClick }
             action={ true }
             actionText={ "출처 링크" }
-            onActionClick={ openNews }
+            onActionClick={ onActionClick }
         >
             <NewsCard data={ news } />
         </Section>

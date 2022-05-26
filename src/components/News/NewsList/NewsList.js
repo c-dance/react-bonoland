@@ -8,8 +8,8 @@ const NewsList = ({ datas }) => {
                 {
                     datas.map((data, idx) => (
                         <div key={ idx }>
-                            <NewsCard data={ data } ></NewsCard>
-                            { idx < (datas.length-1) && <hr />}
+                            <NewsCard data={ data } type="list" ></NewsCard>
+                            { idx < (datas.length) && <hr />}
                         </div>
                     ))
                 }

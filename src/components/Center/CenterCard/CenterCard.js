@@ -18,9 +18,10 @@ import {
 //테스트 사진
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
+import { isMobile } from 'react-device-detect';
 
 const CenterCard = ({ type, center }) => (
-    <Card>
+    <Card className={ isMobile && "mobile" } >
         { type ==="sub" && <Head>{center.id}</Head> }
         <Wrap to={ '/center/' + center.id }>
             <Thumbnail>
