@@ -3,6 +3,7 @@ import { Chart } from 'react-chartjs-2';
 import { MARKETS } from '../../../sheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
 import 'chartjs-plugin-doughnut-innertext'
+import { isBrowser } from 'react-device-detect';
 
 
 const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];
@@ -21,8 +22,6 @@ const getStyldedDatasets = (datasets) => {
         newDatasets.push(datasets[i]);
         if(i < datasets.length -1) newDatasets.push(gap);
     };
-
-    console.log(newDatasets);
 
     return newDatasets;
 };
@@ -59,9 +58,9 @@ const DoughnutChart = ({ scheme, data, type }) => {
                         size:14
                     },
                     usePointStyle: true,
-                    boxWidth: ( type === "main" && 8 ) || 10,
+                    boxWidth: ( type === "main" && isBrowser && 8 ) || 10,
                     lineWidth: 0,
-                    padding: ( type === "main" && 15 ) || 20
+                    padding: ( type === "main" && isBrowser && 15 ) || 20
                 },
             },
             title: {
@@ -69,7 +68,7 @@ const DoughnutChart = ({ scheme, data, type }) => {
                 text: ( type === "main" && `•  ${chartTitle}  • ` ) || chartTitle,
                 position: 'top',
                 padding: {
-                    bottom: ( type === "main" && 10 ) || 20
+                    bottom: ( type === "main" && isBrowser && 10 ) || 20
                 },
                 color: '#fff',
                 font: {
@@ -78,8 +77,8 @@ const DoughnutChart = ({ scheme, data, type }) => {
                 },
             }
         },
-        cutout: (type === "main" && 50) || 70,
-        radius: (type === "main" && 60) || 90,
+        cutout: (type === "main" && isBrowser && 50) || 70,
+        radius: (type === "main" && isBrowser && 60) || 90,
         circumference: 360, 
         elements: {
             arc: {
@@ -91,7 +90,7 @@ const DoughnutChart = ({ scheme, data, type }) => {
             color: '#FFF',
             fontSizeAdjust: -0.5
         },
-        responsive: true
+        // responsive: true
     };
 
     return (

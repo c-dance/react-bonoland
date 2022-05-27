@@ -31,22 +31,26 @@ const quickCSS = css`
     }
     &.chart {
         top: 342px;
-        &.mobile { top: 138px; }
+        .mobile & { top: 138px; }
     }
     &.news {
         top: 392px;
-        &.mobile { top: 222px; }
+        .mobile & { top: 222px; }
     }
     &.calc {
         top: 264px;
         font-size: 0;
         background: url(${calcIcon}) center no-repeat #fff;
     }
-    &.mobile {
+    .mobile & {
         right: 14px;
         width: 32px; 
         height: 32px; 
         line-height: 32px;
+    }
+    &.on {
+        background-color: ${ ({theme}) => theme.colors.primary };
+        color: #fff;
     }
 `;
 

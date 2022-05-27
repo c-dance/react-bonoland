@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { theme } from './theme';
 
 const scrollWrapper = styled.div`
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
 

@@ -1,9 +1,13 @@
-import Charts from './MapChartStyle'
+import { Charts, Wrapper } from './MapChartStyle'
 
 const MapChart = ({ children }) => {
     return (
         <Charts>
-            { children }
+            <Wrapper>
+                { children }
+            </Wrapper>
         </Charts>
     )
 };
+
+export default MapChart;

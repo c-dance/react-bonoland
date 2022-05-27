@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { module } from '../../themes/module';
 
 export const Charts = styled.div`
     z-index: 12;
@@ -9,4 +10,19 @@ export const Charts = styled.div`
     gap: 0;
     border-radius: 20px;
     overflow: hidden;
+
+    .mobile & {
+        position: relative;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        border-radius: 0;
+    }
+`;
+
+export const Wrapper = styled(module.scrollWrapper)`
+    height: 100%;
+    width: 100%;
 `;
