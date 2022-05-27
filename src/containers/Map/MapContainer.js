@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateMapProps } from '../../store/actions/map';
+import { isBrowser } from 'react-device-detect';
 import Map from '../../components/Map/Map';
-import MapChart from '../../components/MapChart/MapChart';
 import MapRegion from '../../components/MapRegion/MapRegion';
+import { getRegionByLatlng, getRegionByZoom } from '../../utils/map';
 
 // 차트, 주소, 맵 분리 필요
 
+const { naver } = window; 
+
 const MapContainer = () => {
-    const mapProps = useSelector(state => state.Map);
     const dispatch = useDispatch();
-    const [ chart, setChart ] = useState(null);
+    const mapProps = useSelector(state => state.Map);
 
-    const { naver } = window; 
-
-    // (1) 지도 생성
+   /* === 지도 생성 === */
     const initMap = () => {
         const map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(mapProps.latlng[0], mapProps.latlng[1]),
@@ -27,28 +27,28 @@ const MapContainer = () => {
             }
         });
 
-        naver.maps.Event.addListener(map, 'zoom_changed', () => { resetMap(map) });
-        naver.maps.Event.addListener(map, 'bounds_changed', () => { resetMap(map) });
+        naver.maps.Event.addListener(map, 'zoom_changed', () => { updateMap(map) });
+        naver.maps.Event.addListener(map, 'bounds_changed', () => { updateMap(map) });
     };
 
-    // (2) 지도 업데이트
-    const resetMap = async (map) => {
-        const zoom = map.getZoom();
-        const latlng = [map.getCenter()._lat, map.getCenter()._lng];
-        const region = getRegion(await fetchReverseGeocode(latlng), zoom);
+    //* === 지도 업데이트 (줌 변경 시 || 지역 이동 시) === */
+    const updateMap = async (map) => {
+        const zoom = map.getZoom(); // 줌 레벨(raw)
+        const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
+        const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
 
-        resetMapProps(latlng, zoom, region);
-        resetCharts(region, zoom);  
-        // resetMarkers();
+        updateMapStore(latlng, zoom, region);
+        // resetCharts(region, zoom);  
     };
 
     // 스토어 업데이트
-    const resetMapProps = (latlng = mapProps.latlng, zoom = mapProps.zoom, region = '') => {
+    const updateMapStore = (latlng = mapProps.latlng, zoom = mapProps.zoom, region = '') => {
         let props = {
             latlng: latlng,
             zoom: zoom ,
             region: region
-        }
+        };
+        
         dispatch(updateMapProps(props));
     };
 
@@ -57,10 +57,9 @@ const MapContainer = () => {
         let data = null;
         if(zoom < 16 && zoom >= 14) {
             data = await fetchChart(region);
-            console.log(data);
-            setChart(data);
+            // setChart(data);
         } 
-        setChart(data);
+        // setChart(data);
     };
 
     // (3) 차트 데이터
@@ -81,36 +80,6 @@ const MapContainer = () => {
     // (4) 마커 데이터
     const fetchMarkers = () => {}
 
-    // 시, 군, 구 가져오기
-    const getRegion = (regions, zoom) => {
-        let result = ''; 
-
-        if(zoom >= 16) result = `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}`; // 동
-        if(zoom < 16 && zoom >= 14) result = `${regions.area1.name} ${regions.area2.name}`;
-        if(zoom < 14 && zoom >= 11) result = regions.area1.name; // 시도
-        if(zoom < 11) result = ''; // 3km 이상 : 시도 구별 어려움
-
-        console.log(result);
-
-        return result;
-    };
-   
-    // 위도경도 > 주소 변환
-    const fetchReverseGeocode = (center) => {
-        return new Promise((resolve, reject) => {
-            naver.maps.Service.reverseGeocode({
-                coords: new naver.maps.LatLng(center[0], center[1]),
-                orders: [
-                //   naver.maps.Service.OrderType.ADDR,
-                ].join(',')
-            }, (status, response) => {
-                if(status === naver.maps.Service.Status.ERROR) reject("geocode오류");
-                else if(response.v2.results.length <= 0) reject("지역 이탈");
-                else resolve(response.v2.results[1].region);
-            })
-        })
-    };
-
     useEffect(()=> {
         initMap();
     }, [])
@@ -118,8 +87,8 @@ const MapContainer = () => {
     return (
         <>
             <Map />
-            <MapRegion region = { mapProps.region } />
-            <MapChart data = { chart } />
+            { isBrowser && <MapRegion region = { mapProps.region } /> }
+            {/* <MapChart data = { chart } /> */}
         </>
     )
 };

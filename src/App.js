@@ -23,24 +23,11 @@ import RegisterContainer from './containers/Register/RegisterContainer';
 import ContactContainer from './containers/Contact/ContactContainer';
 // TERMS
 import TermsContainer from './containers/Terrms/TermsContainer';
-
-import MapChartContainer from './containers/MapChart/MapChartContainer';
-import MapContainer from './containers/Map/MapContainer';
-
-
-// BASE LAYOUT : NAVIGATION & MAP & CENTER LIST
-const RootContainer = ({ map, list }) => (
-  <LayoutContainer>
-      { list && <CenterListContainer /> } 
-      <MapContainer />
-      <MapChartContainer />
-      <Outlet />
-  </LayoutContainer>
-);
+import MainView from './view/MainView';
 
 const App = () => (
     <Routes>
-      <Route element={ <RootContainer list={ true }/> }>
+      <Route element={ <MainView list={ true }/> }>
         <Route exact path="/"/>
         <Route exact path="/news" element={ <NewsListContainer /> } />
         <Route exact path="/news/:id" element={ <NewsItemContainer /> } />
@@ -52,7 +39,7 @@ const App = () => (
         <Route exact path="/register" element={ <RegisterContainer /> } />
         <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
-      <Route element={ <RootContainer list={ false }/> }>
+      <Route element={ <MainView list={ false }/> }>
         <Route exact path="/sales" element={ <SalesListContainer /> } />
         <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
         <Route exact path="/recommend" element={ <RecommendListContainer /> } />

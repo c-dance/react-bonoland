@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const MainWrapper = styled.main`
     z-index: 20;
-    position: relative;
+    position: ${ isBrowser? "relative" : "initial" };
     width: 100%;
     height: 100%;
     min-width: ${ isBrowser? "1240px" : "100%" };
@@ -12,7 +12,7 @@ const MainWrapper = styled.main`
 
 const Main = ({ children }) => {
     return (
-        <MainWrapper>
+        <MainWrapper className={ isMobile && "mobile" }>
             { children }
         </MainWrapper>
     )
