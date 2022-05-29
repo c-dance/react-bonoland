@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import userIcon from '../../../assets/images/menu/ico-man.svg';
 import alarmIcon from '../../../assets/images/menu/ico-bell.svg';
 import calcIcon from '../../../assets/images/menu/ico-calculator.svg';
+import cadIcon from '../../../assets/images/menu/ico-cadastral.svg';
+import locIcon from '../../../assets/images/menu/ico-location.svg';
 
 const quickCSS = css`
     z-index: 30;
@@ -31,7 +33,23 @@ const quickCSS = css`
     }
     &.chart {
         top: 342px;
-        .mobile & { top: 138px; }
+        .mobile & { 
+            top: 138px; 
+            &.on {
+                background-color: #fff;
+                color: ${ props => props.theme.colors.gray700 };
+                &::after {
+                    position: absolute;
+                    top: 3px;
+                    right: 3px; 
+                    content: '';
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 2px;
+                    background-color: #FF0000;
+                }
+            }
+        }
     }
     &.news {
         top: 392px;
@@ -41,6 +59,18 @@ const quickCSS = css`
         top: 264px;
         font-size: 0;
         background: url(${calcIcon}) center no-repeat #fff;
+    }
+    &.cad {
+        top: 442px;
+        font-size: 0;
+        background: url(${cadIcon}) center no-repeat #fff;
+        .mobile & { top: 180px; }
+    }
+    &.location {
+        top: 292px;
+        font-size: 0;
+        background: url(${locIcon}) center no-repeat #fff;
+        .mobile & { top: 96px; }
     }
     .mobile & {
         right: 14px;

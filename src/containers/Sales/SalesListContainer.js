@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
-import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
+import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
 import Panel from '../../components/ui/Panel/Panel'
@@ -26,7 +26,7 @@ const SalesListContainer = () => {
     return (
         <Panel>
             <ListHeader title="시설매매">
-                <KeywordFilter type="sub" />
+                <AddressFilter type="sub" />
             </ListHeader>
             <ListTab 
                 navs={["요양원", "주간보호"]} 

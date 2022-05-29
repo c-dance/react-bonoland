@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import searchIcon from '../../../assets/images/icon/ico-search.svg'
 import symbolIcon from '../../../assets/images/logo/ico-symbol.svg'
 
-export const KeywordForm = styled.div`
+export const AddressForm = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 import Panel from '../../components/ui/Panel/Panel';
-import KeywordFilter from "../../components/filters/KeywordFilter/KeywordFilter";
+import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
 import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
 import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
-
+import AddressFilterContainer from '../filters/AddressFilterContainer';
 
 const CenterListContainer = () => {
     /*
@@ -80,7 +80,7 @@ const CenterListContainer = () => {
                 position={ "left" }
                 fold={ true }
             >
-                <KeywordFilter type="main" />
+                <AddressFilterContainer type="main" />
                 <CategoryFilter 
                     selectHandler={ selectCategory }     
                 />
@@ -98,7 +98,7 @@ const CenterListContainer = () => {
             </Panel>
         </BrowserView>
         <MobileView>
-            <KeywordFilter type="main" />
+            <AddressFilter type="main" />
             <CategoryFilter 
                 selectHandler={ selectCategory }     
             />
