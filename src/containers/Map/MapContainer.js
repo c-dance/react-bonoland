@@ -6,6 +6,7 @@ import { isBrowser } from 'react-device-detect';
 import Map from '../../components/Map/Map';
 import MapRegion from '../../components/MapRegion/MapRegion';
 import { fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 const { naver } = window; 
 
@@ -13,13 +14,13 @@ const MapContainer = () => {
     /* === 지도, 지적편집도 === */
     const [ map, setMap ] = useState(null);
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
-    const [ markers, setMarkers ] = useState([]);
+    // let markers = [];
     /* === 지도 속성 === */
     const dispatch = useDispatch();
     const LATLNG = useSelector(state => state.Map.latlng);
     const ZOOM = useSelector(state => state.Map.zoom);
     const REGION = useSelector(state => state.Map.region);
-    // const MARKERS = useSelector(state => state.Map.markers);
+    const MARKERS = useSelector(state => state.Map.markers);
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral);
     const FILTERED = useSelector(state => state.Map.filtered);
     
@@ -40,8 +41,12 @@ const MapContainer = () => {
         });
 
         // 줌레벨, 지역 변경 이벤트 설정
-        naver.maps.Event.addListener(map, 'zoom_changed', () => { updateMapByEvent(map); });
-        naver.maps.Event.addListener(map, 'bounds_changed', () => { updateMapByEvent(map); });
+        naver.maps.Event.addListener(map, 'zoom_changed', () => { 
+            updateMapByEvent(map); 
+        });
+        naver.maps.Event.addListener(map, 'dragend', () => { 
+            updateMapByEvent(map); 
+        });
 
         // 지적편집도 설정
         const cadastralLayer = new naver.maps.CadastralLayer();
@@ -69,6 +74,7 @@ const MapContainer = () => {
 
     //* === 지도 업데이트 (줌 변경 시 || 지역 이동 시) === */
     const updateMapByEvent = async (map) => {
+
         const zoom = map.getZoom(); // 줌 레벨(raw)
         const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
@@ -78,47 +84,62 @@ const MapContainer = () => {
         if(REGION !== region) dispatch(updateMapRegion(region));
     };
 
-    const guguns = {
-        "성곡동" : {
+    const guguns = [
+        {
+            "주소": "성곡동",
             "요양원": 7,
             "주간보호": 9
         },
-        "향동" : {
+        {
+            "주소": "향동",
             "요양원": 10,
             "주간보호": 11
         }, 
-        "대산동" : {
+        {
+            "주소": "대산동",
             "요양원": 14,
             "주간보호": 8
         }, 
-        "신월 7동" : {
+        {
+            "주소": "신월 7동",
             "요양원": 8,
             "주간보호": 4
         }
+    ];
+
+    const getMarkersData = async data => {
+
+        const dataWithLatlng = (await Promise.all(
+            data.map(item => {
+                return getSearchByAddress(item["주소"]);
+            })
+        )).reduce((res, value, idx) =>{
+            const dt = data[idx];
+            if(value.latlng){
+                dt.latlng = value.latlng;
+                return res.concat([dt]);
+            } 
+        }, []);
+
+        return dataWithLatlng;
     };
 
 
     // 마커 업데이트
-    const updateMarkers = () => {
+    const updateMarkers = async () => {
         if(!map) return;
 
-        console.log(markers);
-
-        removeMarkers(markers);
-
-        Object.keys(guguns).map(async key => {
-            await getSearchByAddress(key)
-                .then(res => {
-                    guguns[key].latlng = res.latlng;
-                    let nMarkers = [...markers, renderedGroupMarker(guguns[key])];
-                    setMarkers(nMarkers);
-                    console.log(markers);
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-        });
+        
+        await getMarkersData(guguns)
+        .then(res => {
+                removeMarkers(MARKERS);
+                setTimeout(function(){
+                    const nMarkers  = renderedGroupMarker(res, map);
+                    dispatch(updateMapMarkers(nMarkers));
+                }, 1000);
+            })
     };
+
 
     useEffect(()=> {
         initMap();
