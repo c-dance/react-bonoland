@@ -130,11 +130,15 @@ export const renderItemMarkers = (data, map) => {
     position: new naver.maps.LatLng(data.latlng),
     map: map, 
     icon: {
-      content: [
-        '<div>',
-        '</div>'
-      ].join(''),
-      size: new naver.maps.Size(38, 58),
+      content: `
+        <div style="position:relative;display:inline-block;width:auto;">
+          <div style="z-index:1;position:relative;display:flex;flex-direction:column;gap:8px;padding:16px 12px;border-radius:8px;background-color:#3E468E;color:#fff;">
+              <em>${'2018.02'}거래</em>
+              <span>실거래가${'60억'}}</span>
+          </div>
+          <div style="z-index:-1;position:realtive;width:0;height:0;background:transparent;border-style:inset;border-width:8px 9px 8px 9px; border-color: #3E468E transparent transparent #3E468E; transform:translateY(-6px);"></sdiv>
+        </div>
+      `,
       anchor: new naver.maps.Point(19, 58)
     },
     draggable: false
