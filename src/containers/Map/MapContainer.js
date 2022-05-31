@@ -204,6 +204,7 @@ const MapContainer = () => {
             removeInfoWindow(INFO_WINDOW);
         }
     }, [MARKERS]);
+    
     useEffect(() => {
         return () => {
             removeInfoWindow(INFO_WINDOW);
