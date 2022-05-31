@@ -4,6 +4,7 @@ export const MAP = {
     UPDATE_ZOOM : 'map/zoom',
     UPDATE_REGION: 'map/region',
     UPDATE_MARKERS: 'map/markers',
+    UPDATE_INFOWINDOW: 'map/infowindow',
     UPDATE_FILTER: 'map/filter',
     ACTIVATE_CADASTRAL: 'map/cadastralOn',
     DEACTIVATE_CADASTRAL: 'map/cadastralOff'
@@ -31,6 +32,11 @@ export const updateMapRegion = (value) => ({
 
 export const updateMapMarkers = (value) => ({
     type: MAP.UPDATE_MARKERS,
+    payload: value
+});
+
+export const updateMapInfoWindow = (value) => ({
+    type: MAP.UPDATE_INFOWINDOW,
     payload: value
 });
 

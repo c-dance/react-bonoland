@@ -5,6 +5,7 @@ const initialState = {
     zoom: 14,
     region: '경기도 부천시', 
     markers: [],
+    infoWindow: null,
     filtered: false,
     cadastral: false,
 };
@@ -26,6 +27,9 @@ const MapReducer = ( state = initialState, action ) => {
         case MAP.UPDATE_MARKERS:
             const markers = action.payload;
             return { ...state, markers: markers };
+        case MAP.UPDATE_INFOWINDOW:
+            const infoWindow = action.payload;
+            return { ...state, infoWindow: infoWindow };
         case MAP.UPDATE_FILTER:
             const filterProps = action.payload;
             filterProps.filtered = !state.filtered;

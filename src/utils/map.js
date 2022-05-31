@@ -1,5 +1,6 @@
 import Marks from "rc-slider/lib/Marks";
 import { validateElement } from "react-modal/lib/helpers/ariaAppHider";
+import infoIcon from '../assets/images/map/ico-infowindow.svg';
 
 const { naver } = window;
 
@@ -78,8 +79,6 @@ export const getSearchByAddress = address => {
 
 export const renderedGroupMarker = (data, map) => {
 
-  
-  
   const markers = data.map(item => {
     let address = '';
     let contents = [];
@@ -125,51 +124,91 @@ export const renderedGroupMarker = (data, map) => {
   return markers;
 };
 
-export const renderItemMarkers = (data, map) => {
-  const marker = new naver.maps.Marker({
-    position: new naver.maps.LatLng(data.latlng),
-    map: map, 
+export const renderItemMarkers = (data, map, callback) => {
+
+  const markers = data.map(item => {
+
+    const date = item["거래일"];
+    const price = item["거래가"];
+    const color = item["보노매물"]? '#8A653F' : '#3E468E';
+    const latlng = item["latlng"];
+
+    const marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(latlng),
+      map: map, 
+      icon: {
+        content: `
+          <div style="position:relative;z-index:90;display:inline-block;width:auto;">
+            <div style="z-index:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 12px;border-radius:8px;background-color:${color};color:#fff;">
+                <em>${date} 거래</em>
+                <span>실거래가 ${price}}</span>
+            </div>
+            <div style="z-index:-1;position:realtive;width:0;height:0;background:transparent;border-style:inset;border-width:8px 9px 8px 9px; border-color: ${color} transparent transparent ${color}; transform:translateY(-6px);"></sdiv>
+          </div>
+        `,
+        // anchor: new naver.maps.Point(11, 35)
+      },
+      draggable: false
+    });
+  
+    naver.maps.Event.addListener(marker, "click", () => {
+      callback(item);
+    });
+
+    return marker;
+  });
+  
+  return markers;
+};
+
+export const renderInfoWindow = (data, map) => {
+
+  const latlng = data["latlng"];
+
+  const infoWindow = new naver.maps.Marker({
+    position: new naver.maps.LatLng(latlng),
+    map: map,
     icon: {
       content: `
-        <div style="position:relative;display:inline-block;width:auto;">
-          <div style="z-index:1;position:relative;display:flex;flex-direction:column;gap:8px;padding:16px 12px;border-radius:8px;background-color:#3E468E;color:#fff;">
-              <em>${'2018.02'}거래</em>
-              <span>실거래가${'60억'}}</span>
+      <div style="z-index:90;position:relative; transform:translateY(-100px)">
+        <div style="z-index:-1;position:absolute;top:50%;left:50%;transform: translate(-200px,-200px);width:400px;height:400px;border-radius:200px;background:red;opacity:0.2"></div>
+          <div id="infoWindow" style="z-index:3;position:relative;display:flex;flex-direction:column;gap:24px;padding:16px 12px 36px;background:url(${infoIcon}) center / 100% 100% no-repeat;white-space:nowrap">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    <div style="display:flex;gap:6px;">
+                        <div style="height:20px;line-height:20px;padding:0 8px;background:#B68B39;color:#fff;border-radius:2px;font-size:12px;font-weight:500">분양</div>
+                        <div style="height:20px;line-height:20px;padding:0 8px;background:#E91E63;color:#fff;border-radius:2px;font-size:12px;font-weight:500">추천</div>
+                        <div style="height:20px;line-height:20px;padding:0 8px;background:#4CAF50;color:#fff;border-radius:2px;font-size:12px;font-weight:500">프리미엄</div>
+                    </div>
+                    <span style="font-weight:500;color:#212121;">서울 특별시 강남구</span>
+                    <span style="font-size:14px;color:#212121;">단독 요양원 79인</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <span style="font-weight: 700;color:#2962FF;">매매가 46억</span>
+                    <span style="font-size: 12px;color:#757575;line-height: 1.3;">면적 1평 / 인가 00인 시설</span>
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button style="flex: 1;height:24px;line-height:22px;border:1px solid #eee;font-size:13px;color:#424242;text-align:center;background:#fff;">상세</button>
+                <button style="flex: 1;height:24px;line-height:22px;border:1px solid #eee;font-size:13px;color:#424242;text-align:center;background:#fff;">문의</button>
+            </div>
           </div>
-          <div style="z-index:-1;position:realtive;width:0;height:0;background:transparent;border-style:inset;border-width:8px 9px 8px 9px; border-color: #3E468E transparent transparent #3E468E; transform:translateY(-6px);"></sdiv>
         </div>
-      `,
-      anchor: new naver.maps.Point(19, 58)
+      `
     },
     draggable: false
   });
 
-  var contentString = [
-    '<div class="iw_inner">',
-    '</div>'
-  ].join('');
-
-  var infowindow = new naver.maps.InfoWindow({
-    content: contentString,
-    maxWidth: 140,
-    backgroundColor: "#eee",
-    borderColor: "#2db400",
-    borderWidth: 5,
-    anchorSize: new naver.maps.Size(30, 30),
-    anchorSkew: true,
-    anchorColor: "#eee",
-    pixelOffset: new naver.maps.Point(20, -20)
+  naver.maps.Event.addListener(infoWindow, "click", (e) => {
+    const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
+    if(outerClicked) infoWindow.setMap(null);
   });
 
-  naver.maps.Event.addListener(marker, "click", function(e) {
-    if (infowindow.getMap()) {
-        infowindow.close();
-    } else {
-        infowindow.open(map, marker);
-    }
+  naver.maps.Event.addListener(map, "click", () => {
+    infoWindow.setMap(null);
   });
 
-  return marker;
+  return infoWindow;
 };
 
 export const removeMarkers = markers => {
@@ -178,3 +217,10 @@ export const removeMarkers = markers => {
   }
   return markers;
 };
+
+export const removeInfoWindow = async infoWindow => {
+  if(infoWindow) {
+    infoWindow.setMap(null);
+  }
+  return infoWindow;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateMapZoom, updateMapRegion, updateMapLatlng, updateMapMarkers } from '../../store/actions/map';
-import { getRegionByLatlng, getRegionByZoom, removeMarkers, getSearchByAddress, renderedGroupMarker } from '../../utils/map';
+import { updateMapZoom, updateMapRegion, updateMapLatlng, updateMapMarkers, updateMapInfoWindow } from '../../store/actions/map';
+import { getRegionByLatlng, getRegionByZoom, removeMarkers, getSearchByAddress, renderedGroupMarker, getZoomLevel, renderItemMarkers, renderInfoWindow, removeInfoWindow } from '../../utils/map';
 import { isBrowser } from 'react-device-detect';
 import Map from '../../components/Map/Map';
 import MapRegion from '../../components/MapRegion/MapRegion';
@@ -21,6 +21,7 @@ const MapContainer = () => {
     const ZOOM = useSelector(state => state.Map.zoom);
     const REGION = useSelector(state => state.Map.region);
     const MARKERS = useSelector(state => state.Map.markers);
+    const INFO_WINDOW = useSelector(state => state.Map.infoWindow);
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral);
     const FILTERED = useSelector(state => state.Map.filtered);
     
@@ -88,7 +89,7 @@ const MapContainer = () => {
 
     const guguns = [
         {
-            "주소": "성곡동",
+            "주소": "범안동",
             "요양원": 7,
             "주간보호": 9
         },
@@ -109,6 +110,42 @@ const MapContainer = () => {
         }
     ];
 
+    const dongs = [
+        {
+            "ID" : "asdf265",
+            "주소" :"경기 부천시 소삼로 38 101동 102호",
+            "거래일" : "2022.01.02",
+            "거래가": "100,000,000",
+            "포화도": 7,
+            "보노매물": false
+        },
+        {
+            "ID" : "asdf2654",
+            "주소" :"경기 부천시 경인옛로 25 104호",
+            "거래일" : "2022.03.02",
+            "거래가": "200,000,000",
+            "포화도": 2,
+            "보노매물": true
+        },
+        {
+            "ID" : "asdf265",
+            "주소" :"경기 부천시 소사동로 85",
+            "거래일" : "2022.04.02",
+            "거래가": "300,000,000",
+            "포화도": 9,
+            "보노매물": true
+        },
+        {
+            "ID" : "asdf266",
+            "주소" :"경기 부천시 은성로62번길 13 백암빌딩 101호",
+            "거래일" : "2022.05.02",
+            "거래가": "500,000,000",
+            "포화도": 5,
+            "보노매물": false
+        }
+    ]
+
+    /* === 마커 데이터 준비 (with latlng) === */
     const getMarkersData = async data => {
 
         const dataWithLatlng = (await Promise.all(
@@ -126,35 +163,52 @@ const MapContainer = () => {
         return dataWithLatlng;
     };
 
-
-    // 마커 업데이트
-    const updateMarkers = async (map) => {
-        console.log(map);
-
+    /* === 네이버 마커 반환 === */
+    const updateMarkers = async () => {
         if(!map) return;
 
-        await getMarkersData(guguns)
-        .then(res => {
-                removeMarkers(MARKERS);
-                setTimeout(function(){
-                    const nMarkers  = renderedGroupMarker(res, map);
-                    dispatch(updateMapMarkers(nMarkers));
-                }, 1000);
-            })
+        const IS_DONG = getZoomLevel(ZOOM) === 3;
+        const DATAS = IS_DONG? dongs : guguns;        
+
+        if(DATAS.length > 0) {
+            await getMarkersData(DATAS)
+                .then(data => {
+                    console.log(getZoomLevel(ZOOM));
+                    let mks = IS_DONG? 
+                        renderItemMarkers(data, map, updateInfoWindow) 
+                        : renderedGroupMarker(data, map, updateInfoWindow);
+                    dispatch(updateMapMarkers(mks));
+                })
+        }
     };
 
+    /* === 인포 윈도우 반환 === */
+    const updateInfoWindow = (data) => {
+        if(!map) return;
+
+        const infoWindow = renderInfoWindow(data, map);
+        dispatch(updateMapInfoWindow(infoWindow));
+    };
 
     useEffect(()=> {
         initMap();
     }, []);
 
-    useEffect(() => (
-        updateMapMarkers(map)
-    ), [map]);
+    useEffect(() => {
+        updateMarkers();
+    }, [LATLNG, ZOOM]);
 
     useEffect(() => {
-        updateMarkers(map);
-    }, [LATLNG, ZOOM]);
+        return () => {
+            removeMarkers(MARKERS);
+            removeInfoWindow(INFO_WINDOW);
+        }
+    }, [MARKERS]);
+    useEffect(() => {
+        return () => {
+            removeInfoWindow(INFO_WINDOW);
+        }
+    }, [INFO_WINDOW]);
 
     useEffect(() => {
         toggleCadastralMode(CADASTRAL_MODE);
