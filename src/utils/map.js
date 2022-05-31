@@ -106,12 +106,12 @@ export const renderedGroupMarker = (data, map) => {
         content: [`
         <div style="position:relative;display:inline-block;width:auto;">
           <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding: 20px 12px 16px;border-radius:6px;background-color:#3E468E;color:#fff;font-size:13px;transform: translateY(13px);">
-              <em style="opacity:0.7">${address}</em>
-              <ul style="display:flex;flex-direction:column;;justify-content:center;align-items:center;gap:6px;font-weight:700">
+              <em style="opacity:0.7;white-space:nowrap">${address}</em>
+              <ul style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-weight:700;white-space:nowrap">
                 ${ contents.toString()}
               </ul>
           </div>
-            <div style="position:absolute;top:0;left:50%;height:26px;line-height:26px;padding:0 12px;border-radius:13px;border:1px solid #3E468E;background-color:#fff;font-size:14px;transform:translateX(-50%)">
+            <div style="position:absolute;top:0;left:50%;height:26px;line-height:26px;padding:0 12px;border-radius:13px;border:1px solid #3E468E;background-color:#fff;font-size:14px;white-space:nowrap;transform:translateX(-50%)">
             ${total}
             </div>
         </div>

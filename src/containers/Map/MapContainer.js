@@ -26,7 +26,7 @@ const MapContainer = () => {
     
    /* === 지도 생성 === */
     const initMap = () => {
-        const map = new naver.maps.Map('map', {
+        const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(LATLNG[0], LATLNG[1]),
             zoom: ZOOM,
             minZoom: 7,
@@ -41,18 +41,20 @@ const MapContainer = () => {
         });
 
         // 줌레벨, 지역 변경 이벤트 설정
-        naver.maps.Event.addListener(map, 'zoom_changed', () => { 
-            updateMapByEvent(map); 
+        naver.maps.Event.addListener(nvMap, 'zoom_changed', () => { 
+            updateMapByEvent(nvMap); 
         });
-        naver.maps.Event.addListener(map, 'dragend', () => { 
-            updateMapByEvent(map); 
+        naver.maps.Event.addListener(nvMap, 'dragend', () => { 
+            updateMapByEvent(nvMap); 
         });
 
         // 지적편집도 설정
         const cadastralLayer = new naver.maps.CadastralLayer();
-        naver.maps.Event.once(map, 'init', () => { cadastralLayer.setMap(CADASTRAL_MODE? true : null); });
+        naver.maps.Event.once(nvMap, 'init', () => { 
+            cadastralLayer.setMap(CADASTRAL_MODE? true : null); 
+        });
 
-        setMap(map);
+        setMap(nvMap);
         setCadastralLayer(cadastralLayer);
     };
 
@@ -126,10 +128,11 @@ const MapContainer = () => {
 
 
     // 마커 업데이트
-    const updateMarkers = async () => {
+    const updateMarkers = async (map) => {
+        console.log(map);
+
         if(!map) return;
 
-        
         await getMarkersData(guguns)
         .then(res => {
                 removeMarkers(MARKERS);
@@ -143,11 +146,14 @@ const MapContainer = () => {
 
     useEffect(()=> {
         initMap();
-        
     }, []);
 
+    useEffect(() => (
+        updateMapMarkers(map)
+    ), [map]);
+
     useEffect(() => {
-        updateMarkers();
+        updateMarkers(map);
     }, [LATLNG, ZOOM]);
 
     useEffect(() => {
