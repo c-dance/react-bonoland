@@ -41,11 +41,8 @@ const MapContainer = () => {
             }
         });
 
-        // 줌레벨, 지역 변경 이벤트 설정
-        naver.maps.Event.addListener(nvMap, 'zoom_changed', () => { 
-            updateMapByEvent(nvMap); 
-        });
-        naver.maps.Event.addListener(nvMap, 'dragend', () => { 
+        //event : zoom_changed, bounds_changed, deragend
+        naver.maps.Event.addListener(nvMap, 'idle', () => { 
             updateMapByEvent(nvMap); 
         });
 
@@ -67,7 +64,7 @@ const MapContainer = () => {
         else cadastralLayer.setMap(null);
     };
 
-    /* === 지도 위치 변경 === */
+    /* === 지도 위치 변경 (검색 필터 적용 시) === */
     const updateMapByFilter = () => {
         if(!map) return;
         const point = new naver.maps.Point(LATLNG[0], LATLNG[1]);
@@ -163,17 +160,16 @@ const MapContainer = () => {
         return dataWithLatlng;
     };
 
-    /* === 네이버 마커 반환 === */
+    /* === 네이버 마커 설정  === */
     const updateMarkers = async () => {
         if(!map) return;
 
         const IS_DONG = getZoomLevel(ZOOM) === 3;
-        const DATAS = IS_DONG? dongs : guguns;        
-
+        const DATAS = IS_DONG? dongs : guguns;  
+        
         if(DATAS.length > 0) {
             await getMarkersData(DATAS)
                 .then(data => {
-                    console.log(getZoomLevel(ZOOM));
                     let mks = IS_DONG? 
                         renderItemMarkers(data, map, updateInfoWindow) 
                         : renderedGroupMarker(data, map, updateInfoWindow);
@@ -182,11 +178,11 @@ const MapContainer = () => {
         }
     };
 
-    /* === 인포 윈도우 반환 === */
-    const updateInfoWindow = (data) => {
+    /* === 네이버 인포 윈도우 설정 === */
+    const updateInfoWindow = (data, position) => {
         if(!map) return;
-
-        const infoWindow = renderInfoWindow(data, map);
+        
+        const infoWindow = renderInfoWindow(data, position, map);
         dispatch(updateMapInfoWindow(infoWindow));
     };
 
@@ -196,12 +192,16 @@ const MapContainer = () => {
 
     useEffect(() => {
         updateMarkers();
+        // return () => {
+        //     removeMarkers(MARKERS);
+        //     removeInfoWindow(INFO_WINDOW);
+        // }
     }, [LATLNG, ZOOM]);
-
+    
     useEffect(() => {
         return () => {
-            removeMarkers(MARKERS);
             removeInfoWindow(INFO_WINDOW);
+            removeMarkers(MARKERS);
         }
     }, [MARKERS]);
     

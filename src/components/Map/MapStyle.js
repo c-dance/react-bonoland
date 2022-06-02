@@ -9,4 +9,3 @@ export const MAP = styled.div`
     height: 100%;
     background-color: #fff !important;
 `;
-

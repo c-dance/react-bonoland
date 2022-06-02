@@ -1,6 +1,4 @@
-import Marks from "rc-slider/lib/Marks";
-import { validateElement } from "react-modal/lib/helpers/ariaAppHider";
-import infoIcon from '../assets/images/map/ico-infowindow.svg';
+import { isMobile } from 'react-device-detect';
 
 const { naver } = window;
 
@@ -102,25 +100,23 @@ export const renderedGroupMarker = (data, map) => {
       position: new naver.maps.LatLng(item.latlng),
       map: map, 
       icon: {
-        content: [`
-        <div style="position:relative;display:inline-block;width:auto;">
-          <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;padding: 20px 12px 16px;border-radius:6px;background-color:#3E468E;color:#fff;font-size:13px;transform: translateY(13px);">
-              <em style="opacity:0.7;white-space:nowrap">${address}</em>
-              <ul style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-weight:700;white-space:nowrap">
-                ${ contents.toString()}
-              </ul>
-          </div>
-            <div style="position:absolute;top:0;left:50%;height:26px;line-height:26px;padding:0 12px;border-radius:13px;border:1px solid #3E468E;background-color:#fff;font-size:14px;white-space:nowrap;transform:translateX(-50%)">
-            ${total}
+        content: `
+          <div class="gMarker">
+            <div class="gMarker-box">
+                <em class="gMarker-addr">${address}</em>
+                <ul class="gMarker-infos">
+                  ${ contents.toString()}
+                </ul>
             </div>
-        </div>
-        `].join(',')
+            <div class="gMarker-total"> ${total} </div>
+          </div>
+        `
       },
       draggable: false
     });
     }
   )
-
+  console.log('add group markers');
   return markers;
 };
 
@@ -130,7 +126,7 @@ export const renderItemMarkers = (data, map, callback) => {
 
     const date = item["거래일"];
     const price = item["거래가"];
-    const color = item["보노매물"]? '#8A653F' : '#3E468E';
+    const bono = item["보노매물"];
     const latlng = item["latlng"];
 
     const marker = new naver.maps.Marker({
@@ -138,63 +134,72 @@ export const renderItemMarkers = (data, map, callback) => {
       map: map, 
       icon: {
         content: `
-          <div style="position:relative;z-index:90;display:inline-block;width:auto;">
-            <div style="z-index:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px 12px;border-radius:8px;background-color:${color};color:#fff;">
-                <em>${date} 거래</em>
-                <span>실거래가 ${price}}</span>
+          <div class="iMarker ${bono&&'bono'}">
+            <div class="iMarker-box">
+                <em class="iMarker-date">${date} 거래</em>
+                <span class="iMarker-price">실거래가 ${price}}</span>
             </div>
-            <div style="z-index:-1;position:realtive;width:0;height:0;background:transparent;border-style:inset;border-width:8px 9px 8px 9px; border-color: ${color} transparent transparent ${color}; transform:translateY(-6px);"></sdiv>
+            <div class="iMarker-tail"></sdiv>
           </div>
         `,
         // anchor: new naver.maps.Point(11, 35)
+        anchor: new naver.maps.Point(0, 0)
       },
       draggable: false
     });
   
     naver.maps.Event.addListener(marker, "click", () => {
-      callback(item);
+      console.log(marker);
+      callback(item, marker.__cp__);
     });
 
     return marker;
   });
-  
+  console.log('add item markers');
   return markers;
 };
 
-export const renderInfoWindow = (data, map) => {
+export const renderInfoWindow = (data, position, map) => {
 
   const latlng = data["latlng"];
+
+  console.log(position);
+
+  const windowTemplate = `
+    <div class="info-window" style="">
+      <div class="info-window__body">
+          <div class="pic"><img src=${'sd'}/></div>
+          <div class="conts">
+              <div class="conts__badges">
+                  <div class="badge badge--sales">분양</div>
+                  <div class="badge badge--rcmd">추천</div>
+                  <div class="badge badge--premium">프리미엄</div>
+              </div>
+              <span class="conts__addr">서울 특별시 강남구</span>
+              <span style="conts__category">단독 요양원 79인</span>
+          </div>
+          <div class="infos">
+              <span class="infos__price">매매가 46억</span>
+              <span class="infos__capacity">면적 1평 / 인가 00인 시설</span>
+          </div>
+      </div>
+      <div class="info-window__actions">
+          <button class="btn btn--details">상세</button>
+          <button class="btn">문의</button>
+      </div>
+    </div>
+  `;
+  
+  const radiusTemplate = `<div class="info-radius"></div>`;
 
   const infoWindow = new naver.maps.Marker({
     position: new naver.maps.LatLng(latlng),
     map: map,
     icon: {
-      content: `
-      <div style="z-index:90;position:relative; transform:translateY(-100px)">
-        <div style="z-index:-1;position:absolute;top:50%;left:50%;transform: translate(-200px,-200px);width:400px;height:400px;border-radius:200px;background:red;opacity:0.2"></div>
-          <div id="infoWindow" style="z-index:3;position:relative;display:flex;flex-direction:column;gap:24px;padding:16px 12px 36px;background:url(${infoIcon}) center / 100% 100% no-repeat;white-space:nowrap">
-            <div style="display:flex;flex-direction:column;gap:12px;">
-                <div style="display:flex;flex-direction:column;gap:8px;">
-                    <div style="display:flex;gap:6px;">
-                        <div style="height:20px;line-height:20px;padding:0 8px;background:#B68B39;color:#fff;border-radius:2px;font-size:12px;font-weight:500">분양</div>
-                        <div style="height:20px;line-height:20px;padding:0 8px;background:#E91E63;color:#fff;border-radius:2px;font-size:12px;font-weight:500">추천</div>
-                        <div style="height:20px;line-height:20px;padding:0 8px;background:#4CAF50;color:#fff;border-radius:2px;font-size:12px;font-weight:500">프리미엄</div>
-                    </div>
-                    <span style="font-weight:500;color:#212121;">서울 특별시 강남구</span>
-                    <span style="font-size:14px;color:#212121;">단독 요양원 79인</span>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:12px;">
-                    <span style="font-weight: 700;color:#2962FF;">매매가 46억</span>
-                    <span style="font-size: 12px;color:#757575;line-height: 1.3;">면적 1평 / 인가 00인 시설</span>
-                </div>
-            </div>
-            <div style="display:flex;gap:12px;">
-                <button style="flex: 1;height:24px;line-height:22px;border:1px solid #eee;font-size:13px;color:#424242;text-align:center;background:#fff;">상세</button>
-                <button style="flex: 1;height:24px;line-height:22px;border:1px solid #eee;font-size:13px;color:#424242;text-align:center;background:#fff;">문의</button>
-            </div>
-          </div>
-        </div>
-      `
+      content: 
+        // isMobile? 
+        `<div class="map-info">${radiusTemplate}</div>${windowTemplate}`
+        // : ` <div class="map-info">${radiusTemplate}${windowTemplate}</div>`
     },
     draggable: false
   });
@@ -215,6 +220,8 @@ export const removeMarkers = markers => {
   for(const marker of markers) {
     marker.setMap(null);
   }
+  console.log(markers);
+  console.log('clean markers');
   return markers;
 };
 

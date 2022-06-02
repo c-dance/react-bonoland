@@ -6,8 +6,6 @@ export const Charts = styled.div`
     position: fixed;
     bottom: 30px;
     right: 30px;
-    display: flex;
-    gap: 0;
     border-radius: 20px;
     overflow: hidden;
 
@@ -17,7 +15,6 @@ export const Charts = styled.div`
         right: 0;
         width: 100%;
         height: 100%;
-        flex-direction: column;
         border-radius: 0;
     }
 `;
@@ -25,4 +22,10 @@ export const Charts = styled.div`
 export const Wrapper = styled(module.scrollWrapper)`
     height: 100%;
     width: 100%;
+    display: flex;
+    gap: 0;
+
+    .mobile & {
+        flex-direction: column;
+    }
 `;

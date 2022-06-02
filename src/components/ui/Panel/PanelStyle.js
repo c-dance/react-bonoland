@@ -7,12 +7,16 @@ export const PanelBox = styled.div`
     position: fixed;    
     left: ${ props => 
         props.position === 'right'? 'auto'
+        : props.position === 'bottom'? '0' 
         : props.type === "floating"? ( props.active? `14px` : `-390px`) : ( props.active? `0` : `-390px`)
     };
     right: ${ props =>
         props.position === 'right'? '0px' : 'auto'
     };
-    top: ${ props => props.type === "floating"? `104px` : `80px` };
+    top: ${ props => 
+        props.position === "bottom" ? props.active? '55%' : 'calc(100% - 56px)'
+        :props.type === "floating"? `104px` : `80px` 
+    };
     width: 390px;
     height: ${ props => props.type === "floating"? `900px` : `calc(100% - 80px)` };
     max-height: ${ props => props.type === "floating"? `calc(100% - 124px)` : `calc(100% - 80px)` };
@@ -22,9 +26,8 @@ export const PanelBox = styled.div`
     box-shadow: ${ props => props.type === "side"  && '3px 3px 6px rgba(0,0,0,.06)'};
 
     .mobile & {
+        z-index: 10;
         position: fixed;
-        top: 0;
-        left: 0;
         right: 0;
         width: 100%;
         height: 100%;
@@ -40,12 +43,13 @@ export const PanelWrap = styled.div`
 
 export const PanelBtn = styled.button`
     position: absolute;
-    top: 50%;
-    right: -24px;
+    top: ${ props => props.position === 'bottom'? '-24px' : '50%' };
+    left: ${ props => props.position === 'bottom'? 'calc(50% - 26px)' : '-24px' };
     width: 24px;
     height: 52px;
     border-radius: 0 4px 4px 0;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+    transform: rotate(${props => props.position == 'bottom'? '270deg' : '0'});
     background: url(${ 
         props => props.active? rightIcon : leftIcon
     }) center no-repeat #fff;

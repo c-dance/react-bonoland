@@ -108,10 +108,15 @@ const CenterListContainer = () => {
                 confirmHandler={ toggleCapacity } 
                 selectHandler = { selectCapacity } 
             />
-            {/* <CenterList 
-                type="main" 
-                centers= { centers } 
-            /> */}
+            <Panel
+                position={ "bottom" }
+                fold={ true }
+            >
+                <CenterList 
+                    type="main" 
+                    centers= { centers } 
+                />
+            </Panel>
         </MobileView>
         </>
     )

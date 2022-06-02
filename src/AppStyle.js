@@ -1,8 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import map from './themes/map.css';
 
 const AppStyle = createGlobalStyle`
     ${reset}
+    ${map}
 
     * {
         box-sizing: border-box;
