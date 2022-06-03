@@ -88,7 +88,6 @@
 .mobile .iMarker-price { font-weight: 14; }
 
 .map-info {
-    z-index:90;
     position:relative; 
     transform: translate(-200px, -120px);
 }
@@ -104,7 +103,6 @@
 }
 
 .info-window { 
-    z-index:90;
     position:absolute;
     bottom: 50%;
     left: 50%;
@@ -194,18 +192,13 @@
     color: #fff;
 }
 
-/* .mobile .map-info {
-    z-index: -1;
-}
-
 .mobile .info-window {
-    z-index: 99;
-    position: fixed;
-    top: calc(100vh - 288px);
+    position: relative;
+    top: 0;
     left: 0;
-    width: 100vw;
-    height: 232px;
-    padding: 24px 14px;
+    width: 100%;
+    height: 100%;
+    padding: 0;
     background: #fff;
 }
 .mobile .info-window__body {
@@ -213,8 +206,8 @@
 }
 .mobile .info-window__body .pic {
     position: absolute;
-    top: 24px;
-    left: 12px;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -225,18 +218,12 @@
     height: 40px;
     line-height: 40px;
 }
-*/
-
 .mobile .map-info {
     transform: translate(-100px, -22px);
 }
 
-.mobile  .info-radius {
+.mobile .info-radius {
     width:200px;
     height:200px;
     border-radius:100px;
 }
-/* .mobile .info-window { 
-    z-index:90;
-    left: 0;
-} */

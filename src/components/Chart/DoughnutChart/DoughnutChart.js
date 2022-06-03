@@ -7,7 +7,7 @@ import { isBrowser } from 'react-device-detect';
 
 
 const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];
-const baseLen = 4;
+const baseLen = 5;
 const gap = { weight: 1 };
 const getStyldedDatasets = (datasets) => {
     let newDatasets = [];

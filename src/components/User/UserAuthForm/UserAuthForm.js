@@ -1,13 +1,14 @@
 import { module } from '../../../themes/module';
 import { Form, Inform } from './UserAuthFormStyle';
 
-const UserAuthForm = () => {
+const UserAuthForm = ({ password, onPasswordChange }) => {
+
     return (
         <>
             <Inform>
                 본인 확인을 위해 비밀번호를 재 입력해주세요.
             </Inform>
-            <Form>
+            <Form >
                 <module.Fieldset>
                     <module.Input
                         type="text"
@@ -16,8 +17,9 @@ const UserAuthForm = () => {
                     />
                     <module.Input
                         type="password"
+                        value={ password }
+                        onChange= { onPasswordChange }
                         placeholder="비밀번호"
-                        disabled
                     />
                 </module.Fieldset>
                 <module.SubmitButton

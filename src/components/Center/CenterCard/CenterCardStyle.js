@@ -8,6 +8,8 @@ export const Card = styled.article`
     flex-direction: column;
     gap: 16px;
     padding: 16px 0;
+
+    &.abstract { padding: 8px 0; }
 `;
 
 export const Head = styled.h3`
@@ -22,6 +24,7 @@ export const Wrap = styled(Link)`
     display: flex;
     gap: 16px;
     height: 184px;
+    .abstract & { height: auto; }
 `;
 
 export const Thumbnail = styled.div`
@@ -62,6 +65,13 @@ export const Corp = styled.div`
 
 export const Num = styled.div`
     margin-bottom: 8px;
+
+    .abstract & { 
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
     span {
         display: inline-block;
         width: auto;
@@ -69,7 +79,12 @@ export const Num = styled.div`
         border: 1px solid ${ props => props.theme.colors.gray300 };
         border-radius: 2px;
         font-size: ${ ({theme}) => theme.fontSizes.xs };
-        color: ${ ({theme}) => theme.colors.grqy600 };
+        color: ${ ({theme}) => theme.colors.gray600 };
+
+        .abstract & {
+            padding: 4px 8px;
+            font-size: ${ ({theme}) => theme.fontSizes.xxs };
+        }
     }
 `;
 
@@ -88,15 +103,32 @@ export const Badges = styled.div`
     }
 `;
 
+export const Name = styled.div`
+    margin-bottom: 6px;
+    font-weight: ${ ({theme}) => theme.fontWeights.bold };
+`;
+
 export const Region = styled.div`
     margin-bottom: 8px;
-    font-size: ${ ({theme}) => theme.fontSizes.xs };
+    font-size: ${ ({theme}) => theme.fontSizes.s };
+    color: ${ ({theme}) => theme.colors.gray800 };
+
+    .abstract & {
+        font-size: 13px;
+        color: ${ ({theme}) => theme.colors.gray700 };
+    }
 `;
 
 export const Price = styled.div`
     margin-bottom: 12px;
     font-size: ${ ({theme}) => theme.fontSizes.l };
-    font-weigth: ${ ({theme}) => theme.fontWeights.medium };
+    font-weight: ${ ({theme}) => theme.fontWeights.medium };
+
+    .abstract & {
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: ${ ({theme}) => theme.colors.blue };
+    }
 `;
 
 export const Infos = styled.div`
@@ -106,6 +138,11 @@ export const Infos = styled.div`
     color: ${ ({theme}) => theme.colors.gray700 };
     line-height: 1.2;
     margin-bottom: 16px;
+
+    .abstract & { 
+        gap: 4px;
+        margin-bottom: 0; 
+    }
 `;
 
 export const Assets = styled.div`

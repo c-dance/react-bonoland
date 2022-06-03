@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { PanelBox, PanelWrap, PanelBtn } from './PanelStyle';
 
+/* === paner type: foating == */
+/* === paner position: right, bottom == */
+
 const Panel = ({ type, position, fold, children }) => {
     // UI FUNCTION
     const [ active, setActive ] = useState(true);

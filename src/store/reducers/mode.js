@@ -3,7 +3,8 @@ import {
     LOGIN,
     FIND_ID,
     FIND_PWD,
-    CALCULATOR
+    CALCULATOR,
+    CONTACT
 } from '../actions/mode';
 
 const initialState = {
@@ -11,7 +12,8 @@ const initialState = {
     login: false,
     findId: false,
     findPwd: false,
-    calculator: false
+    calculator: false, 
+    contact: false
 };
 
 const ModeReducer = (state = initialState, action ) => {
@@ -35,6 +37,10 @@ const ModeReducer = (state = initialState, action ) => {
         case CALCULATOR.ACTIVATE: 
             return {...initialState, calculator: true };
         case CALCULATOR.DEACTIVATE:
+            return {...initialState, calculator: false };
+        case CONTACT.ACTIVATE: 
+            return {...initialState, calculator: true };
+        case CONTACT.DEACTIVATE:
             return {...initialState, calculator: false };
         default:
             return initialState;

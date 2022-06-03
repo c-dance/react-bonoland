@@ -10,9 +10,6 @@ import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
 import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
 import syncIcon from '../../../assets/images/icon/ico-sync.svg';
-import { calculateNewValue } from '@testing-library/user-event/dist/utils';
-import { fontString } from 'chart.js/helpers';
-import { ThemeProvider } from 'styled-components';
 
 export const Center = styled.article`
     position: relative;
@@ -21,7 +18,7 @@ export const Center = styled.article`
     background-color: #fff;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
 
-    &.mobile {
+    .mobile & {
         z-index: 40;
         position: fixed;
         top: 0;
@@ -35,7 +32,7 @@ export const Top = styled.div`
     height: auto;
 `;
 
-export const Accordian = styled.div`
+export const Accordion = styled.div`
     width: 100%;
     height: 110px;
     background-color: #fff;
@@ -47,7 +44,7 @@ export const Accordian = styled.div`
     }
 `;
 
-export const AccordianSummary = styled.div`
+export const AccordionSummary = styled.div`
     position: absolute;
     top: 50px;
     left: 0;
@@ -74,7 +71,7 @@ export const AccordianSummary = styled.div`
     }
 `;
 
-export const AccordianDetails = styled.div`
+export const AccordionDetails = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -84,10 +81,12 @@ export const AccordianDetails = styled.div`
     overflow: hidden;
     transition: height .3s;
     font-size: 14px;
+
     .mobile & {
         padding-top: 0;
         gap: 8px;
-        height: ${ props => props.active? '56px' : '0px' }
+        height: 0px;
+        &.active { height: 56px; }
     }
 `;
 
@@ -130,6 +129,10 @@ export const Contents = styled.div`
     height: calc(100% - 214px);
     overflow-x: hidden;
     overflow-y: scroll;
+
+    .mobile & {
+        height: calc(100% - 160px);
+    }
 
     > div {
         height: auto;
@@ -175,6 +178,7 @@ export const Section = styled.section`
 `;
 
 export const Actions = styled.div`
+
 `;
 
 export const Table = styled.table`
@@ -278,6 +282,12 @@ export const Contact = styled.button`
     height: 56px;
     background-color: ${ ({theme}) => theme.colors.primary };
     color: #fff;
+    
+    .mobile & {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
 `;
 
 export const Back = styled.div`

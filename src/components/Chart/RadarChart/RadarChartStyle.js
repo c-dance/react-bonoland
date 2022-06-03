@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const ChartWrap = styled.div`
     position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin:  0 auto;
 `;
 
 export const Average = styled.div`

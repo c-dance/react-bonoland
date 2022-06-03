@@ -44,4 +44,18 @@ export const Hr = styled.hr`
 export const Contents = styled.div`
     width: 100%;
     margin-top: 16px;
+    font-size: ${({theme}) => theme.fontSizes.s };
+    color: ${({theme}) => theme.colors.gray500 };
+    line-height: 1.4;
+`;
+
+export const CloseAction = styled.div`
+    width: 100%;
+    height: 44px;
+    margin-top: 32px;
+    border-radius: 2px;
+    line-height: 44px;
+    text-align: center;
+    background-color: ${({ theme }) => theme.colors.primary };
+    color: #fff;
 `;

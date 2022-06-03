@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ReactModal from "react-modal";
-import { ModalWrap, Close, Title, Description, Hr, Contents } from './ModalStyle';
+import { ModalWrap, Close, Title, Description, Hr, Contents, CloseAction } from './ModalStyle';
 import { useNavigate } from 'react-router';
 
 const modalStyle = {
@@ -27,6 +27,7 @@ const Modal  = ({
     open, 
     close, 
     onCloseClick, 
+    closeAction, 
     title, 
     description,
     width,
@@ -47,7 +48,7 @@ const Modal  = ({
             isOpen={ open? open : true }
             style={ customStyle }
             appElement={document.getElementById('root') || undefined}
-            onRequestClose={ () => { onCloseClick && onCloseClick()} }
+            onRequestClose={ () => { onCloseClick && onCloseClick() } }
         >
             <ModalWrap>
                 { 
@@ -69,8 +70,12 @@ const Modal  = ({
                 <Contents>
                     { children }
                 </Contents>
+                { 
+                    closeAction && 
+                    <CloseAction onClick={ () => { onCloseClick && onCloseClick() } }>확인</CloseAction> 
+                }
             </ModalWrap>
-        </ReactModal>
+        </ReactModal> 
     )
 };
 

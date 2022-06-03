@@ -24,6 +24,11 @@ export const CALCULATOR = {
     DEACTIVATE: '/'
 };
 
+export const CONTACT = {
+    ACTIVATE: '/contact',
+    DEACTIVATE: '/', 
+};
+
 /* === ACTOIN CREATOR === */
 export const activateSignup = () => ({
     type: SIGNUP.ACTIVATE,
@@ -50,6 +55,11 @@ export const activateCalculator = () => ({
     payload: true
 });
 
+export const activateContact = () => ({
+    type: CONTACT.ACTIVATE,
+    payload: true
+});
+
 export const deactivateSignup = () => ({
     type: SIGNUP.DEACTIVATE,
     payload: false
@@ -72,5 +82,9 @@ export const deactivateFindPwd = () => ({
 
 export const deactivateCalculator = () => ({
     type: CALCULATOR.DEACTIVATE,
+    payload: false
+});
+export const deactivateContact = () => ({
+    type: CONTACT.DEACTIVATE,
     payload: false
 });

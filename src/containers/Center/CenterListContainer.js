@@ -7,6 +7,7 @@ import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilt
 import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
+import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 
 const CenterListContainer = () => {
     /*
@@ -108,15 +109,12 @@ const CenterListContainer = () => {
                 confirmHandler={ toggleCapacity } 
                 selectHandler = { selectCapacity } 
             />
-            <Panel
-                position={ "bottom" }
-                fold={ true }
-            >
+            <SwipePanel>
                 <CenterList 
-                    type="main" 
+                    type="abstract" 
                     centers= { centers } 
                 />
-            </Panel>
+            </SwipePanel>
         </MobileView>
         </>
     )

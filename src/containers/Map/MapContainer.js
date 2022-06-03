@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateMapZoom, updateMapRegion, updateMapLatlng, updateMapMarkers, updateMapInfoWindow } from '../../store/actions/map';
-import { getRegionByLatlng, getRegionByZoom, removeMarkers, getSearchByAddress, renderedGroupMarker, getZoomLevel, renderItemMarkers, renderInfoWindow, removeInfoWindow } from '../../utils/map';
-import { isBrowser } from 'react-device-detect';
+import { 
+    updateMapZoom, 
+    updateMapRegion, 
+    updateMapLatlng, 
+    updateMapMarkers, 
+    updateMapInfoWindow, 
+    updateMapFilter 
+} from '../../store/actions/map';
+import { 
+    getRegionByLatlng, 
+    getRegionByZoom, 
+    removeMarkers, 
+    getSearchByAddress, 
+    renderedGroupMarker, 
+    getZoomLevel, 
+    renderItemMarkers, 
+    renderInfoWindow, 
+    removeInfoWindow 
+} from '../../utils/map';
+import { isBrowser, isMobile } from 'react-device-detect';
 import Map from '../../components/Map/Map';
 import MapRegion from '../../components/MapRegion/MapRegion';
-import { fireEvent } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
+import { activateAlert } from '../../store/actions/alert';
 
 const { naver } = window; 
 
@@ -14,16 +31,18 @@ const MapContainer = () => {
     /* === 지도, 지적편집도 === */
     const [ map, setMap ] = useState(null);
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
-    // let markers = [];
+    const [ mobileInfoWindow, setMobileInfoWindow ] = useState(false);
+    const [ infoWindowData, setInfoWindowData ] = useState(null);
+
     /* === 지도 속성 === */
     const dispatch = useDispatch();
-    const LATLNG = useSelector(state => state.Map.latlng);
-    const ZOOM = useSelector(state => state.Map.zoom);
-    const REGION = useSelector(state => state.Map.region);
-    const MARKERS = useSelector(state => state.Map.markers);
-    const INFO_WINDOW = useSelector(state => state.Map.infoWindow);
-    const CADASTRAL_MODE = useSelector(state => state.Map.cadastral);
-    const FILTERED = useSelector(state => state.Map.filtered);
+    const LATLNG = useSelector(state => state.Map.latlng); //위경도
+    const ZOOM = useSelector(state => state.Map.zoom); // 줌
+    const REGION = useSelector(state => state.Map.region); // 지역
+    const MARKERS = useSelector(state => state.Map.markers); // 마커 목록
+    const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
+    const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
+    const FILTERED = useSelector(state => state.Map.filtered); // 필터링 여부
     
    /* === 지도 생성 === */
     const initMap = () => {
@@ -109,7 +128,7 @@ const MapContainer = () => {
 
     const dongs = [
         {
-            "ID" : "asdf265",
+            "ID" : 0,
             "주소" :"경기 부천시 소삼로 38 101동 102호",
             "거래일" : "2022.01.02",
             "거래가": "100,000,000",
@@ -117,7 +136,7 @@ const MapContainer = () => {
             "보노매물": false
         },
         {
-            "ID" : "asdf2654",
+            "ID" : 1,
             "주소" :"경기 부천시 경인옛로 25 104호",
             "거래일" : "2022.03.02",
             "거래가": "200,000,000",
@@ -125,7 +144,7 @@ const MapContainer = () => {
             "보노매물": true
         },
         {
-            "ID" : "asdf265",
+            "ID" : 2,
             "주소" :"경기 부천시 소사동로 85",
             "거래일" : "2022.04.02",
             "거래가": "300,000,000",
@@ -133,7 +152,7 @@ const MapContainer = () => {
             "보노매물": true
         },
         {
-            "ID" : "asdf266",
+            "ID" : 3,
             "주소" :"경기 부천시 은성로62번길 13 백암빌딩 101호",
             "거래일" : "2022.05.02",
             "거래가": "500,000,000",
@@ -160,7 +179,80 @@ const MapContainer = () => {
         return dataWithLatlng;
     };
 
-    /* === 네이버 마커 설정  === */
+    /* === 인포 윈도우 문의하기 === */
+    const alertMsg = {
+        title: "비회원 매수문의",
+        contents: "비회원은 따로 문의"
+    };
+
+    const closeInfoWindow = () => {
+        removeInfoWindow(INFO_WINDOW);
+    };  
+
+    const onContactClick = () => {
+        dispatch(activateAlert(alertMsg));
+    };
+
+    /* === 모바일 인포윈도우 보이기 === */
+    const showMobileInfoWindow = (data) => {
+        setInfoWindowData(data);
+        setMobileInfoWindow(true);
+    };
+
+    /* === 모바일 인포윈도우 닫기 === */
+    const clsoeMobileInfoWindow = () => {
+        removeInfoWindow(INFO_WINDOW);
+        setInfoWindowData(null);
+        setMobileInfoWindow(false);
+    };
+
+    /* === 인포윈도우 활성화 === */
+    const updateInfoWindow = centerId => {
+        if(!map) return; 
+
+        let idata = dongs[centerId];
+        
+        /* === 네이버 인포 윈도우 설정 === */
+        const infoWindowOption = {
+            data: idata,
+            map: map,
+            onCloseClick: isMobile? 
+                clsoeMobileInfoWindow 
+                :closeInfoWindow,
+            onContactClick: onContactClick,
+        };
+        
+        dispatch(updateMapInfoWindow(renderInfoWindow(infoWindowOption)));
+
+        if(isMobile) showMobileInfoWindow(idata);
+    };
+
+    /* === 그룹 마커 클릭 === */
+    const onGroupMarkerClick = (latlng) => {
+
+        const level = getZoomLevel(ZOOM);
+        const nZoom = level <= 1 ? 14 : 16;
+
+        dispatch(updateMapFilter({
+            latlng: latlng,
+            zoom: nZoom
+        }));
+
+    };
+
+    /* === 아이템 마커 클릭 === */
+    const onItemMarkerClick = (latlng, itemId) => {
+        // if(isMobile) {
+        //     dispatch(updateMapFilter({
+        //         latlng: latlng
+        //     }));
+        // }
+        // 아이템 아이디 넘기기
+        updateInfoWindow(itemId);
+    };
+    
+    
+    /* === 네이버 마커 설정 === */
     const updateMarkers = async () => {
         if(!map) return;
 
@@ -171,19 +263,11 @@ const MapContainer = () => {
             await getMarkersData(DATAS)
                 .then(data => {
                     let mks = IS_DONG? 
-                        renderItemMarkers(data, map, updateInfoWindow) 
-                        : renderedGroupMarker(data, map, updateInfoWindow);
+                        renderItemMarkers(data, map, onItemMarkerClick) 
+                        : renderedGroupMarker(data, map, onGroupMarkerClick);
                     dispatch(updateMapMarkers(mks));
                 })
         }
-    };
-
-    /* === 네이버 인포 윈도우 설정 === */
-    const updateInfoWindow = (data, position) => {
-        if(!map) return;
-        
-        const infoWindow = renderInfoWindow(data, position, map);
-        dispatch(updateMapInfoWindow(infoWindow));
     };
 
     useEffect(()=> {
@@ -222,7 +306,18 @@ const MapContainer = () => {
     return (
         <>
             <Map />
-            { isBrowser && <MapRegion region = { REGION } /> }
+            { 
+                isBrowser && 
+                <MapRegion region = { REGION } /> 
+            }
+            { 
+                isMobile && mobileInfoWindow && 
+                <InfoWindow 
+                    data={ infoWindowData } 
+                    onCloseClick={ clsoeMobileInfoWindow } 
+                    onContactClick = { onContactClick }    
+                /> 
+            }
         </>
     )
 };

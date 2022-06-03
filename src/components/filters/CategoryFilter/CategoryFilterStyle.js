@@ -12,6 +12,7 @@ export const CategoryForm = styled.div`
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
 
     .mobile & {
+        z-index: 30;
         position: fixed;
         flex-direction: column;
         gap: 10px;
@@ -55,6 +56,7 @@ export const Category = styled.div`
         height: 32px;
         border-radius: 2px;
         box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+        background-color: #fff;
 
         label {
             display: block;

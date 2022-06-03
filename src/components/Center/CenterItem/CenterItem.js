@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Center,
     Top,
     Contents,
     Thumbnail,
-    Accordian,
-    AccordianSummary,
-    AccordianDetails,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
     Assets,
     Corp,
     Actions, 
@@ -22,36 +22,37 @@ import {
     TabCont, 
     ChartWrap
 } from './CenterItemStyle';
-import { isMobile } from 'react-device-detect';
 import { useNavigate } from 'react-router';
 import ItemImg from '../../../assets/test/item-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import DoughnutChart from '../../Chart/DoughnutChart/DoughnutChart';
 import RadarChart from '../../Chart/RadarChart/RadarChart';
+import { isMobile } from 'react-device-detect';
 
-const CenterItem = ({ data }) => {
+const CenterItem = ({ data, onContactClick }) => {
 
     const navifate = useNavigate();
     
     // UI FUNCTION
     const [ tabIdx, setTabIdx ] = useState(0);
-    const [ accordian, setAccordian ] = useState(true);
+    const [ accordion, setAccordion ] = useState(isMobile? false : true );
 
     const toggleTab = (idx) => { setTabIdx(idx); };
-    const toggleAccordian = () => { setAccordian(!accordian); };
+    const toggleAccordion = (accordian) => { setAccordion(!accordian); };
+
 
     return (
-        <Center className={ isMobile && "mobile" }>
+        <Center>
             <Top>
-                <Accordian>
-                    <AccordianSummary  onClick={ () => toggleAccordian() }>
+                <Accordion>
+                    <AccordionSummary  onClick={ () => { isMobile && toggleAccordion(accordion); } }>
                         <h2 className="name">{`${data.category}(${data.capacity}인)`}</h2>
-                    </AccordianSummary>
-                    <AccordianDetails active={ accordian }>
+                    </AccordionSummary>
+                    <AccordionDetails className={ accordion && "active" }>
                         <div className="num">{`매물번호:${data.no}`}</div>
                         <div className="addr">{ data.region }</div>
-                    </AccordianDetails>
-                </Accordian>
+                    </AccordionDetails>
+                </Accordion>
                 <Back onClick={ () => navifate(-1)} ></Back>
                 <TabNavs>
                     <TabNav active={tabIdx === 0} onClick={() => toggleTab(0)}>상세정보</TabNav>
@@ -263,7 +264,7 @@ const CenterItem = ({ data }) => {
                     </TabCont>
                 </div>
             </Contents>
-            <Contact>문의하기</Contact>
+            <Contact onClick={ () => onContactClick() }>문의하기</Contact>
         </Center>
     )
 };

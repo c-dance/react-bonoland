@@ -75,7 +75,7 @@ export const getSearchByAddress = address => {
   })
 };
 
-export const renderedGroupMarker = (data, map) => {
+export const renderedGroupMarker = (data, map, onMarkerClick) => {
 
   const markers = data.map(item => {
     let address = '';
@@ -96,7 +96,7 @@ export const renderedGroupMarker = (data, map) => {
       }
     });
 
-    return new naver.maps.Marker({
+    const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(item.latlng),
       map: map, 
       icon: {
@@ -114,13 +114,19 @@ export const renderedGroupMarker = (data, map) => {
       },
       draggable: false
     });
+
+    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(item.latlng) });
+
+    return marker;
     }
   )
+
+
   console.log('add group markers');
   return markers;
 };
 
-export const renderItemMarkers = (data, map, callback) => {
+export const renderItemMarkers = (data, map, onMarkerClick) => {
 
   const markers = data.map(item => {
 
@@ -148,10 +154,7 @@ export const renderItemMarkers = (data, map, callback) => {
       draggable: false
     });
   
-    naver.maps.Event.addListener(marker, "click", () => {
-      console.log(marker);
-      callback(item, marker.__cp__);
-    });
+    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
 
     return marker;
   });
@@ -159,11 +162,9 @@ export const renderItemMarkers = (data, map, callback) => {
   return markers;
 };
 
-export const renderInfoWindow = (data, position, map) => {
+export const renderInfoWindow = props => {
 
-  const latlng = data["latlng"];
-
-  console.log(position);
+  const latlng = props.data["latlng"];
 
   const windowTemplate = `
     <div class="info-window" style="">
@@ -176,7 +177,7 @@ export const renderInfoWindow = (data, position, map) => {
                   <div class="badge badge--premium">프리미엄</div>
               </div>
               <span class="conts__addr">서울 특별시 강남구</span>
-              <span style="conts__category">단독 요양원 79인</span>
+              <span class="conts__category">단독 요양원 79인</span>
           </div>
           <div class="infos">
               <span class="infos__price">매매가 46억</span>
@@ -184,7 +185,7 @@ export const renderInfoWindow = (data, position, map) => {
           </div>
       </div>
       <div class="info-window__actions">
-          <button class="btn btn--details">상세</button>
+          <a href="/center${props.data.id}" class="btn btn--details">상세</a>
           <button class="btn">문의</button>
       </div>
     </div>
@@ -194,22 +195,27 @@ export const renderInfoWindow = (data, position, map) => {
 
   const infoWindow = new naver.maps.Marker({
     position: new naver.maps.LatLng(latlng),
-    map: map,
+    map: props.map,
     icon: {
       content: 
-        // isMobile? 
-        `<div class="map-info">${radiusTemplate}</div>${windowTemplate}`
-        // : ` <div class="map-info">${radiusTemplate}${windowTemplate}</div>`
+        isMobile? 
+        `<div class="map-info">${radiusTemplate}</div>`
+        : ` <div class="map-info">${radiusTemplate}${windowTemplate}</div>`
     },
+    zIndex: isMobile? -1 : 90,
     draggable: false
   });
 
   naver.maps.Event.addListener(infoWindow, "click", (e) => {
     const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
-    if(outerClicked) infoWindow.setMap(null);
+    if(outerClicked) {
+      props.onCloseClick();
+      infoWindow.setMap(null);
+    }
   });
 
-  naver.maps.Event.addListener(map, "click", () => {
+  naver.maps.Event.addListener(props.map, "click", () => {
+    props.onCloseClick();
     infoWindow.setMap(null);
   });
 
@@ -220,7 +226,6 @@ export const removeMarkers = markers => {
   for(const marker of markers) {
     marker.setMap(null);
   }
-  console.log(markers);
   console.log('clean markers');
   return markers;
 };
@@ -229,5 +234,6 @@ export const removeInfoWindow = async infoWindow => {
   if(infoWindow) {
     infoWindow.setMap(null);
   }
+  console.log('clean infowindow');
   return infoWindow;
 }

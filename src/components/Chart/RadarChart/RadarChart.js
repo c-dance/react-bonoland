@@ -50,7 +50,8 @@ const radarOptions = {
         max: 100,
         beginAtZero: true,
         stepSize: 25
-    }
+    },
+    responsive: true
 };
 
 const BonoPlugin = {

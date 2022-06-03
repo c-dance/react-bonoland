@@ -5,11 +5,9 @@ import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
 import Contact from '../../components/Contact/Contact';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const ContactContainer = () => {
-
-    // 매물문의 디바이별 레이아웃 처리
-    const BROWSER_DEVICE = useContext(LayoutContext) === 'browser';
 
     // 개인정보 활용동의 (1) 약관 받아오기
     const [ term, setTerm ] = useState('');
@@ -22,6 +20,9 @@ const ContactContainer = () => {
     const [ form, setForm ] = useState({});
     const [ formFilled, setFormFilled ] = useState(false);
     const [ formSubmitted, setFormSubmitted ] = useState(false);
+
+    // 로그인 되었을 때
+    const [ user, setUser ] = useState(null);
 
     // 매물 문의폼 전송
     const [ registered, setRegistered ] = useState(false);
@@ -54,10 +55,37 @@ const ContactContainer = () => {
         navigate('/');
     };
 
+    const template = () => (
+        <>
+            {
+                !agreeSubmitted && 
+                <Agreement
+                    subTitle="개인정보 수집 동의"
+                    label="개인정보수집에 대한 내용에 동의합니다."
+                    content={ term }
+                    isChecked={ agreed }
+                    onAgreeClick={ onAgreeClick }
+                    onAgreeSubmit={ onAgreeSubmit }
+                />
+            }
+            {
+                agreeSubmitted && 
+                !formSubmitted &&
+                <Contact 
+                    user = { user } 
+                />
+            }
+            {
+                formSubmitted &&
+                <div>{ "접수 완료" }</div>
+            }
+        </>
+    );
+
     return (
         <>
         {
-            BROWSER_DEVICE &&  
+            isBrowser &&  
             <Modal
                 open={ true }
                 close={ true }
@@ -65,54 +93,16 @@ const ContactContainer = () => {
                 width="890"
                 title="매수 문의"
             >
-                {
-                    !agreeSubmitted && 
-                    <Agreement
-                        subTitle="개인정보 수집 동의"
-                        label="개인정보수집에 대한 내용에 동의합니다."
-                        content={ term }
-                        isChecked={ agreed }
-                        onAgreeClick={ onAgreeClick }
-                        onAgreeSubmit={ onAgreeSubmit }
-                    />
-                }
-                {
-                    agreeSubmitted && 
-                    !formSubmitted &&
-                    <Contact />
-                }
-                {
-                    formSubmitted &&
-                    <div>{ "접수 완료" }</div>
-                }
+                { template() }
             </Modal>
         }
         {
-            !BROWSER_DEVICE &&
+            isMobile &&
             <MobileSection 
-                title="매물접수" 
+                title="매수문의" 
                 onBackClick={ deactivatContact }
             >
-                    {
-                        !agreeSubmitted && 
-                        <Agreement
-                            subTitle="개인정보 수집 동의"
-                            label="개인정보수집에 대한 내용에 동의합니다."
-                            content={ term }
-                            isChecked={ agreed }
-                            onAgreeClick={ onAgreeClick }
-                            onAgreeSubmit={ onAgreeSubmit }
-                        />
-                    }
-                    {
-                        agreeSubmitted && 
-                        !formSubmitted &&
-                        <Contact />
-                    }
-                    {
-                        formSubmitted &&
-                        <div>{ "접수 완료" }</div>
-                    }
+                    { template() }
             </MobileSection>
         }
     </>
