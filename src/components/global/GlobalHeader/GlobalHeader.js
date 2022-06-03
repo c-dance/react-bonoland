@@ -6,6 +6,7 @@ import {
     activateLogin,
     activateCalculator,
 } from '../../../store/actions/mode';
+import React from "react";
 
 const GlobalHeader = () => {
 

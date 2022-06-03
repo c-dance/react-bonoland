@@ -1,4 +1,5 @@
 import { Region } from './MapRegionStyle';
+import React from "react";
 
 const MapRegion = ({region}) => (
     <Region 

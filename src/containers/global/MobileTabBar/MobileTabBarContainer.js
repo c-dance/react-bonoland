@@ -1,3 +1,4 @@
+import React from "react";
 import MobileTabBar from "../../../components/global/MobileTabBar/MobileTabBar";
 
 const MobileTabBarContainer = () => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import { getSearchByAddress } from '../../utils/map';
 import { useDispatch } from 'react-redux';

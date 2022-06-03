@@ -1,4 +1,5 @@
 import { Pannel, PannelWrap, PannelBtn } from './SidePannelStyle';
+import React from "react";
 
 const SidePannel = ({ type, active, clickHandler, children }) => {
     return (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ReactModal from "react-modal";
 import { ModalWrap, Close, Title, Description, Hr, Contents, CloseAction } from './ModalStyle';
 import { useNavigate } from 'react-router';

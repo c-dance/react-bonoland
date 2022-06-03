@@ -1,6 +1,7 @@
 import { isMobile } from "react-device-detect"
 import { isBrowser } from "react-device-detect";
 import styled from "styled-components";
+import React from "react";
 
 const MainWrapper = styled.main`
     z-index: 20;

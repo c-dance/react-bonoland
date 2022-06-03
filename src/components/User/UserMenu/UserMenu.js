@@ -1,6 +1,7 @@
 import { Menus, Logout } from './UserMenuStyle';
 import { Link } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import React from "react";
 
 const UserMenu = () => {
     return (

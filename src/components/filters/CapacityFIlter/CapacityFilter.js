@@ -3,13 +3,14 @@ import 'rc-slider/assets/index.css';
 import Slider from 'rc-slider';
 import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
+import React from "react";
 
 const marks = { 0: 0, 20: 20, 40: 40, 60: 60, 80: 80, 100: 100 };
 
 const CapacityFilter = ({ active, values, confirmHandler, selectHandler }) => {
 
     return (
-        <CapacityForm active={ active }>
+        <CapacityForm className={ active && "active" }>
             <Legend>인가정원</Legend>
             <SliderWrap>
                 <Slider 
@@ -65,6 +66,7 @@ const CapacityFilter = ({ active, values, confirmHandler, selectHandler }) => {
             </RadioWrap>
             <Reset>선택 해제</Reset>
             <Confirm onClick={ () => confirmHandler() }>적용</Confirm>
+            <button>닫기</button>
         </CapacityForm>
     )
 }

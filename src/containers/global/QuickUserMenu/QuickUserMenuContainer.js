@@ -1,3 +1,4 @@
+import React from "react";
 import QuickUserMenu  from '../../../components/global/QuickUserMenu/QuickUserMenu';
 
 const QuickUserMenuContainer = () => {

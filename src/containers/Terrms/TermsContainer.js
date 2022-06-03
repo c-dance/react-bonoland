@@ -1,3 +1,4 @@
+import React from "react";
 import Terms from "../../components/Terms/Terms";
 import GlobalFooter from "../../components/global/GlobalFooter/GlobalFooter";
 import BreakPoint from "../../themes/breakpoint";

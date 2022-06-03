@@ -1,4 +1,5 @@
-import { Charts, Wrapper } from './MapChartStyle'
+import { Charts, Wrapper } from './MapChartStyle';
+import React from "react";
 
 const MapChart = ({ children }) => {
     return (

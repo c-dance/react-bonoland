@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useFetch } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
@@ -27,11 +27,12 @@ const UserAlarmContainer = () => {
     return (
         <div>
             {
-                (!alarm || alarm && tabIdx === 0)&& 
+                (!alarm || alarm && tabIdx === 0) && 
                 <Section
                     title={ isBrowser? "" : "지역알림" }
                     themeColor={ "primary" }
-                    close={ isBrowser && true }
+                    // close={ isBrowser && true }
+                    close={ true }
                     back={ isMobile && true }
                     action={ true }
                     actionText={ "확인" }
@@ -46,6 +47,7 @@ const UserAlarmContainer = () => {
                 <Section
                     title={ `알림 매물(${alarms.length})` }
                     themeColor={ isBrowser? "primary" : "secondary" }
+                    // close={ true }
                     close={ isMobile && true }
                     back={ true }
                     action={ false }

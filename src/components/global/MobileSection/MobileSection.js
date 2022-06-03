@@ -1,5 +1,6 @@
 import { Section, Header, Title, Back, Contents } from './MobileSectionStyle';
 import { useNavigate } from 'react-router';
+import React from "react";
 
 const MobileSection = ({ title, onBackClick, children }) => {
     const navigate = useNavigate();

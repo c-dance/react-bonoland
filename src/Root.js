@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 import { theme } from './themes/theme';
 import { LayoutContext } from "./hooks/layout";
 import { isMobile } from 'react-device-detect';
+import React from "react";
 
 const Root = () => (
 

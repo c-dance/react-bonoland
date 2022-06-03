@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
 import { isBrowser, isMobile } from 'react-device-detect';

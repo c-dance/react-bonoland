@@ -1,6 +1,7 @@
 import { CardList, CardDivider, ListWrap } from './CenterListStyle';
 import CenterCard from "../CenterCard/CenterCard";
 import { isMobile } from 'react-device-detect';
+import React from "react";
 
 const CenterList = ({ type, centers }) => {
 

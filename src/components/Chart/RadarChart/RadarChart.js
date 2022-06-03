@@ -3,6 +3,7 @@ import { Radar } from 'react-chartjs-2';
 import { BONOSCORE } from '../../../sheme/chart';
 import { ChartWrap, Average } from './RadarChartStyle';
 import { isBrowser } from 'react-device-detect';
+import React from "react";
 
 const radarOptions = {
     plugins: {

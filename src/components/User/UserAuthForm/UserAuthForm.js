@@ -1,5 +1,6 @@
 import { module } from '../../../themes/module';
 import { Form, Inform } from './UserAuthFormStyle';
+import React from "react";
 
 const UserAuthForm = ({ password, onPasswordChange }) => {
 

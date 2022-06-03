@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deactivateLogin } from '../../store/actions/mode';
 import { BrowserView, MobileView } from 'react-device-detect';

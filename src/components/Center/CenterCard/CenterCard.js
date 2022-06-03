@@ -19,6 +19,7 @@ import {
 //테스트 사진
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
+import React from "react";
 
 const CenterCard = ({ type, center }) => (
     <Card className={ type === "abstract" && 'abstract' }>

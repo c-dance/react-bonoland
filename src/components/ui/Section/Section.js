@@ -1,5 +1,6 @@
 import { Section as SectionBlock, Title, Body, Close, Back, Action } from './SectionStyle';
 import { useNavigate } from 'react-router';
+import React from "react";
 
 const Section = ({ 
     title,

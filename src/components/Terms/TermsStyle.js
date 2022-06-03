@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import logoIcon from '../../assets/images/logo/ico-bonoland.svg';
 
 export const Tab = styled.div`
-    
     header {
         position: fixed;
         top: 0;
@@ -17,7 +16,7 @@ export const Tab = styled.div`
         padding: 0 24px;
         background-color: #fff;
 
-        @media ${ ({theme}) => theme.device.tablet } { 
+        .mobile & { 
             top: 56px;
             height: 48px;
             padding: 0;
@@ -33,7 +32,7 @@ export const Tab = styled.div`
             content: '';
             background-color: ${({theme}) => theme.colors.primary };
 
-            @media ${ ({theme}) => theme.device.tablet } { display: none; }
+            .mobile & { display: none; }
         }
     }
 
@@ -44,7 +43,7 @@ export const Tab = styled.div`
         padding: 200px 24px 220px;
         height: auto;
 
-        @media ${ ({theme}) => theme.device.tablet } { 
+        .mobile &  { 
             padding: 144px 24px 100px;
         }
 
@@ -52,12 +51,12 @@ export const Tab = styled.div`
     
 `;
 
-export const Logo = styled.div`
+export const Logo = styled(Link)`
     width: 195px;
     height: 38px;
     background: url(${logoIcon}) center no-repeat;
 
-    @media ${ ({theme}) => theme.device.tablet } { 
+    .mobile &  { 
         display: none;
     }
 `;
@@ -66,7 +65,7 @@ export const TabNavs = styled.div`
     display: flex;
     gap: 80px;
 
-    @media ${ ({theme}) => theme.device.tablet } { 
+    .mobile &  { 
         justify-content: space-between;
         width: 100%;
         height: 100%;
@@ -80,7 +79,7 @@ export const TabNavs = styled.div`
         font-weight: ${({theme}) => theme.fontWeights.medium };
         text-align: center;
 
-        @media ${ ({theme}) => theme.device.tablet } {
+        .mobile &  {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -98,8 +97,8 @@ export const TabNavs = styled.div`
             }
         }
 
-        .pc {
-            @media ${ ({theme}) => theme.device.tablet } { 
+        .mobile &  { 
+            .pc {
                 display: none;
             }
         }
@@ -114,7 +113,7 @@ export const TabConts = styled.div`
         color: ${ ({theme}) => theme.colors.gray800 };
         font-size: ${ ({theme}) => theme.fontSizes.s };
 
-        @media ${ ({theme}) => theme.device.tablet } { 
+        .mobile &  { 
             font-size: ${ ({theme}) => theme.fontSizes.s };
         }
 

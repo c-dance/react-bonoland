@@ -1,4 +1,5 @@
 import { Head, Wrap, Title, Back, Alarm } from './ListHeadStyle';
+import React from "react";
 
 const ListHeader = ({ title, children }) => {
     return (

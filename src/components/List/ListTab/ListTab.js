@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tab, TabNavs, TabConts } from './ListTabStyle';
 
 const ListTab = ({ navs, contents, type }) => {

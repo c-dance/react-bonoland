@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
@@ -6,7 +6,6 @@ import { QuickLink, QuickBtn } from './QuickMenuStyle';
 import { activateCalculator } from '../../../store/actions/mode';
 import { activateCadastral, deactivateCadastral } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { useEffect } from 'react';
 
 const QuickMenu = () => {
 

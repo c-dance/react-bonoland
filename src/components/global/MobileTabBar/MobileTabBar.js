@@ -1,4 +1,5 @@
 import { TabBar, TabBtn } from './MobileTabBarStyle';
+import React from "react";
 
 const MobileTabBar = () => {
     return (

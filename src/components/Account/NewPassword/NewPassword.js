@@ -1,4 +1,5 @@
 import { Form } from './NewPasswordStyle'; 
+import React from "react";
 
 const NewPassword = ({
     onFormSubmit

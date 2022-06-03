@@ -1,6 +1,7 @@
 import { Form, Metas, Signup } from './LoginStyle';
 import { useDispatch } from 'react-redux';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
+import React from "react";
 
 
 const Login = ({

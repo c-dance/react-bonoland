@@ -1,4 +1,5 @@
 import { Form } from './SignupSuccessStyle';
+import React from "react";
 
 const SignupSuccess = ({ onLoginClick }) => {
     return (

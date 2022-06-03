@@ -2,6 +2,7 @@ import Section from "../../components/ui/Section/Section";
 import UserMenu from "../../components/User/UserMenu/UserMenu";
 import { useNavigate } from "react-router";
 import { isBrowser, isMobile } from "react-device-detect";
+import React from "react";
 
 const UserMenuContainer = () => {
 

@@ -1,4 +1,5 @@
 import { Form, TypeBoxes } from './SignupTypeStyle';
+import React from "react";
 
 const SignupType = ({
     type,

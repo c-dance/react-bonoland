@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { deactivateAlert } from "../../store/actions/alert";
 import Modal from "../../components/Modal/Modal";
+import React from "react";
 
 const Alert = () => {
 

@@ -1,5 +1,6 @@
 import { Window, Close } from "./InfoWindowStyle";
 import { Link } from "react-router-dom";
+import React from "react";
 
 const InfoWindow = ({ data, onCloseClick, onContactClick }) => {
     return <Window>

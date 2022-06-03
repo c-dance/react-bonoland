@@ -1,4 +1,5 @@
 import { Form, Time } from './AuthenticationStyle';
+import React from "react";
 
 const Authentication = ({
     phoneNumber,

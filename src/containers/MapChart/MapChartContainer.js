@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../utils/map';
 import { isBrowser, isMobile } from 'react-device-detect';

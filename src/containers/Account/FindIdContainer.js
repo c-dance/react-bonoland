@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';

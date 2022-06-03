@@ -139,6 +139,18 @@ const TableForm = styled.form`
             }
         }
     }
+
+    button {
+        width: 160px;
+        height: 52px; 
+        margin: 0 auto;
+        color: ${ theme.colors.gray400 };
+
+        &.active {
+            background-color: ${ theme.colors.primary };
+            color: #fff;
+        }
+    }
 `;
 
 const MobileForm = styled.form`
@@ -211,6 +223,11 @@ const MobileForm = styled.form`
         left: 0;
         width: 100%;
         height: 52px;
+        color: ${ theme.colors.gray400 };
+        &.active {
+            background-color: ${ theme.colors.primary };
+            color: #fff;
+        }
     }
 `;
 

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tab, Logo, TabNavs, TabConts } from './TermsStyle';
+import { isMobile } from 'react-device-detect';
 
 const Terms = ({ data }) => {
 
@@ -19,7 +20,7 @@ const Terms = ({ data }) => {
     };
 
     return (
-        <Tab>
+        <Tab className={ isMobile && "mobile" }>
             <header>
                 <Logo to="/" />
                 <TabNavs>

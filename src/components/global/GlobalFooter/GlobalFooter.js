@@ -1,4 +1,5 @@
 import { Footer, Infos, Copyright } from './GlobalFooterStyle';
+import React from "react";
 
 const GlobalFooter = () => {
     return (

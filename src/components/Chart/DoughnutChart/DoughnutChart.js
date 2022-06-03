@@ -4,6 +4,7 @@ import { MARKETS } from '../../../sheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
 import 'chartjs-plugin-doughnut-innertext'
 import { isBrowser } from 'react-device-detect';
+import React from "react";
 
 
 const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];

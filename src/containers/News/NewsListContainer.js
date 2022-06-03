@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import NewsList from '../../components/News/NewsList/NewsList';
 import Section from '../../components/ui/Section/Section';
 import { useNavigate } from 'react-router';

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
 import { useSelector, useDispatch } from "react-redux";
 import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";

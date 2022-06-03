@@ -1,4 +1,5 @@
 import { Form, FindId } from './FindIdSuccessStyle';
+import React from "react";
 
 const FindIdSuccess = ({ data, onLoginClick }) => (
     <Form>

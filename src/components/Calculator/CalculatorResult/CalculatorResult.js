@@ -1,4 +1,5 @@
 import { CalcForm } from "./CalculatorResultStyle";
+import React from "react";
 
 const CalculatorResult = ({ result, onFormReset }) => {
     return (

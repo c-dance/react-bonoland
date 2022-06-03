@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AUTH_USER } from '../../store/actions/auth';
 import { BrowserView, MobileView } from 'react-device-detect';

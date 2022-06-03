@@ -9,6 +9,7 @@
 // }
 
 import { MAP } from './MapStyle';
+import React from "react";
 
 const Map = ({ region }) => (
         <MAP id="map"/>

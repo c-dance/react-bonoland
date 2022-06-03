@@ -1,3 +1,4 @@
+import React from "react";
 import GlobalHeader from '../../../components/global/GlobalHeader/GlobalHeader';
 
 const GlobalHeaderContainer = () => {

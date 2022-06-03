@@ -4,6 +4,7 @@ import { useFetch } from '../../hooks';
 import { Loading, NoResult, Fail } from '../../components/ui/Inform/Inform';
 import { isBrowser, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
+import React from "react";
 
 const UserScrapContainer = () => {
 

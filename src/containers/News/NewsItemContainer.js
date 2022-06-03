@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import Section from '../../components/ui/Section/Section';
 import NewsCard from '../../components/News/NewsCard/NewsCard';

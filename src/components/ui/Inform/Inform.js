@@ -1,4 +1,5 @@
 import { InformBox } from "./InformStyled";
+import React from "react";
 
 
 export const Loading = ({ text }) => (

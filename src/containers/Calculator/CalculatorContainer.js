@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { BrowserView, MobileView } from 'react-device-detect';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
