@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import resetIcon from '../../../assets/images/icon/ico-reset.svg';
 
-export const CapacityForm = styled.div`
+export const CapacityForm = styled.form`
     position: absolute;
     top: 56px;
     left: 400px;
@@ -86,11 +87,24 @@ export const Reset = styled.button`
     color: ${ props => props.theme.colors.gray600 };
 `;
 
-export const Confirm = styled.button`
-    width: 100px;
-    height: 40px;
-    margin: 0 auto;
-    border-radius: 2px;
-    background-color: #001F60;
-    color: #fff;
+export const Actions = styled.div`
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    button {
+        width: 100px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: ${ ({theme}) => theme.colors.gray300 };
+        color: ${ ({theme}) => theme.colors.gray700 };
+        ;
+
+        &[type="submit"] {
+            background-color: ${ ({theme}) => theme.colors.secondary };
+            color: #fff;
+        }
+    }
 `;

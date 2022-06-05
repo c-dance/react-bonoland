@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserView, MobileView } from "react-device-detect";
+import { isBrowser, isMobile } from "react-device-detect";
 import Panel from '../../components/ui/Panel/Panel';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
@@ -28,17 +28,29 @@ const CenterListContainer = () => {
     
     const [ centers, setCenters ] = useState([]);
 
-    const toggleCapacity = () => {
-        setCapacityActive(!capacityActive);
-    };
-
-    const selectCapacity = (values) => {
+    const submitCapacity = (event) => {
         // 인가정원 값 저장 (local)
-        console.log(values);
+        event.preventDefault();
+        setCapacityActive(false);
     };
 
-    const resetCapacity = () => {
+    const resetCapacity = (event) => {
         // 인가정원 값 리셋
+        event.preventDefault();
+    };
+
+    const closeCapacity = (event) => {
+        event.preventDefault();
+        setCapacityActive(false);
+    };
+
+    const selectCapacity = (event) => {
+        const value = event.currentTarget.value;
+    };
+
+    const slideCapacity = (event) => {
+        const value = event;
+        console.log(value);
     };
 
     const selectCategory = (name) => {
@@ -72,50 +84,54 @@ const CenterListContainer = () => {
     }, [])
 
 
+    const listFilter = () => (
+        <>
+            <CategoryFilter 
+                onCategorySelect={ selectCategory }
+            />
+            <CapacityFilter 
+                values={ capacityValues } 
+                active={ capacityActive }
+                onFormSubmit={ submitCapacity }
+                onFormReset={ resetCapacity }
+                onCloseClick={ closeCapacity }
+                onCapacitySelect={ selectCapacity }
+                onCapacitySlide={ slideCapacity }
+            />
+        </>
+    );
+
 
     return (
         <>
-        <BrowserView>
+        {
+            isBrowser &&
             <Panel
                 type={ "floating" }
                 position={ "left" }
                 fold={ true }
             >
                 <AddressFilterContainer type="main" />
-                <CategoryFilter 
-                    selectHandler={ selectCategory }     
-                />
-                <CapacityFilter 
-                    values={ capacityValues } 
-                    active={ capacityActive }
-                    confirmHandler={ toggleCapacity } 
-                    selectHandler = { selectCapacity } 
-                />
+                { listFilter() }
                 <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
                 <CenterList 
                     type="main" 
                     centers= { centers }     
                 />
             </Panel>
-        </BrowserView>
-        <MobileView>
-            <AddressFilter type="main" />
-            <CategoryFilter 
-                selectHandler={ selectCategory }     
-            />
-            <CapacityFilter 
-                values={ capacityValues } 
-                active={ capacityActive }
-                confirmHandler={ toggleCapacity } 
-                selectHandler = { selectCapacity } 
-            />
-            <SwipePanel>
-                <CenterList 
-                    type="abstract" 
-                    centers= { centers } 
-                />
-            </SwipePanel>
-        </MobileView>
+        }
+        {
+            isMobile &&
+            <>
+                { listFilter() }
+                <SwipePanel>
+                    <CenterList 
+                        type="abstract" 
+                        centers= { centers } 
+                    />
+                </SwipePanel>
+            </>
+        }
         </>
     )
 };
