@@ -1,14 +1,16 @@
 import React, { useState, useContext } from 'react';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { useDispatch } from 'react-redux';
+import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
 import { LayoutContext } from '../../hooks/layout';
+import { deactivateCalculator } from '../../store/actions/mode';
 
-const CalculatorContainer = ({ active, toggleActive }) => {
+const CalculatorContainer = () => {
 
-    const DEVICE = useContext(LayoutContext);
+    const dispatch = useDispatch();
 
     // 수익계산기 입력폼, 입력폼 subtmit
     const [ formData, setFormData ] = useState({});
@@ -18,64 +20,62 @@ const CalculatorContainer = ({ active, toggleActive }) => {
     const [ result, setResult ] = useState({});
 
     // 수익계산기 submit
-    const onFormSubmit = (event) => {
+    const submitForm = (event) => {
         event.preventDefault();
         setFormSubmitted(true);
     };
 
     // 수익계산기 초기화
-    const onFormReset = (event) => {
+    const resetForm = (event) => {
         event.preventDefault();
         setFormData({});
         setFormSubmitted(false);
     };
 
     // 수익계산기 닫기
-    const deactiveCaclulator = () => {
+    const closeCaclulator = () => {
+        console.log('close');
         setFormData({});
         setFormSubmitted(false);
-        toggleActive();
+        dispatch(deactivateCalculator());
     };
+
+    const CALCULATOR_TEMPLATE = () => (
+        <>
+            {
+                !formSubmitted && <CalculatorForm
+                    onFormSubmit={ submitForm }
+                />
+            }
+            {
+                formSubmitted && <CalculatorResult 
+                    onFormReset={ resetForm }
+                />
+            }
+        </>
+    );
 
     return (
         <> 
         {
-            active && DEVICE === "browser" &&
+            isBrowser &&
             <Modal
-                open={ active }
+                open={ true }
                 close={ true }
-                onCloseClick={ deactiveCaclulator }
+                onCloseClick={ closeCaclulator }
                 title="수익 계산"
                 width="970"
             >
-                {
-                    !formSubmitted && <CalculatorForm
-                        onFormSubmit={ onFormSubmit }
-                    />
-                }
-                {
-                    formSubmitted && <CalculatorResult 
-                        onFormReset={ onFormReset }
-                    />
-                }
+            { CALCULATOR_TEMPLATE() }
             </Modal>
         }
         {
-            active && DEVICE === "mobile" &&
+            isMobile &&
             <MobileSection 
                 title="수익 계산"
-                onBackClick={ deactiveCaclulator }
+                onBackClick={ closeCaclulator }
             >
-                {
-                    !formSubmitted && <CalculatorForm
-                        onFormSubmit={ onFormSubmit }
-                    />
-                }
-                {
-                    formSubmitted && <CalculatorResult 
-                        onFormReset={ onFormReset }
-                    />
-                }
+            { CALCULATOR_TEMPLATE() }
             </MobileSection>
         }
         </>

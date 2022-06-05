@@ -1,85 +1,134 @@
-import { CalcForm } from "./CalculatorResultStyle";
+import { CalcWrap, CalcForm, Caption } from "./CalculatorResultStyle";
 import React from "react";
+import { CALCULATOR_RESULT } from "../../../sheme/calculator";
+import { isBrowser, isMobile, isTablet } from 'react-device-detect';
+
+const tableHead = () => (
+    <tr>
+        <th colSpan={ isBrowser? "2" : "1" }>구분</th>
+        <th>인원</th>
+        <th>단가</th>
+        <th>금액</th>
+        { isBrowser && <th>내용</th>}
+    </tr>
+);
+
+const mobileColGroup = () => (
+    <colgroup>
+        <col width="82px"></col>
+        <col width="auto"></col>
+        <col width="auto"></col>
+        <col width="auto"></col>
+    </colgroup>
+)
 
 const CalculatorResult = ({ result, onFormReset }) => {
     return (
-       <CalcForm>
-           <table>
-            <colgroup>
-                <col width="160px"></col>
-                <col width="auto"></col>
-                <col width="100px"></col>
-                <col width="auto"></col>
-                <col width="auto"></col>
-                <col width="160px"></col>
-            </colgroup>
-               <thead>
-                   <tr>
-                       <th colSpan="2">구분</th>
-                       <th>인원</th>
-                       <th>단가</th>
-                       <th>금액</th>
-                       <th>내용</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   <tr className="total">
-                       <td rowSpan="7">1. 수입</td>
-                       <td>합계</td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                   </tr>
-                   <tr>
-                       <td>공단지원금 80%</td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                   </tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr className="total">
-                       <td rowSpan="7">2. 지출</td>
-                       <td>합계</td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                   </tr>
-                   <tr className="cost">
-                       <td>인건비</td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                   </tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-                   <tr></tr>
-               </tbody>
-               <tfoot>
-                   <tr>
-                       <td>3.월수익</td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                   </tr>
-               </tfoot>
-           </table>
-           <button
-            onClick={ (event) => onFormReset(event) }
-           >초기화</button>
-       </CalcForm>
+        <CalcWrap>
+            <CalcForm>
+                {
+                    isBrowser &&
+                    <table>
+                        <colgroup>
+                            <col width="160px"></col>
+                            <col width="160px"></col>
+                            <col width="100px"></col>
+                            <col width="auto"></col>
+                            <col width="auto"></col>
+                            <col width="160px"></col>
+                        </colgroup>
+                        <thead>
+                            { tableHead() }
+                        </thead>
+                        <tbody>
+                                {
+                                    CALCULATOR_RESULT["수입"].map((item, idx) => (
+                                        <tr key={idx} className={ item.item === "합계" && "total" }>
+                                            { idx === 0 && <td rowSpan={ CALCULATOR_RESULT["수입"].length }>1 수입</td> }
+                                            <td>{ item.item }</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    ))
+                                }
+                                {
+                                    CALCULATOR_RESULT["지출"].map((item, idx) => (
+                                        <tr key={idx} className={ item.item === "합계" && "total" }>
+                                            { idx === 0 && <td rowSpan={ CALCULATOR_RESULT["지출"].length }>2. 지출</td> }
+                                            <td>{ item.item }</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    ))
+                                }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td rowSpan="1">3. 월 수익</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+                {
+                    isMobile &&
+                    <>
+                        <Caption>수입</Caption>
+                        <table>
+                            { mobileColGroup() }
+                            { tableHead() }
+                            <tbody>
+                            {
+                                CALCULATOR_RESULT["수입"].map((item, idx) => (
+                                    <tr key={idx} className={ item.item === "합계" && "total" }>
+                                        <td>{ item.item }</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                        </table>
+                        <Caption>지출</Caption>
+                        <table>
+                            { mobileColGroup() }
+                            { tableHead() }
+                            <tbody>
+                            {
+                                CALCULATOR_RESULT["지출"].map((item, idx) => (
+                                    <tr key={idx} className={ item.item === "합계" && "total" }>
+                                        <td>{ item.item }</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                ))
+                            }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>3. 월 수익</td>
+                                    <td colSpan={3}></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </>
+                }
+                <button
+                    onClick={ (event) => onFormReset(event) }
+                >초기화</button>
+            </CalcForm>
+        </CalcWrap>
     )
 };
 
-export default CalculatorResult;
+export default CalculatorResult; 

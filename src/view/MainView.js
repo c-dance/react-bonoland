@@ -25,7 +25,7 @@ const MainView = ({ list, children }) => {
     const LOGIN_MODE  = useSelector(state => state.Mode.login);
     const FIND_ID_MODE  = useSelector(state => state.Mode.findId);
     const FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
-    const CALCULATOR_MODE = useSelector(state => state.Mode.Calculator);
+    const CALCULATOR_MODE = useSelector(state => state.Mode.calculator);
     const CHART_MODE = useSelector(state => state.Chart.activate);
     const ALERT_MODE = useSelector(state => state.Alert.active);
 

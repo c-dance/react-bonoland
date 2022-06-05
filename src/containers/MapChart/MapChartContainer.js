@@ -48,7 +48,7 @@ const MapChartContainer = () => {
     }
 
     /* === 차트 ELEMENTS === */
-    const RENDER_CHART = (data) => (
+    const CHART_TEMPLATE = (data) => (
         <MapChart>
         {
             Object.keys(data).map((key, idx) => (
@@ -67,7 +67,7 @@ const MapChartContainer = () => {
         <>
             {
                 isBrowser && IS_ACTIVE &&
-                RENDER_CHART(data)
+                CHART_TEMPLATE(data)
             }
             {
                 isMobile && IS_ACTIVE &&
@@ -77,7 +77,7 @@ const MapChartContainer = () => {
                     close={ true }
                     onCloseClick={ onCloseClick }
                 >
-                    { RENDER_CHART(data) }
+                    { CHART_TEMPLATE(data) }
                 </Section>
             }
         </>

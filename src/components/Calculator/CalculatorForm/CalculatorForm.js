@@ -1,67 +1,49 @@
-import React, { useContext } from 'react';
-import { LayoutContext } from '../../../hooks/layout';
+import React, { useState } from 'react';
 import { Form } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
+import { isBrowser, isMobile } from 'react-device-detect';
+import { CALCULATOR_FORM } from '../../../sheme/calculator';
 
 const CalculatorForm = ({ onFormSubmit }) => {
-    const DEVICE = useContext(LayoutContext);
 
     return (
         <>
             {
-                DEVICE === "mobile" && <module.MobileForm>
+                isMobile && 
+                <module.MobileForm onSubmit={ (event) => onFormSubmit(event) }>
                     <fieldset className="cols">
-                        <div className="wrap">
-                            <label htmlFor="clType">1. 요양시설 타입</label>
-                            <select name="clType" id="clType">
-                                <option value="" selected></option>
-                            </select>
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clCap01">2. 정원수</label>
-                            <input type="text" name="clCap01" id="clCap01" placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clCap02">3. 현원수(일반병실)</label>
-                            <input type="text" name="clCap02" id="clCap02" placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clCap03">4. 현원수(상급병실)</label>
-                            <input type="text" name="clCap03" id="clCap03"  placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clCost">5. 상급병실료(원/월)</label>
-                            <input type="text" name="clCost" id="clCost" placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clHelper">6. 추가 요양보호사</label>
-                            <input type="text" name="clHelper" id="clHelper" placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clCook">7. 조리원 유무</label>
-                            <select name="clCook" id="clCook">
-                                <option value="0" selected>무</option>
-                                <option value="1"></option>
-                            </select>
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clPremium">8. 예상 가산금(원/월)</label>
-                            <input type="text" name="clPremium" id="clPremium" placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clLoan">9. 대출금</label>
-                            <input type="text" name="clLoan" id="clLoan"  placeholder="0" />
-                        </div>
-                        <div className="wrap">
-                            <label htmlFor="clLevel">10. 급수 선택</label>
-                            <input type="text" name="clLevel" id="clLevel" placeholder="0" />
-                        </div>
+                        {
+                            CALCULATOR_FORM.map((item, idx) => (
+                            <div className="wrap" key={idx}>
+                                <label htmlFor={`cform${idx}`}>{ item.label }</label>
+                                {
+                                    item.type === "select" &&
+                                    <select name={`cform${idx}`} id={`cform${idx}`}>
+                                        {
+                                            item.options.map((item, idx) => (
+                                                <option 
+                                                    key={item}
+                                                    value={item} 
+                                                    selected={ idx === 0 }
+                                                >{item}</option>
+                                            ))
+                                        }
+                                    </select>
+                                }
+                                {
+                                    item.type === "input" &&
+                                    <input type="text" name={`cform${idx}`} id={`cform${idx}`} placeholder={item.value} />
+                                }
+                            </div>
+                            ))
+                        }
                     </fieldset>
                     <button>계산하기</button>
                 </module.MobileForm>
             }
             {
-                DEVICE !== "mobile" && <Form onSubmit={ (event) => onFormSubmit(event) }>
+                isBrowser && 
+                <Form onSubmit={ (event) => onFormSubmit(event) }>
                     <fieldset>
                         <legend>예상 수익 계산</legend>
                         <table>
@@ -74,24 +56,33 @@ const CalculatorForm = ({ onFormSubmit }) => {
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th><label htmlFor="clType">1. 요양시설 타입</label></th>
-                                    <th><label htmlFor="clCap01">2. 정원수</label></th>
-                                    <th><label htmlFor="clCap02">3. 현원수(일반병실)</label></th>
-                                    <th><label htmlFor="clCap03">4. 현원수(상급병실)</label></th>
-                                    <th><label htmlFor="clCost">5. 상급병실료(원/월)</label></th>
+                                    { 
+                                        CALCULATOR_FORM
+                                        .filter((item, idx) => ( idx < 5 ))
+                                        .map((item, idx) => <th key={idx}><label htmlFor={`cform${idx}`}>{item.label}</label></th>)
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <select name="clType" id="clType">
-                                            <option value="" selected></option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="clCap01" id="clCap01" placeholder="0" /></td>
-                                    <td><input type="text" name="clCap02" id="clCap02" placeholder="0" /></td>
-                                    <td><input type="text" name="clCap03" id="clCap03"  placeholder="0" /></td>
-                                    <td><input type="text" name="clCost" id="clCost" placeholder="0" /></td>
+                                    { 
+                                        CALCULATOR_FORM
+                                        .filter((item, idx) => ( idx < 5 ))
+                                        .map((item, idx) =>
+                                            item.type === "select"? 
+                                                <td key={idx}>
+                                                    <select name={`cform${idx}`} id={`cform${idx}`}>
+                                                    {
+                                                        item.options.map(item => (
+                                                            <option value={item}>{item}</option>
+                                                        ))
+                                                    }
+                                                    </select>
+                                                </td>
+                                            :
+                                            <td key={idx}><input type="text" name={`cform${idx}`} id={`cform${idx}`} placeholder={item.value} /></td>
+                                        )
+                                    }
                                 </tr>
                             </tbody>
                         </table>
@@ -105,25 +96,33 @@ const CalculatorForm = ({ onFormSubmit }) => {
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th><label htmlFor="clHelper">6. 추가 요양보호사</label></th>
-                                    <th><label htmlFor="clCook">7. 조리원 유무</label></th>
-                                    <th><label htmlFor="clPremium">8. 예상 가산금(원/월)</label></th>
-                                    <th><label htmlFor="clLoan">9. 대출금</label></th>
-                                    <th><label htmlFor="clLevel">10. 급수 선택</label></th>
+                                    { 
+                                        CALCULATOR_FORM
+                                            .filter((item, idx) => (idx >= 5))
+                                            .map((item, idx) => <th key={idx+4}><label htmlFor={`cform${idx+4}`}>{item.label}</label></th>)
+                                    }
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" name="clHelper" id="clHelper" placeholder="0" /></td>
-                                    <td>
-                                        <select name="clCook" id="clCook">
-                                            <option value="0" selected>무</option>
-                                            <option value="1"></option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="clPremium" id="clPremium" placeholder="0" /></td>
-                                    <td><input type="text" name="clLoan" id="clLoan"  placeholder="0" /></td>
-                                    <td><input type="text" name="clLevel" id="clLevel" placeholder="0" /></td>
+                                { 
+                                    CALCULATOR_FORM
+                                        .filter((item, idx) => ( idx >= 5 ))
+                                        .map((item, idx) =>
+                                            item.type === "select"? 
+                                                <td key={idx+4}>
+                                                    <select name={`cform${idx+4}`} id={`cform${idx+4}`}>
+                                                    {
+                                                        item.options.map(item => (
+                                                            <option value={item}>{item}</option>
+                                                        ))
+                                                    }
+                                                    </select>
+                                                </td>
+                                            :
+                                            <td key={idx+4}><input type="text" name={`cform${idx+4}`} id={`cform${idx+4}`} placeholder={item.value} /></td>
+                                        )
+                                    }
                                 </tr>
                             </tbody>
                         </table>

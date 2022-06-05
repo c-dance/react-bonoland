@@ -17,7 +17,7 @@ const modalStyle = {
         width: '100%',
         maxWidth: '390px',
         height: 'auto',
-        maxHeight: '100%',
+        maxHeight: 'calc(100% - 160px)',
         padding: '0',
         transform: 'translate(-50%, -50%)'
     }

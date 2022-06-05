@@ -14,8 +14,9 @@ const getStyldedDatasets = (datasets) => {
     let newDatasets = [];
 
     let dummyCount = baseLen - datasets.length;
+
     if(dummyCount > 0) {
-        let dummyArray = new Array(dummyCount).fill({});
+        let dummyArray = new Array(dummyCount).fill(Object.assign({}, datasets[1]));
         if(dummyCount > 0) datasets = datasets.concat(dummyArray);
     }
 
@@ -23,6 +24,8 @@ const getStyldedDatasets = (datasets) => {
         newDatasets.push(datasets[i]);
         if(i < datasets.length -1) newDatasets.push(gap);
     };
+
+    console.log(newDatasets);
 
     return newDatasets;
 };
@@ -42,10 +45,11 @@ const DoughnutChart = ({ scheme, data, type }) => {
             backgroundColor: idx===0? doughnutColors : [doughnutColors[idx], 'transparent'],
             borderColor: 'transparent',
             borderRadius: idx===0? 0 : 30,  
-            borderWidth: 2,
-            weight: 2,
+            borderWidth: 3,
+            weight: 3,
         }
     ));
+    
     const styledDatasets = getStyldedDatasets(datasets);
 
     const chartOptions = {
