@@ -9,6 +9,7 @@ import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
+import { CATEGORY, CAPACITY } from "../../sheme/filter";
 
 const CenterListContainer = () => {
     /*
@@ -25,46 +26,44 @@ const CenterListContainer = () => {
 
     const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
     const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
-    const [ capacityValues, setCapacityValues ] = useState([0, 100]); // 정원필터 값 설정
+    const [ capacityValues, setCapacityValues ] = useState(CAPACITY[0].value); // 정원필터 값 설정
     
     const [ centers, setCenters ] = useState([]);
 
     const submitCapacity = (event) => {
-        // 인가정원 값 저장 (local)
         event.preventDefault();
+        LOCAL_STORAGE.store(CATEGORY[category].key, capacityValues);
         setCapacityActive(false);
     };
-
+    
     const resetCapacity = (event) => {
-        // 인가정원 값 리셋
         event.preventDefault();
+        LOCAL_STORAGE.store(CATEGORY[category].key, CAPACITY[0].value);
+        setCapacityValues(CAPACITY[0].value);
     };
-
+    
     const closeCapacity = (event) => {
         event.preventDefault();
         setCapacityActive(false);
     };
-
-    const selectCapacity = (event) => {
-        const value = event.currentTarget.value;
-    };
-
-    const slideCapacity = (event) => {
-        const value = event;
-        console.log(value);
-    };
-
-    const selectCategory = (name) => {
-        // 선택 카테고리 변경
-        // 인가정원 값 변경
-        // 인가정원 필터 활성화
-        setCategory(name);
-        setCapacityValues(getStorageCapacity(name));
-        setCapacityActive(true);
+    
+    const selectCapacity = value => {
+        console.log('clicked', value)
+        console.log('clicked', typeof value)
+        LOCAL_STORAGE.store(CATEGORY[category].key, CAPACITY[0].value);
+        setCapacityValues(value);
     };
     
-    const getStorageCapacity = (category) => {
-        return [20, 30];
+    const slideCapacity = value => {
+        setCapacityValues(value);
+    };
+
+    const selectCategory = selected => {
+        setCategory(CATEGORY[selected].value);
+        const capacity = LOCAL_STORAGE.get(CATEGORY[selected].key);
+        console.log(capacity);
+        setCapacityValues(capacity);
+        setCapacityActive(true);
     };
 
     const fetchCenters = () => {
@@ -88,6 +87,7 @@ const CenterListContainer = () => {
     const listFilter = () => (
         <>
             <CategoryFilter 
+                value={ category }
                 onCategorySelect={ selectCategory }
             />
             <CapacityFilter 

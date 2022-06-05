@@ -7,7 +7,7 @@ import contactIcon from '../../../assets/images/menu/ico-chat.svg';
 import userIcon from '../../../assets/images/menu/ico-user.svg';
 
 export const TabBar = styled.nav`
-    z-index: 30;
+    z-index: 31;
     position: fixed;
     left: 0;
     bottom: 0;

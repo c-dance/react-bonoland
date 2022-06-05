@@ -1,5 +1,5 @@
 export const LOCAL_STORAGE = {
-    store : (namve, value) => {
+    store : (name, value) => {
         window.localStorage.setItem(name, JSON.stringify(value));
     },
     remvoe: (name) => {

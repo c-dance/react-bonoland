@@ -4,6 +4,7 @@ import Slider from 'rc-slider';
 import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
 import React from "react";
+import { CAPACITY } from "../../../sheme/filter";
 
 const marks = { 0: 0, 20: 20, 40: 40, 60: 60, 80: 80, 100: 100 };
 
@@ -12,7 +13,7 @@ const CapacityFilter = ({
     values, 
     onFormSubmit, 
     onFormReset, 
-    onCloseClick,
+    onCloseClick,  
     onCapacitySelect,
     onCapacitySlide
 }) => {
@@ -29,7 +30,8 @@ const CapacityFilter = ({
                     range
                     min={ 0 }
                     max={ 100 }
-                    defaultValue={ values }
+                    defaultValue={ CAPACITY[0].value }
+                    value={ values }
                     step = { 1 }
                     marks = { marks }
                     dotStyle={{ display: 'none'}}
@@ -44,43 +46,30 @@ const CapacityFilter = ({
                         background: `url(${ sliderIcon }) center no-repeat #fff`
                     }}
                     allowCross= { true }
-                    onAfterChange={ event => onCapacitySlide(event) }
+                    onChange={ value => onCapacitySlide(value) }
                 />
             </SliderWrap>
             <RadioWrap>
-                <RadioBox>
-                    <input type="radio" id="cap01" name="bnCapacity" value={ [0, 100] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap01" >전체</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap02" name="bnCapacity" value={ [0, 29] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap02" >0 ~ 29</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap03" name="bnCapacity" value={ [29, 39] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap03" >29 ~ 39</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap04" name="bnCapacity" value={ [39, 59] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap04" >39 ~ 59</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap05" name="bnCapacity" value={ [59, 79] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap05" >59 ~ 79</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap06" name="bnCapacity" value={ [79, 99] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap06" >79 ~ 99</label>
-                </RadioBox>
-                <RadioBox>
-                    <input type="radio" id="cap07" name="bnCapacity" value={ [99] } onChange={ event => onCapacitySelect(event) }/>
-                    <label htmlFor="cap07" >99 ~</label>
-                </RadioBox>
+                {
+                    CAPACITY.map((item, idx) => (
+                        <RadioBox key={`cap${idx}`}>
+                            <input 
+                                type="radio" 
+                                id={`cap${idx}`} 
+                                name="bnCapacity" 
+                                value={ item.value } 
+                                onChange={ () => onCapacitySelect(item.value) } 
+                                checked={ JSON.stringify(values) === JSON.stringify(item.value) }
+                            />
+                            <label htmlFor={`cap${idx}`} >{item.label}</label>
+                        </RadioBox>
+                    ))
+                }
             </RadioWrap>
             <Reset type="reset">선택 해제</Reset>
             <Actions>
-                <button type="submit">confirm</button>
-                <button type="button" onClick={ event => onCloseClick(event) }>close</button>
+                <button type="submit">확인</button>
+                <button type="button" onClick={ event => onCloseClick(event) }>닫기</button>
             </Actions>
         </CapacityForm>
     )

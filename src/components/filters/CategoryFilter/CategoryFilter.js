@@ -1,22 +1,29 @@
 import { CategoryForm, Category } from "./CategoryFilterStyle";
 import { isMobile } from "react-device-detect";
 import React from "react";
+import { CATEGORY } from "../../../sheme/filter";
 
-const CategoryFilter = ({ onCategorySelect }) => {
+const CategoryFilter = ({ value, onCategorySelect }) => {
     return (
         <CategoryForm>
-            <Category>
-                <input type="radio" id="cate01" name="bnCategory" value="단독요양원" onChange={ event => onCategorySelect(event.currentTarget.value) } />
-                <label htmlFor="cate01">{ isMobile? "단독" : "단독요양원" }</label>
-            </Category>
-            <Category>
-                <input type="radio" id="cate02" name="bnCategory" value="상가요양원" onChange={ event => onCategorySelect(event.currentTarget.value) } />
-                <label htmlFor="cate02">{ isMobile? "상가" : "상가요양원" }</label>
-            </Category>
-            <Category>
-                <input type="radio" id="cate03" name="bnCategory" value="주간보호" onChange={ event => onCategorySelect(event.currentTarget.value) } />
-                <label htmlFor="cate03">{ isMobile? "주간" : "주간보호" }</label>
-            </Category>
+            {
+                Object.keys(CATEGORY).map((key, idx) => (
+                    <Category 
+                        key={`cate${idx}`}
+                        onClick={ () => onCategorySelect(key) }
+                    >
+                        <input 
+                            type="radio" 
+                            id={`cate${idx}`} 
+                            name="bnCategory" 
+                            value={CATEGORY[key].value} 
+                            onChange={ event => {event.preventDefault();} } 
+                            checked={ value === CATEGORY[key].value }
+                        />
+                        <label htmlFor={`cate${idx}`}>{ isMobile? CATEGORY[key].mobileLabel : CATEGORY[key].label }</label>
+                    </Category>
+                ))
+            }
         </CategoryForm>
     )
 };

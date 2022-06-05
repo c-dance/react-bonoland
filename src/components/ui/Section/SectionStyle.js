@@ -17,6 +17,7 @@ export const Section = styled.section`
     box-shadow: -3px 0 6px rgba(0,0,0, .06); 
 
     .mobile & {
+        z-index: 40;
         position: fixed;
         top: 0;
         left: 0;

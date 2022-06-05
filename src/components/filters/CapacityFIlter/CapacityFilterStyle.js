@@ -22,14 +22,14 @@ export const CapacityForm = styled.form`
         position: fixed;
         left: 0;
         top: auto;
-        bottom: 56px;
+        bottom: -370px;
         display: flex;
         width: 100%;
         height: 308px;
         box-shadow: 0 -3px 6px rgba(0,0,0,.06);
         transition: bottom .5s;
 
-        &.active { bottom: -370px; }
+        &.active { bottom: 56px; }
     }
 `;
 
@@ -47,6 +47,11 @@ export const RadioWrap = styled.div`
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+    
+    .mobile & {
+        justify-content: center;
+        align-items: center;
+    }
 `;
 
 export const RadioBox = styled.div`
