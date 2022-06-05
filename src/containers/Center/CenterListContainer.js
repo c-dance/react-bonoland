@@ -8,6 +8,7 @@ import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
+import { LOCAL_STORAGE } from '../../utils/filter';
 
 const CenterListContainer = () => {
     /*
