@@ -9,6 +9,34 @@ export const useInput = initialValue => {
     ];
 };
 
+export const useGet = (initialValue) => {
+    const [ api, setApi ] = useState(null);
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [noneData, setNoneData] = useState(false);
+    const [data, setData] = useState(initialValue);
+
+    console.log(api);
+    
+    const getResponse = async () => {
+        const response = await api();
+        if(response && response.data) {
+            if(Array.isArray(data) && data.length <= 0) setNoneData(true);
+            if(typeof data === 'object' && Object.keys(data).length <= 0) setNoneData(true);
+            setData(response.data);
+        } else {
+            setError(true);
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        if(api !== null) getResponse();
+    }, [api]);
+
+    return [error, loading, noneData, data, setApi];
+};
+
 
 export const useFetch = (initialValue, url) => {
     // loading, success, fail, empty

@@ -5,6 +5,8 @@ import React from "react";
 
 const CenterList = ({ type, centers }) => {
 
+    console.log(centers);
+
     return (
         centers.length > 0 && 
         <CardList type={ type }>

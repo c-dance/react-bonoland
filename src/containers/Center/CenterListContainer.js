@@ -10,25 +10,18 @@ import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
 import { CATEGORY, CAPACITY } from "../../sheme/filter";
+import { getRecommendCenters } from '../../api/centers';
+import { useGet } from "../../hooks";
 
 const CenterListContainer = () => {
-    /*
-        search(1) 키워드 : 지역구, 지역명
-        search(2) 카레고리: 단독 요양원, 상가 요양원, 주간 보호
-        search(3) 필터 : 정원
-    */
-   /*
-        router: [center, zoom, region] 갖고 추천 페이지 이동
-   */
-   /*
-        list(1) : search 조합 조회 목록
-   */
 
     const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
     const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
     const [ capacityValues, setCapacityValues ] = useState(CAPACITY[0].value); // 정원필터 값 설정
     
     const [ centers, setCenters ] = useState([]);
+
+    const [ loading, error, noneData, data, setApi ] = useGet([]);
 
     const submitCapacity = (event) => {
         event.preventDefault();
@@ -79,9 +72,14 @@ const CenterListContainer = () => {
         .catch(err => console.log(err));
     };
 
+
+
     useEffect(() => {
-        fetchCenters();
-    }, [])
+        // fetchCenters();
+        setApi(getRecommendCenters);
+    }, [data]);
+
+    console.log(data);
 
 
     const listFilter = () => (
@@ -117,7 +115,7 @@ const CenterListContainer = () => {
                 <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
                 <CenterList 
                     type="main" 
-                    centers= { centers }     
+                    centers= { data }     
                 />
             </Panel>
         }
@@ -128,7 +126,7 @@ const CenterListContainer = () => {
                 <SwipePanel>
                     <CenterList 
                         type="abstract" 
-                        centers= { centers } 
+                        centers= { data } 
                     />
                 </SwipePanel>
             </>
