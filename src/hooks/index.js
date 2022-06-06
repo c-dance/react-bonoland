@@ -11,30 +11,44 @@ export const useInput = initialValue => {
 
 export const useGet = (initialValue) => {
     const [ api, setApi ] = useState(null);
-    const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [noneData, setNoneData] = useState(false);
+    const [error, setError] = useState(false);
+    const [noData, setNoData] = useState(false);
     const [data, setData] = useState(initialValue);
-
-    console.log(api);
     
     const getResponse = async () => {
-        const response = await api();
-        if(response && response.data) {
-            if(Array.isArray(data) && data.length <= 0) setNoneData(true);
-            if(typeof data === 'object' && Object.keys(data).length <= 0) setNoneData(true);
-            setData(response.data);
+        const response = await api.get(api.params);
+
+        if(response) {
+            const data = response.data;
+
+            if(Array.isArray(data) && response.data.length <= 0) setNoData(true);
+            else if(typeof data === 'object' && Object.keys(data).length <= 0) setNoData(true);
+            else setNoData(false);
+
+            setData(data);
+            setLoading(false);
         } else {
             setError(true);
             setLoading(false);
         }
+
+    }
+
+    const initProps = () => {
+        setLoading(true);
+        setError(false);
+        setNoData(false);
     }
 
     useEffect(() => {
-        if(api !== null) getResponse();
+        if(api !== null) {
+            initProps();
+            getResponse();
+        }
     }, [api]);
 
-    return [error, loading, noneData, data, setApi];
+    return [loading, error, noData, data, setApi];
 };
 
 

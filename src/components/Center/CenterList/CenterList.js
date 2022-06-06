@@ -1,19 +1,25 @@
 import { CardList, CardDivider, ListWrap } from './CenterListStyle';
 import CenterCard from "../CenterCard/CenterCard";
-import { isMobile } from 'react-device-detect';
+import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 import React from "react";
 
-const CenterList = ({ type, centers }) => {
-
-    console.log(centers);
-
+const CenterList = ({
+    type, 
+    centers,
+    loading,
+    error,
+    noData
+}) => {
     return (
-        centers.length > 0 && 
         <CardList type={ type }>
             <ListWrap>
+            { loading && Loading() }
+            { error && Error() }
+            { noData && NoData() }
             {
+                !noData && 
                 centers.map(( center, idx ) => 
-                    <div key={ idx }>
+                <div key={ idx }>
                         <CenterCard type={ type } center = { center } />
                         <CardDivider />
                     </div>
@@ -21,8 +27,6 @@ const CenterList = ({ type, centers }) => {
             }
             </ListWrap>
         </CardList>
-
-        || centers.length <= 0 && <div>목록 없음</div>
     )
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { isBrowser, isMobile } from "react-device-detect";
 import Panel from '../../components/ui/Panel/Panel';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
@@ -10,7 +11,7 @@ import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
 import { CATEGORY, CAPACITY } from "../../sheme/filter";
-import { getRecommendCenters } from '../../api/centers';
+import { getRecommendCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
 
 const CenterListContainer = () => {
@@ -18,15 +19,23 @@ const CenterListContainer = () => {
     const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
     const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
     const [ capacityValues, setCapacityValues ] = useState(CAPACITY[0].value); // 정원필터 값 설정
+
+    const region = useSelector(state => state.Map.region);
     
     const [ centers, setCenters ] = useState([]);
-
-    const [ loading, error, noneData, data, setApi ] = useGet([]);
+    const [ loading, error, noData, data, setGet ] = useGet([]);
 
     const submitCapacity = (event) => {
         event.preventDefault();
         LOCAL_STORAGE.store(CATEGORY[category].key, capacityValues);
         setCapacityActive(false);
+        setGet({ 
+            get: getFilteredCenters, 
+            params: {
+                category: category,
+                capacity: capacityValues
+            }
+        });
     };
     
     const resetCapacity = (event) => {
@@ -59,30 +68,17 @@ const CenterListContainer = () => {
         setCapacityActive(true);
     };
 
-    const fetchCenters = () => {
-        fetch('/data/centers.json', {
-            headers: {
-                'Accept' : 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            setCenters(data);
-        })
-        .catch(err => console.log(err));
-    };
-
-
+    useEffect(() => {
+        if(category !== null) setGet({ get: getFilteredCenters, params: { category: category, capacity: capacityValues }});
+        else setGet({ get: getRecommendCenters });
+    }, []);
 
     useEffect(() => {
-        // fetchCenters();
-        setApi(getRecommendCenters);
+        setCenters(data);
     }, [data]);
 
-    console.log(data);
-
-
-    const listFilter = () => (
+    /* ==== RENDER_TEMPLATE === */
+    const RENDER_FILTER = () => (
         <>
             <CategoryFilter 
                 value={ category }
@@ -100,6 +96,15 @@ const CenterListContainer = () => {
         </>
     );
 
+    const RENDER_LIST = () => (
+        <CenterList 
+            type={ isBrowser? "main" : "abstract" }
+            centers={ centers }   
+            loading={ loading }
+            error={ error }  
+            noData={ noData }
+        />
+    );
 
     return (
         <>
@@ -111,23 +116,17 @@ const CenterListContainer = () => {
                 fold={ true }
             >
                 <AddressFilterContainer type="main" />
-                { listFilter() }
+                { RENDER_FILTER() }
                 <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
-                <CenterList 
-                    type="main" 
-                    centers= { data }     
-                />
+                { RENDER_LIST() }
             </Panel>
         }
         {
             isMobile &&
             <>
-                { listFilter() }
+                { RENDER_FILTER() }
                 <SwipePanel>
-                    <CenterList 
-                        type="abstract" 
-                        centers= { data } 
-                    />
+                { RENDER_LIST() }
                 </SwipePanel>
             </>
         }

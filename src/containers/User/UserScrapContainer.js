@@ -1,7 +1,7 @@
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
 import { useFetch } from '../../hooks';
-import { Loading, NoResult, Fail } from '../../components/ui/Inform/Inform';
+import { Loading, NoData, Error } from '../../components/ui/Inform/Inform';
 import { isBrowser, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
 import React from "react";
@@ -23,8 +23,8 @@ const UserScrapContainer = () => {
             action={ false }
         >
             { page === 'loading' && <Loading /> }
-            { page === 'fail' && <Fail /> }
-            { page === 'empty' && <NoResult text="찜 매물이 없습니다." /> }
+            { page === 'fail' && <Error /> }
+            { page === 'empty' && <NoData text="찜 매물이 없습니다." /> }
             { page === 'success' && 
 
                 <ListTab 

@@ -3,7 +3,7 @@ import { useFetch } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
 import UserAlarmForm from '../../components/User/UserAlarmForm/UserAlarmForm';
-import { Loading, NoResult, Fail } from '../../components/ui/Inform/Inform';
+import { Loading, NoData, Error } from '../../components/ui/Inform/Inform';
 import { isBrowser, isMobile } from 'react-device-detect';
 
 const UserAlarmContainer = () => {
@@ -56,8 +56,8 @@ const UserAlarmContainer = () => {
                 >
 
                     { page === 'loading' && <Loading /> }
-                    { page === 'fail' && <Fail /> }
-                    { page === 'empty' && <NoResult text="알림 매물이 없습니다." /> }
+                    { page === 'fail' && <Error /> }
+                    { page === 'empty' && <NoData text="알림 매물이 없습니다." /> }
                     { page === 'success' && 
                         <CenterList 
                             type={ "sub" } 
