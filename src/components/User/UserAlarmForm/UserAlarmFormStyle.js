@@ -6,6 +6,7 @@ import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';
 
 
 export const AlarmForm = styled.div`
+
     height: 100%;
     hr {
         width: 100%;

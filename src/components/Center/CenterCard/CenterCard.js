@@ -21,65 +21,73 @@ import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import React from "react";
 
-const CenterCard = ({ type, center }) => (
-    <Card className={ type === "abstract" && 'abstract' }>
-        { 
-            type ==="sub" && 
-            <Head>{center.id}</Head> 
-        }
-        <Wrap to={ '/center/' + center.id }>
+const CenterCard = ({ type, center }) => {
+
+    return (
+        <>
             {
-                type !== "abstract" &&
-                <Thumbnail>
-                    <img src={ ThumbImg } alt="보노매물" />
-                </Thumbnail>
+                center && Object.keys(center).length > 0 &&
+                <Card className={ type === "abstract" && 'abstract' }>
+                    { 
+                        type ==="sub" && 
+                        <Head>{`${center["기관"]} ${center["정원"]}인 시설 ${center["분류"]}`}</Head> 
+                    }
+                    <Wrap to={ '/center/' + center.id }>
+                        {
+                            type !== "abstract" &&
+                            <Thumbnail>
+                                <img src={ ThumbImg } alt="보노매물" />
+                            </Thumbnail>
+                        }
+                        <Sales>
+                            <Num><span>매물번호:123456</span></Num>
+                            { 
+                                type !== "abstract" && 
+                                <>
+                                    <Cate>{center["분류"]}</Cate>
+                                    <Corp><img src={ CorpImg } /></Corp>
+                                </>
+                            } 
+                            <Badges>
+                                {center["추천"] && <div className='recommend'>추천</div>}
+                                {center["프리미엄"] && <div className='premium'>프리미엄</div> }
+                            </Badges>
+                            {
+                                type === "abstract" && 
+                                <Name>{`${center["기관"]} ${center["정원"]}인`}</Name>
+                            }
+                            <Region>{center["주소"]}</Region>
+                            <Price>{`매매 ${center["매매가"]}`}</Price>
+                            <Infos>
+                                <span>{`${center["기관"]} ${center["면적"]}`}</span>
+                                <span>{`[현원 ${center["현원"]}인/정원${center["면적"]}인]`}</span>
+                            </Infos>
+                            {
+                                type !== "abstract" && 
+                                <Assets>
+                                    <div>
+                                        <em className='invest'>투자</em>
+                                        <span className='value'>{center["투자"]}</span>
+                                    </div>
+                                    <div>
+                                        <em className='loan'>대출</em>
+                                        <span className='value'>{center["대출"]}</span>
+                                    </div>
+                                </Assets>
+                            }
+                        </Sales>
+                    </Wrap>
+                    {
+                        type !== "abstract" && 
+                        <Actions>
+                            <Action icon="scrap">스크랩</Action>
+                            <Action icon="share">공유</Action>
+                        </Actions>
+                    }
+                </Card>
             }
-            <Sales>
-                <Num><span>매물번호:123456</span></Num>
-                { 
-                    type !== "abstract" && 
-                    <>
-                        <Cate>분양</Cate>
-                        <Corp><img src={ CorpImg } /></Corp>
-                    </>
-                } 
-                <Badges>
-                    <div className='recommend'>추천</div>
-                    <div className='premium'>프리미엄</div>
-                </Badges>
-                {
-                    type === "abstract" && 
-                    <Name>주야간 보호센터 39인</Name>
-                }
-                <Region>서울시 강남구</Region>
-                <Price>매매 999억</Price>
-                <Infos>
-                    <span>주야간 보호센터, 연면적 1,452m²</span>
-                    <span>[현원 39인 / 정원 39인]</span>
-                </Infos>
-                {
-                    type !== "abstract" && 
-                    <Assets>
-                        <div>
-                            <em className='invest'>투자</em>
-                            <span className='value'>7억</span>
-                        </div>
-                        <div>
-                            <em className='loan'>대출</em>
-                            <span className='value'>13억</span>
-                        </div>
-                    </Assets>
-                }
-            </Sales>
-        </Wrap>
-        {
-            type !== "abstract" && 
-            <Actions>
-                <Action icon="scrap">스크랩</Action>
-                <Action icon="share">공유</Action>
-            </Actions>
-        }
-    </Card>
-);
+        </>
+    )
+};
 
 export default CenterCard;

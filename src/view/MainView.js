@@ -15,6 +15,7 @@ import FindPwdContainer from '../containers/Account/FindPwdContainer';
 import FindIdContainer from '../containers/Account/FindIdContainer';
 import LoginContainer from '../containers/Account/LoginContainer';
 import MapChartContainer from '../containers/MapChart/MapChartContainer';
+import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
 import { ChartWrap } from '../components/Chart/RadarChart/RadarChartStyle';
 import Alert from '../containers/Alert/Alert';
 
@@ -26,6 +27,7 @@ const MainView = ({ list, children }) => {
     const FIND_ID_MODE  = useSelector(state => state.Mode.findId);
     const FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
     const CALCULATOR_MODE = useSelector(state => state.Mode.calculator);
+    const ALARM_MODE = useSelector(state => state.Mode.alarm);
     const CHART_MODE = useSelector(state => state.Chart.activate);
     const ALERT_MODE = useSelector(state => state.Alert.active);
 
@@ -45,6 +47,7 @@ const MainView = ({ list, children }) => {
                 <MapChartContainer />
                 <MapContainer />
                 <Outlet />
+                { ALARM_MODE && <UserAlarmFormContainer /> }
             </Main>
         </>
     )

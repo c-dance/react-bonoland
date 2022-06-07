@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactModal from "react-modal";
 import { ModalWrap, Close, Title, Description, Hr, Contents, CloseAction } from './ModalStyle';
 import { useNavigate } from 'react-router';
+import { isBrowser } from 'react-device-detect';
 
 const modalStyle = {
     overlay: {
@@ -15,7 +16,7 @@ const modalStyle = {
         right: 'auto',
         bottom: 'auto',
         width: '100%',
-        maxWidth: '390px',
+        maxWidth: `${ isBrowser? "390px" : "calc(100% - 28px)" }`,
         height: 'auto',
         maxHeight: 'calc(100% - 160px)',
         padding: '0',
@@ -38,7 +39,7 @@ const Modal  = ({
     const navigate = useNavigate();
 
     const customStyle = Object.assign({}, modalStyle);
-    if(width) customStyle.content.maxWidth = width + 'px';
+    if(width && isBrowser) customStyle.content.maxWidth = width + 'px';
     if(height) customStyle.content.maxHeight = height + 'px';
 
     const SIZE_LARGE = Number(width) > 390;

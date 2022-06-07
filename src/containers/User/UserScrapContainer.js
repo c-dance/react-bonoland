@@ -1,18 +1,34 @@
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
-import { useFetch } from '../../hooks';
-import { Loading, NoData, Error } from '../../components/ui/Inform/Inform';
 import { isBrowser, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useGet } from '../../hooks';
+import { getUserScrapCenters } from '../../api/user';
 
 const UserScrapContainer = () => {
 
-    const [ page, scraps ] = useFetch({}, '/data/scraps.json');
+    const [ centers, setCenters ] = useState({});
+    const [ sales, setSales ] = useState([]);
+    const [ total, setTotal ] = useState(0);
+    const [id, setId] = useState('123456');
+    const [ loading, error, noData, data, setGet ] = useGet([]);
 
-    const centers = scraps["시설"];
-    const sales = scraps["매물"];
-    const total = 0;
+    useEffect(() => {
+        setGet({ 
+            get: getUserScrapCenters,
+            id: id
+        });
+    }, []);
+
+    useEffect(() => {
+        setCenters(data["시설"]);
+        setSales(data["매물"]);
+        if(data["시설"] && data["매물"]) {
+            const totalLen = data["시설"].length + data["매물"].length
+            setTotal(totalLen);
+        }
+    }, [data]);
 
     return (
         <Section
@@ -22,26 +38,26 @@ const UserScrapContainer = () => {
             back={ isMobile && true }
             action={ false }
         >
-            { page === 'loading' && <Loading /> }
-            { page === 'fail' && <Error /> }
-            { page === 'empty' && <NoData text="찜 매물이 없습니다." /> }
-            { page === 'success' && 
-
-                <ListTab 
-                    // type={ isBrowser? "full" : "" }
-                    navs={["매물", "시설"]} 
-                    contents={[
-                        <CenterList 
-                            type={ "sub" } 
-                            centers={ centers } 
-                        />,
-                        <CenterList 
-                            type={ "sub" } 
-                            centers={ sales } 
-                        />,
-                    ]}
-                />
-            }
+            <ListTab 
+                // type={ isBrowser? "full" : "" }
+                navs={["매물", "시설"]} 
+                contents={[
+                    <CenterList 
+                        type={ "sub" } 
+                        centers={ sales } 
+                        loading={ loading }
+                        error={ error }  
+                        noData={ noData }
+                    />,
+                    <CenterList 
+                        type={ "sub" } 
+                        centers={ centers } 
+                        loading={ loading }
+                        error={ error }  
+                        noData={ noData }
+                    />,
+                ]}
+            />
         </Section>
     )
 }

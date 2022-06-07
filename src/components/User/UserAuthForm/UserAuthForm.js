@@ -2,14 +2,18 @@ import { module } from '../../../themes/module';
 import { Form, Inform } from './UserAuthFormStyle';
 import React from "react";
 
-const UserAuthForm = ({ password, onPasswordChange }) => {
+const UserAuthForm = ({ 
+    password, 
+    onPasswordChange,
+    onFormSubmit
+}) => {
 
     return (
         <>
             <Inform>
                 본인 확인을 위해 비밀번호를 재 입력해주세요.
             </Inform>
-            <Form >
+            <Form onSubmit={ event => onFormSubmit(event) }>
                 <module.Fieldset>
                     <module.Input
                         type="text"
@@ -19,12 +23,13 @@ const UserAuthForm = ({ password, onPasswordChange }) => {
                     <module.Input
                         type="password"
                         value={ password }
-                        onChange= { onPasswordChange }
+                        onChange= { event => onPasswordChange(event) }
                         placeholder="비밀번호"
                     />
                 </module.Fieldset>
                 <module.SubmitButton
-                    className="disabled"
+                    type="submit"
+                    className={ password.length <= 0 && "disabled"}
                 >
                     확인
                 </module.SubmitButton>

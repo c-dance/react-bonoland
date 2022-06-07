@@ -42,7 +42,7 @@ const Input = styled.input`
 
     &:focus,
     &:active {
-        border-color: '#BD9369';
+        border-color: #BD9369;
     }
 
     &:placeholder {
@@ -51,6 +51,25 @@ const Input = styled.input`
 
     &.disabled {
         border-width: 0;
+    }
+`;
+
+const Textarea = styled.textarea`
+    width: 100%;
+    height: 226px;
+    padding: 16px;
+    border: 1px solid #E0E0E0;
+    font-size: 14px;
+    background-color: #fff;
+    resize: none;
+
+    &:focus,
+    &:active {
+        border-color: '#BD9369';
+    }
+
+    &:placeholder {
+        color: ${ props => props.border? '#BDBDBD' : '#757575' }; 
     }
 `;
 
@@ -358,6 +377,7 @@ const ModalAction = styled.div`
 export const module = {
     scrollWrapper,
     Fieldset,
+    Textarea,
     Input,
     SubmitButton,
     TableForm,

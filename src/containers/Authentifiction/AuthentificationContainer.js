@@ -21,6 +21,8 @@ const AuthenticationContainer = ({ onResultSubmit}) => {
     // 인증번호 입력
     const [ authNumber, setAuthNumber ] = useState('');
 
+    console.log("authentification");
+
     // 전화번호 폼 제출
     const onPhoneSubmit = (event) => {
         event.preventDefault();

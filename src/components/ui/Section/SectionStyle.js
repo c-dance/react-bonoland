@@ -9,10 +9,10 @@ import { module } from '../../../themes/module';
 export const Section = styled.section`
     z-index: 30;
     position: fixed;
-    top: 82px;
+    top: 80px;
     right: 0;
     width: 390px;
-    height: calc(100% - 82px);
+    height: calc(100% - 80px);
     background-color: #fff;
     box-shadow: -3px 0 6px rgba(0,0,0, .06); 
 
@@ -58,8 +58,10 @@ export const Action = styled.div`
     height: 56px;
     line-height: 56px;
     text-align: center;
-    background-color: ${ props => props.themeColor === 'primary'? '#fff' : props.theme.colors.secondary };
-    color: ${ props => props.themeColor === 'primary'? props.theme.colors.primary : '#fff' };
+    cursor: pointer;
+    background-color: ${ props => props.themeColor === 'primary'? props.theme.colors.primary : props.theme.colors.secondary };
+    ${'' /* color: ${ props => props.themeColor === 'primary'? props.theme.colors.primary : '#fff' }; */}
+    color: #fff;
 
     .mobile & {
         position: fixed;
@@ -72,6 +74,7 @@ export const Close = styled.div`
     right: 24px;
     width: 24px;
     height: 24px;
+    cursor: pointer;
     background: url(${ props =>
         props.themeColor === "primary" && primaryCloseIcon
         || props.themeColor === "secondary" && secondaryCloseIcon
@@ -90,6 +93,7 @@ export const Back = styled.div`
     width: ${ props => props.icon? '24px' : 'auto' };
     height: 24px;
     font-size: ${ ({theme}) => theme.fontSizes.s };
+    cursor: pointer;
     color: ${ props =>
         props.themeColor === "primary"?
         props.theme.colors.gray600 

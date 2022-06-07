@@ -29,6 +29,11 @@ export const CONTACT = {
     DEACTIVATE: '/', 
 };
 
+export const ALARM = {
+    ACTIVATE: '/alarm',
+    DEACTIVATE: '/', 
+};
+
 /* === ACTOIN CREATOR === */
 export const activateSignup = () => ({
     type: SIGNUP.ACTIVATE,
@@ -60,6 +65,11 @@ export const activateContact = () => ({
     payload: true
 });
 
+export const activateAlarm = () => ({
+    type: ALARM.ACTIVATE,
+    payload: true
+});
+
 export const deactivateSignup = () => ({
     type: SIGNUP.DEACTIVATE,
     payload: false
@@ -84,7 +94,13 @@ export const deactivateCalculator = () => ({
     type: CALCULATOR.DEACTIVATE,
     payload: false
 });
+
 export const deactivateContact = () => ({
     type: CONTACT.DEACTIVATE,
+    payload: false
+});
+
+export const deactivateAlarm = () => ({
+    type: ALARM.DEACTIVATE,
     payload: false
 });

@@ -9,7 +9,6 @@ export const getUserRecentCenters = async id => {
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
-        console.log(response);
         return response;
     } catch (err) {
         consoleErr(err);
