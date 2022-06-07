@@ -37,9 +37,14 @@ const MapChartContainer = () => {
 
     /* === 챠트 데이터 업데이트 === */
     useEffect(() => {
-        dispatch(updateChart(data));
-        if(IS_GUGUN && Object.keys(data).length > 0 && isBrowser ) dispatch(activateChart());
-        if(!IS_GUGUN || Object.keys(data).length <= 0) dispatch(deactivateChart()); 
+        // dispatch(updateChart(data));
+        // if(IS_GUGUN && Object.keys(data).length > 0 && isBrowser ) dispatch(activateChart());
+        // if(!IS_GUGUN || Object.keys(data).length <= 0) dispatch(deactivateChart()); 
+        if(Object.keys(data).length > 0) {
+            dispatch(updateChart(data[Object.keys(data)[0]]));
+            if(IS_GUGUN && Object.keys(data).length > 0 && isBrowser ) dispatch(activateChart());
+            if(!IS_GUGUN || Object.keys(data).length <= 0) dispatch(deactivateChart()); 
+        }
     }, [data]);
 
     const onCloseClick = () => {

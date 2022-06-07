@@ -21,7 +21,8 @@ export const getAllRecommendCenters = async (region=null) => {
     console.log('메인 추천 목록');
 
     const source = axios.CancelToken.source();
-    const url = '/allrecommends';
+    // const url = '/allrecommends';
+    const url = '../../data02/allrecommends.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
@@ -37,10 +38,12 @@ export const getRecommendCenters = async (region=null) => {
     console.log('추천 목록');
 
     const source = axios.CancelToken.source();
-    const url = '/recommends';
+    // const url = '/recommends';
+    const url = '../../data02/recommends.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
+        console.log(response);
         return response;
     } catch (err) {
         consoleErr(err);
@@ -53,10 +56,12 @@ export const getSalesCenters = async (region=null) => {
     console.log('매매 목록');
 
     const source = axios.CancelToken.source();
-    const url = '/sales';
+    // const url = '/sales';
+    const url = '../../data02/sales.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
+        console.log(response);
         return response;
     } catch (err) {
         consoleErr(err);

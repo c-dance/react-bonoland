@@ -29,8 +29,12 @@ const UserAlarmContainer = () => {
     }, []);
 
     useEffect(() => {
-        setAlarms(data);
-        if(data) setTotal(data.length);
+        // setAlarms(data);
+        // if(data) setTotal(data.length);
+        if(Object.keys(data).length > 0) {
+            setAlarms(data[Object.keys(data)[0]]);
+            setTotal(data[Object.keys(data)[0]].length);
+        }
     }, [data]);
 
     return (

@@ -6,7 +6,8 @@ export const getCenter = async (id = "") => {
     console.log('기관');
 
     const source = axios.CancelToken.source();
-    const url = '/center';
+    // const url = '/center';
+    const url = '../../data02/center.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });

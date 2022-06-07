@@ -19,7 +19,10 @@ const UserRecentContainer = () => {
     }, []);
 
     useEffect(() => {
-        setRecent(data);
+        // setRecent(data);
+        if(Object.keys(data).length > 0) {
+            setRecent(data[Object.keys(data)[0]]);
+        }
     }, [data]);
 
     return (

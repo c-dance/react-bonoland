@@ -50,8 +50,6 @@ const CenterListContainer = () => {
     };
     
     const selectCapacity = value => {
-        console.log('clicked', value)
-        console.log('clicked', typeof value)
         LOCAL_STORAGE.store(CATEGORY[category].key, CAPACITY[0].value);
         setCapacityValues(value);
     };
@@ -63,7 +61,6 @@ const CenterListContainer = () => {
     const selectCategory = selected => {
         setCategory(CATEGORY[selected].value);
         const capacity = LOCAL_STORAGE.get(CATEGORY[selected].key);
-        console.log(capacity);
         setCapacityValues(capacity);
         setCapacityActive(true);
     };
@@ -74,7 +71,8 @@ const CenterListContainer = () => {
     }, []);
 
     useEffect(() => {
-        setCenters(data);
+        // setCenters(data);
+        setCenters(data[Object.keys(data)[0]]);
     }, [data]);
 
     /* ==== RENDER_TEMPLATE === */

@@ -22,7 +22,10 @@ const NewsListContainer = () => {
     }, []);
 
     useEffect(() => {
-        setNewsList(data);
+        // setNewsList(data);
+        if(Object.keys(data).length > 0) {
+            setNewsList(data[Object.keys(data)[0]]);
+        }
     }, [data]);
     
     return (

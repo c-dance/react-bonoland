@@ -12,15 +12,20 @@ const SalesListContainer = () => {
     const [ nursings, setNursings ] = useState([]);
     const [ daycares, setDayCares ] = useState([]);
 
-    const [ loading, error, noData, data, setGet ] = useGet([]);
+    const [ loading, error, noData, data, setGet ] = useGet({});
 
     useEffect(() => {
         setGet({ get: getSalesCenters });
     }, []);
 
     useEffect(() => {
-        setNursings(data["요양원"]);
-        setDayCares(data["주간보호"]);
+        // data[Object.keys(data)[0]]
+        // setNursings(data["요양원"]);
+        // setDayCares(data["주간보호"]);
+        if(Object.keys(data).length > 0) {
+            setNursings(data[Object.keys(data)[0]]["요양원"]);
+            setDayCares(data[Object.keys(data)[0]]["주간보호"]);
+        }
     }, [data]);
 
     return (

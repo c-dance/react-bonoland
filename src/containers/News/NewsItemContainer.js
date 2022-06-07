@@ -23,7 +23,10 @@ const NewsItemContainer = () => {
     }, []);
 
     useEffect(() => {
-        setNews(data);
+        // setNews(data);
+        if(Object.keys(data).length > 0) {
+            setNews(data[Object.keys(data)[0]]);
+        }
     }, [data]);
 
     const onBackClick = () => { 

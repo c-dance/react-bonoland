@@ -22,11 +22,20 @@ const UserScrapContainer = () => {
     }, []);
 
     useEffect(() => {
-        setCenters(data["시설"]);
-        setSales(data["매물"]);
-        if(data["시설"] && data["매물"]) {
-            const totalLen = data["시설"].length + data["매물"].length
-            setTotal(totalLen);
+        // setCenters(data["시설"]);
+        // setSales(data["매물"]);
+        // if(data["시설"] && data["매물"]) {
+        //     const totalLen = data["시설"].length + data["매물"].length
+        //     setTotal(totalLen);
+        // }
+        
+        if(Object.keys(data).length > 0) {
+            setCenters(data[Object.keys(data)[0]]["시설"]);
+            setSales(data[Object.keys(data)[0]]["매물"]);
+            if(data[Object.keys(data)[0]]["시설"] && data[Object.keys(data)[0]]["매물"]) {
+                const totalLen = data[Object.keys(data)[0]]["시설"].length + data[Object.keys(data)[0]]["매물"].length
+                setTotal(totalLen);
+            } 
         }
     }, [data]);
 
