@@ -758,7 +758,7 @@
             "금액" : 81637200
         }
     },
-    "user-recentcenters" : [
+    "recentcenters" : [
         {
             "id": "1asdf",
             "매물번호": 1,
@@ -835,7 +835,7 @@
             "분류": "리모델링"
         }
     ],
-    "user/scrapcenters" : [
+    "scrapcenters" : [
         {
             "id": "1asdf",
             "매물번호": 1,
@@ -912,7 +912,7 @@
             "분류": "리모델링"
         }
     ],
-    "user/alarmcenters" : [
+    "alarmcenters" : [
         {
             "id": "1asdf",
             "매물번호": 1,

@@ -14,7 +14,7 @@ const ChartReducer = (state = initialState, action) => {
             return {...state, activate: false};
         case CHART.UPDATE: 
             const data = action.payload;
-            const hasData = Object.keys(data).length > 0 || false;
+            const hasData = Object.keys(data).length > 0;
             return {...state, data: data, hasData: hasData};
         default : 
             return state;

@@ -5,7 +5,7 @@ export const getUserRecentCenters = async id => {
     console.log('회원 최근 본 매물');
 
     const source = axios.CancelToken.source();
-    const url = '/centers';
+    const url = '/recentcenters';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -22,7 +22,7 @@ export const getUserScrapCenters = async id => {
     console.log('회원 스크랩 목록');
 
     const source = axios.CancelToken.source();
-    const url = '/user/scrapcenters';
+    const url = '/scrapcenters';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -38,7 +38,7 @@ export const getUserAlarmCenters = async id => {
     console.log('회원 알람 목록');
 
     const source = axios.CancelToken.source();
-    const url = '/user/alarmcenters';
+    const url = '/alarmcenters';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
