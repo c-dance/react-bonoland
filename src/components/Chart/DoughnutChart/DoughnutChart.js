@@ -81,12 +81,12 @@ const DoughnutChart = ({ title, data, type }) => {
                 labels: {
                     color: '#fff',
                     font: {
-                        size: ( type === "main" && isBrowser && 10 ) || 14,
+                        size: ( type === "main" && isBrowser && 12 ) || 14,
                     },
                     usePointStyle: true,
                     boxWidth: ( type === "main" && isBrowser && 6 ) || 8,
                     lineWidth: 0,
-                    padding: ( type === "main" && isBrowser && 15 ) || 20
+                    padding: ( type === "main" && isBrowser && 12 ) || 20
                 },
             },
             title: {
@@ -104,7 +104,7 @@ const DoughnutChart = ({ title, data, type }) => {
             }
         },
         cutout: (type === "main" && isBrowser && 50) || 70,
-        radius: (type === "main" && isBrowser && 60) || 90,
+        radius: (type === "main" && isBrowser && 70) || 90,
         circumference: 370, 
         elements: {
             arc: {

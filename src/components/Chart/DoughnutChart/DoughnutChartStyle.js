@@ -10,7 +10,7 @@ export const ChartBox = styled.div`
     padding: 20px;
     width: ${ props => 
         (props.type === "main" && isBrowser )?
-        "270px"
+        "320px" // 270
         : "100%"
     };
     background-color: ${ props => 
