@@ -8,6 +8,8 @@ import { activateAlert } from '../../store/actions/alert';
 import { isBrowser } from "react-device-detect";
 import { useGet } from "../../hooks";
 import { getCenter } from '../../api/center';
+import Modal from '../../components/Modal/Modal';
+import CalculatorResult from "../../components/Calculator/CalculatorResult/CalculatorResult";
 
 const CenterItemContainer = () => {
 
@@ -16,6 +18,7 @@ const CenterItemContainer = () => {
     const { id } = useParams();
     const [ center, setCetner ] = useState(null);
     const [ loading, error, noData, data, setApi ] = useGet({});
+    const [ calcMode, setCalcMode ] = useState(false);
 
     const onContactClick = () => {
         const alertMsg = {
@@ -24,6 +27,14 @@ const CenterItemContainer = () => {
         }
         dispatch(activateAlert(alertMsg));
     };
+
+    const onCalcClick = () => {
+        setCalcMode(true);
+    };
+
+    const closeCaclulator = () => {
+        setCalcMode(false);
+    }
 
     useEffect(() => {
         setApi({
@@ -50,7 +61,20 @@ const CenterItemContainer = () => {
                 error={error}
                 noData={noData}
                 onContactClick = { onContactClick }
+                onCalcClick={ onCalcClick }
             />
+            { 
+                calcMode && 
+                <Modal
+                    open={ true }
+                    close={ true }
+                    onCloseClick={ closeCaclulator }
+                    title="수익 계산"
+                    width="970"
+                >
+                    <CalculatorResult />
+                </Modal>
+            }
         </Panel>
     )
 };

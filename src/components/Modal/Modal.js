@@ -20,7 +20,8 @@ const modalStyle = {
         height: 'auto',
         maxHeight: 'calc(100% - 160px)',
         padding: '0',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
+        overflow: 'hidden'
     }
 };
 

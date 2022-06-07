@@ -3,6 +3,10 @@ import styled from 'styled-components';
 export const Tab = styled.div`
     display: block;
     height: 100%;
+
+    .mobile & {
+        height: calc(100vh - 134px);
+    }
 `;
 
 export const TabNavs = styled.div`
@@ -51,6 +55,10 @@ export const TabNavs = styled.div`
 export const TabConts = styled.div`
     display: block;
     height: 100%;
+
+    .mobile & {
+        height: calc(100% - 48px);
+    }
 
     .tabCont {
         display: none;

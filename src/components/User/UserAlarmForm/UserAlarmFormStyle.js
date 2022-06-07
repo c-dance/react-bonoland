@@ -4,10 +4,11 @@ import defualtCheckIcon from '../../../assets/images/form/ico-checkbox_default.s
 import checkedCheckIcon from '../../../assets/images/form/ico-checkbox_checked.svg';
 import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';
 
-
 export const AlarmForm = styled.div`
-
     height: 100%;
+    .mobile & {
+        height: calc(100% - 122px);
+    }
     hr {
         width: 100%;
         height: 10px;

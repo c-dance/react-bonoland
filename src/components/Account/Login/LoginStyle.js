@@ -6,10 +6,36 @@ import checkboxCheckedtIcon from '../../../assets/images/form/ico-checkbox_check
 export const Form = styled(module.AccountForm)`
     fieldset {
         gap: 8px;
+
+        .mobile & {
+            gap: 24px;
+        }
+
+        .wrap > label {
+            display: none;
+            .mobile & {
+                display: block;
+                margin-bottom: 16px;
+            }
+        }
+
+        .wrap > input {
+            .mobile & {
+                border-width: 1px;
+                border-radius: 2px;
+            }
+        }
     }
 
     .action {
         position: relative;
+        .mobile & {
+            position: relative;
+        }
+    }
+
+    .mobile & {
+        padding: 40px 24px;
     }
 `;
 
@@ -17,6 +43,10 @@ export const Metas = styled.div`
     display: flex;
     justify-content: space-between;
     margin: 13px 0 33px;
+
+    .mobile & {
+        margin-top: 20px;
+    }
 
     .save {
         position: relative;
@@ -35,6 +65,11 @@ export const Metas = styled.div`
             display: block;
             padding-left: 22px;
             background: url(${checkboxDefaultIcon}) left center no-repeat;
+
+            .mobile & {
+                font-size: ${ ({theme}) => theme.fontSizes.s };
+                color: ${ ({theme}) => theme.colors.gray600 };
+            }
         }
 
         input:checked + label { background: url(${checkboxCheckedtIcon}) left center no-repeat; }
@@ -67,12 +102,30 @@ export const Signup = styled.div`
     margin-top: 24px;
     font-size: 13px;
 
+    .mobile & {
+        margin-top: 4px;
+    }
+
     span {
         color: ${ ({theme}) => theme.colors.gray600 };
         font-weights: ${ ({theme}) => theme.fontWeights.medium };
+        .mobile & {
+            display: none;
+        }
     }
+
     button {
         text-decoration: underline;
         background-color: transparent;
+
+        .mobile & {
+            text-decoration: none;
+            width: 100%;
+            height: 56px;
+            line-height: 56px;
+            border-radius: 2px;
+            border: 1px solid ${ ({theme}) => theme.colors.primary };
+            color: ${ ({theme}) => theme.colors.primary };
+        }
     }
 `;

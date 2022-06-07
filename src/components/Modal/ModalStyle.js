@@ -30,6 +30,7 @@ export const Description = styled.p`
     line-height: 1.4;
     font-size: ${({theme}) => theme.fontSizes.xs };
     color: ${({theme}) => theme.colors.gray500 };
+    white-space: pre-line;
 `;
 
 export const Hr = styled.hr`
@@ -47,6 +48,7 @@ export const Contents = styled.div`
     font-size: ${({theme}) => theme.fontSizes.s };
     color: ${({theme}) => theme.colors.gray500 };
     line-height: 1.4;
+    white-space: pre-line;
 `;
 
 export const CloseAction = styled.div`

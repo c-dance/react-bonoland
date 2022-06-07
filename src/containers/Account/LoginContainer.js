@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deactivateLogin } from '../../store/actions/mode';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import Login from '../../components/Account/Login/Login';
-import { module } from '../../themes/module';
 import { USER } from '../../utils/user';
+import Section from "../../components/ui/Section/Section";
 
 
 const LoginContainer = () => {
@@ -63,6 +63,7 @@ const LoginContainer = () => {
     const modalProps = {
         open: true,
         close: true,
+        width: 390,
         onCloseClick: closeLogin,
         title: "로그인"
     };
@@ -70,10 +71,12 @@ const LoginContainer = () => {
     useEffect(() => {
         checkStoredId();
     }, []);
+
     
     return (
         <>
-            <BrowserView>
+        {
+            isBrowser &&
                 <Modal {...modalProps} >
                     <Login
                         id={ id }
@@ -86,7 +89,29 @@ const LoginContainer = () => {
                         onFormSubmit={ onFormSubmit }
                     />
                 </Modal>
-            </BrowserView>
+        }
+        {
+            isMobile && 
+            <Section
+                title="로그인"
+                themeColor="primary"
+                close={ false }
+                back={ true }
+                action={ false }
+                onBackClick={ closeLogin }
+            >
+                <Login
+                    id={ id }
+                    pwd={ pwd }
+                    storeId={ storeId }
+                    onIdChange={ onIdChange }
+                    onPwdChange={ onPwdChange }
+                    onStoreIdChange={ onStoreIdChange }
+                    onModeChange={ onModeChange }
+                    onFormSubmit={ onFormSubmit }
+                />
+            </Section>
+        }
         </>
     )
 };

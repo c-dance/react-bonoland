@@ -3,7 +3,7 @@ import { LayoutContext } from '../../hooks/layout';
 import { module } from '../../themes/module';
 
 const Contact = ({
-
+    onFormSubmit
 }) => {
 
     const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
@@ -11,7 +11,8 @@ const Contact = ({
     return (
         <>
             {
-                MOBILE_DEVICE && <module.MobileForm>
+                MOBILE_DEVICE && 
+                <module.MobileForm onSubmit={ event => onFormSubmit(event) }>
                     <fieldset>
                         <legend>의뢰인 정보</legend>
                         <div className="wrap">
@@ -62,13 +63,14 @@ const Contact = ({
                             <textarea name="rgContents" id="rgContents"></textarea> 
                         </div>
                     </fieldset>
-                    <button>
+                    <button type="submit">
                         접수하기
                     </button>
                 </module.MobileForm>
             }
             {
-                !MOBILE_DEVICE && <module.TableForm>
+                !MOBILE_DEVICE && 
+                <module.TableForm onSubmit={ event => onFormSubmit(event) }>
                     <fieldset>
                         <legend>의뢰인 정보</legend>
                         <table>
@@ -153,7 +155,7 @@ const Contact = ({
                             </tr>
                         </table>
                     </fieldset>
-                    <button>
+                    <button type="submit">
                         접수하기
                     </button>
                 </module.TableForm>

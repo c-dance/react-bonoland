@@ -24,14 +24,6 @@ const MapChartContainer = () => {
     
     const [ loading, error, noData, data, setGet ] = useGet({});
 
-
-    /* === 차트 데이터 받아오기 === */
-    let fetchedData = {
-        "고령인구": [345, 56, 32, 24],
-        "등급인원": [4272, 1236, 3036],
-        "요양시설": [127, 114, 8, 1, 8] 
-    };
-
     /* === 렌더링 이후 차트 데이터 받아오기(모바일 일 때) === */
     useEffect(() => {
         if(IS_GUGUN) setGet({
@@ -72,15 +64,13 @@ const MapChartContainer = () => {
     const CHART_TEMPLATE = (CHART_DATA) => (
         <MapChart>
         {
-            <div>차트</div>
-            // Object.keys(CHART_DATA).map((key, idx) => (
-            //     <DoughnutChart 
-            //         type={ "main" }
-            //         scheme={ key }
-            //         CHART_DATA={ CHART_DATA[key] }
-            //         key={ idx }
-            //     />
-            // ))
+            Object.keys(CHART_DATA).map((key, idx) => (
+                <DoughnutChart 
+                    type={ "main" }
+                    title={ key }
+                    data={ CHART_DATA[key] }
+                />
+            ))
         }
         </MapChart>
     );

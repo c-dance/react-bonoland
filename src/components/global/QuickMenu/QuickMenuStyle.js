@@ -25,6 +25,9 @@ const quickCSS = css`
         top: 104px;
         font-size: 0;
         background: url(${userIcon}) center no-repeat #fff;
+        .mobile & {
+            top: 10px;
+        }
     }
     &.alarm {
         top: 154px;

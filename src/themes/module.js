@@ -255,11 +255,19 @@ export const AccountForm = styled.form`
     width: 100%;
     height: 100%;
 
+    .mobile & {
+        padding: 40px 24px 76px;
+    }
+
     .desc {
         margin-bottom: 40px;
         line-height: 1.4;
         font-size: ${ theme.fontSizes.xs };
         color: ${ theme.colors.gray500 };
+
+        .mobile & {
+            text-align: center;
+        }
     }
 
     fieldset {
@@ -323,6 +331,13 @@ export const AccountForm = styled.form`
         gap: 16px;
         width: 100%;
 
+        .mobile & {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
         button {
             width: 100%;
             height: 56px;
@@ -348,7 +363,7 @@ export const AccountForm = styled.form`
 
 const ModalAction = styled.div`
     display: flex;
-    flex-directin: column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 16px;

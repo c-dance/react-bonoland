@@ -10,6 +10,7 @@ import React from "react";
 const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];
 const baseLen = 5;
 const gap = { weight: 1 };
+
 const getStyldedDatasets = (datasets) => {
     let newDatasets = [];
 
@@ -25,30 +26,44 @@ const getStyldedDatasets = (datasets) => {
         if(i < datasets.length -1) newDatasets.push(gap);
     };
 
-    console.log(newDatasets);
-
     return newDatasets;
 };
 
-const DoughnutChart = ({ scheme, data, type }) => {
+const getMinData = (data) => {
+    let dummyCount = baseLen - Object.keys(data).length;
+    for(let i = 0; i < dummyCount; i++) {
+        data[`dummy${i}`] = "";
+    };
+    return data;
+}; 
+
+const getLabels = data => {
+    let labels = Object.keys(data).filter((key) => key !== "합계" && !key.includes("dummy") );
+    return labels;
+}; 
+
+const DoughnutChart = ({ title, data, type }) => {
+
+    data = getMinData(data);
     
     ChartJs.register(ArcElement, Legend, Title, DoughnutController );
 
     //get data
-    const dataScheme = MARKETS[scheme.toString()];
-    const chartLabels = dataScheme.labels.map((item, idx) =>`${item}${data[idx]}명`);
-    const chartTitle = dataScheme.title;
-    const datasets = data.map((item, idx) => (
-        {
-            label: idx ===0 ? '' : chartLabels[idx - 1],
-            data: idx===0? [Number(item)].concat(new Array(data.length - 2)) : [Number(item), Number(data[0]) - Number(item) ],
-            backgroundColor: idx===0? doughnutColors : [doughnutColors[idx], 'transparent'],
-            borderColor: 'transparent',
-            borderRadius: idx===0? 0 : 30,  
-            borderWidth: 3,
-            weight: 3,
-        }
-    ));
+    const chartLabels = getLabels(data);
+    console.log(data);
+    
+    const chartTitle = title;
+
+    const datasets = Object.keys(data).map((key, idx) => ({
+        label: (key === "합계" || key.includes("dummy")) ? "" : key,
+        data: key === "합계"? [Number(data[key])].concat(new Array(Object.keys(data).length - 2)) : [Number(data[key]), Number(data["합계"]) - Number(data[key]) ],
+        // backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx], 'transparent'],
+        backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx], 'transparent'],
+        borderColor: 'transparent',
+        borderRadius: idx===0? 0 : 30,  
+        borderWidth: 3,
+        weight: 3,
+    }));
     
     const styledDatasets = getStyldedDatasets(datasets);
 
@@ -60,7 +75,7 @@ const DoughnutChart = ({ scheme, data, type }) => {
                 labels: {
                     color: '#fff',
                     font: {
-                        size:14
+                        size: ( type === "main" && isBrowser && 10 ) || 14,
                     },
                     usePointStyle: true,
                     boxWidth: ( type === "main" && isBrowser && 8 ) || 10,
@@ -91,7 +106,7 @@ const DoughnutChart = ({ scheme, data, type }) => {
             }
         }, 
         centerText: {
-            value: `총 \n ${data[0]}명`,
+            value: `총 \n ${data["합계"]}명`,
             color: '#FFF',
             fontSizeAdjust: -0.5
         },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 import { useSelector, useDispatch } from 'react-redux';
 import { activateFindPwd, deactivateFindId } from '../../store/actions/mode';
 import Modal from "../../components/Modal/Modal";
@@ -7,6 +7,7 @@ import AuthenticationContainer from '../Authentifiction/AuthentificationContaine
 import { module } from '../../themes/module';
 import { FIND_ID } from '../../sheme/modal';
 import FindIdSuccess from '../../components/Account/FindIdSuccess/FindIdSuccess';
+import Section from '../../components/ui/Section/Section';
 
 const FindIdContainer = () => {
 
@@ -36,10 +37,20 @@ const FindIdContainer = () => {
         close: true,
         onCloseClick: () => { dispatch(deactivateFindId()) }
     };
+
+    const sectionProps = {
+        title: "아이디 찾기",
+        themeColor: "primary",
+        close: false,
+        back: true,
+        onBackClick: () => {dispatch(deactivateFindId())},
+        action: false
+    };
     
     return (
         <>
-            <BrowserView>
+        {
+            isBrowser &&
                 <Modal {...modalProps}>
                     {
                         !authResult && 
@@ -55,7 +66,22 @@ const FindIdContainer = () => {
                         <button className="link" onClick={() => dispatch(activateFindPwd())}>비밀번호 찾기</button>
                     </module.ModalAction>
                 </Modal>
-            </BrowserView>
+        }
+        {
+            isMobile &&
+            <Section {...sectionProps}>
+                {
+                    !authResult && 
+                    <AuthenticationContainer
+                        onResultSubmit={ onResultSubmit }
+                    />
+                }
+                {
+                    authResult &&
+                    <FindIdSuccess data={"idenit@naver.com"} />
+                }
+            </Section>
+        }
         </>
     )
 };

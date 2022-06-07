@@ -1,12 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { LayoutContext } from '../../hooks/layout';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
 import Register from '../../components/Register/Register';
+import { useDispatch } from 'react-redux';
+import { activateAlert } from '../../store/actions/alert';
 
 const RegisterContainer = () => {
+
+    const dispatch = useDispatch();
 
     // 매물접수 디바이스별 레이아웃 처리
     const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
@@ -24,13 +28,13 @@ const RegisterContainer = () => {
     const [ formSubmitted, setFormSubmitted ] = useState(false);
 
     // 매물 접수폼 전송
-    const [ registered, setRegistered ] = useState(false);
+    const [ registerSuccess, setRegistereSuccess ] = useState(false);
     
     // 매물접수 닫기
     const navigate = useNavigate();
     const deactivateRegister = () => {
         navigate('/');
-    }
+    };
 
 
     const onAgreeClick = (event) => {
@@ -48,13 +52,23 @@ const RegisterContainer = () => {
     };
 
     const onFormSubmit = (event) => {
-        setFormSubmitted()
+        event.preventDefault();
+        setRegistereSuccess(true);
     };
+
+    useEffect(() => {
+        if(registerSuccess) {
+            dispatch(activateAlert({
+                title:"접수 완료",
+                contents: "매물 접수가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
+            }))
+        }
+    }, [registerSuccess])
     
     return (
         <>
             {
-                !MOBILE_DEVICE &&
+                !MOBILE_DEVICE && !registerSuccess &&
                 <Modal
                         open={ true }
                         close={ true }
@@ -75,17 +89,15 @@ const RegisterContainer = () => {
                     }
                     {
                         agreeSubmitted && 
-                        !formSubmitted && 
-                        <Register device="browser" />
-                    }
-                    {
-                        formSubmitted && 
-                        <div>{ "접수 완료" }</div>   
+                        <Register 
+                            device="browser" 
+                            onFormSubmit={ onFormSubmit }
+                        />
                     }
                 </Modal>
             }
             {
-                MOBILE_DEVICE &&
+                MOBILE_DEVICE && !registerSuccess &&
                 <MobileSection 
                         title="매물접수"
                         onBackClick={ deactivateRegister }
@@ -103,12 +115,9 @@ const RegisterContainer = () => {
                         }
                         {
                             agreeSubmitted && 
-                            !formSubmitted && 
-                            <Register />
-                        }
-                        {
-                            formSubmitted && 
-                            <div>{ "접수 완료" }</div>   
+                            <Register 
+                                onFormSubmit={ onFormSubmit }
+                            />
                         }
                 </MobileSection>
             }

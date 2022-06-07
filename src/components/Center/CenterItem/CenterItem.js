@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Center,
+    Calculator,
     Top,
     Contents,
     Thumbnail,
@@ -33,7 +34,8 @@ import { getLocalNumber } from '../../../utils/number';
 
 const CenterItem = ({ 
     center, 
-    onContactClick ,
+    onContactClick,
+    onCalcClick,
     loading, 
     error,
     noData
@@ -56,6 +58,7 @@ const CenterItem = ({
         {
             center && Object.keys(center).length > 0 &&
             <Center>
+                <Calculator onClick={ () => onCalcClick() } />
                 <Top>
                     <Accordion>
                         <AccordionSummary  onClick={ () => { isMobile && toggleAccordion(accordion); } }>
@@ -160,16 +163,16 @@ const CenterItem = ({
                             <Section>
                                 <h3>시장현황</h3>
                                 <ChartWrap>
-                                    {/* { 
+                                    { 
                                         center["시장 현황"] && 
                                         Object.keys(center["시장 현황"]).map((key, idx) => (
                                             <DoughnutChart 
                                                 key={ idx }
-                                                scheme={ key } 
+                                                title={ key } 
                                                 data={ center["시장 현황"][`${key}`] }     
                                             />
                                         ))
-                                    } */}
+                                    }
                                 </ChartWrap>
                             </Section>
                             <Section>

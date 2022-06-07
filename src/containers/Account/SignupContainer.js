@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AUTH_USER } from '../../store/actions/auth';
-import { BrowserView, MobileView } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 import SignupType from "../../components/Account/SignupType/SignupType";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import SignupForm from "../../components/Account/SignupForm/SignupForm";
 import SignupSuccess from '../../components/Account/SignupSuccess/SignupSuccess';
 import Modal from "../../components/Modal/Modal";
 import { deactivateSignup } from '../../store/actions/mode';
+import Section from '../../components/ui/Section/Section';
 
 const SignupContaienr = () => {
 
@@ -57,7 +58,16 @@ const SignupContaienr = () => {
         title: "회원가입"
     };
 
-    const alertProps = Object.assign(modalProps, { title: "회원가입 완료!" });
+    const sectionProps = {
+        title: "회원가입",
+        themeColor: "primary",
+        close: false,
+        back: true,
+        onBackClick: () => dispatch(deactivateSignup()),
+        action: false
+    };
+
+    const alertProps = Object.assign({}, modalProps, { title: "회원가입 완료!" });
 
     const typeProps = {
         type: type,
@@ -67,36 +77,64 @@ const SignupContaienr = () => {
 
     return (
         <>
-            <BrowserView>
-                {
-                    !typeSumitted &&
-                    <Modal {...modalProps}>
+            {
+                isBrowser &&
+                <>
+                    {
+                        !typeSumitted &&
+                        <Modal {...modalProps}>
+                            <SignupType {...typeProps}/>
+                        </Modal>
+                    }
+                    {
+                        typeSumitted && !authResult &&
+                        <Modal {...modalProps}>
+                            <AuthenticationContainer
+                                onResultSubmit={ onResultSubmit }
+                            />
+                        </Modal>
+                    }
+                    {
+                        authResult && !newAccountSuccess &&
+                        <Modal {...modalProps}>
+                            <SignupForm
+                                onFormSubmit={ onFormSubmit }
+                            />
+                        </Modal>
+                    }
+                    {
+                        newAccountSuccess &&
+                        <Modal {...alertProps}>
+                            <SignupSuccess />
+                        </Modal>
+                    }
+                </>
+            }
+            {
+                isMobile && 
+                <Section {...sectionProps}>
+                    {
+                        !typeSumitted &&
                         <SignupType {...typeProps}/>
-                    </Modal>
-                }
-                {
-                    typeSumitted && !authResult &&
-                    <Modal {...modalProps}>
+                    }
+                    {
+                        typeSumitted && !authResult &&
                         <AuthenticationContainer
                             onResultSubmit={ onResultSubmit }
                         />
-                    </Modal>
-                }
-                {
-                    authResult && !newAccountSuccess &&
-                    <Modal {...modalProps}>
+                    }
+                    {
+                        authResult && !newAccountSuccess &&
                         <SignupForm
                             onFormSubmit={ onFormSubmit }
                         />
-                    </Modal>
-                }
-                {
-                    newAccountSuccess &&
-                    <Modal {...alertProps}>
+                    }
+                    {
+                        newAccountSuccess &&
                         <SignupSuccess />
-                    </Modal>
-                }
-            </BrowserView>
+                    } 
+                </Section>
+            }
 
         </>
     )

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
 import { QuickLink, QuickBtn } from './QuickMenuStyle';
-import { activateCalculator } from '../../../store/actions/mode';
+import { activateCalculator, activateLogin } from '../../../store/actions/mode';
 import { activateCadastral, deactivateCadastral } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 
@@ -30,6 +30,10 @@ const QuickMenu = () => {
         
     };
 
+    const testLogin = () => {
+        dispatch(activateLogin());
+    }
+
     useEffect(()=> {
         if(IS_GUGUN && HAS_DATA) setChartReady(true);
         else setChartReady(false)
@@ -38,6 +42,7 @@ const QuickMenu = () => {
     return (
         <>
             { isBrowser && <QuickLink className="user" to="/user">마이페이지</QuickLink> }
+            { isMobile && <QuickBtn className="user" onClick={ () => testLogin() } >마이페이지</QuickBtn> }
             { isBrowser && <QuickLink className="alarm" to="/user/alarm">알람설정</QuickLink> }
             <QuickBtn className="location" onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>

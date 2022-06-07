@@ -10,6 +10,7 @@ import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
 import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
 import syncIcon from '../../../assets/images/icon/ico-sync.svg';
+import calcIcon from '../../../assets/images/menu/ico-calculator.svg';
 
 export const Center = styled.article`
     position: relative;
@@ -25,6 +26,27 @@ export const Center = styled.article`
         left: 0;
         width: 100%;
         height: 100%;
+    }
+`;
+
+export const Calculator = styled.button`
+    z-index: 30;
+    position: absolute;
+    top: 20px;
+    right: -50px;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    box-shadow: 3px 3px 6px rgba(0,0,0,.06);
+    background: url(${calcIcon}) center no-repeat #fff;
+    color: ${ props => props.theme.colors.gray700 };
+    font-size: ${({theme}) => theme.fontSizes.xs };
+    line-height: 38px;
+    text-align: center;
+    white-space: nowrap;
+
+    .mobile & {
+        display: none;
     }
 `;
 

@@ -2,6 +2,7 @@ import { Form, Metas, Signup } from './LoginStyle';
 import { useDispatch } from 'react-redux';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
 import React from "react";
+import { isMobile } from 'react-device-detect';
 
 
 const Login = ({
@@ -20,10 +21,12 @@ const Login = ({
         <Form onSubmit={ event => onFormSubmit(event) }>
             <fieldset>
                 <div className="wrap">
-                    <input type="text" value={ id } onChange={ event => onIdChange(event) } placeholder="아이디"  />
+                    <label>아이디</label>
+                    <input type="text" className={ isMobile && "bd" } onChange={ event => onIdChange(event) } placeholder="아이디"  />
                 </div>
                 <div className="wrap">
-                    <input type="password" value={ pwd } onChange={ event => onPwdChange(event) } placeholder="비밀번호" />
+                    <label>비밀번호</label>
+                    <input type="password" className={ isMobile && "bd" } value={ pwd } onChange={ event => onPwdChange(event) } placeholder="비밀번호" />
                 </div>
             </fieldset>
             <Metas>

@@ -4,7 +4,8 @@ import resetIcon from '../../../assets/images/form/ico-reset_white.svg';
 
 export const CalcWrap = styled(module.scrollWrapper)`
     height: 100%;
-    max-height: 780px;
+    max-height: 600px;
+    
     .mobile & {
         height: calc(100% - 112px);
         max-height: calc(100% - 112px);

@@ -1,7 +1,7 @@
 import { CalcWrap, CalcForm, Caption } from "./CalculatorResultStyle";
 import React from "react";
 import { CALCULATOR_RESULT } from "../../../sheme/calculator";
-import { isBrowser, isMobile, isTablet } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const tableHead = () => (
     <tr>
@@ -20,7 +20,7 @@ const mobileColGroup = () => (
         <col width="auto"></col>
         <col width="auto"></col>
     </colgroup>
-)
+);
 
 const CalculatorResult = ({ result, onFormReset }) => {
     return (

@@ -5,7 +5,6 @@ import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
-import { LayoutContext } from '../../hooks/layout';
 import { deactivateCalculator } from '../../store/actions/mode';
 
 const CalculatorContainer = () => {
@@ -34,7 +33,6 @@ const CalculatorContainer = () => {
 
     // 수익계산기 닫기
     const closeCaclulator = () => {
-        console.log('close');
         setFormData({});
         setFormSubmitted(false);
         dispatch(deactivateCalculator());

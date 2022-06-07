@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { LayoutContext } from '../../hooks/layout';
 import { useNavigate } from 'react-router';
 import Modal from '../../components/Modal/Modal';
@@ -6,8 +6,12 @@ import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
 import Contact from '../../components/Contact/Contact';
 import { isBrowser, isMobile } from 'react-device-detect';
+import { useDispatch } from 'react-redux';
+import { activateAlert } from '../../store/actions/alert';
 
 const ContactContainer = () => {
+
+    const dispatch = useDispatch();
 
     // 개인정보 활용동의 (1) 약관 받아오기
     const [ term, setTerm ] = useState('');
@@ -25,7 +29,7 @@ const ContactContainer = () => {
     const [ user, setUser ] = useState(null);
 
     // 매물 문의폼 전송
-    const [ registered, setRegistered ] = useState(false);
+    const [ contactSuccess, setContactSuccess ] = useState(false);
     
 
     // 약관 동의 체크
@@ -46,7 +50,8 @@ const ContactContainer = () => {
 
     // 문의 폼 제출
     const onFormSubmit = (event) => {
-        setFormSubmitted()
+        event.preventDefault();
+        setContactSuccess(true);
     };
 
     // 매물문의 닫기
@@ -54,6 +59,15 @@ const ContactContainer = () => {
     const deactivatContact = () => {
         navigate('/');
     };
+
+    useEffect(() => {
+        if(contactSuccess) {
+            dispatch(activateAlert({
+                title:"문의 완료",
+                contents: "매물 문의가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
+            }))
+        }
+    }, [contactSuccess]);
 
     const template = () => (
         <>
@@ -70,14 +84,11 @@ const ContactContainer = () => {
             }
             {
                 agreeSubmitted && 
-                !formSubmitted &&
+                !contactSuccess &&
                 <Contact 
                     user = { user } 
+                    onFormSubmit={ onFormSubmit }
                 />
-            }
-            {
-                formSubmitted &&
-                <div>{ "접수 완료" }</div>
             }
         </>
     );
@@ -85,7 +96,7 @@ const ContactContainer = () => {
     return (
         <>
         {
-            isBrowser &&  
+            isBrowser && !contactSuccess &&
             <Modal
                 open={ true }
                 close={ true }
@@ -97,7 +108,7 @@ const ContactContainer = () => {
             </Modal>
         }
         {
-            isMobile &&
+            isMobile && !contactSuccess &&
             <MobileSection 
                 title="매수문의" 
                 onBackClick={ deactivatContact }

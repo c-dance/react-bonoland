@@ -19,7 +19,7 @@ const UserAlarmFormContainer = () => {
 
     return (
         <Section
-            themeColor={ isBrowser? "primary" : "secondary" }
+            themeColor="primary"
             close={ true }
             onCloseClick={ onCloseClick }
             action={ true }

@@ -3,6 +3,10 @@ import { module } from '../../../themes/module';
 
 export const Form = styled(module.AccountForm)`
     height: 270px;
+
+    .mobile & {
+        text-align: center;
+    }
 `;
 
 export const TypeBoxes = styled.div`
@@ -16,6 +20,11 @@ export const TypeBoxes = styled.div`
         height: 136px;
         border-radius: 2px;
         overflow: hidden;
+
+        .mobile & {
+            height: 127px;
+            border-radius: 10px;
+        }
 
         input {
             position: absolute;
@@ -35,14 +44,22 @@ export const TypeBoxes = styled.div`
             border: 1px solid ${({theme}) => theme.colors.gray400 };
             font-size: 24px;
             color: ${({theme}) => theme.colors.gray600 };
+            
+            .mobile & {
+                border-radius: 10px;
+            }
         }
 
         input:checked + label {
             border-color: ${({theme}) => theme.colors.primary };
+
+            .mobile & {
+                box-shadow: 3px 3px 6px rgba(0,0,0,.12);
+            }
         }
     }
 
-    &.mobile {
+    .mobile & {
         flex-direction: column;
         gap: 20px;
 
