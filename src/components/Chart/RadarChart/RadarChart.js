@@ -57,25 +57,22 @@ const radarOptions = {
 
 const BonoPlugin = {
     id: 'custom_canvas_background_color',
-    beforeDraw: (chart) => {
-        console.log('hello');
-    }
 };
 
-const RadarChart = ({ scheme, data }) => {
+const RadarChart = ({ data }) => {
 
     ChartJS.register( RadialLinearScale, PointElement, LineElement, Filler );
     defaults.font.family = "'Noto Sans KR', sans-serif";
 
     const chartLabels = BONOSCORE.labels;
     const chartDatasets = [{
-        data: data,
+        data: Object.keys(data).filter( key => key !== "점수").map(item => data[item]),
         borderWidth: 0,
         backgroundColor: 'rgba(0, 31, 96, 0.6)', 
         pointBackgroundColor: "transparent",
         pointBorderWidth: 0,
     }];
-    const average = 80;
+    const average = data["점수"];
     const chartOptions = Object.assign({}, radarOptions);
     // chartOptions.plugins.title.text = average.toString();
 

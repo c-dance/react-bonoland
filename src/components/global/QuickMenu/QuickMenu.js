@@ -12,13 +12,13 @@ const QuickMenu = () => {
     const dispatch = useDispatch();
     const ZOOM = useSelector(state => state.Map.zoom);
     const IS_GUGUN = getZoomLevel(ZOOM) === 2;
-    const HAS_DATA = useSelector(state => state.Chart.hasData);
+    const CHART_DATA = useSelector(state => state.Chart.data);
     const [ chartReady, setChartReady ] = useState(false);
     const CADASTRAL = useSelector(state => state.Map.cadastral);
 
     const onChartClick = () => {
-        if(chartReady) dispatch(activateChart());
-        else alert('정보가 없습니다.');
+        if(chartReady && isMobile) {dispatch(activateChart());}
+        if(!chartReady) alert('정보가 없습니다.');
     };
 
     const onCadastralClick = () => {
@@ -35,14 +35,14 @@ const QuickMenu = () => {
     }
 
     useEffect(()=> {
-        if(IS_GUGUN && HAS_DATA) setChartReady(true);
-        else setChartReady(false)
-    }, [ZOOM, HAS_DATA]);
+        if(IS_GUGUN && CHART_DATA) setChartReady(true);
+        else setChartReady(false);
+    }, [ZOOM, CHART_DATA]);
 
     return (
         <>
             { isBrowser && <QuickLink className="user" to="/user">마이페이지</QuickLink> }
-            { isMobile && <QuickBtn className="user" onClick={ () => testLogin() } >마이페이지</QuickBtn> }
+            {/* { isMobile && <QuickBtn className="user" onClick={ () => testLogin() } >마이페이지</QuickBtn> } */}
             { isBrowser && <QuickLink className="alarm" to="/user/alarm">알람설정</QuickLink> }
             <QuickBtn className="location" onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>

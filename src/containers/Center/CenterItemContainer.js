@@ -45,7 +45,6 @@ const CenterItemContainer = () => {
 
     useEffect(() => {
         setCetner(data);
-        console.log(data);
     }, [data]);
 
 

@@ -5,9 +5,11 @@ import { ChartBox } from './DoughnutChartStyle';
 import 'chartjs-plugin-doughnut-innertext'
 import { isBrowser } from 'react-device-detect';
 import React from "react";
+import { getLocalNumber } from '../../../utils/number';
 
 
-const doughnutColors = ['#fff', '#E4B251', '#7BF5BB', '#E98686', '#001f6099'];
+const doughnutColors = ['#E4B251', '#7BF5BB', '#E98686', '#616161', '#fff'];
+const labelColors = ['transparent', '#fff', '#E4B251', '#7BF5BB', '#E98686', '#616161'];
 const baseLen = 5;
 const gap = { weight: 1 };
 
@@ -38,7 +40,13 @@ const getMinData = (data) => {
 }; 
 
 const getLabels = data => {
-    let labels = Object.keys(data).filter((key) => key !== "합계" && !key.includes("dummy") );
+    let labels = Object.keys(data)
+                    .filter((key) => key !== "합계" && !key.includes("dummy") )
+                    // .filter((key) => !key.includes("dummy") )
+                    .map( key => {
+                        if(key === "합계") return "";
+                        else return `${key}  ${getLocalNumber(data[key])}`
+                    });
     return labels;
 }; 
 
@@ -50,15 +58,13 @@ const DoughnutChart = ({ title, data, type }) => {
 
     //get data
     const chartLabels = getLabels(data);
-    console.log(data);
     
     const chartTitle = title;
 
     const datasets = Object.keys(data).map((key, idx) => ({
         label: (key === "합계" || key.includes("dummy")) ? "" : key,
-        data: key === "합계"? [Number(data[key])].concat(new Array(Object.keys(data).length - 2)) : [Number(data[key]), Number(data["합계"]) - Number(data[key]) ],
-        // backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx], 'transparent'],
-        backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx], 'transparent'],
+        data: key === "합계"? new Array(Object.keys(data).length - 1).fill(0).concat(Number(data[key])) : [Number(data[key]), Number(data["합계"]) - Number(data[key]) ],
+        backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx-1], 'transparent'],
         borderColor: 'transparent',
         borderRadius: idx===0? 0 : 30,  
         borderWidth: 3,
@@ -78,7 +84,7 @@ const DoughnutChart = ({ title, data, type }) => {
                         size: ( type === "main" && isBrowser && 10 ) || 14,
                     },
                     usePointStyle: true,
-                    boxWidth: ( type === "main" && isBrowser && 8 ) || 10,
+                    boxWidth: ( type === "main" && isBrowser && 6 ) || 8,
                     lineWidth: 0,
                     padding: ( type === "main" && isBrowser && 15 ) || 20
                 },
@@ -99,7 +105,7 @@ const DoughnutChart = ({ title, data, type }) => {
         },
         cutout: (type === "main" && isBrowser && 50) || 70,
         radius: (type === "main" && isBrowser && 60) || 90,
-        circumference: 360, 
+        circumference: 370, 
         elements: {
             arc: {
                 borderWidth: 10,

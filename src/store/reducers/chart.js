@@ -2,8 +2,7 @@ import { CHART } from "../actions/chart";
 
 const initialState = {
     activate: false,
-    hasData: false,
-    data: {}
+    data: null
 };
 
 const ChartReducer = (state = initialState, action) => {
@@ -11,11 +10,10 @@ const ChartReducer = (state = initialState, action) => {
         case CHART.ACTIVATE:
             return {...state, activate: true};
         case CHART.DEACTIVATE: 
-            return {...state, activate: false};
+            return {...state, data: null,  activate: false};
         case CHART.UPDATE: 
             const data = action.payload;
-            const hasData = Object.keys(data).length > 0;
-            return {...state, data: data, hasData: hasData};
+            return {...state, data: data };
         default : 
             return state;
     }

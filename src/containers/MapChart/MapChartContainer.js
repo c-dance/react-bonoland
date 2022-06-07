@@ -19,42 +19,28 @@ const MapChartContainer = () => {
 
     const CHART_PROPS = useSelector(state => state.Chart);
     const IS_ACTIVE = CHART_PROPS.activate;
-    const HAS_DATA = CHART_PROPS.hasData;
     const CHART_DATA = CHART_PROPS.data;
     
     const [ loading, error, noData, data, setGet ] = useGet({});
 
     /* === 렌더링 이후 차트 데이터 받아오기(모바일 일 때) === */
     useEffect(() => {
-        if(IS_GUGUN) setGet({
-            get: getMapChart,
-            params: REGION
-        })
+        if(IS_GUGUN) {
+            setGet({
+                get: getMapChart,
+                params: REGION
+            }) 
+        } else {
+            dispatch(deactivateChart());
+        }
     }, [ZOOM, REGION]);
 
     /* === 챠트 데이터 업데이트 === */
     useEffect(() => {
         dispatch(updateChart(data));
+        if(IS_GUGUN && Object.keys(data).length > 0 && isBrowser ) dispatch(activateChart());
+        if(!IS_GUGUN || Object.keys(data).length <= 0) dispatch(deactivateChart()); 
     }, [data]);
-
-    useEffect(() => {
-        console.log(HAS_DATA);
-        if(HAS_DATA) {
-            if(isBrowser && IS_GUGUN) dispatch(activateChart());
-        } else {
-            dispatch(deactivateChart());
-        }
-    }, [HAS_DATA])
-
-     /* === 주소 | 줌레벨 바뀔 때 차트 활성화 === */
-    // useEffect(() => {
-    //     if(IS_GUGUN) {
-    //         dispatch(updateChart(fetchedData));
-    //         if(HAS_DATA && isBrowser) dispatch(activateChart());
-    //     } else {
-    //         dispatch(deactivateChart());
-    //     }
-    // }, [ZOOM, REGION]);
 
     const onCloseClick = () => {
         dispatch(deactivateChart());

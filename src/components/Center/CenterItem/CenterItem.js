@@ -178,13 +178,12 @@ const CenterItem = ({
                             <Section>
                                 <h3>보노지수</h3>
                                 <hr />
-                                {/* {
+                                {
                                     center["보노지수"] &&
                                     <RadarChart 
-                                        scheme={ "보노지수" } 
                                         data={ center["보노지수"] } 
                                     />
-                                } */}
+                                }
                             </Section>
                         </TabCont>
                         <TabCont active={tabIdx === 1}>
