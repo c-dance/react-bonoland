@@ -121,7 +121,7 @@ export const Assets = styled.div`
 
 export const Corp = styled.div`
     position: absolute;
-    top: -58px;
+    top: -4px;
     right: 0;
 `;
 

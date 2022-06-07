@@ -6,8 +6,6 @@ const SignupForm = ({
     onFormSubmit
 }) => {
 
-    console.log(onFormSubmit);
-
     const [ agrees, setAgrees ] = useState([false, false, false]);
     const [ agreeAll, setAgreeAll ] = useState(false);
 
@@ -17,7 +15,6 @@ const SignupForm = ({
         let newAgrees = agrees.slice();
         newAgrees[num] = checked;
         setAgrees(newAgrees);
-        console.log(agrees);
     };
 
     const toggleAgreeAll = (event) => {
@@ -28,16 +25,12 @@ const SignupForm = ({
 
     const handleAgreeAll = () => {
         const agreed = agrees.filter(item => item === true);
-        console.log(agrees);
-        console.log(agreed);
         setAgreeAll(agreed.length >= 3);
     };
-
 
     useEffect(() => {
         handleAgreeAll();
     }, [agrees]);
-
 
     return (
         <Form

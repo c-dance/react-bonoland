@@ -2,28 +2,25 @@ import React, { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
 import { isBrowser, isMobile } from 'react-device-detect';
+import { useGet } from "../../hooks";
+import { getUserRecentCenters } from '../../api/user';
 
 const UserRecentContainer = () => {
 
     const [ recent, setRecent ] = useState([]);
-
-    const fetchRecent = () => {
-        fetch('/data/centers.json', {
-            headers: {
-                'Accept' : 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setRecent(data);
-        })
-        .catch(err => console.log(err));
-    };
+    const [id, setId] = useState('123456');
+    const [ loading, error, noData, data, setGet ] = useGet([]);
 
     useEffect(() => {
-        fetchRecent();
+        setGet({ 
+            get: getUserRecentCenters,
+            id: id
+        });
     }, []);
+
+    useEffect(() => {
+        setRecent(data);
+    }, [data]);
 
     return (
         <Section
@@ -36,6 +33,9 @@ const UserRecentContainer = () => {
             <CenterList 
                 type={ "sub" } 
                 centers={ recent }
+                loading={ loading }
+                error={ error }  
+                noData={ noData }
             />
         </Section>
     )

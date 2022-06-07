@@ -19,11 +19,11 @@ const SignupContaienr = () => {
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
     // 인증 
-    const [ auth, setAuth ] = useState(null);
+    const [ authResult, setAuthResult ] = useState(false);
 
     // 회원가입 입력폼
     const [ form , setForm ] = useState({});
-    const [ formSubmitted, setFormSubmitted ] = useState(false);
+    const [ newAccountSuccess, setNewAccountSuccess ] = useState(false);
 
     // type 값 입력
     const onTypeChange = (event) => {
@@ -42,22 +42,17 @@ const SignupContaienr = () => {
     const onFormSubmit = (event) => {
         event.preventDefault();
         // 입력폼 유효성 검사
-        setFormSubmitted(true);
-        console.log(formSubmitted);
+        setNewAccountSuccess(true);
     };
 
-    // 회원가입 닫기
-    const deactiveSignup = () => {
-        dispatch(deactivateSignup());
-        setType('');
-        setTypeSubmitted(false);
-        setFormSubmitted(false);
+    const onResultSubmit = result => {
+        setAuthResult(result)
     };
 
     const modalProps = {
         open: true ,
         close: true,
-        onCloseClick: deactiveSignup,
+        onCloseClick: () => dispatch(deactivateSignup()),
         width: "360",
         title: "회원가입"
     };
@@ -80,13 +75,15 @@ const SignupContaienr = () => {
                     </Modal>
                 }
                 {
-                    typeSumitted && auth === null &&
+                    typeSumitted && !authResult &&
                     <Modal {...modalProps}>
-                        <AuthenticationContainer/>
+                        <AuthenticationContainer
+                            onResultSubmit={ onResultSubmit }
+                        />
                     </Modal>
                 }
                 {
-                    typeSumitted && auth === true &&
+                    authResult && !newAccountSuccess &&
                     <Modal {...modalProps}>
                         <SignupForm
                             onFormSubmit={ onFormSubmit }
@@ -94,7 +91,7 @@ const SignupContaienr = () => {
                     </Modal>
                 }
                 {
-                    formSubmitted &&
+                    newAccountSuccess &&
                     <Modal {...alertProps}>
                         <SignupSuccess />
                     </Modal>

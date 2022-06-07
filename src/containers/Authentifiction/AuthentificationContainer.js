@@ -43,9 +43,10 @@ const AuthenticationContainer = ({ onResultSubmit}) => {
     const onAuthSubmit = (event) => {
         event.preventDefault();
 
-        dispatch(updateAuth(true));
         onResultSubmit(true);
-
+        
+        // dispatch(updateAuth(true));
+        
         // setTimeOut(function(){
         //     if(timeOut) {
         //         alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');

@@ -1,7 +1,18 @@
 import { Form } from './SignupSuccessStyle';
 import React from "react";
+import { useDispatch } from 'react-redux';
+import { activateLogin } from '../../../store/actions/mode';
+import { USER } from '../../../utils/user';
 
-const SignupSuccess = ({ onLoginClick }) => {
+const SignupSuccess = () => {
+
+    const dispatch = useDispatch();
+
+    const openLogin = () => {
+        USER.removeId();
+        dispatch(activateLogin());
+    };
+
     return (
         <Form>
             <div className="desc">
@@ -10,7 +21,7 @@ const SignupSuccess = ({ onLoginClick }) => {
                 로그인 후 더 많은 서비스를 이용해보세요!
             </div>
             <div className="action">
-                <button onClick={ () => onLoginClick() }>
+                <button onClick={ () => openLogin() }>
                     로그인
                 </button>
             </div>
