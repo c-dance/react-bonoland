@@ -2,7 +2,7 @@ import { AUTH } from '../actions/auth';
 
 const initialState = {
     phoneNumber: '',
-    authentificated: null,
+    authentificated: false,
     error: '',
 };
 
@@ -12,10 +12,11 @@ const AuthReducer = (state = initialState, action) => {
             const phone = action.payload;
             return {...state, phoneNumber: phone }
         case AUTH.UPDATE: 
-            const result = action.payload;
-            return {...state, authentificated: result }
+            const authentificated = action.payload;
+            console.log(authentificated);
+            return {...state, authentificated: authentificated }
         case AUTH.DELETE: 
-            return { state, phoneNumber: '', authentificated: null };
+            return { state, phoneNumber: '', authentificated: false };
         default :
             return state;
     }

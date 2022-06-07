@@ -11,7 +11,7 @@ import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
 import { CATEGORY, CAPACITY } from "../../sheme/filter";
-import { getRecommendCenters, getFilteredCenters } from '../../api/centers';
+import { getAllRecommendCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
 
 const CenterListContainer = () => {
@@ -70,7 +70,7 @@ const CenterListContainer = () => {
 
     useEffect(() => {
         if(category !== null) setGet({ get: getFilteredCenters, params: { category: category, capacity: capacityValues }});
-        else setGet({ get: getRecommendCenters });
+        else setGet({ get: getAllRecommendCenters });
     }, []);
 
     useEffect(() => {

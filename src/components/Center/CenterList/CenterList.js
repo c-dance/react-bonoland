@@ -10,6 +10,7 @@ const CenterList = ({
     error,
     noData
 }) => {
+    console.log(centers);
     return (
         <CardList type={ type }>
             <ListWrap>
@@ -17,12 +18,12 @@ const CenterList = ({
             { error && Error() }
             { noData && NoData() }
             {
-                !noData && 
+                centers && centers.length > 0 &&
                 centers.map(( center, idx ) => 
                 <div key={ idx }>
-                        <CenterCard type={ type } center = { center } />
-                        <CardDivider />
-                    </div>
+                    <CenterCard type={ type } center = { center } />
+                    <CardDivider />
+                </div>
                 )
             }
             </ListWrap>

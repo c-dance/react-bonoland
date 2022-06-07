@@ -3,7 +3,7 @@ import Authentication from "../../components/Authentication/Authentication";
 import { useSelector, useDispatch } from "react-redux";
 import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";
 
-const AuthenticationContainer = ({ onAuthSend }) => {
+const AuthenticationContainer = ({ onResultSubmit}) => {
 
     const dispatch = useDispatch();
     let authentificated = useSelector(state => state.Auth.authentificated);
@@ -44,23 +44,22 @@ const AuthenticationContainer = ({ onAuthSend }) => {
         event.preventDefault();
 
         dispatch(updateAuth(true));
+        onResultSubmit(true);
 
-        setTimeOut(function(){
-            if(timeOut) {
-                alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
-                resetAuthentification();
-                return;
-            };
+        // setTimeOut(function(){
+        //     if(timeOut) {
+        //         alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
+        //         resetAuthentification();
+        //         return;
+        //     };
     
-            if(!authentificated) {
-                alert("인증에 실패했습니다.");  
-                resetAuthentification();
-                return;
-            };
-        }, 3000);
+        //     if(!authentificated) {
+        //         alert("인증에 실패했습니다.");  
+        //         resetAuthentification();
+        //         return;
+        //     };
+        // }, 30000);
 
-
-        // onAuthSend(authentificated);
     };
 
     const authProps = {
@@ -74,9 +73,13 @@ const AuthenticationContainer = ({ onAuthSend }) => {
         onAuthSubmit: onAuthSubmit
     };
 
+    // useEffect(() => {
+    //     dispatch(deleteAuth());
+    // }, []);
+
     return (
         <Authentication {...authProps}/>
-    )
+    );
     
 };
 

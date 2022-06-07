@@ -1,17 +1,30 @@
-import { List, Card } from './NewsListStyle';
+import { List } from './NewsListStyle';
 import NewsCard from '../NewsCard/NewsCard';
 import React from "react";
+import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 
-const NewsList = ({ datas }) => {
+
+const NewsList = ({ 
+    news, 
+    loading, 
+    error,
+    noData,
+ }) => {
     return (
         <List>
             <div>
-                {
-                    datas.map((data, idx) => (
-                        <div key={ idx }>
-                            <NewsCard data={ data } type="list" ></NewsCard>
-                            { idx < (datas.length) && <hr />}
-                        </div>
+                { loading && Loading() }
+                { error && Error() }
+                { noData && NoData() }
+                {   news && news.length > 0 &&
+                    news.map((data, idx) => (
+                            <div key={ idx }>
+                                <NewsCard 
+                                    news={ data } 
+                                    type="list" 
+                                />
+                                { idx < (news.length) && <hr />}
+                            </div>
                     ))
                 }
             </div>

@@ -9,10 +9,9 @@ const Login = ({
     onIdChange,
     pwd,
     onPwdChange,
-    saveId,
-    onSaveIdChange,
+    storeId,
+    onStoreIdChange,
     onFormSubmit,
-    onModeChange
 }) => {
 
     const dispatch = useDispatch();
@@ -29,12 +28,12 @@ const Login = ({
             </fieldset>
             <Metas>
                 <div className="save">
-                    <input type="checkbox" id="uSaveId" name="uSaveId" onChange={ event => onSaveIdChange(event) } checked={ saveId }/>
-                    <label htmlFor="uSaveId">아이디 저장</label>
+                    <input type="checkbox" id="uStoreId" name="uStoreId" onChange={ event => onStoreIdChange(event) } checked={ storeId }/>
+                    <label htmlFor="uStoreId">아이디 저장</label>
                 </div>
                 <div className="finds">
-                    <button onClick={ () => onModeChange(activateFindId) }>아이디 찾기</button>
-                    <button onClick={ () => onModeChange(activateFindPwd) }>비밀번호 찾기</button>
+                    <button type="button" onClick={ () => {dispatch(activateFindId())}  }>아이디 찾기</button>
+                    <button type="button" onClick={ () => {dispatch(activateFindPwd())}  }>비밀번호 찾기</button>
                 </div>
             </Metas>
             <div className="action">
@@ -42,7 +41,7 @@ const Login = ({
             </div>
             <Signup>
                 <span>아직 회원이 아니신가요?</span>
-                <button onClick={ () => onModeChange(activateSignup) }>회원가입</button>
+                <button type="button" onClick={ () => {dispatch(activateSignup())} }>회원가입</button>
             </Signup>
         </Form>
     )

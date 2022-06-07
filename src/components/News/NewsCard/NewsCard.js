@@ -1,31 +1,41 @@
 import { Card } from './NewsCardStyle';
 import { Link } from 'react-router-dom';
 import React from "react";
+import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 
-const NewsCard = ({ data, type }) => {
+const NewsCard = ({ 
+    news, 
+    type,
+    loading,
+    error,
+    noData
+}) => {
 
-    const CONTENTS = () => (
+    const CONTENTS = (news) => (
         <div>
-            <h3>{ data.title }</h3>
-            { data.file && <img /> }
-            <p>{ data.abstract || data.contents }</p>
+            <h3>{ news["제목"] }</h3>
+            { news["file"] && <img /> }
+            <p>{ news["내용"] }</p>
         </div>
     );
 
     return (
         <>
+            { loading && Loading() }
+            { error && Error() }
+            { noData && NoData() }
             {
-                type === "list" &&
+                type === "list" && news &&
                 <Card>
-                    <Link to={`/news/${data.id}`}>
-                        { CONTENTS() }
+                    <Link to={`/news/${news["id"]}`}>
+                        { CONTENTS(news) }
                     </Link>
                 </Card>
             }
             {
-                type !== "list" && 
+                type !== "list" && news &&
                 <Card className="wrapper">
-                    { CONTENTS() }
+                    { CONTENTS(news) }
                 </Card>
             }
         </>

@@ -3,25 +3,25 @@ import CenterList from '../../components/Center/CenterList/CenterList';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
-import Panel from '../../components/ui/Panel/Panel'
+import Panel from '../../components/ui/Panel/Panel';
+import { getSalesCenters } from '../../api/centers';
+import { useGet } from "../../hooks";
+
 
 const SalesListContainer = () => {
     const [ nursings, setNursings ] = useState([]);
     const [ daycares, setDayCares ] = useState([]);
 
-    const fetchSalesList = () => {
-        fetch('./data/sales.json')
-            .then(res => res.json())
-            .then(data => {
-                setNursings(data["요양원"]);
-                setDayCares(data["주간보호"]);
-            })
-            .catch(err => console.log(err));
-    };
+    const [ loading, error, noData, data, setGet ] = useGet([]);
 
     useEffect(() => {
-        fetchSalesList();
+        setGet({ get: getSalesCenters });
     }, []);
+
+    useEffect(() => {
+        setNursings(data["요양원"]);
+        setDayCares(data["주간보호"]);
+    }, [data]);
 
     return (
         <Panel>
@@ -31,8 +31,18 @@ const SalesListContainer = () => {
             <ListTab 
                 navs={["요양원", "주간보호"]} 
                 contents={[
-                    <CenterList centers={ nursings } />,
-                    <CenterList centers={ daycares } />,
+                    <CenterList 
+                        loading={ loading }
+                        error={ error }  
+                        noData={ noData }
+                        centers={ nursings } 
+                    />,
+                    <CenterList 
+                        loading={ loading }
+                        error={ error }  
+                        noData={ noData }
+                        centers={ daycares } 
+                    />,
                 ]}
             />
         </Panel>

@@ -2,24 +2,28 @@ import React, { useState, useEffect } from 'react';
 import NewsList from '../../components/News/NewsList/NewsList';
 import Section from '../../components/ui/Section/Section';
 import { useNavigate } from 'react-router';
+import { getNewsList } from '../../api/news';
+import { useGet } from "../../hooks";
 
 const NewsListContainer = () => {
+
     const navigate = useNavigate();
     const onCloseClick = () => { navigate('/'); }
 
     const [ newsList, setNewsList ] = useState([]);
+    const [ loading, error, noData, data, setGet ] = useGet({});
 
 
-    const fetchNewsList = () => {
-        fetch('/data/newsList.json')
-            .then(res => res.json())
-            .then(data => setNewsList(data))
-            .catch(err => console.log(err))
-    };
 
     useEffect(() => {
-        fetchNewsList();
+        setGet({
+            get: getNewsList
+        })
     }, []);
+
+    useEffect(() => {
+        setNewsList(data);
+    }, [data]);
     
     return (
         <Section
@@ -29,7 +33,10 @@ const NewsListContainer = () => {
             onCloseClick={ onCloseClick }
         >
             <NewsList 
-                datas = { newsList }   
+                news = { newsList } 
+                loading={ loading }
+                error={ error }  
+                noData={ noData }  
             />
         </Section>
     )
