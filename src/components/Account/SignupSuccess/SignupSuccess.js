@@ -2,19 +2,21 @@ import { Form } from './SignupSuccessStyle';
 import React from "react";
 import { useDispatch } from 'react-redux';
 import { activateLogin } from '../../../store/actions/mode';
-import { USER } from '../../../utils/user';
+import { USER_ID } from '../../../utils/user';
+import { isMobile } from 'react-device-detect';
 
 const SignupSuccess = () => {
 
     const dispatch = useDispatch();
 
     const openLogin = () => {
-        USER.removeId();
+        USER_ID.removeId();
         dispatch(activateLogin());
     };
 
     return (
         <Form>
+            { isMobile && <h3>회원가입 완료</h3> }
             <div className="desc">
                 보노랜드 회원가입이 완료되었습니다!
                 <br />

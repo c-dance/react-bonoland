@@ -6,6 +6,10 @@ export const Tab = styled.div`
 
     .mobile & {
         height: calc(100vh - 134px);
+
+        &.full  {
+            height: calc(100vh - 56px);
+        }
     }
 `;
 
@@ -75,7 +79,7 @@ export const TabConts = styled.div`
     height: 100%;
 
     .mobile & {
-        height: calc(100vh - 48px);
+        height: calc(100% - 104px);
     }
 
     .tabCont {
@@ -85,6 +89,7 @@ export const TabConts = styled.div`
         .full & ,
         .mobile & {
             height: calc(100% - 48px);
+            height: 100%;
         }
 
         &.on {

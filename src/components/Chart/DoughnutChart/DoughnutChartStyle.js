@@ -7,7 +7,7 @@ export const ChartBox = styled.div`
     align-items: center;
     width: 100%;
     height:auto;
-    padding: 20px;
+    padding: ${ props => props.type === "main"? "20px" : "20px 0" };
     width: ${ props => 
         (props.type === "main" && isBrowser )?
         "auto" // 270, 320

@@ -5,6 +5,7 @@ import alarmIcon from '../../../assets/images/menu/ico-bell.svg';
 import calcIcon from '../../../assets/images/menu/ico-calculator.svg';
 import cadIcon from '../../../assets/images/menu/ico-cadastral.svg';
 import locIcon from '../../../assets/images/menu/ico-location.svg';
+import locActiveIcon from '../../../assets/images/menu/ico-location_active.svg';
 
 const quickCSS = css`
     z-index: 30;
@@ -73,6 +74,7 @@ const quickCSS = css`
         top: 292px;
         font-size: 0;
         background: url(${locIcon}) center no-repeat #fff;
+        &.active { background: url(${locActiveIcon}) center no-repeat #fff; }
         .mobile & { top: 96px; }
     }
     .mobile & {

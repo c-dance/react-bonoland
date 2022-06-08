@@ -1,5 +1,6 @@
-import { Form, Time } from './AuthenticationStyle';
+import { Form, Time, Description } from './AuthenticationStyle';
 import React from "react";
+import { isMobile } from 'react-device-detect';
 
 const Authentication = ({
     phoneNumber,
@@ -10,7 +11,9 @@ const Authentication = ({
     authNumber,
     onAuthChange,
     onAuthSubmit, 
+    description
 }) => {
+    console.log(description);
     return (
         <Form onSubmit={ event => {
             onAuth? onAuthSubmit(event) : onPhoneSubmit(event)
@@ -38,12 +41,13 @@ const Authentication = ({
                     </div>
                 }
             </fieldset>
+            { isMobile && description && <Description>{ description }</Description> }
             <div className="action">
                 <button 
                     type="submit"
                 >
                 {
-                    onAuth? "인증완료" : "다음"
+                    onAuth? "인증완료" : "인증번호 발송"
                 }
                 </button>
             </div>

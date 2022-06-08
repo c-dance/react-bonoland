@@ -66,6 +66,7 @@ const FindPwdContainer = () => {
                         <Modal {...modalProps}>
                             <AuthenticationContainer 
                                 onResultSubmit={ onResultSubmit }
+                                description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 아이디를 확인하실 수 있습니다."
                             />
                             <module.ModalAction>
                                 <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
@@ -113,6 +114,7 @@ const FindPwdContainer = () => {
                         <>
                             <AuthenticationContainer 
                                 onResultSubmit={ onResultSubmit }
+                                description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 아이디를 확인하실 수 있습니다."
                             />
                         </>
                     }
@@ -138,6 +140,9 @@ const FindPwdContainer = () => {
                             <FindPwdSuccess />
                         </>
                     }
+                    <module.SectionLink className="btm">
+                        <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
+                    </module.SectionLink>
                 </Section>
             }
         </>

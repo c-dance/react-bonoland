@@ -13,3 +13,10 @@ export const Time = styled.span`
     font-size: ${({theme}) => theme.fontSizes.s };
     color: ${({theme}) => theme.colors.blue };
 `;
+
+export const Description = styled.div`
+    margin: 24px 0 0;
+    font-size: ${({theme}) => theme.fontSizes.s };
+    text-align: left;
+    color: ${({theme}) => theme.colors.gray400 };
+`;

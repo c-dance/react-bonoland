@@ -28,7 +28,6 @@ const MainView = ({ list, children }) => {
     const FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
     const CALCULATOR_MODE = useSelector(state => state.Mode.calculator);
     const ALARM_MODE = useSelector(state => state.Mode.alarm);
-    const CHART_MODE = useSelector(state => state.Chart.activate);
     const ALERT_MODE = useSelector(state => state.Alert.active);
 
     return(

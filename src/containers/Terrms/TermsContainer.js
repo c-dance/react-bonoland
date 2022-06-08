@@ -55,7 +55,9 @@ const TermsContainer = () => {
                             loading={ loading }
                             error={ error }
                             noData={ noData }
-                        />
+                        >
+                            <GlobalFooter />
+                        </Terms>
                     </Section>
                 </div>
             }

@@ -21,4 +21,8 @@ export const FindId = styled.div`
         font-size: 22px;
         font-weight: ${({theme}) => theme.fontWeights.medium};
     }
+
+    .mobile & {
+        border-radius: 10px;
+    }
 `;

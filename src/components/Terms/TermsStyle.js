@@ -1,8 +1,20 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import logoIcon from '../../assets/images/logo/ico-bonoland.svg';
+import { module } from '../../themes/module';
 
-export const Tab = styled.div`
+export const Tab = styled(module.scrollWrapper)`
+    height: 100%;
+
+    .mobile {
+        height: calc(100% - 48px);
+        margin-top: 48px;
+    }
+
+    .wrapper {
+        height: auto;
+    }
+
     header {
         position: fixed;
         top: 0;
@@ -44,7 +56,8 @@ export const Tab = styled.div`
         height: auto;
 
         .mobile &  { 
-            padding: 144px 24px 100px;
+            padding: 88px 24px 100px ;
+            height: calc(100% - 48px);
         }
 
     }
@@ -109,16 +122,24 @@ export const TabConts = styled.div`
 
     div {
         display: none;
+        flex-direction: column;
+        gap: 24px;
         line-height: 1.7;
         color: ${ ({theme}) => theme.colors.gray800 };
         font-size: ${ ({theme}) => theme.fontSizes.s };
+        height: auto;
 
         .mobile &  { 
             font-size: ${ ({theme}) => theme.fontSizes.s };
         }
 
         &.active {
-            display: block;
+            display: flex;
         }
+
+        strong {
+            font-weight: ${ ({theme}) => theme.fontWeights.medium };
+        }
+
     }
 `;

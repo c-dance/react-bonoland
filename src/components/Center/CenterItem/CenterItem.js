@@ -10,7 +10,6 @@ import {
     AccordionDetails,
     Assets,
     Corp,
-    Actions, 
     Section,
     Table,
     Description,
@@ -23,6 +22,7 @@ import {
     TabCont, 
     ChartWrap
 } from './CenterItemStyle';
+import { Actions, Action } from '../CenterCard/CenterCardStyle';
 import { useNavigate } from 'react-router';
 import ItemImg from '../../../assets/test/item-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
@@ -79,9 +79,9 @@ const CenterItem = ({
                     <div>
                         <Thumbnail><img src={ ItemImg } /></Thumbnail>
                         <TabCont active={tabIdx === 0}>
-                            <Actions>
-                                <button className="scrap"></button>
-                                <button className="share"></button>
+                            <Actions style={{ marginBottom: "30px" }}>
+                                <Action icon="scrap">스크랩</Action>
+                                <Action icon="share">공유</Action>
                             </Actions>
                             <Section>
                                 <h3>기본 정보</h3>

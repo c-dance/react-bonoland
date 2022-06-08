@@ -48,7 +48,7 @@ export const Metas = styled.div`
         margin-top: 20px;
     }
 
-    .save {
+    .store {
         position: relative;
         width: auto;
         height: 15px;
@@ -63,7 +63,8 @@ export const Metas = styled.div`
 
         label {
             display: block;
-            padding-left: 22px;
+            padding-left: 20px;
+            line-height: 15px;
             background: url(${checkboxDefaultIcon}) left center no-repeat;
 
             .mobile & {

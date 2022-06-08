@@ -199,10 +199,6 @@ export const Section = styled.section`
 
 `;
 
-export const Actions = styled.div`
-
-`;
-
 export const Table = styled.table`
     width: 100%;
     border: 1px solid ${ ({theme}) => theme.colors.gray200 };

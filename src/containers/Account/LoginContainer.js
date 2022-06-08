@@ -4,7 +4,7 @@ import { deactivateLogin } from '../../store/actions/mode';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import Login from '../../components/Account/Login/Login';
-import { USER } from '../../utils/user';
+import { USER_ID } from '../../utils/user';
 import Section from "../../components/ui/Section/Section";
 
 
@@ -27,13 +27,13 @@ const LoginContainer = () => {
     const onStoreIdChange = (event) => {
         event.preventDefault();
         const checked = !storeId;
-        if(checked) USER.storeId();
-        else USER.removeId(id);
+        if(checked) USER_ID.storeId();
+        else USER_ID.removeId(id);
         setStoreId(checked);
     };
 
     const checkStoredId = () => {
-        const id = USER.getStoredId();
+        const id = USER_ID.getStoredId();
         console.log(id);
         console.log("id");
         if(id.length > 0) {

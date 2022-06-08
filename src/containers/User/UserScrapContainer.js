@@ -49,7 +49,7 @@ const UserScrapContainer = () => {
             action={ false }
         >
             <ListTab 
-                // type={ isBrowser? "full" : "" }
+                type={ "full" }
                 navs={["매물", "시설"]} 
                 contents={[
                     <CenterList 

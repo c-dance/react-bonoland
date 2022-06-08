@@ -43,6 +43,7 @@ const MapContainer = () => {
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
     const FILTERED = useSelector(state => state.Map.filtered); // 필터링 여부
+    const USER_GEO = useSelector(state => state.User.geolocation); //사용자 위치 정보
 
    /* === 지도 생성 === */
     const initMap = () => {
@@ -98,10 +99,11 @@ const MapContainer = () => {
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
     const updateMapByFilter = () => {
-        if(!map) return;
         const point = new naver.maps.Point(LATLNG[0], LATLNG[1]);
-        map.setCenter(point);
-        map.setZoom(ZOOM, false);
+        if(map && point) {
+            map.setCenter(point);
+            map.setZoom(ZOOM, false);
+        }
     };
 
     //* === 지도 업데이트 (줌 변경 시 || 지역 이동 시) === */
@@ -313,7 +315,7 @@ const MapContainer = () => {
     }, [CADASTRAL_MODE]);
 
     useEffect(() => {
-        updateMapByFilter();
+        updateMapByFilter(LATLNG);
     }, [FILTERED]);
 
     return (

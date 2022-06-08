@@ -1,16 +1,16 @@
 import { CHART } from "../actions/chart";
 
 const initialState = {
-    activate: false,
+    active: false,
     data: null
 };
 
 const ChartReducer = (state = initialState, action) => {
     switch(action.type) {
         case CHART.ACTIVATE:
-            return {...state, activate: true};
+            return {...state, active: true};
         case CHART.DEACTIVATE: 
-            return {...state, data: null,  activate: false};
+            return {...state, active: false};
         case CHART.UPDATE: 
             const data = action.payload;
             return {...state, data: data };

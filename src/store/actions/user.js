@@ -7,5 +7,11 @@ export const USER = {
     UNSUBSCRIBE: 'user/unsubscribe',
     GET_USER: '/user',
     UPDATE_USER: 'update',
+    GEOLOACTAION: '/user/geo'
 };
+
+export const updateUserGeolocation = geo => ({
+    type: USER.GEOLOACTAION,
+    payload: geo
+});
 

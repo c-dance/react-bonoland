@@ -91,6 +91,7 @@ const SignupContaienr = () => {
                         <Modal {...modalProps}>
                             <AuthenticationContainer
                                 onResultSubmit={ onResultSubmit }
+                                description="본인인증을 위해 휴대폰 번호를 입력해주세요!"
                             />
                         </Modal>
                     }
@@ -121,6 +122,7 @@ const SignupContaienr = () => {
                         typeSumitted && !authResult &&
                         <AuthenticationContainer
                             onResultSubmit={ onResultSubmit }
+                            description="본인인증을 위해 휴대폰 번호를 입력해주세요!"
                         />
                     }
                     {

@@ -3,6 +3,8 @@ import { Tab, TabNavs, TabConts } from './ListTabStyle';
 
 const ListTab = ({ navs, contents, type }) => {
 
+    console.log(type);
+
     const [ activeIdx, setActiveIdx ] = useState(0);
     const toggleActive = idx => setActiveIdx(idx);
 

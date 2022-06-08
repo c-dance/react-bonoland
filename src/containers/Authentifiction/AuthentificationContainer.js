@@ -3,7 +3,7 @@ import Authentication from "../../components/Authentication/Authentication";
 import { useSelector, useDispatch } from "react-redux";
 import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";
 
-const AuthenticationContainer = ({ onResultSubmit}) => {
+const AuthenticationContainer = ({ onResultSubmit, description }) => {
 
     const dispatch = useDispatch();
     let authentificated = useSelector(state => state.Auth.authentificated);
@@ -73,7 +73,8 @@ const AuthenticationContainer = ({ onResultSubmit}) => {
         timer: timer,
         authNumber: authNumber,
         onAuthChange: setAuthNumber,
-        onAuthSubmit: onAuthSubmit
+        onAuthSubmit: onAuthSubmit,
+        description: description
     };
 
     // useEffect(() => {

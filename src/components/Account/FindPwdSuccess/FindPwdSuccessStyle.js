@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { module } from '../../../themes/module';
+import shieldIcon from '../../../assets/images/icon/ico-shield.gif';
 
 export const Success = styled(module.AccountForm)`
     display: flex;
@@ -15,5 +16,10 @@ export const Success = styled(module.AccountForm)`
     p {
         font-size: ${ ({theme}) => theme.fontSizes.s };
         color: ${ ({theme}) => theme.colors.gray600 };
+    }
+
+    .mobile & {
+        padding-top: 140px;
+        background: url(${shieldIcon}) center 40px / 67px 67px no-repeat #fff;
     }
 `;

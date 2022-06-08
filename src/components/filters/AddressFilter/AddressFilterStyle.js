@@ -33,15 +33,16 @@ export const AddressForm = styled.div`
 
         &.main {
             z-index: 40;
+            position: fixed;
+            top: 20px;
+            left: 14px;
+            width: calc(100% - 28px);
             border-radius: 2px;
         }
     }
     
     &.main {
-        position: fixed;
-        top: 20px;
-        left: 14px;
-        width: calc(100% - 28px);
+        width: 100%;
         border-radius: 2px;
     }
 `;

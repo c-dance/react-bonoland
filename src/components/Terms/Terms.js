@@ -3,7 +3,7 @@ import { Tab, Logo, TabNavs, TabConts } from './TermsStyle';
 import { isMobile } from 'react-device-detect';
 import { Loading, NoData, Error } from '../ui/Inform/Inform';
 
-const Terms = ({ terms, loading, error, noData }) => {
+const Terms = ({ terms, loading, error, noData, children }) => {
 
     const [ tabIdx, setTabIdx] = useState(0);
     const toggleTab = (idx) => {
@@ -28,6 +28,7 @@ const Terms = ({ terms, loading, error, noData }) => {
             {
                 terms && Object.keys(terms).length > 0 &&
                 <Tab className={ isMobile && "mobile" }>
+                <div className="wrapper">
                     <header>
                         <Logo to="/" />
                         <TabNavs>
@@ -49,13 +50,15 @@ const Terms = ({ terms, loading, error, noData }) => {
                                     <div
                                         className={ tabIdx === idx && "active" }
                                     >
-                                        <span>{ terms[key]["개정일"] }</span>
+                                        <strong>{ terms[key]["개정일"] }</strong>
                                         <p>{ terms[key]["내용"] }</p>
                                     </div>
                                 ))
                             }
                         </TabConts>
                     </main>
+                    { children }
+                </div>
                 </Tab>
             }
         </>

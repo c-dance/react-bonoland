@@ -388,6 +388,29 @@ const ModalAction = styled.div`
     }
 `;
 
+const SectionLink = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+
+    &.btm {
+        position: fixed;
+        padding-bottom: 40px;
+        bottom: 56px;
+        left: 0;
+        width: 100%;
+    }
+
+    .link {
+        margin-top: 16px;
+        text-decoration: underline;
+        font-size: ${ theme.fontSizes.s };
+        background-color: transparent;
+        color: ${ theme.colors.gray700 };
+    }
+`;
 
 export const module = {
     scrollWrapper,
@@ -398,5 +421,6 @@ export const module = {
     TableForm,
     MobileForm, 
     AccountForm,
-    ModalAction
+    ModalAction,
+    SectionLink
 };

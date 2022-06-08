@@ -1,6 +1,8 @@
+import { CALCULATOR, getLocalNumber } from "../../utils/number";
+
 export const CALCULATOR_FORM = [
     {
-        label: "1. 요양시설 타입",
+        label: "요양시설 타입",
         type: "select",
         options: [
             "단독요양원",
@@ -9,62 +11,67 @@ export const CALCULATOR_FORM = [
         ]
     },
     {
-        label:"2. 정원수",
-        type: "input",
-        value: "0"
-    },
-    {
-        label:"3. 현원수(일반병실)",
-        type: "input",
-        value: "0"
-    },
-    {
-        label:"4. 현원수(상급병실)",
-        type: "input",
-        value: "0"
-    },
-    {
-        label:"5. 상급병실료(원/월)",
-        type: "input",
-        value: "0"
-    },
-    {
-        label:"6. 추가 요양보호사",
-        type: "input",
-        value: "0"
-    },
-    {
-        label:"7. 조리원 유무",
+        label:"정원수",
         type: "select",
         options: [
-            "유",
-            "무"
+            "0"
         ]
     },
     {
-        label:"8. 예상 가산금(원/월)",
+        label:"현원수(일반병실)",
         type: "input",
-        value: "0"
+        value: "0", 
+        placeholder: "숫자 입력",
+        readonly: false
     },
     {
-        label:"9. 대출금",
+        label:"현원수(상급병실)",
         type: "input",
-        value: "0"
+        value: "0",
+        placeholder: "숫자 입력",
+        readonly: false
     },
     {
-        label: "10. 급수 선택",
-        type: "select",
-        options: [
-            "1급",
-            "2급",
-            "3급",
-            "4급",
-            "5급",
-            "6급",
-            "7급",
-            "8급",
-            "9급"
-        ]
+        label:"상급병실료(원/월)",
+        type: "input",
+        value: "0",
+        placeholder: "금액 입력",
+        readonly: false
+    },
+    {
+        label:"추가 요양보호사",
+        type: "input",
+        value: "0",
+        placeholder: "숫자 입력",
+        readonly: false
+    },
+    {
+        label:"예상 가산금(원/월)",
+        type: "input",
+        value: "0",
+        placeholder: "숫자 입력",
+        readonly: false
+    },
+    {
+        label:"매매가(보증금)",
+        type: "input",
+        value: "0",
+        placeholder: "숫자 입력", 
+        readonly: true,
+    },
+    {
+        label:"대출금",
+        type: "input",
+        value: "0",
+        placeholder: "숫자 입력",
+        readonly: false
+    },
+    {
+        label: "월차임(주간보호)",
+        type: "input",
+        value: "0",
+        placeholder: "숫자 입력",
+        readonly: false
     }
 ];
 
@@ -72,9 +79,15 @@ export const CALCULATOR_RESULT = {
     "수입":  [
         {
             item: "합계",
+            calculate: (values = []) => {
+                return  getLocalNumber(CALCULATOR.sum(values));
+            }
         }, 
         {
             item: "공단지원금 80%",
+            calculate: () => {
+
+            }
         }, 
         {
             item: "본인부담금 20%"
@@ -94,7 +107,10 @@ export const CALCULATOR_RESULT = {
     ],
     "지출": [
         {
-            item: "합계"
+            item: "합계",
+            calculate: (values = []) => {
+                return  getLocalNumber(CALCULATOR.sum(values));
+            }
         },
         {
             item: "인건비"
@@ -159,7 +175,10 @@ export const CALCULATOR_RESULT = {
     ],
     "월 수익": [
         {
-            item: ""
+            item: "",
+            calculate: (values = []) => {
+                return  getLocalNumber(CALCULATOR.sum(values));
+            }
         }
     ]
 };

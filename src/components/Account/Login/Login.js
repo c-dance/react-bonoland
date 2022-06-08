@@ -2,7 +2,7 @@ import { Form, Metas, Signup } from './LoginStyle';
 import { useDispatch } from 'react-redux';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
 import React from "react";
-import { isMobile } from 'react-device-detect';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 
 const Login = ({
@@ -30,10 +30,20 @@ const Login = ({
                 </div>
             </fieldset>
             <Metas>
-                <div className="save">
-                    <input type="checkbox" id="uStoreId" name="uStoreId" onChange={ event => onStoreIdChange(event) } checked={ storeId }/>
-                    <label htmlFor="uStoreId">아이디 저장</label>
-                </div>
+                {
+                    isBrowser &&
+                    <div className="store">
+                        <input type="checkbox" id="uStoreId" name="uStoreId" onChange={ event => onStoreIdChange(event) } checked={ storeId }/>
+                        <label htmlFor="uStoreId">아이디 저장</label>
+                    </div>
+                }
+                {
+                    isMobile &&
+                    <div className="store">
+                        <input type="checkbox" id="uStoreLogin" name="uStoreLogin" onChange={ event => onStoreIdChange(event) } checked={ storeId }/>
+                        <label htmlFor="uStoreLogin">자동 로그인</label>
+                    </div>
+                }
                 <div className="finds">
                     <button type="button" onClick={ () => {dispatch(activateFindId())}  }>아이디 찾기</button>
                     <button type="button" onClick={ () => {dispatch(activateFindPwd())}  }>비밀번호 찾기</button>

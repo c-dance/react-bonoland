@@ -56,6 +56,7 @@ const FindIdContainer = () => {
                         !authResult && 
                         <AuthenticationContainer
                             onResultSubmit={ onResultSubmit }
+                            description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
                         />
                     }
                     {
@@ -74,12 +75,16 @@ const FindIdContainer = () => {
                     !authResult && 
                     <AuthenticationContainer
                         onResultSubmit={ onResultSubmit }
+                        description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
                     />
                 }
                 {
                     authResult &&
                     <FindIdSuccess data={"idenit@naver.com"} />
                 }
+                <module.SectionLink className="btm">
+                    <button className="link" onClick={() => dispatch(activateFindPwd())}>비밀번호 찾기</button>
+                </module.SectionLink>
             </Section>
         }
         </>

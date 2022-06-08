@@ -19,7 +19,6 @@ export const TypeBoxes = styled.div`
         width: 136px;
         height: 136px;
         border-radius: 2px;
-        overflow: hidden;
 
         .mobile & {
             height: 127px;
@@ -54,7 +53,9 @@ export const TypeBoxes = styled.div`
             border-color: ${({theme}) => theme.colors.primary };
 
             .mobile & {
+                color: ${({theme}) => theme.colors.primary };
                 box-shadow: 3px 3px 6px rgba(0,0,0,.12);
+                border-radius: 10px;
             }
         }
     }

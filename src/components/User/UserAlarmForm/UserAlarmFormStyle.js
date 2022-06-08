@@ -6,15 +6,15 @@ import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';
 
 export const AlarmForm = styled.div`
     height: 100%;
-    .mobile & {
-        height: calc(100% - 122px);
-    }
     hr {
         width: 100%;
         height: 10px;
         border: 0;
         background-color: ${ ({theme}) => theme.colors.gray100 };
     }
+    ${'' /* .mobile & {
+        height: calc(100% - 56px);
+    } */}
 `;
 
 export const Head = styled.div`
@@ -35,6 +35,11 @@ export const Head = styled.div`
 
 export const Body = styled(module.scrollWrapper)`
     height: 100%;
+
+    .mobile &  {
+        height: calc(100% - 160px);
+        padding-bottom: 32px;
+    }
 
     form {
         display: flex;
