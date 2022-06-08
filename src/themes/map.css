@@ -125,6 +125,10 @@
     transform: translate(-200px, -165px);
 }
 
+.mobile .map-info {
+    transform: translate(-100px, -65px);
+}
+
 .info-radius {
     z-index:-1;
     position: relative;
@@ -257,9 +261,7 @@
     height: 40px;
     line-height: 40px;
 }
-.mobile .map-info {
-    transform: translate(-100px, -22px);
-}
+
 
 .mobile .info-radius {
     width:200px;
