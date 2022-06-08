@@ -206,18 +206,18 @@ export const renderInfoWindow = props => {
     draggable: false
   });
 
-  naver.maps.Event.addListener(infoWindow, "click", (e) => {
-    const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
-    if(outerClicked) {
-      props.onCloseClick();
-      infoWindow.setMap(null);
-    }
-  });
-
-  naver.maps.Event.addListener(props.map, "click", () => {
+  const removeInfoWindow = () => {
     props.onCloseClick();
     infoWindow.setMap(null);
+  };
+
+  naver.maps.Event.addListener(infoWindow, "click", (e) => {
+    const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
+    if(outerClicked) removeInfoWindow();
   });
+
+  naver.maps.Event.addListener(props.map, "click", () => { removeInfoWindow(); });
+  naver.maps.Event.addListener(props.map, "dragend", () => { removeInfoWindow(); });
 
   return infoWindow;
 };

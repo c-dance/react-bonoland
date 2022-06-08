@@ -93,6 +93,7 @@
     background-color:#3E468E;
     color:#fff;
     white-space: nowrap;
+    /* transform: translateY(-100px); */
 }
 .iMarker-date { opacity: 0.7; }
 .iMarker-price { font-weight: 700; }
@@ -104,12 +105,12 @@
     height:0;
     background:transparent;
     border-style:inset;
-    border-width:8px 9px 8px 9px;
-    border-color: #3E468E transparent transparent #3E468E; 
-    transform:translateY(-6px);
+    border-width:15px 16px 15px 16px;
+    border-color: transparent transparent  #3E468E transparent; 
+    transform: translate(-1px, -16px) rotate(90deg);
 }
 .iMarker.bono .iMarker-box { background-color:#8A653F; }
-/* .iMarker.bono .iMarker-tail { background-color:#8A653F; } */
+.iMarker.bono .iMarker-tail { border-color: transparent transparent #8A653F transparent; }
 
 .mobile .iMarker-date { font-weight: 12; }
 .mobile .iMarker-price { font-weight: 14; }
@@ -136,9 +137,11 @@
     display:flex;
     flex-direction:column;
     gap:24px;
+    width: 176px;
+    height: 220px;
     padding:16px 12px 36px;
-    background:url('../assets/images/map/ico-infowindow.svg') center / 100% 100% no-repeat;
-    white-space:nowrap
+    background:url('../assets/images/map/ico-infowindow.svg') 100% 100% no-repeat;
+    /* white-space:nowrap; */
 }
 
 .info-window__body {
@@ -197,6 +200,7 @@
 .info-window__actions {
     display:flex;
     gap:12px;
+    width: 100%;
 }
 .info-window__actions .btn  {
     flex: 1;
