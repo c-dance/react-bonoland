@@ -43,22 +43,35 @@ const MapContainer = () => {
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
     const FILTERED = useSelector(state => state.Map.filtered); // 필터링 여부
-    
+
    /* === 지도 생성 === */
     const initMap = () => {
         const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(LATLNG[0], LATLNG[1]),
             zoom: ZOOM,
             minZoom: 7,
-            zoomControl: isBrowser? true : false,
-            zoomControlOptions: {
-                position: naver.maps.Position.TOP_RIGHT,
-                style: naver.maps.ZoomControlStyle.SMALL,
-            },
             mapTypeControlOptions: {
                 style: naver.maps.MapTypeControlStyle.BUTTON
             }
         });
+
+        naver.maps.Event.once(nvMap, 'init', function() {
+            const zoonInButton = "<button class='mapZoom mapZoom--in'></button>";
+            const zoonOutButton = "<button class='mapZoom mapZoom--out'></button>";
+
+            const zoomIn = new naver.maps.CustomControl(zoonInButton);
+            const zoomOut = new naver.maps.CustomControl(zoonOutButton);
+            zoomIn.setMap(nvMap);
+            zoomOut.setMap(nvMap);
+        
+            naver.maps.Event.addDOMListener(zoomIn.getElement(), 'click', function() {
+                nvMap.setZoom(nvMap.getZoom() + 1, true);
+            });
+            naver.maps.Event.addDOMListener(zoomOut.getElement(), 'click', function() {
+                nvMap.setZoom(nvMap.getZoom() - 1, true);
+            });
+        });
+
 
         //event : zoom_changed, bounds_changed, deragend
         naver.maps.Event.addListener(nvMap, 'idle', () => { 
