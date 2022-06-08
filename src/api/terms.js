@@ -6,7 +6,7 @@ export const getAllTerms = async () => {
 
     const source = axios.CancelToken.source();
     // const url = '/terms';
-    const url = 'data02/terms';
+    const url = 'data02/terms.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -23,7 +23,7 @@ export const getPrivacyTerm = async () => {
 
     const source = axios.CancelToken.source();
     // const url = '/terms';
-    const url = 'data02/privacypolicy';
+    const url = 'data02/privacypolicy.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });

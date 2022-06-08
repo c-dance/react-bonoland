@@ -37,6 +37,12 @@ export const TabNavs = styled.div`
         padding: 0 24px 8px;
         line-height: 38px;
 
+        .mobile & {
+            line-height: 48px;
+            gap: 0;
+            padding: 0;
+        }
+
         .tabNav {
             width: calc(50% - 12px);
             background-color: #fff;
@@ -45,8 +51,20 @@ export const TabNavs = styled.div`
 
             &.on {
                 border: 0;
-                background-color: ${({theme}) => theme.colors.primary };
+                background-color: ${({theme}) => theme.colors.gray200 };
                 color: #fff;
+            }
+
+            .mobile & {
+                border: 0;
+                background-color: ${({theme}) => theme.colors.gray200 };
+                color: ${({theme}) => theme.colors.gray500 };
+
+                &.on {
+                    background-color: #fff;
+                    color: ${({theme}) => theme.colors.secondary };
+                    font-weight: ${({theme}) => theme.fontWeights.medium };
+                }
             }
         }
     }
@@ -57,7 +75,7 @@ export const TabConts = styled.div`
     height: 100%;
 
     .mobile & {
-        height: calc(100% - 48px);
+        height: calc(100vh - 48px);
     }
 
     .tabCont {

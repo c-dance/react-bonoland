@@ -23,9 +23,8 @@ const Section = ({
         <SectionBlock>
             <Title themeColor={ themeColor }>{ title }</Title>
             { back && 
-                <Back 
-                    icon={ !backText && true }
-                    themeColor={ themeColor } 
+                <Back  
+                    className={ !backText && `ico-${themeColor}` }
                     onClick={ () => {
                         onBackClick? onBackClick() : goBack()
                     }}

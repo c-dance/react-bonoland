@@ -12,7 +12,7 @@ const UserMenuContainer = () => {
     return (
         <Section
             title={ "마이페이지" }
-            themeColor={ "primary" }
+            themeColor="primary"
             close={ isBrowser && true }
             back={ isMobile && true }
         >

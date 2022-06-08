@@ -1,26 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Terms from "../../components/Terms/Terms";
 import GlobalFooter from "../../components/global/GlobalFooter/GlobalFooter";
-import BreakPoint from "../../themes/breakpoint";
-import MobileHeader from "../../components/global/MobileHeader/MobileHeader";
-import { useFetch } from "../../hooks";
+import Section from '../../components/ui/Section/Section'
+import { useGet } from "../../hooks";
+import { getAllTerms } from '../../api/terms';
+import { isBrowser, isMobile } from "react-device-detect";
+import { useNavigate } from "react-router";
 
 const TermsContainer = () => {
 
-    const [ page, terms ] = useFetch({}, '/data/terms.json');
+    const navigate = useNavigate();
+
+    const [ terms, setTerms ] = useState([]);
+    const [ loading, error, noData, data, setGet ] = useGet({});
+
+    useEffect(() => {
+        setGet({
+            get: getAllTerms
+        })
+    }, []);
+
+    useEffect(() => {
+        // setTerms(data);
+        if(Object.keys(data).length > 0) {
+            setTerms(data[Object.keys(data)[0]]);
+        }
+    }, [data]);
     
     return (
         <>
-            <BreakPoint name="tablet">
-                <MobileHeader title="이용약관"/>
-            </BreakPoint>
             {
-                page === "success" && 
-                <Terms
-                    data={ terms }
-                />
+                isBrowser && 
+                <>
+                    <Terms
+                        terms={ terms }
+                        loading={ loading }
+                        error={ error }
+                        noData={ noData }
+                    />
+                    <GlobalFooter />
+                </>
             }
-            <GlobalFooter />
+            {
+                isMobile &&
+                <div className="mobile">
+                    <Section
+                        title={ "약관 보기" }
+                        themeColor="primary"
+                        back = { true }
+                        onBackClick={ () => navigate('/') }
+                    >
+                        <Terms
+                            terms={ terms }
+                            loading={ loading }
+                            error={ error }
+                            noData={ noData }
+                        />
+                    </Section>
+                </div>
+            }
         </>
     )
 };

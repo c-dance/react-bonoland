@@ -88,10 +88,11 @@ export const Close = styled.div`
 
 export const Back = styled.div`
     position: absolute;
-    top: ${ props => props.icon? '16px' : '22px' };;
+    top: 22px;
     left: 24px;
-    width: ${ props => props.icon? '24px' : 'auto' };
+    width: auto;
     height: 24px;
+    line-height: 24px;
     font-size: ${ ({theme}) => theme.fontSizes.s };
     cursor: pointer;
     color: ${ props =>
@@ -99,23 +100,17 @@ export const Back = styled.div`
         props.theme.colors.gray600 
         :'#ffff'
     };
-    background:${ props =>
-        props.icon? 
-        props.themeColor === "primary"? 
-        `url(${primaryBackIcon}) center no-repeat`
-        : `url(${secondaryBackIcon}) center no-repeat`
-        : 'transparent'
-    };
+    background-color: transparent;
+
+    &.ico-primary { top: 16px; width: 24px; background: url(${primaryBackIcon}) center no-repeat; }
+    &.ico-secondary { top: 16px; width: 24px; background: url(${secondaryBackIcon}) center no-repeat; }
 
     .mobile & {
         top: 16px;
         left: 16px;
-        background:${ props =>
-            props.icon? 
-            props.themeColor === "primary"? 
-            `url(${primaryBackIcon}) center no-repeat`
-            : `url(${secondaryArrowBackIcon}) center no-repeat`
-            : 'transparent'
-        };
+        line-height: 24px;
+        background-color: transparent;
+        &.ico-primary { background: url(${primaryBackIcon}) center no-repeat; }
+        &.ico-secondary { background: url(${secondaryArrowBackIcon}) center no-repeat; }
     }
 `;

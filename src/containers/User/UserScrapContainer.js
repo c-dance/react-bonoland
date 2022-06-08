@@ -40,6 +40,7 @@ const UserScrapContainer = () => {
     }, [data]);
 
     return (
+        
         <Section
             title={ `찜 매물(${ total })` }
             themeColor={ isBrowser? "primary" : "secondary" }

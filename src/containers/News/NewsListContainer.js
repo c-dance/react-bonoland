@@ -13,8 +13,6 @@ const NewsListContainer = () => {
     const [ newsList, setNewsList ] = useState([]);
     const [ loading, error, noData, data, setGet ] = useGet({});
 
-
-
     useEffect(() => {
         setGet({
             get: getNewsList

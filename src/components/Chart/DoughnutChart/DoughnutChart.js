@@ -81,7 +81,7 @@ const DoughnutChart = ({ title, data, type }) => {
                 labels: {
                     color: '#fff',
                     font: {
-                        size: ( type === "main" && isBrowser && 12 ) || 14,
+                        size: ( type === "main" && isBrowser && 13 ) || 14,
                     },
                     usePointStyle: true,
                     boxWidth: ( type === "main" && isBrowser && 6 ) || 8,

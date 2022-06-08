@@ -7,11 +7,11 @@ export const ChartBox = styled.div`
     align-items: center;
     width: 100%;
     height:auto;
-    padding: 20px 0;
+    padding: 20px;
     width: ${ props => 
         (props.type === "main" && isBrowser )?
         "auto" // 270, 320
-        : "100%"
+        : "100%" // "100%"
     };
     background-color: ${ props => 
         props.type === "main"? 
@@ -20,7 +20,8 @@ export const ChartBox = styled.div`
     };
 
     canvas {
-        max-width: 360px;
-        max-height: 360px;
+        ${'' /* max-width: 360px; */}
+        max-width: 390px;
+        max-height: 340px;
     }
 `;
