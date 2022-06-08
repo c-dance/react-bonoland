@@ -258,11 +258,12 @@ export const Envs = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 30px 10px;
+    width: 100%;
 `;
 
 export const Env = styled.div`
     position: relative;
-    width: 82px;
+    width: calc(25% - 10px);
     padding-top: 94px;
     font-size: 14px;
     text-align: center;
@@ -273,7 +274,7 @@ export const Env = styled.div`
         position: absolute;
         top: 0;
         left: 0;
-        width: 82px;
+        width: 100%;
         height: 82px;
         content: '';
         border-radius: 10px;
@@ -329,6 +330,10 @@ export const Back = styled.div`
 export const TabNavs = styled.div`
     display: flex;
     gap: 0;
+    .mobile & {
+        padding-bottom: 16px;
+    }
+
 `;
 
 export const TabNav = styled.div`
@@ -336,10 +341,26 @@ export const TabNav = styled.div`
     height: 48px;
     text-align: center;
     line-height: 48px;
-    background-color: ${ props => props.active? `#fff` : props.theme.colors.gray100 };
-    color: ${ props => props.active? props.theme.colors.primary : props.theme.colors.gary500 };
-    border: 1px solid ${ props => props.active? props.theme.colors.primay : `transparent` };
-    border-bottom: 0;
+    background-color: ${ ({theme}) => theme.colors.gray100 };
+    color: ${ ({theme}) => theme.colors.gray500 };
+    border: none;
+
+    .mobile & {
+        background-color: #fff;
+        border-bottom: 1px solid ${ ({theme}) => theme.colors.gray300 };
+    }
+
+    &.active {
+        border: 1px solid ${ ({theme}) => theme.colors.primary };
+        border-width: 1px 1px 0;
+        color: ${ ({theme}) => theme.colors.primary };
+        background-color: #fff;
+
+        .mobile & {
+            border-width: 0 0 2px;
+        }
+    }
+
 `;
 
 export const TabCont = styled.div`

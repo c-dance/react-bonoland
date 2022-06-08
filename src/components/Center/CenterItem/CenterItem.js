@@ -71,8 +71,8 @@ const CenterItem = ({
                     </Accordion>
                     <Back onClick={ () => navifate(-1)} ></Back>
                     <TabNavs>
-                        <TabNav active={tabIdx === 0} onClick={() => toggleTab(0)}>상세정보</TabNav>
-                        <TabNav active={tabIdx === 1} onClick={() => toggleTab(1)} >부동산</TabNav>
+                        <TabNav className={ tabIdx === 0 && "active" } onClick={() => toggleTab(0)}>상세정보</TabNav>
+                        <TabNav className={ tabIdx === 1 && "active" } onClick={() => toggleTab(1)} >부동산</TabNav>
                     </TabNavs>
                 </Top>
                 <Contents>
