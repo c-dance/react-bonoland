@@ -7,10 +7,10 @@ export const ChartBox = styled.div`
     align-items: center;
     width: 100%;
     height:auto;
-    padding: 20px;
+    padding: 20px 0;
     width: ${ props => 
         (props.type === "main" && isBrowser )?
-        "320px" // 270
+        "auto" // 270, 320
         : "100%"
     };
     background-color: ${ props => 

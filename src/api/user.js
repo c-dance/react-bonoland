@@ -6,7 +6,7 @@ export const getUserRecentCenters = async id => {
 
     const source = axios.CancelToken.source();
     // const url = '/recentcenters';
-    const url = '../../data02/recentcenters.json';
+    const url = 'data02/recentcenters.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -23,7 +23,7 @@ export const getUserScrapCenters = async id => {
 
     const source = axios.CancelToken.source();
     // const url = '/scrapcenters';
-    const url = '../../data02/scrapcenters.json';
+    const url = 'data02/scrapcenters.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -40,7 +40,7 @@ export const getUserAlarmCenters = async id => {
 
     const source = axios.CancelToken.source();
     // const url = '/alarmcenters';
-    const url = '../../data02/alarmcenters.json';
+    const url = 'data02/alarmcenters.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });

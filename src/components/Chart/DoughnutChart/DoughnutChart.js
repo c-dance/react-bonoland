@@ -104,7 +104,8 @@ const DoughnutChart = ({ title, data, type }) => {
             }
         },
         cutout: (type === "main" && isBrowser && 50) || 70,
-        radius: (type === "main" && isBrowser && 70) || 90,
+        // radius: (type === "main" && isBrowser && 70) || 90,
+        radius: (type === "main" && isBrowser && 90) || 90,
         circumference: 370, 
         elements: {
             arc: {
@@ -112,11 +113,10 @@ const DoughnutChart = ({ title, data, type }) => {
             }
         }, 
         centerText: {
-            value: `총 \n ${data["합계"]}명`,
+            value: `총 \n ${data["합계"]}${title==="요양시설"? "개" : "명"}`,
             color: '#FFF',
             fontSizeAdjust: -0.5
         },
-        // responsive: true
     };
 
     return (

@@ -1,12 +1,12 @@
 import api, { consoleErr } from ".";
 import axios from "axios";
 
-export const getNewsList = async () => {
-    console.log('뉴스 목록');
+export const getAllTerms = async () => {
+    console.log('모든 약관');
 
     const source = axios.CancelToken.source();
-    // const url = '/news';
-    const url = 'data02/news.json';
+    // const url = '/terms';
+    const url = 'data02/terms';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });
@@ -18,12 +18,12 @@ export const getNewsList = async () => {
     }
 };
 
-export const getNewsPost = async (id="") => {
-    console.log('뉴스 포스트');
+export const getPrivacyTerm = async () => {
+    console.log('개인정보 처리방침');
 
     const source = axios.CancelToken.source();
-    // const url = `/newspost?id=${id}`;
-    const url = 'data02/newspost.json';
+    // const url = '/terms';
+    const url = 'data02/privacypolicy';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });

@@ -22,7 +22,7 @@ export const getAllRecommendCenters = async (region=null) => {
 
     const source = axios.CancelToken.source();
     // const url = '/allrecommends';
-    const url = '../../data02/allrecommends.json';
+    const url = 'data02/allrecommends.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
@@ -39,7 +39,7 @@ export const getRecommendCenters = async (region=null) => {
 
     const source = axios.CancelToken.source();
     // const url = '/recommends';
-    const url = '../../data02/recommends.json';
+    const url = 'data02/recommends.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
@@ -57,7 +57,7 @@ export const getSalesCenters = async (region=null) => {
 
     const source = axios.CancelToken.source();
     // const url = '/sales';
-    const url = '../../data02/sales.json';
+    const url = 'data02/sales.json';
 
     try {
         const response = await api.get(url, { cancelToken: source.token });
