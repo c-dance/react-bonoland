@@ -105,7 +105,7 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
             <div class="gMarker-box">
                 <em class="gMarker-addr">${address}</em>
                 <ul class="gMarker-infos">
-                  ${ contents.toString()}
+                  ${ contents.toString().replaceAll(",", "")}
                 </ul>
             </div>
             <div class="gMarker-total"> ${total} </div>
