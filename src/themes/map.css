@@ -35,7 +35,8 @@
     display:flex;
     flex-direction:column;
     justify-content:center;
-    align-items:center;gap:12px;
+    align-items:center;
+    gap:12px;
     padding: 20px 12px 16px;
     border-radius:6px;
     background-color:#3E468E;
@@ -88,19 +89,23 @@
     align-items:center;
     justify-content:center;
     gap:8px;
+    height: 70px;
     padding:16px 12px;
     border-radius:8px;
     background-color:#3E468E;
     color:#fff;
     white-space: nowrap;
-    /* transform: translateY(-100px); */
+    transform: translateY(-100%);
 }
 .iMarker-date { opacity: 0.7; }
 .iMarker-price { font-weight: 700; }
 
-.iMarker-tail {
-    z-index:-1;
-    position:realtive;
+.iMarker-box::before {
+    z-index: -1;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    content: '';
     width:0;
     height:0;
     background:transparent;
@@ -110,14 +115,14 @@
     transform: translate(-1px, -16px) rotate(90deg);
 }
 .iMarker.bono .iMarker-box { background-color:#8A653F; }
-.iMarker.bono .iMarker-tail { border-color: transparent transparent #8A653F transparent; }
+.iMarker.bono .iMarker-box::before { border-color: transparent transparent #8A653F transparent; }
 
 .mobile .iMarker-date { font-weight: 12; }
 .mobile .iMarker-price { font-weight: 14; }
 
 .map-info {
     position:relative; 
-    transform: translate(-200px, -120px);
+    transform: translate(-200px, -165px);
 }
 
 .info-radius {
@@ -127,7 +132,7 @@
     height:400px;
     border-radius:200px;
     background:red;
-    opacity:0.2
+    opacity:0.2;
 }
 
 .info-window { 
@@ -219,6 +224,9 @@
     border-radius: 2px;
 }
 .info-window__actions .btn--details {
+    margin: 0;
+    border: 0;
+    width: calc(50% - 6px);
     background-color: #BD9369;
     color: #fff;
 }
