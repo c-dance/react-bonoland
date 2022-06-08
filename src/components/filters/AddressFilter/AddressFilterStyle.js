@@ -30,6 +30,12 @@ export const AddressForm = styled.div`
         height: 44px;
         padding: 0 16px 0 42px;
         background: url(${ symbolIcon }) 16px center no-repeat #fff;
+
+        &.main {
+            ${'' /* position: fixed; */}
+            z-index: 40;
+            border-radius: 2px;
+        }
     }
     
     &.main {

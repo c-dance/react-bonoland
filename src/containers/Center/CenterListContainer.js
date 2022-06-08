@@ -122,6 +122,7 @@ const CenterListContainer = () => {
         {
             isMobile &&
             <>
+                <AddressFilterContainer type="main" />
                 { RENDER_FILTER() }
                 <SwipePanel>
                 { RENDER_LIST() }
