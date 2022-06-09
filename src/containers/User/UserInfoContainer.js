@@ -17,9 +17,7 @@ const UserInfoContainer = () => {
 
     const [ password, setPassword ] = useState('');
     const [ passwordMatch, setPasswordMatch ] = useState(false);
-    const [ newPwd01, setNewPwd01 ] = useState('');
-    const [ newPwd02, setNewPwd02 ] = useState('');
-    const [ memo, setMemo ] = useState('');
+    const [ memo, setMemo ] = useState('사용자 메모');
 
     const [ newPhoneMode, setNewPhoneMode ] = useState(false);
     const [ unsubscribeMode, setUnsubscribeMode ] = useState(false);
@@ -38,23 +36,8 @@ const UserInfoContainer = () => {
         setPassword(event.currentTarget.value);
     };
 
-    const onNewPwd01Change = (event) => {
-        setNewPwd01(event.currentTarget.value);
-    };
-
-    const onNewPwd02Change = (event) => {
-        setNewPwd02(event.currentTarget.value);
-    };
-
     const onMemoChange = (event) => {
         setMemo(event.currentTarget.value)
-    };
-
-    const onActionClick = () => {
-        dispatch(activateAlert({
-            title: "회원정보 수정 완료!",
-            contents: "변경하신 회원정보가 정상적으로 변경되었습니다."
-        }));
     };
 
     const onUnsubsClick = () => {
@@ -70,6 +53,14 @@ const UserInfoContainer = () => {
     const onResultSubmit = result => {
         setNewPhoneSuccess(true);
         setNewPhoneMode(false);
+    };
+
+    const onFormSubmit = data => {
+        console.log(data);
+        dispatch(activateAlert({
+            title: "회원정보 수정 완료!",
+            contents: "변경하신 회원정보가 정상적으로 변경되었습니다."
+        }));
     };
 
     useEffect(() => {
@@ -127,19 +118,17 @@ const UserInfoContainer = () => {
                     title="회원 정보 변경"
                     close={ true }
                     themeColor={ "primary" }
-                    action={ true }
-                    actionText="적용"
-                    onActionClick={ onActionClick }
                 >
                     <UserInfoForm
-                        newPwd01={ newPwd01 }
-                        newPwd02={ newPwd02 }
-                        memo={ memo }
-                        onNewPwd01Change={ onNewPwd01Change }
-                        onNewPwd02Change={ onNewPwd02Change }
+                        userType={"매도 희망인"}
+                        userId={"bonoland@naver.com"}
+                        userName={"아이덴잇"}
+                        userPhoneNumber={"010-0000-0000"}
+                        userMemo={ memo }
                         onMemoChange={ onMemoChange }
                         onUnsubsClick={ onUnsubsClick }
                         onNewPhoneClick={ onNewPhoneClick }
+                        onFormSubmit={ onFormSubmit }
                     />
                 </Section>
             }

@@ -26,6 +26,7 @@ const SignupContaienr = () => {
     const [ form , setForm ] = useState({});
     const [ newAccountSuccess, setNewAccountSuccess ] = useState(false);
 
+
     // type 값 입력
     const onTypeChange = (event) => {
         setType(event.currentTarget.value);
@@ -40,10 +41,11 @@ const SignupContaienr = () => {
 
 
     // 회원가입 폼 제출
-    const onFormSubmit = (event) => {
-        event.preventDefault();
+    const onFormSubmit = (data) => {
+        // event.preventDefault();
         // 입력폼 유효성 검사
-        setNewAccountSuccess(true);
+        console.log(data);
+        // setNewAccountSuccess(true);
     };
 
     const onResultSubmit = result => {

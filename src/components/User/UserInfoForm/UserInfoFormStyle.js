@@ -30,9 +30,6 @@ export const InputWrap = styled.div`
     input {
         width: calc(100% - 100px);
         border-radius: 2px;
-        &:disabled {
-            border: 0;
-        }
     }
 
     button {

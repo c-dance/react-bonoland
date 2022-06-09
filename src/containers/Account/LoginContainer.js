@@ -12,80 +12,35 @@ const LoginContainer = () => {
 
     const dispatch = useDispatch();
 
-    const [ id, setId ] = useState('');
-    const [ storeId, setStoreId ] = useState(false);
-    const [ pwd, setPwd ] = useState('');
+    const ID = USER_ID.getStoredId();
+    const STORE_ID = ID.length > 0;
 
-    const onIdChange = (event) => {
-        setId(event.currentTarget.value);
+    const handleStoredId = (checked, userId) => {
+        if(checked) USER_ID.storeId(userId);
+        else USER_ID.removeId();
     };
-
-    const onPwdChange = (event) => {
-        setPwd(event.currentTarget.value);
+    
+    const onFormSubmit = data => {
+        console.log(data);
+        handleStoredId(data.userStoreId, data.userId);
     };
-
-    const onStoreIdChange = (event) => {
-        event.preventDefault();
-        const checked = !storeId;
-        if(checked) USER_ID.storeId();
-        else USER_ID.removeId(id);
-        setStoreId(checked);
-    };
-
-    const checkStoredId = () => {
-        const id = USER_ID.getStoredId();
-        console.log(id);
-        console.log("id");
-        if(id.length > 0) {
-            setId(id);
-            setStoreId(true);
-        }
-    };
-
-    const closeLogin = () => {
-        setId('');
-        setPwd('');
-        dispatch(deactivateLogin());
-    };
-
-    const onModeChange = (callback) => {
-        setId('');
-        setPwd('');
-        dispatch(deactivateLogin());
-        dispatch(callback());
-    };
-
-    const onFormSubmit = () => {
-        
-    };
-
 
     const modalProps = {
         open: true,
         close: true,
         width: 390,
-        onCloseClick: closeLogin,
+        onCloseClick: () => {dispatch(deactivateLogin())},
         title: "로그인"
     };
 
-    useEffect(() => {
-        checkStoredId();
-    }, []);
-
-    
     return (
         <>
         {
             isBrowser &&
                 <Modal {...modalProps} >
                     <Login
-                        id={ id }
-                        pwd={ pwd }
-                        storeId={ storeId }
-                        onIdChange={ onIdChange }
-                        onPwdChange={ onPwdChange }
-                        onStoreIdChange={ onStoreIdChange }
-                        onModeChange={ onModeChange }
+                        id={ ID }
+                        storeId={ STORE_ID }
                         onFormSubmit={ onFormSubmit }
                     />
                 </Modal>
@@ -98,16 +53,11 @@ const LoginContainer = () => {
                 close={ false }
                 back={ true }
                 action={ false }
-                onBackClick={ closeLogin }
+                onBackClick={ () => {dispatch(deactivateLogin())} }
             >
                 <Login
-                    id={ id }
-                    pwd={ pwd }
-                    storeId={ storeId }
-                    onIdChange={ onIdChange }
-                    onPwdChange={ onPwdChange }
-                    onStoreIdChange={ onStoreIdChange }
-                    onModeChange={ onModeChange }
+                    id={ ID }
+                    storeId={ STORE_ID }
                     onFormSubmit={ onFormSubmit }
                 />
             </Section>

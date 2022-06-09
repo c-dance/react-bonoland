@@ -34,23 +34,43 @@ const Button = styled.button`
 const Input = styled.input`
     width: 100%;
     height: 44px;
-    padding: ${ props => props.border? '0 16px' : '0 8px' };
-    border: 1px solid #E0E0E0;
-    border-width: ${ props => props.border? '1px 1px 1px' : '0 0 2px' };
-    font-size: ${ props => props.border? '14px' : '16px' }; 
+    padding: 0 8px;
+    border-bottom: 2px solid ${ theme.colors.gray200 };
+    font-size: 16px;
     background-color: #fff;
 
     &:focus,
     &:active {
-        border-color: #BD9369;
+        border-bottom: 2px solid ${ theme.colors.primary };
     }
 
     &:placeholder {
         color: ${ props => props.border? '#BDBDBD' : '#757575' }; 
     }
 
-    &.disabled {
-        border-width: 0;
+    &:read-only,
+    &:read-only:active,
+    &:read-only:focus { border: 0; }
+
+    &.bd {
+        padding: 0 16px;
+        border: 1px solid ${ theme.colors.gray200 };
+        font-size: 14px;
+        &:focus, 
+        &:active {
+            border: 1px solid ${ theme.colors.primary };
+        }
+    }
+
+    &.invalid:active,
+    &.invalid:focus {
+        border-color:  ${ theme.colors.red };
+    }
+
+    & + .warn {
+        display: block;
+        font-size: ${ theme.fontSizes.xs };
+        color: ${ theme.colors.red };
     }
 `;
 
@@ -58,19 +78,21 @@ const Textarea = styled.textarea`
     width: 100%;
     height: 226px;
     padding: 16px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid ${ theme.colors.gray200 };
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 14px;
     background-color: #fff;
     resize: none;
 
     &:focus,
     &:active {
-        border-color: '#BD9369';
+        border: 1px solid ${ theme.colors.primary };
     }
 
     &:placeholder {
-        color: ${ props => props.border? '#BDBDBD' : '#757575' }; 
+        color: #BDBDBD; 
     }
+
 `;
 
 const Fieldset = styled.fieldset`
@@ -302,12 +324,19 @@ export const AccountForm = styled.form`
             height: 44px;
             border-bottom: 1px solid ${ theme.colors.gray200 };
             padding: 0 16px;
+
             &:focus { border-color: ${ theme.colors.primary }; }
 
             &.bd {
                 border: 1px solid ${ theme.colors.gray200 };
                 border-radius: 2px;
+                &.invalid:focus { border: 1px solid ${ theme.colors.red }; }
             }
+
+            &:read-only,
+            &:read-only:focus,
+            &.bd:read-only
+            &.bd:read-only:focus { border: 0; }
         }
 
         .warn {
@@ -318,6 +347,8 @@ export const AccountForm = styled.form`
             font-size: ${ theme.fontSizes.xs };
             color: ${ theme.colors.red };
         }
+
+        input.bd + .warn { border: 0; }
     }
 
     .action {

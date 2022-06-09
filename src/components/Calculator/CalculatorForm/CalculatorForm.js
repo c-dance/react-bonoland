@@ -56,6 +56,8 @@ const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
         }
     };
 
+    /* === === */
+
     useEffect(() => {
         toggleCapacityOptions();
     }, [type]);

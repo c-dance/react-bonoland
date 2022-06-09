@@ -24,8 +24,6 @@ export const getNumber = (strValue = "") => {
     return isNaN(value)? value : Number(value);
 };
 
-
-
 /* === 계산식 === */
 export const CALCULATOR = {
     sum: (numbers = []) => {

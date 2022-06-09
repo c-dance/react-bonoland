@@ -17,14 +17,12 @@ const FindPwdContainer = () => {
     let auth = useSelector(state => state.Auth.authentificated);
     let phone = useSelector(state => state.Auth);
 
-    const [ newPwd01, setNewPwd01 ] = useState('');
-    const [ newPwd02, setNewPwd02 ] = useState('');
     const [ authResult, setAuthResult ] = useState(false);
     const [ noAccount, setNoAccount ] = useState(null);
     const [ newPwdSuccess, setNewPwdSuccess ] = useState(false);
 
-    const onFormSubmit = (event) => {
-        event.preventDefault();
+    const onFormSubmit = data => {
+        console.log(data);
         setNewPwdSuccess(true);
     };
 
@@ -36,7 +34,7 @@ const FindPwdContainer = () => {
     const modalProps = {
         open: true ,
         close: true,
-        onCloseClick: () => {dispatch(deactivateFindPwd())},
+        onCloseClick: () => { dispatch(deactivateFindPwd()) },
         width: "360",
         title: "비밀번호 찾기",
         description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
@@ -46,7 +44,6 @@ const FindPwdContainer = () => {
     const successModalProps = Object.assign({}, modalProps, FIND_PWD.SUCCESS);
     const failedModalProps = Object.assign({}, modalProps, FIND_PWD.FAIL);
     
-
     const sectionProps = {
         title: "비밀번호 찾기",
         themeColor: "primary",
@@ -86,8 +83,6 @@ const FindPwdContainer = () => {
                         authResult && !newPwdSuccess &&
                         <Modal {...writeModalProps}>
                             <NewPassword 
-                                newPwd01={ newPwd01 }
-                                newPwd02={ newPwd02 }
                                 onFormSubmit={ onFormSubmit } 
                             />
                             <module.ModalAction>
@@ -126,19 +121,13 @@ const FindPwdContainer = () => {
                     }
                     {
                         authResult && !newPwdSuccess &&
-                        <>
-                            <NewPassword 
-                                newPwd01={ newPwd01 }
-                                newPwd02={ newPwd02 }
-                                onFormSubmit={ onFormSubmit } 
-                            />
-                        </>
+                        <NewPassword 
+                            onFormSubmit={ onFormSubmit } 
+                        />
                     }
                     {
                         authResult && newPwdSuccess &&
-                        <>
-                            <FindPwdSuccess />
-                        </>
+                        <FindPwdSuccess />
                     }
                     <module.SectionLink className="btm">
                         <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>

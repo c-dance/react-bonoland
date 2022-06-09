@@ -13,6 +13,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-device-detect": "^2.2.2",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.31.3",
     "react-modal": "^3.15.1",
     "react-redux": "^8.0.1",
     "react-responsive": "^9.0.0-beta.8",
@@ -25,13 +26,14 @@
     "styled-components": "^5.3.5",
     "styled-react-modal": "^3.0.0",
     "styled-reset": "^4.3.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "homepage": ".",
   "scripts": {
     "start": "react-scripts start",
-    "server" : "npx json-server -p 3500 -w data/db.json",
-    "server02" : "npx json-server -p 3000 -H 121.190.232.117 --watch data/db.json",
+    "server": "npx json-server -p 3500 -w data/db.json",
+    "server02": "npx json-server -p 3000 -H 121.190.232.117 --watch data/db.json",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

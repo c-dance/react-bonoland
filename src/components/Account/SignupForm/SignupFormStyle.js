@@ -9,6 +9,7 @@ export const Form = styled(module.AccountForm)`
         position: relative;
         margin-top: 40px;
     }
+
 `;
 
 export const Agreement = styled.fieldset`
@@ -62,5 +63,10 @@ export const Agreement = styled.fieldset`
             color: ${({theme}) => theme.colors.gray600 };
             font-size: ${({theme}) => theme.fontSizes.s };
         }
+
+    }
+    .warn {
+        color: ${({theme}) => theme.colors.red };
+        font-size: ${({theme}) => theme.fontSizes.s };
     }
 `;

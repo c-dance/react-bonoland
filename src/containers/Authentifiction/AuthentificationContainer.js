@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
 import { useSelector, useDispatch } from "react-redux";
 import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";
+import { activateAlert } from '../../store/actions/alert';
 
 const AuthenticationContainer = ({ onResultSubmit, description }) => {
 
@@ -11,75 +12,88 @@ const AuthenticationContainer = ({ onResultSubmit, description }) => {
     
     // 전화번호 입력
     const [ phoneNumber, setPhoneNumber ] = useState('');
-    const [ validPhoneNumber, setValidPhoneNumber ] = useState(true);
     const [ phoneSubmitted, setPhoneSubmitted ] = useState(false);
 
     // 입력 시간
-    const [ timer, setTimer ] = useState(0);
-    const [ timeOut, setTimeOut ] = useState(false);
-    
-    // 인증번호 입력
-    const [ authNumber, setAuthNumber ] = useState('');
+    const TIME_LIMIT = 180;
+    const [ timer, setTimer ] = useState(TIME_LIMIT);
+    let intervalTimer;
+    let timeout;
 
-    console.log("authentification");
+    // 인증번호 매칭
+    const [ matchError, setMatchError ] = useState(false);
 
-    // 전화번호 폼 제출
-    const onPhoneSubmit = (event) => {
-        event.preventDefault();
-        
+    /* === 전화번호 제출 === */
+    const onPhoneSubmit = data=> {
+        console.log(data);
+
+        setPhoneNumber(data.phone);
+
         // 스토어에 전화번호 저장 ( 서버에 post + 저장 )
-        // dispatch(addAuth(phoneNumber));
-        setTimer(100);
         setPhoneSubmitted(true);
     }; 
 
-    const resetAuthentification = () => {
-        dispatch(deleteAuth());
+    /* === 인증번호 제출 === */
+    const onAuthSubmit = data => {
+        console.log(data);
+        const ANSWER = "123";
+
+        if(data.auth === ANSWER) {
+            onResultSubmit(true);
+        } else {
+            setMatchError(true);
+        }
+    };
+
+    /* === 타이머 시작 === */
+    const setIntervalTimer = () => {
+        intervalTimer = window.setInterval(() => {
+            setTimer(timer => timer - 1);
+        }, 1000);
+
+        timeout = window.setTimeout(() => {
+            clearIntervalTimer();
+        }, TIME_LIMIT * 1000);
+    };
+
+    /* === 타이머 해제 === */
+    const clearIntervalTimer = () => {
+        window.clearTimeout(timeout);
+        window.clearInterval(intervalTimer);
+    };
+
+    /* === 입력시간 초과 처리 === */
+    const firetimer = () => {
+        clearIntervalTimer();
+        alert("입력시간이 초과되었습니다. 휴대폰 인증을 다시 시도해 주세요");
+        setTimer(TIME_LIMIT);
+        setPhoneNumber("");
         setPhoneSubmitted(false);
-        setAuthNumber('');
-        setTimer(0);
-        setTimeOut(false);
     };
 
-    // 인증번호 폼 제출
-    const onAuthSubmit = (event) => {
-        event.preventDefault();
-
-        onResultSubmit(true);
-        
-        // dispatch(updateAuth(true));
-        
-        // setTimeOut(function(){
-        //     if(timeOut) {
-        //         alert('인증 시간이 경과하였습니다. 다시 시도해 주세요.');
-        //         resetAuthentification();
-        //         return;
-        //     };
-    
-        //     if(!authentificated) {
-        //         alert("인증에 실패했습니다.");  
-        //         resetAuthentification();
-        //         return;
-        //     };
-        // }, 30000);
-
-    };
-
+    /* === 인증폼 PROPS === */
     const authProps = {
         phoneNumber: phoneNumber,
-        onPhoneChange: setPhoneNumber,
         onPhoneSubmit: onPhoneSubmit,
         onAuth: phoneSubmitted,
         timer: timer,
-        authNumber: authNumber,
-        onAuthChange: setAuthNumber,
         onAuthSubmit: onAuthSubmit,
-        description: description
+        description: description, 
+        matchError: matchError
     };
 
-    // useEffect(() => {
-    //     dispatch(deleteAuth());
-    // }, []);
+    /* === 타이머 시작 처리 === */
+    useEffect(() => {
+        if(phoneSubmitted) {
+            setIntervalTimer();
+            return () => clearIntervalTimer();
+        }
+    }, [phoneSubmitted]);
+
+    /* === 타이머 자동 해제 === */
+    useEffect(() => {
+        if(timer <= 0) firetimer();
+    }, [timer]);
 
     return (
         <Authentication {...authProps}/>
