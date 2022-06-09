@@ -6,6 +6,7 @@ import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
 import { deactivateCalculator } from '../../store/actions/mode';
+import { module } from '../../themes/module';
 
 const CalculatorContainer = () => {
 
@@ -39,18 +40,12 @@ const CalculatorContainer = () => {
     };
 
     const CALCULATOR_TEMPLATE = () => (
-        <>
-            {
-                !formSubmitted && <CalculatorForm
-                    onFormSubmit={ submitForm }
-                />
-            }
-            {
-                formSubmitted && <CalculatorResult 
-                    onFormReset={ resetForm }
-                />
-            }
-        </>
+        <CalculatorForm
+            onFormSubmit={ submitForm }
+            onFormReset={ resetForm }
+        >
+            <CalculatorResult />
+        </CalculatorForm>
     );
 
     return (

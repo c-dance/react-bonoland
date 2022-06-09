@@ -20,9 +20,11 @@ export const getLocalCurrent = value => {
 
 /* === NUMBER 타입 숫자로 산출 === */
 export const getNumber = (strValue = "") => {
-    let value = strValue.toString().replaceAll(',');
+    let value = strValue.toString().replaceAll(',', '');
     return isNaN(value)? value : Number(value);
 };
+
+
 
 /* === 계산식 === */
 export const CALCULATOR = {

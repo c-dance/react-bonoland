@@ -1,4 +1,17 @@
 import styled from 'styled-components';
+import { module } from '../../../themes/module';
+
+export const Wrapper = styled(module.scrollWrapper)`
+    height: 600px;
+    max-height: calc(100vh - 200px);
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 56px;
+        padding-bottom: 40px;
+    }
+`;
 
 export const Form = styled.form`
     display: flex;
@@ -51,7 +64,25 @@ export const Form = styled.form`
         }
     }
 
-    button {
-        width: 160px;
+    .actions {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            width: 160px;
+            height: 52px;
+            line-height: 52px;
+            border: 1px solid ${ ({theme}) => theme.colors.primary };
+            background-color: #fff;
+            color: ${ ({theme}) => theme.colors.primary };
+
+            &[type="submit"] {
+                background-color: ${ ({theme}) => theme.colors.primary };
+                color: #fff;
+            }
+        }
     }
+
 `;

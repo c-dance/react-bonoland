@@ -22,10 +22,9 @@ const mobileColGroup = () => (
     </colgroup>
 );
 
-const CalculatorResult = ({ result, onFormReset }) => {
+const CalculatorResult = ({ result }) => {
     return (
-        <CalcWrap>
-            <CalcForm>
+        <CalcForm>
                 {
                     isBrowser &&
                     <table>
@@ -123,11 +122,7 @@ const CalculatorResult = ({ result, onFormReset }) => {
                         </table>
                     </>
                 }
-                <button
-                    onClick={ (event) => onFormReset(event) }
-                >초기화</button>
-            </CalcForm>
-        </CalcWrap>
+        </CalcForm>
     )
 };
 

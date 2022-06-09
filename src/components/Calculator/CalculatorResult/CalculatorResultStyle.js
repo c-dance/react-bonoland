@@ -25,7 +25,7 @@ export const CalcForm = styled.form`
     flex-direction: column;
     gap: 40px;
     width: 100%;
-    height: auto;
+    ${'' /* height: auto; */}
 
     .mobile & {
         gap: 24px;
