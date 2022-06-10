@@ -1,12 +1,11 @@
-import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController } from 'chart.js';
+import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController, plugins } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import { MARKETS } from '../../../sheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
-import 'chartjs-plugin-doughnut-innertext'
+import 'chartjs-plugin-doughnut-innertext';
 import { isBrowser } from 'react-device-detect';
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { getLocalNumber } from '../../../utils/number';
-
 
 const doughnutColors = ['#E4B251', '#7BF5BB', '#E98686', '#616161', '#fff'];
 const labelColors = ['transparent', '#fff', '#E4B251', '#7BF5BB', '#E98686', '#616161'];
@@ -56,6 +55,30 @@ const DoughnutChart = ({ title, data, type }) => {
     
     ChartJs.register(ArcElement, Legend, Title, DoughnutController );
 
+
+    ChartJs.register({
+        id: 'afterDraw',
+        afterDraw: (chart, args, options) => {
+            const current = chart.ctx;
+            const cx = chart.width/2;
+            const cy = chart.height/2;
+
+            const canvas = chart.canvas;
+
+            current.textAlign = 'center';
+            current.textBaseline = 'middle';
+            current.font = "24px bold 'Noto Sans KR, sans-serif'";
+            current.fillStyle = "#ffffff";
+
+            current.fillText('타이틀 자리', cx, cy - 10);
+            current.fillText('서브 타이틀 자리', cx, cy + 10);
+
+            current.restore();
+            current.save();
+        }
+    });
+
+
     //get data
     const chartLabels = getLabels(data);
     
@@ -75,6 +98,7 @@ const DoughnutChart = ({ title, data, type }) => {
 
     const chartOptions = {
         plugins: {
+            afterDraw: true,
             legend: {
                 display: true,
                 position: 'bottom',
@@ -112,12 +136,19 @@ const DoughnutChart = ({ title, data, type }) => {
                 borderWidth: 10,
             }
         }, 
-        centerText: {
-            value: `총 \n ${data["합계"]}${title==="요양시설"? "개" : "명"}`,
-            color: '#FFF',
-            fontSizeAdjust: -0.5
-        },
     };
+
+    /* === ref === */
+
+    // const chartRef = useRef(null);
+
+    // useEffect(() => {
+    //     const chart = chartRef.current;
+    //     if (chart) {
+    //         console.log('CanvasRenderingContext2D', chart.ctx);
+    //         console.log('HTMLCanvasElement', chart.canvas);
+    //       }
+    // }, []);
 
     return (
         <ChartBox type={ type || "" }>
@@ -128,6 +159,7 @@ const DoughnutChart = ({ title, data, type }) => {
                     labels: chartLabels
                 }} 
                 options = { chartOptions }
+                // ref={ chartRef }
             />
         </ChartBox>
     )

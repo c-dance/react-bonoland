@@ -1,123 +1,77 @@
-import React, { useContext } from 'react';
-import { LayoutContext } from '../../hooks/layout';
+import React from 'react';
 import { module } from '../../themes/module';
 import { Inform, RegisterWrap } from './RegisterStyle';
+import { useForm } from 'react-hook-form';
+import { isMobile, isBrowser } from 'react-device-detect';
+import { useDispatch } from 'react-redux/es/exports';
+import { activateAlert } from '../../store/actions/alert';
 
 const Register = ({
     onFormSubmit
 }) => {
 
-    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+    const dispatch = useDispatch();
     
+    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit" });
+
+    /* === 필수입력값 처리 === */
+    const sumErrors = errors => {
+
+        const FORM_ERROR = { 
+            c: {
+                count: 0,
+                alert: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다",
+            },
+            u: {
+                count: 0,
+                alert: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다.",
+            },
+            r: {
+                count: 0,
+                alert: "필수대행비용 정책에 동의 시 매물 접수가 가능합니다.",
+            }
+        };
+
+        for(const errorType in errors) {
+            switch(errorType[0]) {
+                case "c" : 
+                    FORM_ERROR["c"].count++;
+                    break;
+                case "u" :
+                    FORM_ERROR["u"].count++;
+                    break;
+                case "r" : 
+                    FORM_ERROR["r"].count++;
+                    break;
+                default: 
+                    break;
+            }
+        }
+
+        return FORM_ERROR;
+    }
+
+    const handleErrors = (errorTypes) => {
+        console.log(errorTypes);
+        for(let key in errorTypes) {;
+            if(errorTypes[key].count > 0) {
+                dispatch(activateAlert({
+                    title: "매물 접수", 
+                    contents: errorTypes[key].alert
+                }))
+            }
+        }
+    };
+
+    
+    if(errors) handleErrors(sumErrors(errors));
+
     return (
         <>
             {
-                MOBILE_DEVICE && 
+                isBrowser && 
                 <RegisterWrap>
-                    <module.MobileForm onSubmit={ event => onFormSubmit(event) }>
-                        <fieldset>
-                            <legend>의뢰인 정보</legend>
-                            <div className="wrap">
-                                <label htmlFor="rgName">이름</label>
-                                <input type="text" name="rgName" id="rgName"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgCtName">요양시설 이름</label>
-                                <input type="text" name="rgCtName" id="rgCtName"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgCtAddr">요양시설 주소</label>
-                                <input type="text" name="rgCtAddr" id="rgCtAddr"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgTel">연락처</label>
-                                <input type="text" name="rgTel" id="rgTel"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgEmail">이메일</label>
-                                <input type="text" name="rgEmail" id="rgEmail"/> 
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend></legend>
-                            <div className="wrap">
-                                <label htmlFor="rgSigun">시/군</label>
-                                <select name="rgSigun" id="rgSigun">
-                                    <option value="" selected disabled>지역 선택</option>
-                                </select>
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgGugun">구/군</label>
-                                <select name='rgGugun' id="rgGugun">
-                                    <option value="" selected disabled>세부지역 선택</option>
-                                </select>
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgCtType">요양시설 유형</label>
-                                <select name="rgCtType" id="rgCtType">
-                                    <option value="" selected disabled>유형 선택</option>
-                                </select>
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgSize">면적(m2)</label>
-                                <input type="text" name="rgSize" id="rgSize"/>
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgPrice">매매가(보증금)</label>
-                                <input type="text" name="rgPrice" id="rgPrice"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgRent">월세</label>
-                                <input type="text" name="rgRent" id="rgRent"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgCapcity">인가정원</label>
-                                <input type="text" name="rgCapacity" id="rgCapacity"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgPremium">권리금</label>
-                                <input type="text" name="rgPremium" id="rgPremium"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgPerson">현원</label>
-                                <input type="text" name="rgPerson" id="rgPerson"/> 
-                            </div>
-                            <div className="wrap">
-                                <label htmlFor="rgDesc">소개내용</label>
-                                <input type="text" name="rgDesc" id="rgDesc"/> 
-                            </div>
-                        </fieldset>
-                        <Inform>
-                            <div className="inform">
-                                <strong>
-                                    #보노랜드에서 알려드립니다.
-                                </strong>
-                                <p>
-                                    보노랜드는 고객님의 프라이버시 및 비밀 엄수를 위해 접수하신 매물의 위치가 '시 단위’ 또는 '구 단위’ 까지만 보노랜드 플랫폼에 표현되며 상세 정보는 공개되지 않습니다.
-                                    <br />
-                                    보노랜드는 매물 보호를 위해 ‘매수 희망 고객님’에게 유선 및 회사 방문 상담으로만 정보를 공개합니다.
-                                </p>
-                            </div>
-                            <div className="agree">
-                                <input type="checkbox" id="rgAgree" />
-                                <label htmlFor="rgAgree">필수대행비용에 대해 동의합니다.</label>
-                            </div>
-                            <div className="policy">
-                                보노랜드에서는 매도를 원하시는 고객님에게 ‘중개 · 컨설팅 수수료 0원’ 정책을 가지고 있습니다.
-                                <br />
-                                다만, 보노랜드에서 매수자 고객님을 발굴하여 계약체결 시 계약서 작성, 서류 준비 및 실거래 신고,
-                                <br />
-                                부동산 광도 등에 대한 ‘필수대행비용’으로 계약체결 시 최소한의 비용인 3백만원(부가세 별도)을 청구드리고 있습니다.
-                            </div>
-                        </Inform>
-                        <button>접수하기</button>
-                    </module.MobileForm>
-                </RegisterWrap>
-            }
-            {
-                !MOBILE_DEVICE && 
-                <RegisterWrap>
-                    <module.TableForm onSubmit={ event => onFormSubmit(event) }>
+                    <module.TableForm onSubmit={ handleSubmit(onFormSubmit) }>
                         <fieldset>
                             <legend>의뢰인 정보</legend>
                             <table>
@@ -128,41 +82,41 @@ const Register = ({
                                 <col width="25%"/>
                             </colgroup>
                                 <tr>
+                                    <th>
+                                        <label htmlFor="uName">이름</label>
+                                    </th>
+                                    <td colSpan="3">
+                                        <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                                    </td>
+                                </tr>
+                                <tr>
                                         <th>
-                                            <label htmlFor="rgName">이름</label>
+                                            <label htmlFor="cName">요양시설 이름</label>
                                         </th>
                                         <td colSpan="3">
-                                            <input type="text" name="rgName" id="rgName"/> 
+                                            <input type="text" name="cName" id="cName" {...register("cName", { required: true })}/> 
                                         </td>
                                 </tr>
                                 <tr>
                                         <th>
-                                            <label htmlFor="rgCtName">요양시설 이름</label>
+                                            <label htmlFor="cAddr">요양시설 주소</label>
                                         </th>
                                         <td colSpan="3">
-                                            <input type="text" name="rgCtName" id="rgCtName"/> 
-                                        </td>
-                                </tr>
-                                <tr>
-                                        <th>
-                                            <label htmlFor="rgCtAddr">요양시설 주소</label>
-                                        </th>
-                                        <td colSpan="3">
-                                            <input type="text" name="rgCtAddr" id="rgCtAddr"/> 
+                                            <input type="text" name="cAddr" id="cAddr" {...register("cAddr", { required: true })}/> 
                                         </td>
                                 </tr>
                                 <tr>
                                         <th colSpan="1">
-                                            <label htmlFor="rgTel">연락처</label>
+                                            <label htmlFor="uTel">연락처</label>
                                         </th>
                                         <td colSpan="1">
-                                            <input type="text" name="rgTel" id="rgTel"/> 
+                                            <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
                                         </td>
                                         <th colSpan="1">
-                                            <label htmlFor="rgEmail">이메일</label>
+                                            <label htmlFor="uEmail">이메일</label>
                                         </th>
                                         <td colSpan="1">
-                                            <input type="text" name="rgEmail" id="rgEmail"/> 
+                                            <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true })}/> 
                                         </td>
                                 </tr>
                             </table>
@@ -177,59 +131,59 @@ const Register = ({
                                 <col width="25%"/>
                             </colgroup>
                                 <tr>
-                                    <th><label htmlFor="rgSigun">시/군</label></th>
+                                    <th><label htmlFor="cSigun">시/군</label></th>
                                     <td>
-                                        <select name="rgSigun" id="rgSigun">
-                                            <option value="" selected disabled>지역 선택</option>
+                                        <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
+                                            <option value="" disabled>지역 선택</option>
                                         </select>
                                     </td>
-                                    <th><label htmlFor="rgGugun">구/군</label></th>
+                                    <th><label htmlFor="cGugun">구/군</label></th>
                                     <td>
-                                        <select name='rgGugun' id="rgGugun">
-                                            <option value="" selected disabled>세부지역 선택</option>
+                                        <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
+                                            <option value="" disabled>세부지역 선택</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><label htmlFor="rgCtType">요양시설 유형</label></th>
+                                    <th><label htmlFor="cType">요양시설 유형</label></th>
                                     <td>
-                                        <select name="rgCtType" id="rgCtType">
-                                            <option value="" selected disabled>유형 선택</option>
+                                        <select name="cType" id="cType" {...register("cType", { required: true })}>
+                                            <option value="" disabled>유형 선택</option>
                                         </select>
                                     </td>
-                                    <th><label htmlFor="rgSize">면적(m2)</label></th>
+                                    <th><label htmlFor="cSize">면적(m2)</label></th>
                                     <td>
-                                        <input type="text" name="rgSize" id="rgSize"/> 
+                                        <input type="text" name="cSize" id="cSize" {...register("cSize", { required: true })}/> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><label htmlFor="rgPrice">매매가(보증금)</label></th>
+                                    <th><label htmlFor="cPrice">매매가(보증금)</label></th>
                                     <td>
-                                        <input type="text" name="rgPrice" id="rgPrice"/> 
+                                        <input type="text" name="cPrice" id="cPrice" {...register("cPrice", { required: true })}/> 
                                     </td>
-                                    <th><label htmlFor="rgRent">월세</label></th>
+                                    <th><label htmlFor="cRent">월세</label></th>
                                     <td>
-                                        <input type="text" name="rgRent" id="rgRent"/> 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><label htmlFor="rgCapcity">인가정원</label></th>
-                                    <td>
-                                        <input type="text" name="rgCapacity" id="rgCapacity"/> 
-                                    </td>
-                                    <th><label htmlFor="rgPremium">권리금</label></th>
-                                    <td>
-                                        <input type="text" name="rgPremium" id="rgPremium"/> 
+                                        <input type="text" name="cRent" id="cRent" {...register("cRent", { required: true })}/> 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><label htmlFor="rgPerson">현원</label></th>
+                                    <th><label htmlFor="cCapcity">인가정원</label></th>
                                     <td>
-                                        <input type="text" name="rgPerson" id="rgPerson"/> 
+                                        <input type="text" name="cCapacity" id="cCapacity" {...register("cCapacity", { required: true })}/> 
                                     </td>
-                                    <th><label htmlFor="rgDesc">소개내용</label></th>
+                                    <th><label htmlFor="cPremium">권리금</label></th>
                                     <td>
-                                        <input type="text" name="rgDesc" id="rgDesc"/> 
+                                        <input type="text" name="cPremium" id="cPremium" {...register("cPremiun", { required: true })}/> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label htmlFor="cPerson">현원</label></th>
+                                    <td>
+                                        <input type="text" name="cPerson" id="cPerson" {...register("cPerson", { required: true })}/> 
+                                    </td>
+                                    <th><label htmlFor="cDesc">소개내용</label></th>
+                                    <td>
+                                        <input type="text" name="cDesc" id="cDesc" {...register("cDesc", { required: true })}/> 
                                     </td>
                                 </tr>
                             </table>
@@ -246,8 +200,8 @@ const Register = ({
                                 </p>
                             </div>
                             <div className="agree">
-                                <input type="checkbox" id="rgAgree" />
-                                <label htmlFor="rgAgree">필수대행비용에 대해 동의합니다.</label>
+                                <input type="checkbox" id="cAgree"  {...register("rAgree", { required: true })}/>
+                                <label htmlFor="cAgree">필수대행비용에 대해 동의합니다.</label>
                             </div>
                             <div className="policy">
                                 보노랜드에서는 매도를 원하시는 고객님에게 ‘중개 · 컨설팅 수수료 0원’ 정책을 가지고 있습니다.
@@ -257,12 +211,116 @@ const Register = ({
                                 부동산 광도 등에 대한 ‘필수대행비용’으로 계약체결 시 최소한의 비용인 3백만원(부가세 별도)을 청구드리고 있습니다.
                             </div>
                         </Inform>
-                        <button>
+                        <button type="submit">
                             접수하기
                         </button>
                     </module.TableForm>
                 </RegisterWrap>
             }
+            {
+                isMobile && 
+                <RegisterWrap>
+                    <module.MobileForm onSubmit={ handleSubmit(onFormSubmit) }>
+                        <fieldset>
+                            <legend>의뢰인 정보</legend>
+                            <div className="wrap">
+                                <label htmlFor="uName">이름</label>
+                                <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cCtName">요양시설 이름</label>
+                                <input type="text" name="cCtName" id="cCtName" {...register("cName", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cCtAddr">요양시설 주소</label>
+                                <input type="text" name="cCtAddr" id="cCtAddr" {...register("cAddr", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="uTel">연락처</label>
+                                <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="uEmail">이메일</label>
+                                <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true })}/> 
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend></legend>
+                            <div className="wrap">
+                                <label htmlFor="cSigun">시/군</label>
+                                <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
+                                    <option value="" disabled>지역 선택</option>
+                                </select>
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cGugun">구/군</label>
+                                <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
+                                    <option value="" disabled>세부지역 선택</option>
+                                </select>
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cType">요양시설 유형</label>
+                                <select name="cType" id="cType" {...register("cType", { required: true })}>
+                                    <option value="" disabled>유형 선택</option>
+                                </select>
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cSize">면적(m2)</label>
+                                <input type="text" name="cSize" id="cSize" {...register("cSize", { required: true })}/>
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cPrice">매매가(보증금)</label>
+                                <input type="text" name="cPrice" id="cPrice" {...register("cPrice", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cRent">월세</label>
+                                <input type="text" name="cRent" id="cRent" {...register("cRent", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cCapcity">인가정원</label>
+                                <input type="text" name="cCapacity" id="cCapacity" {...register("cCapacity", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cPremium">권리금</label>
+                                <input type="text" name="cPremium" id="cPremium" {...register("cPremiun", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cPerson">현원</label>
+                                <input type="text" name="cPerson" id="cPerson" {...register("cPerson", { required: true })}/> 
+                            </div>
+                            <div className="wrap">
+                                <label htmlFor="cDesc">소개내용</label>
+                                <input type="text" name="cDesc" id="cDesc" {...register("cDesc", { required: true })}/> 
+                            </div>
+                        </fieldset>
+                        <Inform>
+                            <div className="inform">
+                                <strong>
+                                    #보노랜드에서 알려드립니다.
+                                </strong>
+                                <p>
+                                    보노랜드는 고객님의 프라이버시 및 비밀 엄수를 위해 접수하신 매물의 위치가 '시 단위’ 또는 '구 단위’ 까지만 보노랜드 플랫폼에 표현되며 상세 정보는 공개되지 않습니다.
+                                    <br />
+                                    보노랜드는 매물 보호를 위해 ‘매수 희망 고객님’에게 유선 및 회사 방문 상담으로만 정보를 공개합니다.
+                                </p>
+                            </div>
+                            <div className="agree">
+                                <input type="checkbox" id="cAgree"  {...register("rAgree", { required: true })}/>
+                                <label htmlFor="cAgree">필수대행비용에 대해 동의합니다.</label>
+                            </div>
+                            <div className="policy">
+                                보노랜드에서는 매도를 원하시는 고객님에게 ‘중개 · 컨설팅 수수료 0원’ 정책을 가지고 있습니다.
+                                <br />
+                                다만, 보노랜드에서 매수자 고객님을 발굴하여 계약체결 시 계약서 작성, 서류 준비 및 실거래 신고,
+                                <br />
+                                부동산 광도 등에 대한 ‘필수대행비용’으로 계약체결 시 최소한의 비용인 3백만원(부가세 별도)을 청구드리고 있습니다.
+                            </div>
+                        </Inform>
+                        <button type="submit">접수하기</button>
+                    </module.MobileForm>
+                </RegisterWrap>
+            }
+
         </>
 
 

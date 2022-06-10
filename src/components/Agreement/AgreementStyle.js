@@ -28,7 +28,7 @@ export const AgreementBox = styled.div`
     
 
     /* === MOBILE === */
-    &.mobile {
+    .mobile & {
         height: 100%;
 
         h3 {
@@ -61,7 +61,7 @@ export const Terms = styled(module.scrollWrapper)`
     border: 1px solid ${({theme}) => theme.colors.gray300 };
     color: ${({ theme }) => theme.colors.gray600 };
 
-    &.mobile {
+    .mobile & {
         margin: 16px 0 20px;
         height: 146px;
     }

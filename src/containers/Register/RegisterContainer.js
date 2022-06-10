@@ -35,20 +35,11 @@ const RegisterContainer = () => {
     const deactivateRegister = () => {
         navigate('/');
     };
+    
+    const onAgreeSubmit = (data) => {
+        console.log(data);
 
-
-    const onAgreeClick = (event) => {
-        setAgreed(!agreed);
-    };
-
-    const onAgreeSubmit = (event) => {
-        event.preventDefault();
-
-        if(agreed) {
-            setAgreeSubmitted(agreed);
-        } else {
-            alert("개인정보 수집에 동의해 주세요.");
-        }
+        setAgreeSubmitted(true);
     };
 
     const onFormSubmit = (event) => {
@@ -82,8 +73,6 @@ const RegisterContainer = () => {
                             subTitle="개인정보 수집 동의"
                             label="개인정보수집에 대한 내용에 동의합니다."
                             content={ term }
-                            isChecked={ agreed }
-                            onAgreeClick={ onAgreeClick }
                             onAgreeSubmit={ onAgreeSubmit }
                         />
                     }
@@ -108,8 +97,6 @@ const RegisterContainer = () => {
                                 subTitle="개인정보 수집 동의"
                                 label="개인정보수집에 대한 내용에 동의합니다."
                                 content={ term }
-                                isChecked={ agreed }
-                                onAgreeClick={ onAgreeClick }
                                 onAgreeSubmit={ onAgreeSubmit }
                             />
                         }

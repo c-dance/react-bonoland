@@ -27,7 +27,7 @@ const GlobalHeader = () => {
                             <Link to="/register">매물접수</Link>
                         </Nav>
                         <Nav>
-                            <Link to="/contact">매물문의</Link>
+                            <Link to="/contact">매수문의</Link>
                         </Nav>
                         <Nav>
                             <Link to="/news">뉴스</Link>

@@ -20,7 +20,7 @@ const ContactContainer = () => {
     const [ agreed, setAgreed ] = useState(false);
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
 
-    // 매물 문의폼 작성 (1) 접수 입력폼 (2) 접수 입력폼 검사 (3) 접수 입력폼 submit
+    // 매수 문의폼 작성 (1) 접수 입력폼 (2) 접수 입력폼 검사 (3) 접수 입력폼 submit
     const [ form, setForm ] = useState({});
     const [ formFilled, setFormFilled ] = useState(false);
     const [ formSubmitted, setFormSubmitted ] = useState(false);
@@ -28,33 +28,24 @@ const ContactContainer = () => {
     // 로그인 되었을 때
     const [ user, setUser ] = useState(null);
 
-    // 매물 문의폼 전송
+    // 매수 문의폼 전송
     const [ contactSuccess, setContactSuccess ] = useState(false);
     
 
-    // 약관 동의 체크
-    const onAgreeClick = (event) => {
-        setAgreed(!agreed);
-    };
-
     // 약관 동의 제출
-    const onAgreeSubmit = (event) => {
-        event.preventDefault();
+    const onAgreeSubmit = data => {
+        console.log(data);
 
-        if(agreed) {
-            setAgreeSubmitted(agreed);
-        } else {
-            alert("개인정보 수집에 동의해 주세요.");
-        }
+        setAgreeSubmitted(true);
     };
 
     // 문의 폼 제출
-    const onFormSubmit = (event) => {
-        event.preventDefault();
+    const onFormSubmit = data => {
+        console.log(data);
         setContactSuccess(true);
     };
 
-    // 매물문의 닫기
+    // 매수문의 닫기
     const navigate = useNavigate();
     const deactivatContact = () => {
         navigate('/');
@@ -64,7 +55,7 @@ const ContactContainer = () => {
         if(contactSuccess) {
             dispatch(activateAlert({
                 title:"문의 완료",
-                contents: "매물 문의가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
+                contents: "매수 문의가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
             }))
         }
     }, [contactSuccess]);
@@ -77,8 +68,6 @@ const ContactContainer = () => {
                     subTitle="개인정보 수집 동의"
                     label="개인정보수집에 대한 내용에 동의합니다."
                     content={ term }
-                    isChecked={ agreed }
-                    onAgreeClick={ onAgreeClick }
                     onAgreeSubmit={ onAgreeSubmit }
                 />
             }

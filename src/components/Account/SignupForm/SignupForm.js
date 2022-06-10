@@ -10,33 +10,28 @@ const SignupForm = ({
     onFormSubmit
 }) => {
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, formState: { errors }, getValues, replace, setValue } = useForm({ mode: 'onChange' });
 
-    const [ agrees, setAgrees ] = useState([false, false, false]);
-    const [ agreeAll, setAgreeAll ] = useState(false);
-
-    const toggleAgrees = (event) => {
-        const checked = event.currentTarget.checked;
-        const num = event.currentTarget.value;
-        let newAgrees = agrees.slice();
-        newAgrees[num] = checked;
-        setAgrees(newAgrees);
-    };
-
+    /* === 이용약관 동의 처리 === */
+    const agreeChecked = new Array(3).fill(false);
+    
     const toggleAgreeAll = (event) => {
+        const agree = event.currentTarget;
+        agreeChecked[agree.dataset.idx] = agree.checked;
+
+        const checkeds = agreeChecked.filter(item => item === true);
+
+        if(checkeds.length === agreeChecked.length) setValue("userAgree", true);
+        else setValue("userAgree", false);
+    };
+
+    const handleAgreeAll = (event) => {
         const checked = event.currentTarget.checked;
-        setAgreeAll(checked);
-        setAgrees([checked, checked, checked]);
+        agreeChecked.forEach((item, idx) => {
+            setValue(`agree${idx}`, checked);
+            item = checked;
+        });
     };
-
-    const handleAgreeAll = () => {
-        const agreed = agrees.filter(item => item === true);
-        setAgreeAll(agreed.length >= 3);
-    };
-
-    useEffect(() => {
-        handleAgreeAll();
-    }, [agrees]);
 
     const RENDER_FORM = () => (
         <Form onSubmit={ handleSubmit(onFormSubmit) }>
@@ -117,35 +112,54 @@ const SignupForm = ({
                     <div>
                         <input 
                             type="checkbox" 
-                            id="agree0" 
-                            name="agree" 
-                            value="전체동의" 
-                            // checked={ agreeAll } 
-                            // onChange={ event => toggleAgreeAll(event) } 
+                            id="userAgree" 
+                            name="userAgree" 
                             {...register("userAgree", { required: true })}
+                            onChange={ event => handleAgreeAll(event) }
                         />
-                        <label htmlFor="agree0"></label>
+                        <label htmlFor="userAgree"></label>
                     </div>
                     <span>전체동의</span>
                 </div>
                 <div>
                     <div>
-                        <input type="checkbox" id="agree01" value="0" checked={ agrees[0] } onChange={ event => toggleAgrees(event) } />
-                        <label htmlFor="agree01"></label>
+                        <input 
+                            type="checkbox" 
+                            id="agree0" 
+                            value={false} 
+                            data-idx={ 0 }
+                            {...register("agree0")}
+                            onChange={ event => toggleAgreeAll(event) } 
+                        />
+                        <label htmlFor="agree0"></label>
                     </div>
                     <Link to="/terms">이용약관</Link>
                 </div>
                 <div>
                     <div>
-                        <input type="checkbox" id="agree02" value="1" checked={ agrees[1] } onChange={ event => toggleAgrees(event) } />
-                        <label htmlFor="agree02"></label>
+                        <input 
+                            type="checkbox" 
+                            id="agree1" 
+                            value={false} 
+                            data-idx={ 1 }
+                            {...register("agree1")}
+                            onChange={ event => toggleAgreeAll(event) }  
+                        />
+                        <label htmlFor="agree1"></label>
                     </div>
                     <Link to="/terms">개인정보처리방침</Link>
                 </div>
                 <div>
                     <div>
-                        <input type="checkbox" id="agree03" value="2" checked={ agrees[2] } onChange={ event => toggleAgrees(event) }/>
-                        <label htmlFor="agree03"></label>
+                        <input 
+                            type="checkbox" 
+                            id="agree2" 
+                            value={false} 
+                            data-idx={ 2 }
+                            {...register("agree2")}
+                            onChange={ event => toggleAgreeAll(event) }
+                        />
+                        <label htmlFor="agree2"></label>
                     </div>
                     <Link to="/terms">위치기반서비스 이용동의</Link>
                 </div>

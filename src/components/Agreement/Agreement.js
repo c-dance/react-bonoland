@@ -1,35 +1,44 @@
-import React, { useContext } from 'react';
-import { LayoutContext } from '../../hooks/layout';
+import React from 'react';
 import { module } from '../../themes/module';
 import { AgreementBox, Terms } from './AgreementStyle';
+import { get, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { activateAlert } from '../../store/actions/alert';
+import { getValue } from '@testing-library/user-event/dist/utils';
 
 const Agreement = ({ 
     subTitle, 
     content, 
     label, 
-    isChecked, 
-    onAgreeClick,
     onAgreeSubmit,
 }) => {
 
-    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+    const dispatch = useDispatch();
+
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: "onSubmit" });
+
+    if(errors.agree) {
+        dispatch(activateAlert({
+            title: "개인정보 수집 동의",
+            contents: "개인정보 수집 및 이용에 동의 시 매물 접수가 가능합니다."
+        }));
+    }
 
     return (
-        <AgreementBox className={ MOBILE_DEVICE && "mobile" }>
+        <AgreementBox>
             <h3>{ subTitle }</h3>
-            <Terms className={ MOBILE_DEVICE && "mobile" }>
+            <Terms>
                 <div>
                     { content }
                 </div>
             </Terms>
-            <form onSubmit={ event => onAgreeSubmit(event) }>
+            <form onSubmit={ handleSubmit(onAgreeSubmit) }>
                 <fieldset>
                     <input
                         type="checkbox"
                         name="agree"
                         id="agree01"
-                        value={ isChecked }
-                        onChange={ event => onAgreeClick(event) }
+                        {...register("agree", { required: true })}
                     />
                     <label
                         htmlFor="agree01"
@@ -38,7 +47,7 @@ const Agreement = ({
                     </label>
                 </fieldset>
                 <module.SubmitButton
-                    className={ !isChecked && "disabled"}
+                    className={ !getValues("agree") && "disabled"}
                 >
                     다음
                 </module.SubmitButton>

@@ -103,7 +103,7 @@ const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
                                 <tr>
                                     <td>
                                         <select type="text" id="cf01" name="cf01" onChange={ event => setType(event.currentTarget.value) }>
-                                            <option value="단독요양원" selected>단독요양원</option>
+                                            <option value="단독요양원">단독요양원</option>
                                             <option value="상가요양원">상가요양원</option>
                                             <option value="주간보호센터">주간보호센터</option>
                                         </select>

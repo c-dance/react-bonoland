@@ -24,4 +24,6 @@ export const ChartBox = styled.div`
         max-width: 390px;
         max-height: 340px;
     }
+
+    white-space: pre-line;
 `;
