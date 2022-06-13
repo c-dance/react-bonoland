@@ -2,7 +2,6 @@ import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController, plugin
 import { Chart } from 'react-chartjs-2';
 import { MARKETS } from '../../../sheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
-import 'chartjs-plugin-doughnut-innertext';
 import { isBrowser } from 'react-device-detect';
 import React, { useEffect, useRef } from "react";
 import { getLocalNumber } from '../../../utils/number';

@@ -50,12 +50,12 @@ const MapContainer = () => {
         const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(LATLNG[0], LATLNG[1]),
             zoom: ZOOM,
-            minZoom: 7,
-            mapTypeControlOptions: {
-                style: naver.maps.MapTypeControlStyle.BUTTON
-            }
+            minZoom: 9,
+            maxZoom: 16,
+            mapTypeId: naver.maps.MapTypeId.NORMAL,
         });
 
+        // 줌버튼 생성
         naver.maps.Event.once(nvMap, 'init', function() {
             const zoonInButton = "<button class='mapZoom mapZoom--in'></button>";
             const zoonOutButton = "<button class='mapZoom mapZoom--out'></button>";
@@ -73,10 +73,10 @@ const MapContainer = () => {
             });
         });
 
-
-        //event : zoom_changed, bounds_changed, deragend
+        // 지도 이벤트 : zoom_changed, bounds_changed, deragend
         naver.maps.Event.addListener(nvMap, 'idle', () => { 
-            updateMapByEvent(nvMap); 
+            updateMapDatas(nvMap);
+            alertZoomLevel(nvMap.getZoom()); 
         });
 
         // 지적편집도 설정
@@ -98,24 +98,32 @@ const MapContainer = () => {
     };
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
-    const updateMapByFilter = () => {
+    const resetMapPoint = () => {
         const point = new naver.maps.Point(LATLNG[0], LATLNG[1]);
         if(map && point) {
-            map.setCenter(point);
-            map.setZoom(ZOOM, false);
+            map.morph(point, ZOOM, "easeOutCubic");
         }
     };
 
-    //* === 지도 업데이트 (줌 변경 시 || 지역 이동 시) === */
-    const updateMapByEvent = async (map) => {
-
+    /* === 지도 데이터 업데이트 (지도 이벤트 발생 시) === */
+    const updateMapDatas = async (map) => {
         const zoom = map.getZoom(); // 줌 레벨(raw)
         const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
 
-        if(LATLNG !== latlng) dispatch(updateMapLatlng(latlng));
-        if(ZOOM !== zoom) dispatch(updateMapZoom(zoom));
-        if(REGION !== region) dispatch(updateMapRegion(region));
+        dispatch(updateMapLatlng(latlng));
+        dispatch(updateMapZoom(zoom));
+        dispatch(updateMapRegion(region));
+    };
+
+    /* === 최소 줌 레벨 경고 === */
+    const alertZoomLevel = zoomLevel => {
+        if(zoomLevel < 11) {
+            dispatch(activateAlert({
+                title:"",
+                contents: "지도를 확대해 주세요"
+            }))
+        }
     };
 
     const guguns = [
@@ -295,6 +303,7 @@ const MapContainer = () => {
         //     removeMarkers(MARKERS);
         //     removeInfoWindow(INFO_WINDOW);
         // }
+        alertZoomLevel(ZOOM);
     }, [LATLNG, ZOOM]);
     
     useEffect(() => {
@@ -315,7 +324,7 @@ const MapContainer = () => {
     }, [CADASTRAL_MODE]);
 
     useEffect(() => {
-        updateMapByFilter(LATLNG);
+        resetMapPoint(LATLNG);
     }, [FILTERED]);
 
     return (

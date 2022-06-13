@@ -1,6 +1,6 @@
 import { CalcWrap, CalcForm, Caption } from "./CalculatorResultStyle";
 import React from "react";
-import { CALCULATOR_RESULT } from "../../../sheme/calculator";
+import { INCOME_RESULT } from "../../../sheme/calculator";
 import { isBrowser, isMobile } from 'react-device-detect';
 
 const tableHead = () => (
@@ -23,6 +23,9 @@ const mobileColGroup = () => (
 );
 
 const CalculatorResult = ({ result }) => {
+
+    console.log(result);
+
     return (
         <CalcForm>
                 {
@@ -41,37 +44,43 @@ const CalculatorResult = ({ result }) => {
                         </thead>
                         <tbody>
                                 {
-                                    CALCULATOR_RESULT["수입"].map((item, idx) => (
-                                        <tr key={idx} className={ item.item === "합계" && "total" }>
-                                            { idx === 0 && <td rowSpan={ CALCULATOR_RESULT["수입"].length }>1 수입</td> }
-                                            <td>{ item.item }</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    ))
+                                    Object.keys(result["수입"]).map((key, idx) => {
+                                        const item = result["수입"][key];
+                                        return (
+                                            <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                                                { idx === 0 && <td rowSpan={ Object.keys(result["수입"]).length }>1 수입</td> }
+                                                <td>{item.title}</td>
+                                                <td>{item.capacity}</td>
+                                                <td>{item.unitPrice}</td>
+                                                <td>{item.totalPrice}</td>
+                                                <td>{item.contents && item.contents}</td>
+                                            </tr>
+                                        )
+                                    })
                                 }
                                 {
-                                    CALCULATOR_RESULT["지출"].map((item, idx) => (
-                                        <tr key={idx} className={ item.item === "합계" && "total" }>
-                                            { idx === 0 && <td rowSpan={ CALCULATOR_RESULT["지출"].length }>2. 지출</td> }
-                                            <td>{ item.item }</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    ))
+                                    Object.keys(result["지출"]).map((key, idx) => {
+                                        const item = result["지출"][key];
+                                        return (
+                                            <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                                                { idx === 0 && <td rowSpan={ Object.keys(result["지출"]).length }>2. 지출</td> }
+                                                <td>{item.title}</td>
+                                                <td>{item.capacity}</td>
+                                                <td>{item.unitPrice}</td>
+                                                <td>{item.totalPrice}</td>
+                                                <td>{item.contents && item.contents}</td>
+                                            </tr>
+                                        )
+                                    })
                                 }
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td rowSpan="1">3. 월 수익</td>
+                                <td rowSpan="1" className="total">3. 월 수익</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <td>{result["월수익"].totalPrice}</td>
                                 <td></td>
                             </tr>
                         </tfoot>
@@ -86,7 +95,7 @@ const CalculatorResult = ({ result }) => {
                             { tableHead() }
                             <tbody>
                             {
-                                CALCULATOR_RESULT["수입"].map((item, idx) => (
+                                INCOME_RESULT["수입"].map((item, idx) => (
                                     <tr key={idx} className={ item.item === "합계" && "total" }>
                                         <td>{ item.item }</td>
                                         <td></td>
@@ -103,7 +112,7 @@ const CalculatorResult = ({ result }) => {
                             { tableHead() }
                             <tbody>
                             {
-                                CALCULATOR_RESULT["지출"].map((item, idx) => (
+                                INCOME_RESULT["지출"].map((item, idx) => (
                                     <tr key={idx} className={ item.item === "합계" && "total" }>
                                         <td>{ item.item }</td>
                                         <td></td>

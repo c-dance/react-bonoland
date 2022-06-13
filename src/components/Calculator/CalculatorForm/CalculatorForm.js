@@ -2,84 +2,118 @@ import React, { useState, useEffect } from 'react';
 import { Wrapper, Form } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { CALCULATOR_FORM, CAPACITY_AND_PRICE } from '../../../sheme/calculator';
+import { CALCULATOR_FORM, CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
 import { getNumber, getLocalNumber } from '../../../utils/number';
 import { useOnlyNum } from '../../../hooks/form';
+import Modal from '../../Modal/Modal'; 
 
-const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
+/* === 옵션 가져오기 === */
+const getOptionsFromObject = (obj) => {
+    return Object.keys(obj).map(key => key);
+};
+
+const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => {
+
+    const [formData, setFormData] = useState(formData02);
 
     /* === 입력값 세팅 & VALIDATION === */
-    const [type, setType] = useState("");
+    const [type, setType] = useState(formData.type); // 요양시설 타입
+    const [capacity, setCapacity] = useState(formData.capacity); // 정원수
+    const [capacityOptions, setCapacityOptions] = useState([]); // 정원수 옵션
 
-    const [capacityOptions, setCapacityOptions] = useState([]);
-    const [capacity, setCapacity] = useState("");
+    const [price,  setPrice] = useState(formData.price); // 매매가(readonly)
+    const [loan, setLoan] = useState(formData.loan); // 대출금(readonly)
+    const [rent,  setRent] = useState(formData.Rent); // 월차임(readonly)
 
-    const [price,  setPrice] = useState("0");
-    const [loan, setLoan] = useState("0");
-    const [rent,  setRent] = useState("0");
+    const [commons, setCommons] = useOnlyNum(formData.commons); // 일반병실 현원수
+    const [premiums, setPremiums] = useOnlyNum(formData.premiums); // 상급병실 현원수
+    const [premiumPrice, setPremiumPrice] = useOnlyNum(formData.premiumPrice); // 상급병실료
+    
+    const [helpers, setHelpers] = useOnlyNum(formData.helpers); // 추가 요양보호사 수
 
-    const [commons, setCommons] = useOnlyNum(0);
-    const [premiums, setPremiums] = useOnlyNum(0);
-    const [helpers, setHelpers] = useOnlyNum(0);
+    const [warning, setWarning] = useState(false);
+    const [warningText, setWarningText] = useState("");
 
-    /* === 옵션 가져오기 === */
-    const getOptionsFromObject = (obj) => {
-        return Object.keys(obj).map(key => key);
-    };
 
     /* === 정원수 옵션 세팅 === */
-    const toggleCapacityOptions = () => {
-        CAPACITY_AND_PRICE.map(obj => {
-            if(obj.item === type) {
-                setCapacityOptions(getOptionsFromObject(obj.match));
-                setCapacity(getOptionsFromObject(obj.match)[0]);
-            }
-        });
+    const toggleCapacityOptions = type => {
+        const options = getOptionsFromObject(CAPACITY_AND_PRICE[type].match);
+        const hasNotPrevValue = options.filter(item => item === capacity).length <= 0;
+        setCapacityOptions(options);
+        if(hasNotPrevValue) setCapacity(options[0]);
     };
 
     /* === 매매가, 대출금, 월차임 자동입력 === */
-    const setPriceAndRent = () => {
-        const center =  CAPACITY_AND_PRICE.filter(obj => obj.item === type)[0];
+    const setPriceAndRent = (type, capacity) => {
+        const center =  CAPACITY_AND_PRICE[type];
+
         if(center) {
-            if(center.match) {
+            if(center.match) { // [요양시설타입, 정원수, 매매가] 매칭
                 setPrice(center.match[capacity]);
+
                 if(center.loan) {
                     console.log(getNumber(center.match[capacity]));
                     setLoan(getLocalNumber(getNumber(center.match[capacity]) * center.loan));
                     setRent("0");
                 }
             }
-            if(center.rent) {
+            if(center.rent) { // [주간보호, 정원수, 월차임]
                 setRent(center.rent[capacity]);
                 setLoan("0");
             }
         }
     };
 
-    /* === === */
+    /* === 일반병실 현원수 설정 === */
+    const handleMaxCapacity = (event, name) => {
+        const nums = getNumber(event.currentTarget.value);
+        const max = capacity - getNumber( name === "premiums" ? premiums : commons);
+
+        if(nums > max) {
+            event.preventDefault();
+            setWarning(true);
+            setWarningText("일반병실 현원수와 상급병실 현원수의 합이 정원수를 초과합니다.")
+        } else {
+            if(name === "premiums") setPremiums(event);
+            if(name === "commons") setCommons(event);
+        }
+    };
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        const dataset = {
+            ...INCOME_DATASET.capacity,
+            type: type,
+            capacity: capacity,
+            commons: commons,
+            premiums: premiums, 
+            premiumPrice: premiumPrice,
+            helpers: helpers,
+            price: price,
+            loan: loan,
+            rent: rent
+        };
+        onFormSubmit(dataset);  
+    };
 
     useEffect(() => {
-        toggleCapacityOptions();
+        toggleCapacityOptions(type);
     }, [type]);
     
     useEffect(() => {
-        console.log(capacity);
-        setPriceAndRent();
-    }, [capacity]);
+        setPriceAndRent(type, capacity);
+    }, [type, capacity]);
 
-    useEffect(() => {
-        // 렌더링 이후 옵션값 세팅
-        const defaultOptions = getOptionsFromObject(CAPACITY_AND_PRICE[0].match);
-        setCapacityOptions(defaultOptions);
-        setCapacity(defaultOptions[0]);
-    }, []);
 
     return (
         <Wrapper>
             <div>
             {
                 isBrowser && 
-                <Form onSubmit={ (event) => onFormSubmit(event) }>
+                <Form 
+                    onSubmit={ event => handleSubmit(event) }
+                    onReset={ event => onFormReset(event) }
+                >
                     <fieldset>
                         <legend>예상 수익 계산</legend>
                         <table>
@@ -102,27 +136,27 @@ const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select type="text" id="cf01" name="cf01" onChange={ event => setType(event.currentTarget.value) }>
+                                        <select id="cf01" name="cf01" value={type} onChange={ event => setType(event.currentTarget.value) }>
                                             <option value="단독요양원">단독요양원</option>
                                             <option value="상가요양원">상가요양원</option>
                                             <option value="주간보호센터">주간보호센터</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select type="text" id="cf02" name="cf02" onChange={ event => setCapacity(event.currentTarget.value) }>
+                                        <select id="cf02" name="cf02" value={capacity} onChange={ event => setCapacity(event.currentTarget.value) }>
                                             {
                                                 capacityOptions.map((item, idx) => 
                                                     <option 
-                                                        valeu={item} 
-                                                        selected={ capacity === item }
+                                                        key={idx}
+                                                        value={item} 
                                                     >{item}</option>
                                                 )
                                             }
                                         </select>
                                     </td>
-                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => setCommons(event) }/></td>
-                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiums(event) }/></td>
-                                    <td><input type="text" id="cf05" name="cf05" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) }/></td>
+                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "commons") }/></td>
+                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "premiums") }/></td>
+                                    <td><input type="text" id="cf05" name="cf05" value={premiumPrice} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiumPrice(event) }/></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -145,7 +179,7 @@ const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" id="cf06" name="cf06" placeholder="숫자 입력" autoComplete="off"/></td>
+                                    <td><input type="text" id="cf06" name="cf06" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) }/></td>
                                     <td><input type="text" id="cf07" name="cf07" readOnly={true} placeholder="-" autoComplete="off"/></td>
                                     <td><input type="text" id="cf08" name="cf08" readOnly={true} value={price}/></td>
                                     <td><input type="text" id="cf09" name="cf09" readOnly={true} value={loan}/></td>
@@ -199,8 +233,18 @@ const CalculatorForm = ({ onFormSubmit, onFormReset, children }) => {
 
             { children }
             </div>
+            { 
+                warning && 
+                <Modal
+                    title="수익 계산 오류"
+                    width="360"
+                    close={ true }
+                    onCloseClick={ () => setWarning(false) }
+                >
+                    <div>{ warningText }</div>
+                </Modal> 
+            }
         </Wrapper>
-
     )
 };
 

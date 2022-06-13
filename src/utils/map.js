@@ -121,7 +121,6 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
     }
   )
 
-
   console.log('add group markers');
   return markers;
 };
