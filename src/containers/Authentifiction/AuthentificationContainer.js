@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
 import { useSelector, useDispatch } from "react-redux";
-import { addAuth, updateAuth, deleteAuth } from "../../store/actions/auth";
 import { activateAlert } from '../../store/actions/alert';
 
 const AuthenticationContainer = ({ onResultSubmit, description }) => {
 
     const dispatch = useDispatch();
-    let authentificated = useSelector(state => state.Auth.authentificated);
-    let mode = useSelector(state => state.Mode);
     
     // 전화번호 입력
     const [ phoneNumber, setPhoneNumber ] = useState('');

@@ -29,12 +29,8 @@ export const HomeLink = styled(Link)`
 export const Menu = styled.div`
     z-index: 40;
     display: flex;
-    gap: 150px;
+    gap: 120px;
     height: 100%;
-
-    @media ${({ theme }) => theme.device.desktopL} {
-       gap: 40px;
-    }
 `;
 
 export const NavMenu = styled.nav`
@@ -47,19 +43,8 @@ export const Nav = styled.div`
     padding: 32px 40px;
     background-color: '#fff';
 
-    @media ${({ theme }) => theme.device.desktopM} {
-       padding: 32px 20px;
-    }
-
     a {
         color: ${ ({ theme }) => theme.colors.gray900 };
-    }
-
-    &.highlight { 
-        background-color: ${({ theme }) => theme.colors.primary};
-        a {
-            color: #fff;
-        }
     }
 `; 
 
@@ -80,21 +65,24 @@ export const Hello = styled.div`
 export const Button = styled.button`
     width: auto;
     height: 46px;
-    padding: 16px 22px;
+    padding: 0 22px;
     font-size: 14px;
     border: 0;
     background: #fff;
     border-radius: 2px;
+    line-height: 46px;
 
     &.highlight {
-        background-color: ${({ theme }) => theme.colors.primary };
+        background-color: #8B653E;
         color: #fff;
     }
 `
 export const Calculate = styled.button`
     width: 140px;
-    padding: 16px 0 16px 50px;
+    height: 46px;
+    line-height: 46px;
+    padding: 0 0 0 50px;
     background: url(${ calcIcon }) 20px center / 24px 24px no-repeat;
-    border: 1px solid ${({ theme }) => theme.colors.gray400 };
+    border: 1px solid ${({ theme }) => theme.colors.gray300 };
     color: ${({ theme }) => theme.colors.primary };
 `;

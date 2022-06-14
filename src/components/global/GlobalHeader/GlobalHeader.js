@@ -17,12 +17,6 @@ const GlobalHeader = () => {
             <HomeLink to="/" />
             <Menu>
                     <NavMenu>
-                        <Nav className="highlight">
-                            <Link to="/sales">시설매매</Link>
-                        </Nav>
-                        <Nav className="highlight">
-                            <Link to="/recommend">추천매물</Link>
-                        </Nav>
                         <Nav>
                             <Link to="/register">매물접수</Link>
                         </Nav>

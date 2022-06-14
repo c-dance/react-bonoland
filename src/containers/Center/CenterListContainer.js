@@ -10,7 +10,7 @@ import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
-import { CATEGORY, CAPACITY } from "../../sheme/filter";
+import { CATEGORY, TYPE_AND_CAPACITY } from "../../sheme/filter";
 import { getAllRecommendCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
 
@@ -18,7 +18,7 @@ const CenterListContainer = () => {
 
     const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
     const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
-    const [ capacityValues, setCapacityValues ] = useState(CAPACITY[0].value); // 정원필터 값 설정
+    const [ capacityValues, setCapacityValues ] = useState(null); // 정원필터 값 설정
 
     const region = useSelector(state => state.Map.region);
     
@@ -27,7 +27,7 @@ const CenterListContainer = () => {
 
     const submitCapacity = (event) => {
         event.preventDefault();
-        LOCAL_STORAGE.store(CATEGORY[category].key, capacityValues);
+        LOCAL_STORAGE.store(category, capacityValues);
         setCapacityActive(false);
         setGet({ 
             get: getFilteredCenters, 
@@ -40,8 +40,8 @@ const CenterListContainer = () => {
     
     const resetCapacity = (event) => {
         event.preventDefault();
-        LOCAL_STORAGE.store(CATEGORY[category].key, CAPACITY[0].value);
-        setCapacityValues(CAPACITY[0].value);
+        LOCAL_STORAGE.store(category, TYPE_AND_CAPACITY[category][0].value);
+        setCapacityValues(TYPE_AND_CAPACITY[category][0].value);
     };
     
     const closeCapacity = (event) => {
@@ -50,7 +50,7 @@ const CenterListContainer = () => {
     };
     
     const selectCapacity = value => {
-        LOCAL_STORAGE.store(CATEGORY[category].key, CAPACITY[0].value);
+        LOCAL_STORAGE.store(category, value);
         setCapacityValues(value);
     };
     
@@ -60,7 +60,7 @@ const CenterListContainer = () => {
 
     const selectCategory = selected => {
         setCategory(CATEGORY[selected].value);
-        const capacity = LOCAL_STORAGE.get(CATEGORY[selected].key);
+        const capacity = LOCAL_STORAGE.get(selected);
         setCapacityValues(capacity);
         setCapacityActive(true);
     };
@@ -82,7 +82,9 @@ const CenterListContainer = () => {
                 value={ category }
                 onCategorySelect={ selectCategory }
             />
-            <CapacityFilter 
+            {   category !== null &&
+                <CapacityFilter 
+                category={ category }
                 values={ capacityValues } 
                 active={ capacityActive }
                 onFormSubmit={ submitCapacity }
@@ -90,7 +92,7 @@ const CenterListContainer = () => {
                 onCloseClick={ closeCapacity }
                 onCapacitySelect={ selectCapacity }
                 onCapacitySlide={ slideCapacity }
-            />
+            />}
         </>
     );
 
@@ -115,7 +117,12 @@ const CenterListContainer = () => {
             >
                 <AddressFilterContainer type="main" />
                 { RENDER_FILTER() }
-                <ListMore path="/recommend" text="추천 & 프리미엄 더보기" />
+                <ListMore
+                    links={[
+                        { path: '/sales', title: '시설매물' },
+                        { path: '/recommend', title: '추천매물' }
+                    ]}
+                />
                 { RENDER_LIST() }
             </Panel>
         }

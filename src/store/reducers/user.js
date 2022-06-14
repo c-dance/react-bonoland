@@ -2,6 +2,7 @@ import { USER } from '../actions/user';
 
 const initialState = {
     geolocation: [],
+    auth: false,
 };
 
 const UserReducer = (state=initialState, action) => {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { USER_AUTH } from "../utils/user";
 
 // const BASE_URL = 'http://localhost:3500';
 const BASE_URL = '../../';
@@ -12,5 +13,14 @@ export const consoleErr = (err) => {
         console.log(`status: ${err.response.status} | headers: ${err.response.headers} | data: ${err.response.data}`);
     } else {
         console.log(`ERROR: ${ err.message }`)
+    }
+};
+
+export const authHeader = () => {
+    const auth = USER_AUTH.get();
+    if(auth && auth.accessToken) {
+        return { 'x-access-token' : auth.accessToken }
+    } else {
+        return {};
     }
 };

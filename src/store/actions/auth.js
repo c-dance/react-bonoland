@@ -1,22 +1,22 @@
 import axios from 'axios';
+import { userLogin, userLogout } from '../../api/user';
 
 export const AUTH = {
-    ADD: 'auth/phonenumber',
-    UPDATE: 'auth/authentificated',
-    DELETE: 'auth/delete'
+    SUCCESS: 'auth_success'
 };
 
-export const addAuth = phoneNumber => ({
-    type: AUTH.ADD,
-    payload: phoneNumber
-});
+export const login = data => async dispatch => {
+   const response = await userLogin(data);
+    if(response) {
+        dispatch({
+            type: SUCESS,
+            payload: true
+        })
+    } else {
+        
+    }   
+};
 
-export const updateAuth = authentificated => ({
-    type: AUTH.UPDATE,
-    payload: authentificated
-});
+export const logout = () => dispatch => {
 
-export const deleteAuth = () => ({
-    type: AUTH.DELETE,
-    payload: {}
-});
+} 

@@ -1,10 +1,19 @@
-import { MoreLink } from './ListMoreStyle';
+import { MoreLink, Wrap } from './ListMoreStyle';
 import React from "react";
 
-const More = ({ path, text }) => (
-    <MoreLink to={ path }>
-        <span>{ text }</span>
-    </MoreLink>
+const More = ({ links }) => (
+    <Wrap>
+        {
+            links.map(link => (
+                <MoreLink 
+                    key={ link.title } 
+                    to={ link.path }
+                >
+                    <span>{ link.title }</span>
+                </MoreLink>
+            ))
+        }
+    </Wrap>
 )
 
 export default More;

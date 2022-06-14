@@ -4,11 +4,10 @@ import Slider from 'rc-slider';
 import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
 import React from "react";
-import { CAPACITY } from "../../../sheme/filter";
-
-const marks = { 0: 0, 20: 20, 40: 40, 60: 60, 80: 80, 100: 100 };
+import { TYPE_AND_CAPACITY, TYPE_AND_MARKERS } from "../../../sheme/filter";
 
 const CapacityFilter = ({ 
+    category, 
     active, 
     values, 
     onFormSubmit, 
@@ -17,6 +16,11 @@ const CapacityFilter = ({
     onCapacitySelect,
     onCapacitySlide
 }) => {
+
+    const SELECT_OPTIONS = TYPE_AND_CAPACITY[category];
+    const RANGE_MARKERS = TYPE_AND_MARKERS[category];
+    const MIN_RANGE = 0;
+    const MAX_RANGE = RANGE_MARKERS[Object.keys(RANGE_MARKERS).pop()];
 
     return (
         <CapacityForm 
@@ -28,12 +32,12 @@ const CapacityFilter = ({
             <SliderWrap>
                 <Slider 
                     range
-                    min={ 0 }
-                    max={ 100 }
-                    defaultValue={ CAPACITY[0].value }
-                    value={ values }
+                    min={ MIN_RANGE }
+                    max={ MAX_RANGE }
+                    marks = { RANGE_MARKERS }
                     step = { 1 }
-                    marks = { marks }
+                    defaultValue={ MIN_RANGE }
+                    value={ values }
                     dotStyle={{ display: 'none'}}
                     railStyle={{ backgroundColor: '#E0E0E0', height: 6 }}
                     trackStyle={{ backgroundColor: '#000036', height: 6 }}
@@ -51,7 +55,7 @@ const CapacityFilter = ({
             </SliderWrap>
             <RadioWrap>
                 {
-                    CAPACITY.map((item, idx) => (
+                    SELECT_OPTIONS.map((item, idx) => (
                         <RadioBox key={`cap${idx}`}>
                             <input 
                                 type="radio" 
