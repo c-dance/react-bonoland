@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AUTH_USER } from '../../store/actions/auth';
 import { isBrowser, isMobile } from 'react-device-detect';
 import SignupType from "../../components/Account/SignupType/SignupType";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
@@ -13,7 +12,6 @@ import Section from '../../components/ui/Section/Section';
 const SignupContaienr = () => {
 
     const dispatch = useDispatch();
-    const authentificated = useSelector(state => state.Auth.authentificated);
 
     // type 입력
     const [ type, setType ] = useState('');

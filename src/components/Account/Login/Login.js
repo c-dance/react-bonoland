@@ -11,14 +11,15 @@ const Login = ({
     id,
     storeId,
     storeLogin,
-    onFormSubmit
+    onFormSubmit,
+    failMsg
 }) => {
 
     const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onSubmit', defaultValues: { "userId" : id, "userStoreId" :  storeId } });
 
     return (
-        <Form onSubmit={ handleSubmit(onFormSubmit)}>
+        <Form onSubmit={ handleSubmit(onFormSubmit) }>
             <fieldset>
                 <div className="wrap">
                     <label htmlFor="userId">아이디</label>
@@ -48,6 +49,7 @@ const Login = ({
                         {...register("userPwd", { required: true })}
                     />
                     { errors.userPwd && <span className="warn">비밀번호를 입력해 주세요</span> }
+                    { failMsg.length > 0 && <span className="warn">{ failMsg }</span> }
                 </div>
             </fieldset>
             <Metas>

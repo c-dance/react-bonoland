@@ -1,18 +1,18 @@
 import { combineReducers } from "redux";
+import UserReducer from "./user";
 import MapReducer from "./map";
 import ModeReducer from "./mode";
-import AuthReducer from './auth';
 import ChartReducer from "./chart";
 import AlertReducer from "./alert";
-import UserReducer from "./user";
+import GeolocationReducer from "./geolocation";
 
 const combinedReducer = combineReducers({
+     User: UserReducer,
      Map: MapReducer,
      Mode: ModeReducer,
-     Auth: AuthReducer,
      Chart: ChartReducer,
      Alert: AlertReducer,
-     User: UserReducer,
+     Geolocation: GeolocationReducer,
 });
 
 export default combinedReducer;

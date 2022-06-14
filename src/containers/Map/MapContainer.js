@@ -43,7 +43,6 @@ const MapContainer = () => {
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
     const FILTERED = useSelector(state => state.Map.filtered); // 필터링 여부
-    const USER_GEO = useSelector(state => state.User.geolocation); //사용자 위치 정보
 
    /* === 지도 생성 === */
     const initMap = () => {

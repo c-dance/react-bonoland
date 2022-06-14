@@ -32,7 +32,6 @@ export const useGet = (initialValue) => {
             setError(true);
             setLoading(false);
         }
-
     }
 
     const initProps = () => {

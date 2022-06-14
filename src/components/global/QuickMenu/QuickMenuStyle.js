@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import userIcon from '../../../assets/images/menu/ico-man.svg';
+import userOnIcon from '../../../assets/images/menu/ico-man_white.svg';
 import alarmIcon from '../../../assets/images/menu/ico-bell.svg';
 import calcIcon from '../../../assets/images/menu/ico-calculator.svg';
 import cadIcon from '../../../assets/images/menu/ico-cadastral.svg';
@@ -14,6 +15,7 @@ const quickCSS = css`
     width: 38px;
     height: 38px;
     padding: 0;
+    border-radius: 2px;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
     background-color: #fff;
     color: ${ props => props.theme.colors.gray700 };
@@ -26,6 +28,9 @@ const quickCSS = css`
         top: 104px;
         font-size: 0;
         background: url(${userIcon}) center no-repeat #fff;
+        &.on {
+            background: url(${userOnIcon}) center no-repeat ${({theme}) => theme.colors.primary };
+        }
         .mobile & {
             top: 10px;
         }

@@ -7,7 +7,7 @@ import { activateCalculator, activateLogin } from '../../../store/actions/mode';
 import { activateCadastral, deactivateCadastral, updateMapFilter } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { GEOLOCATION } from '../../../utils/user';
-import { updateUserGeolocation } from '../../../store/actions/user';
+import { updateGeolocation } from '../../../store/actions/geolocation';
 import { activateAlert } from '../../../store/actions/alert';
 
 const QuickMenu = () => {
@@ -19,7 +19,8 @@ const QuickMenu = () => {
     const CHART_ACTIVE = useSelector(state => state.Chart.active);
     const [ chartReady, setChartReady ] = useState(false);
     const CADASTRAL = useSelector(state => state.Map.cadastral);
-    const USER_GEO = useSelector(state => state.User.geolocation);
+    const USER_GEO = useSelector(state => state.Geolocation.latlng);
+    const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const onChartClick = () => {
         // if(chartReady && isMobile) {dispatch(activateChart());}
@@ -42,9 +43,9 @@ const QuickMenu = () => {
     const onLocationClick = async () => {
         GEOLOCATION.get()
             .then(position => {
-                const geo = [ (position.coords.longitude).toString(), (position.coords.latitude).toString() ];
-                dispatch(updateUserGeolocation(geo));
-                dispatch(updateMapFilter({ latlng: geo}));
+                const LATLNG = [ (position.coords.longitude).toString(), (position.coords.latitude).toString() ];
+                dispatch(updateGeolocation(LATLNG));
+                dispatch(updateMapFilter({ latlng: LATLNG}));
             })
             .catch(err => {
                 console.error(err.message);
@@ -66,8 +67,8 @@ const QuickMenu = () => {
 
     return (
         <>
-            { isBrowser && <QuickLink className="user" to="/user">마이페이지</QuickLink> }
-            {/* { isMobile && <QuickBtn className="user" onClick={ () => testLogin() } >마이페이지</QuickBtn> } */}
+            { isBrowser && USER_LOGGEDIN && <QuickLink className="user on" to="/user">마이페이지</QuickLink> }
+            { isBrowser && !USER_LOGGEDIN && <QuickBtn className="user" onClick={() => dispatch(activateLogin())}>로그인</QuickBtn> }
             { isBrowser && <QuickLink className="alarm" to="/user/alarm">알람설정</QuickLink> }
             <QuickBtn className={`location ${ (USER_GEO && USER_GEO.length > 0)? 'active' : '' }`} onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>

@@ -1,6 +1,7 @@
 import api, { consoleErr, authHeader } from ".";
 import axios from "axios";
 import { USER_AUTH } from "../utils/user";
+import { TYPE_AND_EXPENDITURE } from "../sheme/calculator";
 
 /* === 회원 가입  === */
 export const userSignup = async user => {
@@ -32,22 +33,35 @@ export const userLogin = async user => {
     console.log('로그인');
 
     const source = axios.CancelToken.source();
-    // const url = '/login';
-    const url = '';
+    const url = 'http://localhost:3500/login';
 
     try {
-        const response = await api.post(url, {
-            id: user.id,
-            password: user.password
-        }, { cancelToken: source.token });
+        // const response = await api.post(url, {
+        //     id: user.id,
+        //     password: user.password
+        // }, { cancelToken: source.token });
         
-        const tokens = [response.data.accessToken, response.data.refreshToken];
-        USER_AUTH.store(tokens); 
+        // const user = response.data.user;
+        // USER_AUTH.store(user); 
+
+        const response = await api.get(url, { 
+            params: {
+                id: user.id,
+                password: user.password
+            },
+            cancelToken: source.token 
+        });
+
+        console.log(response);
+        
+        USER_AUTH.store({ id:"asdf@asdf.com", name: '홍길동', accessToken: 'asdf', refreshToken: 'asdf' });
 
         return response;
 
     } catch (err) {
-        console.log(err);
+        consoleErr(err);
+        return err.response;
+
     } finally {
         source.cancel();
     }
@@ -72,15 +86,34 @@ export const userLogout = async () => {
         return response;
 
     } catch (err) {
-        console.log(err);
+        consoleErr(err);
     } finally {
         source.cancel();
     }
 }
 
-/* === 회원 정보 수정 === */
-
-
+/* === 비밀번호 일치 확인 === */
+export const getUserInfoMatch = async user => {
+    console.log("회원정보 일치 확인");
+    
+    const source = axios.CancelToken.source();
+    // const url = '/user/auth';
+    const url = 'http://localhost:3500/login';
+    try {
+        const response = await api.get(url, { 
+            params: {
+                id: user.id,
+                password: user.password
+            },
+            cancelToken: source.token 
+        });
+        return response;
+    } catch(err) {
+        consoleErr(err);
+    } finally {
+        source.cancel();
+    }
+};
 
 
 

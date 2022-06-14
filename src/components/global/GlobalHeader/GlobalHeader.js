@@ -1,3 +1,4 @@
+import React from "react";
 import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Button } from './GlobalHeaderStyle';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -6,12 +7,14 @@ import {
     activateLogin,
     activateCalculator,
 } from '../../../store/actions/mode';
-import React from "react";
+import { useSelector } from "react-redux";
 
 const GlobalHeader = () => {
 
     const dispatch = useDispatch();
-
+    const LOGGEDIN = useSelector(state => state.User.loggedIn);
+    const USER_NAME = useSelector(state => state.User.name);
+    
     return (
         <Header>
             <HomeLink to="/" />
@@ -28,14 +31,23 @@ const GlobalHeader = () => {
                         </Nav>
                     </NavMenu>
                     <UtilMenu>
-                        <Button
-                            onClick={ () => dispatch(activateLogin()) }
-                        >로그인</Button>
-                        <Button 
-                            className="highlight"
-                            onClick={ () => dispatch(activateSignup()) }
-                        >회원가입</Button>
-                        {/* <Hello>안녕하세요, 홍길동 님!</Hello> */}
+                    {
+                        LOGGEDIN &&
+                        <Hello>안녕하세요, { USER_NAME } 님!</Hello>
+                    }
+                    {
+                        !LOGGEDIN &&
+                        <>
+                            <Button
+                                onClick={ () => dispatch(activateLogin()) }
+                            >로그인</Button>
+                            <Button 
+                                className="highlight"
+                                onClick={ () => dispatch(activateSignup()) }
+                            >회원가입</Button>
+
+                        </>
+                    }
                         <Calculate
                             onClick={ () => dispatch(activateCalculator()) }
                         >수익계산기</Calculate>

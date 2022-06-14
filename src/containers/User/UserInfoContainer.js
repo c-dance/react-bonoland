@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useFetch } from '../../hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGet } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
 import UserAuthForm from '../../components/User/UserAuthForm/UserAuthForm';
 import UserInfoForm from '../../components/User/UserInfoForm/UserInfoForm';
@@ -9,14 +9,18 @@ import { activateAlert } from '../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscribe';
+import { getUserInfoMatch } from '../../api/user';
 
 const UserInfoContainer = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [ password, setPassword ] = useState('');
+    // 유저 아이디
+    const USER_ID = useSelector(state => state.User.id);
+
     const [ passwordMatch, setPasswordMatch ] = useState(false);
+    const [ failMsg, setFailMsg ] = useState("");
     const [ memo, setMemo ] = useState('사용자 메모');
 
     const [ newPhoneMode, setNewPhoneMode ] = useState(false);
@@ -25,15 +29,18 @@ const UserInfoContainer = () => {
     const [ newPhoneSuccess, setNewPhoneSuccess ] = useState(false);
     const [ unsubscribeSuccess, setUnsubscribeSuccess ] = useState(false);
     const [ newInfoSuccess, setNewInfoSuccess ] = useState(false);
-    
-    const onPwdSubmit = (event) => {
-        event.preventDefault();
-        setPasswordMatch(true);
-        console.log("match");
-    };
 
-    const onPwdChange = (event) => {
-        setPassword(event.currentTarget.value);
+    
+    const onPwdSubmit = async data => {
+        console.log(data);
+        
+        const RESPONSE = await getUserInfoMatch(data);
+        console.log(RESPONSE);
+        if(RESPONSE) {
+            // setPasswordMatch(true);
+        } else {
+            setFailMsg("아이디와 비밀번호가 일치하지 않습니다.");
+        }
     };
 
     const onMemoChange = (event) => {
@@ -62,6 +69,10 @@ const UserInfoContainer = () => {
             contents: "변경하신 회원정보가 정상적으로 변경되었습니다."
         }));
     };
+
+    useEffect(() => {
+        
+    }, [  ])
 
     useEffect(() => {
         if(newPhoneSuccess) {
@@ -106,9 +117,9 @@ const UserInfoContainer = () => {
                     themeColor={ "primary" }
                 >
                     <UserAuthForm
-                        password={ password }
-                        onPasswordChange={ onPwdChange }
+                        id={ USER_ID }
                         onFormSubmit={ onPwdSubmit }
+                        failMsg = { failMsg }
                     />
                 </Section>
             }

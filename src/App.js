@@ -1,5 +1,11 @@
-import React from 'react';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+
+import { USER_AUTH } from "./utils/user";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoggedIn } from "./store/actions/user";
+import { activateLogin } from './store/actions/mode';
+
+import { Routes, Route, Navigate } from 'react-router-dom';
 // LAYOUT
 import LayoutContainer from './containers/Layout/LayoutContainer';
 // CENTERS
@@ -25,17 +31,40 @@ import ContactContainer from './containers/Contact/ContactContainer';
 import TermsContainer from './containers/Terrms/TermsContainer';
 import MainView from './view/MainView';
 
-const App = () => (
+const App = () => {
+
+  const dispatch = useDispatch();
+  const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
+
+  const USER = USER_AUTH.get();
+  if(USER) {
+    const infos = JSON.parse(USER);
+    dispatch(setLoggedIn({
+        id: infos.id,
+        name: infos.name
+    }))
+  }
+
+  const ONLY_USER = component => {
+    if(USER_LOGGEDIN) {
+      return component;
+    } else {
+      // dispatch(activateLogin());
+      return <Navigate to='/' replace />;
+    };
+  }
+
+  return (
     <Routes>
       <Route element={ <MainView list={ true }/> }>
         <Route exact path="/"/>
+        <Route exact path="/user" element={ ONLY_USER(<UserMenuContainer />) } />
+        <Route exact path="/user/recent" element={ ONLY_USER(<UserRecentContainer />) } />
+        <Route exact path="/user/scrap" element={ ONLY_USER(<UserScrapContainer />) } />
+        <Route exact path="/user/alarm" element={ ONLY_USER(<UserAlarmContainer />) } />
+        <Route exact path="/user/info" element={ ONLY_USER(<UserInfoContainer />) } />
         <Route exact path="/news" element={ <NewsListContainer /> } />
         <Route exact path="/news/:id" element={ <NewsItemContainer /> } />
-        <Route exact path="/user" element={ <UserMenuContainer /> } />
-        <Route exact path="/user/recent" element={ <UserRecentContainer /> } />
-        <Route exact path="/user/scrap" element={ <UserScrapContainer /> } />
-        <Route exact path="/user/alarm" element={ <UserAlarmContainer /> } />
-        <Route exact path="/user/info" element={ <UserInfoContainer /> } />
         <Route exact path="/register" element={ <RegisterContainer /> } />
         <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
@@ -46,7 +75,7 @@ const App = () => (
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
     </Routes>
-);
+)};
 
 export default App;
 

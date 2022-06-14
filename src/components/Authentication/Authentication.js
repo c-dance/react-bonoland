@@ -17,7 +17,7 @@ const Authentication = ({
     timer,
     onAuthSubmit, 
     description,
-    matchError
+    failMsg
 }) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", defaultValues: { "phone":phoneNumber } });
@@ -43,7 +43,7 @@ const Authentication = ({
                             {...register("auth", { required: true })}
                         />
                         <Time>{ timeFormat(timer) }</Time>
-                        { matchError && <span className="warn">인증번호가 일치하지 않습니다.</span> }
+                        { failMsg.length > 0 && <span className="warn">{ failMsg }</span> }
                     </div>
                 }
             </fieldset>
