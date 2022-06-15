@@ -2,21 +2,17 @@ import { AUTH } from '../actions/auth';
 
 const initialState = {
     phoneNumber: '',
-    authentificated: false,
-    error: '',
+    success: false,
 };
 
 const AuthReducer = (state = initialState, action) => {
     switch(action.type) {
-        case AUTH.ADD: 
+        case AUTH.PHONE_NUMBER: 
             const phone = action.payload;
             return {...state, phoneNumber: phone }
-        case AUTH.UPDATE: 
-            const authentificated = action.payload;
-            console.log(authentificated);
-            return {...state, authentificated: authentificated }
-        case AUTH.DELETE: 
-            return { state, phoneNumber: '', authentificated: false };
+        case AUTH.SUCCESS: 
+            const authSuccess = action.payload;
+            return {...state, success: authSuccess }
         default :
             return state;
     }

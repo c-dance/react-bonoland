@@ -1,8 +1,431 @@
 {
+  "signup": [
+    {
+      "userName": "지환",
+      "userEamil": "asdf@asdf.com",
+      "userTel": "0100000000",
+      "userPwd": "asdf123",
+      "userCtg": "매수희망",
+      "userState": 1,
+      "userAgreement": true,
+      "id": 1
+    },
+    {
+      "userName": "지환",
+      "userEamil": "asdf@asdf.com",
+      "userTel": "0100000000",
+      "userPwd": "asdf123",
+      "userCtg": "매수희망",
+      "userState": 1,
+      "userAgreement": true,
+      "id": 2
+    },
+    {
+      "userName": "지환",
+      "userEamil": "asdf@asdf.com",
+      "userTel": "0100000000",
+      "userPwd": "asdf123",
+      "userCtg": "매수희망",
+      "userState": 1,
+      "userAgreement": true,
+      "id": 3
+    },
+    {
+      "userName": "지환",
+      "userEamil": "asdf@asdf.com",
+      "userTel": "0100000000",
+      "userPwd": "asdf123",
+      "userCtg": "매수희망",
+      "userState": 1,
+      "userAgreement": true,
+      "id": 4
+    }
+  ],
   "login": [
     {
-      "id": "asdf@asdf.com",
-      "password": "asd"
+      "userEamil": "asdf@asdf.com",
+      "usePwd": "1",
+      "id": 1
+    }
+  ],
+  "auth": [
+    {
+      "userTel": "01022222222",
+      "id": 1
+    },
+    {
+      "userTel": "0100000000",
+      "id": 2
+    },
+    {
+      "userTel": "0100000000",
+      "id": 3
+    },
+    {
+      "userTel": "0100000000",
+      "id": 4
+    },
+    {
+      "userTel": "0100000000",
+      "id": 5
+    },
+    {
+      "userTel": "0100000000",
+      "id": 6
+    },
+    {
+      "userTel": "0100000000",
+      "id": 7
+    },
+    {
+      "userTel": "0100000000",
+      "id": 8
+    },
+    {
+      "userTel": "0100000000",
+      "id": 9
+    },
+    {
+      "userTel": "0100000000",
+      "id": 10
+    },
+    {
+      "userTel": "0100000000",
+      "id": 11
+    },
+    {
+      "userTel": "0100000000",
+      "id": 12
+    },
+    {
+      "userTel": "0100000000",
+      "id": 13
+    },
+    {
+      "userTel": "0100000000",
+      "id": 14
+    },
+    {
+      "userTel": "0100000000",
+      "id": 15
+    },
+    {
+      "userTel": "0100000000",
+      "id": 16
+    },
+    {
+      "userTel": "0100000000",
+      "id": 17
+    },
+    {
+      "userTel": "0100000000",
+      "id": 18
+    },
+    {
+      "userTel": "0100000000",
+      "id": 19
+    },
+    {
+      "userTel": "0100000000",
+      "id": 20
+    },
+    {
+      "userTel": "0100000000",
+      "id": 21
+    },
+    {
+      "userTel": "0100000000",
+      "id": 22
+    },
+    {
+      "userTel": "0100000000",
+      "id": 23
+    },
+    {
+      "userTel": "0100000000",
+      "id": 24
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "00",
+      "id": 25
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010222",
+      "id": 26
+    },
+    {
+      "userTel": "0100000000",
+      "id": 27
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "0101010",
+      "id": 28
+    },
+    {
+      "userTel": "0100000000",
+      "id": 29
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "000",
+      "id": 30
+    },
+    {
+      "userTel": "0100000000",
+      "id": 31
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010",
+      "id": 32
+    },
+    {
+      "userTel": "0100000000",
+      "id": 33
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "a",
+      "id": 34
+    },
+    {
+      "userTel": "0100000000",
+      "id": 35
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "0",
+      "id": 36
+    },
+    {
+      "userTel": "0100000000",
+      "id": 37
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010",
+      "id": 38
+    },
+    {
+      "userTel": "0100000000",
+      "id": 39
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010",
+      "id": 40
+    },
+    {
+      "userTel": "0100000000",
+      "id": 41
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "00",
+      "id": 42
+    },
+    {
+      "userTel": "0100000000",
+      "id": 43
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010",
+      "id": 44
+    },
+    {
+      "userTel": "0100000000",
+      "id": 45
+    },
+    {
+      "userTel": "0100000000",
+      "id": 46
+    },
+    {
+      "userTel": "0100000000",
+      "id": 47
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "s",
+      "id": 48
+    },
+    {
+      "userTel": "0100000000",
+      "id": 49
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "a",
+      "id": 50
+    },
+    {
+      "id": 51
+    },
+    {
+      "id": 52
+    },
+    {
+      "id": 53
+    },
+    {
+      "id": 54
+    },
+    {
+      "id": 55
+    },
+    {
+      "id": 56
+    },
+    {
+      "id": 57
+    },
+    {
+      "id": 58
+    },
+    {
+      "id": 59
+    },
+    {
+      "id": 60
+    },
+    {
+      "id": 61
+    },
+    {
+      "id": 62
+    },
+    {
+      "id": 63
+    },
+    {
+      "id": 64
+    },
+    {
+      "id": 65
+    },
+    {
+      "id": 66
+    },
+    {
+      "id": 67
+    },
+    {
+      "id": 68
+    },
+    {
+      "id": 69
+    },
+    {
+      "id": 70
+    },
+    {
+      "id": 71
+    },
+    {
+      "id": 72
+    },
+    {
+      "id": 73
+    },
+    {
+      "id": 74
+    },
+    {
+      "id": 75
+    },
+    {
+      "userTel": "0100000000",
+      "id": 76
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "a",
+      "id": 77
+    },
+    {
+      "userTel": "0100000000",
+      "id": 78
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "ㅁㄴㅇ",
+      "id": 79
+    },
+    {
+      "userTel": "0100000000",
+      "id": 80
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "000",
+      "id": 81
+    },
+    {
+      "userTel": "0100000000",
+      "id": 82
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "123",
+      "id": 83
+    },
+    {
+      "userTel": "0100000000",
+      "id": 84
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "ㅁ",
+      "id": 85
+    },
+    {
+      "userTel": "0100000000",
+      "id": 86
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "010",
+      "id": 87
+    },
+    {
+      "userTel": "0100000000",
+      "id": 88
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "ㅁ",
+      "id": 89
+    },
+    {
+      "userTel": "0100000000",
+      "id": 90
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "0",
+      "id": 91
+    },
+    {
+      "userTel": "0100000000",
+      "id": 92
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "123",
+      "id": 93
+    },
+    {
+      "userTel": "0100000000",
+      "id": 94
+    },
+    {
+      "userTel": "0100000000",
+      "userAuth": "123",
+      "id": 95
     }
   ],
   "centers": [

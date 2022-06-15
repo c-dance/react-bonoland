@@ -8,30 +8,37 @@ import SignupSuccess from '../../components/Account/SignupSuccess/SignupSuccess'
 import Modal from "../../components/Modal/Modal";
 import { deactivateSignup } from '../../store/actions/mode';
 import Section from '../../components/ui/Section/Section';
+import { userSignup } from '../../api/user';
+import { activateAlert } from '../../store/actions/alert';
 
 const SignupContaienr = () => {
 
     const dispatch = useDispatch();
+    const AUTH_SUCCESS = useSelector(state => state.Auth.success);
 
-    // type 입력
+    useEffect(() => {
+        console.log(AUTH_SUCCESS);
+    }, [AUTH_SUCCESS])
+
+    /* === 사용자 타입 === */
     const [ type, setType ] = useState('');
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
-    // 인증 
-    const [ authResult, setAuthResult ] = useState(false);
+    /* === 휴대폰 인증 결과 === */
+    const [ phoneNumber, setPhoneNumber ] = useState(true);
+    const [ authSuccess, setAuthSuccess ] = useState(false);
 
-    // 회원가입 입력폼
-    const [ form , setForm ] = useState({});
-    const [ newAccountSuccess, setNewAccountSuccess ] = useState(false);
+    // 회원가입 성공
+    const [ signupSuccess, setSignupSuccess ] = useState(false);
 
 
     // type 값 입력
-    const onTypeChange = (event) => {
+    const onTypeChange = event => {
         setType(event.currentTarget.value);
     };
     
     // type 폼 제출
-    const onTypeSubmit = (event) => {
+    const onTypeSubmit = event => {
         event.preventDefault();
         if(type.length > 0) setTypeSubmitted(true);
         else alert('매도/매수중 하나를 선택해주세요.');
@@ -39,15 +46,38 @@ const SignupContaienr = () => {
 
 
     // 회원가입 폼 제출
-    const onFormSubmit = (data) => {
-        // event.preventDefault();
-        // 입력폼 유효성 검사
+    const onFormSubmit = async data => {
         console.log(data);
-        // setNewAccountSuccess(true);
+        const user = {
+            name: data.userName,
+            id: data.userId,
+            phone: phoneNumber,
+            password: data.userPwd01,
+            type: type,
+            agreement: data.userAgree
+        };
+
+        const RESPONSE = await userSignup(user);
+        if(RESPONSE) {
+            console.log(RESPONSE);
+            setSignupSuccess(true);
+        } else {
+
+        }
     };
 
     const onResultSubmit = result => {
-        setAuthResult(result)
+        setPhoneNumber(result.phoneNumber);
+        setAuthSuccess(result.auth);
+        // if(result.bonoUser) {
+        //     dispatch(activateAlert({
+        //         title: "회원가입 실패",
+        //         contents: "해당 휴대폰 번호로 이미 가입된 회원입니다. \n 로그인 서비스를 이용해 주세요."
+        //     }))
+        // } else {
+        //     setPhoneNumber(result.phoneNumber);
+        //     setAuthSuccess(result.auth);
+        // }
     };
 
     const modalProps = {
@@ -87,7 +117,7 @@ const SignupContaienr = () => {
                         </Modal>
                     }
                     {
-                        typeSumitted && !authResult &&
+                        typeSumitted && !authSuccess &&
                         <Modal {...modalProps}>
                             <AuthenticationContainer
                                 onResultSubmit={ onResultSubmit }
@@ -96,7 +126,7 @@ const SignupContaienr = () => {
                         </Modal>
                     }
                     {
-                        authResult && !newAccountSuccess &&
+                        authSuccess && !signupSuccess &&
                         <Modal {...modalProps}>
                             <SignupForm
                                 onFormSubmit={ onFormSubmit }
@@ -104,7 +134,7 @@ const SignupContaienr = () => {
                         </Modal>
                     }
                     {
-                        newAccountSuccess &&
+                        signupSuccess &&
                         <Modal {...alertProps}>
                             <SignupSuccess />
                         </Modal>
@@ -119,20 +149,20 @@ const SignupContaienr = () => {
                         <SignupType {...typeProps}/>
                     }
                     {
-                        typeSumitted && !authResult &&
+                        typeSumitted && !authSuccess &&
                         <AuthenticationContainer
                             onResultSubmit={ onResultSubmit }
                             description="본인인증을 위해 휴대폰 번호를 입력해주세요!"
                         />
                     }
                     {
-                        authResult && !newAccountSuccess &&
+                        authSuccess && !signupSuccess &&
                         <SignupForm
                             onFormSubmit={ onFormSubmit }
                         />
                     }
                     {
-                        newAccountSuccess &&
+                        signupSuccess &&
                         <SignupSuccess />
                     } 
                 </Section>

@@ -23,21 +23,11 @@ const LoginContainer = () => {
     };
     
     const onFormSubmit = async data => {
-
-        console.log(data);
-
-        const SUCCESS = await dispatch(login({ 
+        handleStoredId(data.userStoreId, data.userId);
+        dispatch(login({ 
             id: data.userId,
             password: data.userPwd
         }));
-
-        if(SUCCESS) {
-            
-        } else {
-            setFailMsg('아이디 또는 비밀번호가 일치하지 않습니다.');    
-        }
-
-        handleStoredId(data.userStoreId, data.userId);
     };
 
     const modalProps = {

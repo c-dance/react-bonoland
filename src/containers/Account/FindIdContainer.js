@@ -13,7 +13,6 @@ const FindIdContainer = () => {
 
     const dispatch = useDispatch();
 
-    const authentificated = useSelector(state => state.Auth.authentificated);
     const [ modalProps, setModalProps ] = useState(modalBaseProps);
     const [ authResult, setAuthResult ] = useState(false);
 
@@ -46,6 +45,12 @@ const FindIdContainer = () => {
         onBackClick: () => {dispatch(deactivateFindId())},
         action: false
     };
+
+    const RENDER_TEMPLATE = () => (
+        <>
+
+        </>
+    );
     
     return (
         <>

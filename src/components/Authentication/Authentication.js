@@ -1,8 +1,9 @@
 import { Form, Time, Description } from './AuthenticationStyle';
-import React from "react";
+import React, { useState } from "react";
 import { isMobile } from 'react-device-detect';
 import { REGEXP } from '../../sheme/form';
 import { useForm } from 'react-hook-form';
+import { getValue } from '@testing-library/user-event/dist/utils';
 
 const timeFormat = seconds => {
     const second = parseInt(seconds%60).toString();
@@ -17,10 +18,11 @@ const Authentication = ({
     timer,
     onAuthSubmit, 
     description,
-    failMsg
+    phoneNumberError,
+    authNumberError
 }) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", defaultValues: { "phone":phoneNumber } });
+    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit", defaultValues: { "phoneNumber":phoneNumber } });
 
     return (
         <Form onSubmit={handleSubmit(onAuth? onAuthSubmit : onPhoneSubmit)}>
@@ -30,9 +32,10 @@ const Authentication = ({
                         type="text" 
                         placeholder="휴대폰 번호 입력" 
                         readOnly={ onAuth }
-                        {...register("phone", { required: true, pattern: REGEXP.phone })}
+                        {...register("phoneNumber", { required: true, pattern: REGEXP.phone })}
                     />
-                    { errors.phone && <span className="warn">휴대폰 번호를 다시 확인해 주세요.</span> }
+                    { errors.phoneNumber && <span className="warn">휴대폰 번호를 다시 확인해 주세요.</span> }
+                    { !errors.phoneNumber && phoneNumberError.length > 0 && <span className="warn">{ phoneNumberError }</span> }
                 </div>
                 {
                     onAuth &&
@@ -40,10 +43,10 @@ const Authentication = ({
                         <input 
                             type="text" 
                             placeholder="인증 번호 입력"  
-                            {...register("auth", { required: true })}
+                            {...register("authNumber", { required: true })}
                         />
                         <Time>{ timeFormat(timer) }</Time>
-                        { failMsg.length > 0 && <span className="warn">{ failMsg }</span> }
+                        { authNumberError.length > 0 && <span className="warn">{ authNumberError }</span> }
                     </div>
                 }
             </fieldset>

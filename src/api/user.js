@@ -3,74 +3,30 @@ import axios from "axios";
 import { USER_AUTH } from "../utils/user";
 import { TYPE_AND_EXPENDITURE } from "../sheme/calculator";
 
-/* === 회원 가입  === */
-export const userSignup = async user => {
-    console.log('회원가입');
-
+/* === LOGIN === */
+export const userLogin = async user => {
     const source = axios.CancelToken.source();
-    // const url = '/signup';
-    const url = '';
+    const url = 'http://localhost:3500/login';
+    // const url = '/user/loginProc';
 
     try {
         const response = await api.post(url, {
-            type: user.type,
-            phone: user.phone,
-            id: user.id, 
-            password: user.password,
-            name: user.name,
-            agreement: user.agreement
-        }, { cancelToken: source.token });
-        return response;
-    } catch (err) {
-        console.log(err);
-    } finally {
-        source.cancel();
-    }
-}
-
-/* === 로그인 === */
-export const userLogin = async user => {
-    console.log('로그인');
-
-    const source = axios.CancelToken.source();
-    const url = 'http://localhost:3500/login';
-
-    try {
-        // const response = await api.post(url, {
-        //     id: user.id,
-        //     password: user.password
-        // }, { cancelToken: source.token });
-        
-        // const user = response.data.user;
-        // USER_AUTH.store(user); 
-
-        const response = await api.get(url, { 
-            params: {
-                id: user.id,
-                password: user.password
-            },
+            userEamil: user.id,
+            usePwd: user.password
+        }, { 
             cancelToken: source.token 
         });
 
-        console.log(response);
-        
-        USER_AUTH.store({ id:"asdf@asdf.com", name: '홍길동', accessToken: 'asdf', refreshToken: 'asdf' });
-
         return response;
-
     } catch (err) {
         consoleErr(err);
-        return err.response;
-
     } finally {
         source.cancel();
     }
 }
 
-/* === 로그아웃 === */
+/* === LOGOUT === */
 export const userLogout = async () => {
-    console.log('로그아웃');
-
     const source = axios.CancelToken.source();
     // const url = '/logout';
     const url = '';
@@ -81,12 +37,33 @@ export const userLogout = async () => {
             cancelToken: source.token
         });
 
-        USER_AUTH.remove();
-
         return response;
-
     } catch (err) {
         consoleErr(err);
+    } finally {
+        source.cancel();
+    }
+}
+
+/* === 회원 가입  === */
+export const userSignup = async user => {
+    const source = axios.CancelToken.source();
+    // const url = '/user/joinProc';
+    const url = 'http://localhost:3500/signup';
+
+    try {
+        const response = await api.post(url, {
+            userName: user.name,
+            userEamil: user.id, 
+            userTel: user.phone,
+            userPwd: user.password,
+            userCtg: user.type,
+            userState: 1, // [? 값 확인 필요]
+            userAgreement: user.agreement
+        }, { cancelToken: source.token });
+        return response;
+    } catch (err) {
+        console.log(err);
     } finally {
         source.cancel();
     }
