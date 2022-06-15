@@ -7,6 +7,7 @@ import Login from '../../components/Account/Login/Login';
 import { USER_ID } from '../../utils/user';
 import Section from "../../components/ui/Section/Section";
 import { login } from '../../store/actions/user'; 
+import { userLogin } from '../../api/user';
 
 
 const LoginContainer = () => {
@@ -24,6 +25,11 @@ const LoginContainer = () => {
     
     const onFormSubmit = async data => {
         handleStoredId(data.userStoreId, data.userId);
+
+        const response = await userLogin(data);
+
+        console.log(response);
+
         dispatch(login({ 
             id: data.userId,
             password: data.userPwd
@@ -37,6 +43,10 @@ const LoginContainer = () => {
         onCloseClick: () => {dispatch(deactivateLogin())},
         title: "로그인"
     };
+
+    useEffect(() => {
+        test();
+    }, []);
 
     return (
         <>

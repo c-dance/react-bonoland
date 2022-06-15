@@ -5,17 +5,13 @@ import { useForm } from 'react-hook-form';
 import { REGEXP } from "../../../sheme/form";
 
 const UserInfoForm = ({
-    userType,
-    userId,
-    userName, 
-    userPhoneNumber,
-    userMemo,
+    user,
     onUnsubsClick,
     onNewPhoneClick, 
     onFormSubmit
 }) => {
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onChange', defaultValues: { "userMemo" : userMemo } });
+    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onChange' });
 
     return (
         <module.scrollWrapper>
@@ -25,7 +21,7 @@ const UserInfoForm = ({
                         <label>분류</label>
                         <module.Input
                             type="text"
-                            value={ userType }
+                            value={ user.userCtg }
                             readOnly
                         />
                     </InputWrap>
@@ -33,7 +29,7 @@ const UserInfoForm = ({
                         <label>이름</label>
                         <module.Input
                             type="text"
-                            value={ userName }
+                            value={ user.userName }
                             readOnly
                         />
                     </InputWrap>
@@ -41,7 +37,7 @@ const UserInfoForm = ({
                         <label>아이디</label>
                         <module.Input
                             type="text"
-                            value={ userId }
+                            value={ user.userEmail }
                             readOnly
                         />
                     </InputWrap>
@@ -49,7 +45,7 @@ const UserInfoForm = ({
                         <label>연락처</label>
                         <module.Input
                             type="text"
-                            value={ userPhoneNumber }
+                            value={ user.userTel }
                             readOnly
                         />
                         <button type="button" onClick={ (event) => onNewPhoneClick(event) }>변경</button>
@@ -95,7 +91,9 @@ const UserInfoForm = ({
                         <label>비고</label>
                         <module.Textarea
                             {...register("userMemo")}
-                        />
+                        >
+                        { user.userMemo }
+                        </module.Textarea>
                     </InputWrap>
                 </module.Fieldset>
                 <module.SubmitButton>적용</module.SubmitButton>

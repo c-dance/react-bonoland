@@ -6,8 +6,8 @@ import { setLoggedIn } from "./store/actions/user";
 import { activateLogin } from './store/actions/mode';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
-// LAYOUT
-import LayoutContainer from './containers/Layout/LayoutContainer';
+
+import LoginRequired from './containers/global/LoginRequired/LoginRequired';
 // CENTERS
 import CenterListContainer from './containers/Center/CenterListContainer';
 import CenterItemContainer from './containers/Center/CenterItemContainer';
@@ -46,18 +46,15 @@ const App = () => {
   }
 
   const ONLY_USER = component => {
-    if(USER_LOGGEDIN) {
-      return component;
-    } else {
-      // dispatch(activateLogin());
-      return <Navigate to='/' replace />;
-    };
+    if(USER_LOGGEDIN) return component;
+    else return <Navigate to='/login' replace />;
   }
 
   return (
     <Routes>
       <Route element={ <MainView list={ true }/> }>
         <Route exact path="/"/>
+        <Route exact path="/login" element={<LoginRequired />}/>
         <Route exact path="/user" element={ ONLY_USER(<UserMenuContainer />) } />
         <Route exact path="/user/recent" element={ ONLY_USER(<UserRecentContainer />) } />
         <Route exact path="/user/scrap" element={ ONLY_USER(<UserScrapContainer />) } />

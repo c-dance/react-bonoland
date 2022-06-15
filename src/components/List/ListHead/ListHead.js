@@ -1,6 +1,6 @@
 import { Head, Wrap, Title, Back, Alarm } from './ListHeadStyle';
 import React from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { activateAlarm } from '../../../store/actions/mode';
 
 const ListHeader = ({ title, children }) => {

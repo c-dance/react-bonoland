@@ -9,36 +9,6 @@
       "userState": 1,
       "userAgreement": true,
       "id": 1
-    },
-    {
-      "userName": "지환",
-      "userEamil": "asdf@asdf.com",
-      "userTel": "0100000000",
-      "userPwd": "asdf123",
-      "userCtg": "매수희망",
-      "userState": 1,
-      "userAgreement": true,
-      "id": 2
-    },
-    {
-      "userName": "지환",
-      "userEamil": "asdf@asdf.com",
-      "userTel": "0100000000",
-      "userPwd": "asdf123",
-      "userCtg": "매수희망",
-      "userState": 1,
-      "userAgreement": true,
-      "id": 3
-    },
-    {
-      "userName": "지환",
-      "userEamil": "asdf@asdf.com",
-      "userTel": "0100000000",
-      "userPwd": "asdf123",
-      "userCtg": "매수희망",
-      "userState": 1,
-      "userAgreement": true,
-      "id": 4
     }
   ],
   "login": [
@@ -46,6 +16,16 @@
       "userEamil": "asdf@asdf.com",
       "usePwd": "1",
       "id": 1
+    },
+    {
+      "userEamil": "asdf@asdf.com",
+      "usePwd": "a",
+      "id": 2
+    },
+    {
+      "userEamil": "asdf@asdf.com",
+      "usePwd": "a",
+      "id": 3
     }
   ],
   "auth": [
@@ -71,10 +51,12 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "a",
       "id": 6
     },
     {
       "userTel": "0100000000",
+      "userAuth": "0",
       "id": 7
     },
     {
@@ -83,6 +65,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "a",
       "id": 9
     },
     {
@@ -91,6 +74,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "0",
       "id": 11
     },
     {
@@ -99,6 +83,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "a",
       "id": 13
     },
     {
@@ -107,6 +92,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "asd",
       "id": 15
     },
     {
@@ -123,6 +109,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "+000",
       "id": 19
     },
     {
@@ -135,6 +122,7 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "0",
       "id": 22
     },
     {
@@ -143,16 +131,16 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "000",
       "id": 24
     },
     {
       "userTel": "0100000000",
-      "userAuth": "00",
       "id": 25
     },
     {
       "userTel": "0100000000",
-      "userAuth": "010222",
+      "userAuth": "0000",
       "id": 26
     },
     {
@@ -161,7 +149,7 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "0101010",
+      "userAuth": "0000",
       "id": 28
     },
     {
@@ -170,7 +158,7 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "000",
+      "userAuth": "0000",
       "id": 30
     },
     {
@@ -179,7 +167,7 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "010",
+      "userAuth": "aaa",
       "id": 32
     },
     {
@@ -188,7 +176,7 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "a",
+      "userAuth": "000",
       "id": 34
     },
     {
@@ -197,7 +185,7 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "0",
+      "userAuth": "00",
       "id": 36
     },
     {
@@ -206,38 +194,38 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "010",
       "id": 38
     },
     {
       "userTel": "0100000000",
+      "userAuth": "000",
       "id": 39
     },
     {
       "userTel": "0100000000",
-      "userAuth": "010",
       "id": 40
     },
     {
       "userTel": "0100000000",
+      "userAuth": "000",
       "id": 41
     },
     {
       "userTel": "0100000000",
-      "userAuth": "00",
       "id": 42
     },
     {
       "userTel": "0100000000",
+      "userAuth": "000",
       "id": 43
     },
     {
       "userTel": "0100000000",
-      "userAuth": "010",
       "id": 44
     },
     {
       "userTel": "0100000000",
+      "userAuth": "000",
       "id": 45
     },
     {
@@ -246,95 +234,133 @@
     },
     {
       "userTel": "0100000000",
+      "userAuth": "0000",
       "id": 47
     },
     {
       "userTel": "0100000000",
-      "userAuth": "s",
       "id": 48
     },
     {
       "userTel": "0100000000",
+      "userAuth": "aaa",
       "id": 49
     },
     {
       "userTel": "0100000000",
-      "userAuth": "a",
       "id": 50
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "aaa",
       "id": 51
     },
     {
+      "userTel": "0100000000",
       "id": 52
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "aa",
       "id": 53
     },
     {
+      "userTel": "0100000000",
       "id": 54
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "aaa",
       "id": 55
     },
     {
+      "userTel": "0100000000",
       "id": 56
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "asd",
       "id": 57
     },
     {
+      "userTel": "0100000000",
       "id": 58
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "aaa",
       "id": 59
     },
     {
+      "userTel": "0100000000",
       "id": 60
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "000",
       "id": 61
     },
     {
+      "userTel": "0100000000",
       "id": 62
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "000",
       "id": 63
     },
     {
+      "userTel": "0100000000",
       "id": 64
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "000",
       "id": 65
     },
     {
+      "userTel": "0100000000",
       "id": 66
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "000",
       "id": 67
     },
     {
+      "userTel": "0100000000",
       "id": 68
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "000",
       "id": 69
     },
     {
+      "userTel": "0100000000",
       "id": 70
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "aaa",
       "id": 71
     },
     {
+      "userTel": "0100000000",
       "id": 72
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "asd",
       "id": 73
     },
     {
+      "userTel": "0100000000",
       "id": 74
     },
     {
+      "userTel": "0100000000",
+      "userAuth": "123",
       "id": 75
     },
     {
@@ -343,91 +369,34 @@
     },
     {
       "userTel": "0100000000",
-      "userAuth": "a",
-      "id": 77
-    },
-    {
-      "userTel": "0100000000",
-      "id": 78
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "ㅁㄴㅇ",
-      "id": 79
-    },
-    {
-      "userTel": "0100000000",
-      "id": 80
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "000",
-      "id": 81
-    },
-    {
-      "userTel": "0100000000",
-      "id": 82
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "123",
-      "id": 83
-    },
-    {
-      "userTel": "0100000000",
-      "id": 84
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "ㅁ",
-      "id": 85
-    },
-    {
-      "userTel": "0100000000",
-      "id": 86
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "010",
-      "id": 87
-    },
-    {
-      "userTel": "0100000000",
-      "id": 88
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "ㅁ",
-      "id": 89
-    },
-    {
-      "userTel": "0100000000",
-      "id": 90
-    },
-    {
-      "userTel": "0100000000",
       "userAuth": "0",
-      "id": 91
-    },
-    {
-      "userTel": "0100000000",
-      "id": 92
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "123",
-      "id": 93
-    },
-    {
-      "userTel": "0100000000",
-      "id": 94
-    },
-    {
-      "userTel": "0100000000",
-      "userAuth": "123",
-      "id": 95
+      "id": 77
     }
   ],
+  "user": [
+    {
+      "userEmail": "asdf@asdf.com",
+      "userPwd": "a",
+      "id": 1
+    },
+    {
+      "userEmail": "asdf@asdf.com",
+      "userPwd": "0",
+      "id": 2
+    },
+    {
+      "userEmail": "asdf@asdf.com",
+      "userPwd": "0",
+      "id": 3
+    }
+  ],
+  "userInfo": {
+    "userCtg": "매도희망인",
+    "userName": "김보노",
+    "userEmail": "bono12@naver.com",
+    "userTel": "01012345678",
+    "userMemo": "강북 하늘 요양원 담당자: 01023451234 \n 인천 매일 보호센터 - 보증금 2억"
+  },
   "centers": [
     {
       "id": "1asdf",

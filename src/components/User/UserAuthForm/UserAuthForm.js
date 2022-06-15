@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 
 const UserAuthForm = ({ 
     id,
-    failMsg,
     onFormSubmit
 }) => {    
 
@@ -32,7 +31,6 @@ const UserAuthForm = ({
                         {...register("password", { required: true })}
                     />
                         { errors.password && <span className="warn">비밀번호를 입력해 주세요.</span> }
-                        { failMsg.lenth > 0 && <span className="warn">{ failMsg }</span> }
                 </module.Fieldset>
                 <module.SubmitButton
                     type="submit"

@@ -1,24 +1,25 @@
 import api, { consoleErr, authHeader } from ".";
 import axios from "axios";
-import { USER_AUTH } from "../utils/user";
-import { TYPE_AND_EXPENDITURE } from "../sheme/calculator";
 
 /* === LOGIN === */
 export const userLogin = async user => {
     const source = axios.CancelToken.source();
-    const url = 'http://localhost:3500/login';
-    // const url = '/user/loginProc';
+    // const url = 'http://localhost:3500/login';
+    // const url = 'user/loginProc';
+
+    console.log(user);
 
     try {
-        const response = await api.post(url, {
-            userEamil: user.id,
-            usePwd: user.password
+        const response = await axios.post("https://bonoland.co.kr/user/loginProc", {
+            userEmail : user.userId,
+            userPwd : user.userPwd
         }, { 
-            cancelToken: source.token 
+            cancelToken: source.token
         });
 
         return response;
-    } catch (err) {
+    } catch(err) {
+        console.log(err);
         consoleErr(err);
     } finally {
         source.cancel();
@@ -45,22 +46,44 @@ export const userLogout = async () => {
     }
 }
 
-/* === 회원 가입  === */
+/* === SIGN_UP === */
 export const userSignup = async user => {
+
     const source = axios.CancelToken.source();
     // const url = '/user/joinProc';
-    const url = 'http://localhost:3500/signup';
+    // const url = '/user/joinProc';
 
     try {
-        const response = await api.post(url, {
+        // const response = await axios.get('https://random-data-api.com/api/app/random_app', {
+        //     userName: user.name,
+        //     userEmail: user.id, 
+        //     userTel: user.phone,
+        //     userPwd: user.password,
+        //     userCtg: user.type,
+        //     userState: 1
+        //     // userAgreement: user.agreement
+        // }, { 
+        //     cancelToken: source.token,
+        // });
+        const response = await axios.post('https://bonoland.co.kr/user/joinProc', {
             userName: user.name,
-            userEamil: user.id, 
+            userEmail: user.id, 
             userTel: user.phone,
             userPwd: user.password,
             userCtg: user.type,
-            userState: 1, // [? 값 확인 필요]
-            userAgreement: user.agreement
-        }, { cancelToken: source.token });
+            userState: 1
+            // userAgreement: user.agreement
+        }, { 
+            cancelToken: source.token,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':  'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+            }
+        });
+        console.log(response);
         return response;
     } catch (err) {
         console.log(err);
@@ -69,20 +92,19 @@ export const userSignup = async user => {
     }
 }
 
-/* === 비밀번호 일치 확인 === */
-export const getUserInfoMatch = async user => {
-    console.log("회원정보 일치 확인");
-    
+/* === UNSUBSCRIBE === */
+export const UserUnsubecribe = async user => {
     const source = axios.CancelToken.source();
-    // const url = '/user/auth';
-    const url = 'http://localhost:3500/login';
+    // const url = '/user/unsubscribe';
+    const url = 'http://localhost:3500/user';
+
     try {
-        const response = await api.get(url, { 
-            params: {
-                id: user.id,
-                password: user.password
-            },
-            cancelToken: source.token 
+        const response = await api.post(url,{
+            userEmail: user.id,
+            userAgree: user.agreement
+        },{ 
+            cancelToken: source.token, 
+            headers: authHeader()
         });
         return response;
     } catch(err) {
@@ -92,7 +114,49 @@ export const getUserInfoMatch = async user => {
     }
 };
 
+/* === GET USER INFORMATION === */
+export const getUserInfo = async user => {
+    const source = axios.CancelToken.source();
+    // const url = '/user/userInfo';
+    const url = 'http://localhost:3500/userInfo';
+    try {
+        const response = await api.get(url,{ 
+            params: {
+                userEmail: user.id,
+                userPwd: user.password
+            },
+            cancelToken: source.token, 
+            headers: authHeader()
+        });
+        return response;
+    } catch(err) {
+        consoleErr(err);
+    } finally {
+        source.cancel();
+    }
+};
 
+/* === MODIFY USER INFORMATION === */
+export const modifyUserInfo = async user => {
+    const source = axios.CancelToken.source();
+    // const url = '/user/userInfo';
+    const url = 'http://localhost:3500/user';
+
+    try {
+        const response = await api.post(url,{
+            userPwd: user.password,
+            userMemo: user.memo
+        },{ 
+            cancelToken: source.token, 
+            headers: authHeader()
+        });
+        return response;
+    } catch(err) {
+        consoleErr(err);
+    } finally {
+        source.cancel();
+    }
+};
 
 
 

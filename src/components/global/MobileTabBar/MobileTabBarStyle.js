@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import salesIcon from '../../../assets/images/menu/ico-blocks.svg';
 import rcmdIcon from '../../../assets/images/menu/ico-thumbup.svg';
@@ -31,7 +31,7 @@ export const TabBar = styled.nav`
     }
 `;
 
-export const TabBtn = styled(Link)`
+const TabBtnCss = css`
     width: auto;
     height: 100%;
     padding-top: 36px;
@@ -44,5 +44,13 @@ export const TabBtn = styled(Link)`
         )
     }) center 9px / 24px 24px no-repeat;
     font-size: 10px;
+    font-weight: ${ props => props.theme.fontWeights.regular };
     color: ${ props => props.theme.colors.gray700 };
+`
+
+export const TabLink = styled(Link)`
+    ${ TabBtnCss }
+`;
+export const TabBtn = styled.button`
+    ${ TabBtnCss }
 `;

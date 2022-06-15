@@ -9,6 +9,7 @@ import { FIND_PWD } from '../../sheme/modal';
 import { activateLogin, activateFindId, deactivateFindPwd } from '../../store/actions/mode';
 import Section from '../../components/ui/Section/Section';
 import FindPwdSuccess from '../../components/Account/FindPwdSuccess/FindPwdSuccess';
+import { getFindPwdAuth } from '../../api/auth';
 
 const FindPwdContainer = () => {
 

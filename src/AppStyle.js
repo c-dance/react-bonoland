@@ -28,6 +28,7 @@ const AppStyle = createGlobalStyle`
     button {
         outline: none;
         border: 0;
+        font: 400 1rem/1 'Noto Sans KR', sans-serif;
     }
 
     input,

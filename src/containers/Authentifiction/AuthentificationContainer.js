@@ -3,6 +3,7 @@ import Authentication from "../../components/Authentication/Authentication";
 import { getAuthNumber, getAuthResult } from '../../api/auth';
 
 const AuthenticationContainer = ({ 
+    authApi,
     onResultSubmit,
     description 
 }) => {
@@ -38,21 +39,14 @@ const AuthenticationContainer = ({
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
-        const RESPONSE = await getAuthResult(data.phoneNumber, data.authNumber);
+        const RESPONSE = await authApi(data.phoneNumber, data.authNumber);
 
         console.log(RESPONSE);
 
         if(RESPONSE) {
-            onResultSubmit({
-                phoneNumber: phoneNumber,
-                auth: true,
-                bonoUser: true, 
-                message: RESPONSE.message || "bono@hanmail.com"
-            });
-            console.log('here');
+            onResultSubmit(RESPONSE); 
         } else {
             setAuthNumberError("인증번호가 일치하지 않습니다.");
-            // setAuthNumberError(RESPONSE.message);
         }
     };
 

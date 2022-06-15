@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useGet } from '../../hooks';
 import { getUserAlarmCenters } from '../../api/user';
-import { activateAlarm } from '../../store/actions/mode'
+import { activateAlarm } from '../../store/actions/mode';
 
 const UserAlarmContainer = () => {
 

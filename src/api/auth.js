@@ -22,11 +22,10 @@ export const getAuthNumber = async phoneNumber  => {
     }
 };
 
-/* === 전화번호 인증 : 인증결과 받기 === */
-export const getAuthResult = async (phoneNumber, authNumber) => {
+const getAuth = async (authUrl, phoneNumber, authNumber) => {
     const source = axios.CancelToken.source();
-    // const url = '/user/authNumCheck';
-    const url = 'http://localhost:3500/auth';
+    // const url = `/user/${authUrl}`;
+    const url = `http://localhost:3500/${authUrl}`;
     
     try {
         const response = await api.post(url, {
@@ -42,3 +41,9 @@ export const getAuthResult = async (phoneNumber, authNumber) => {
         source.cancel();
     }
 };
+
+export const getSignUpAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
+export const getFindIdAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
+export const getFindPwdAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
+export const getNewPhoneAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
+

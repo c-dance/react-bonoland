@@ -10,6 +10,7 @@ import { deactivateSignup } from '../../store/actions/mode';
 import Section from '../../components/ui/Section/Section';
 import { userSignup } from '../../api/user';
 import { activateAlert } from '../../store/actions/alert';
+import { getSignUpAuth } from '../../api/auth';
 
 const SignupContaienr = () => {
 
@@ -48,6 +49,7 @@ const SignupContaienr = () => {
     // 회원가입 폼 제출
     const onFormSubmit = async data => {
         console.log(data);
+
         const user = {
             name: data.userName,
             id: data.userId,
@@ -58,17 +60,24 @@ const SignupContaienr = () => {
         };
 
         const RESPONSE = await userSignup(user);
-        if(RESPONSE) {
-            console.log(RESPONSE);
-            setSignupSuccess(true);
-        } else {
+        console.log(RESPONSE);
 
-        }
+        // if(RESPONSE) {
+        //     console.log(RESPONSE);
+        //     setSignupSuccess(true);
+        // } else {
+
+        // }
     };
 
     const onResultSubmit = result => {
-        setPhoneNumber(result.phoneNumber);
-        setAuthSuccess(result.auth);
+        // test
+        const RESULT = {
+            auth: true,
+            phoneNumber: '01000000000'
+        }
+        setPhoneNumber(RESULT.phoneNumber);
+        setAuthSuccess(RESULT.auth);
         // if(result.bonoUser) {
         //     dispatch(activateAlert({
         //         title: "회원가입 실패",
@@ -120,6 +129,7 @@ const SignupContaienr = () => {
                         typeSumitted && !authSuccess &&
                         <Modal {...modalProps}>
                             <AuthenticationContainer
+                                authApi={ getSignUpAuth }
                                 onResultSubmit={ onResultSubmit }
                                 description="본인인증을 위해 휴대폰 번호를 입력해주세요!"
                             />

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { USER_AUTH } from "../utils/user";
 
-// const BASE_URL = 'http://localhost:3500';
-const BASE_URL = '../../';
+const BASE_URL = 'http://localhost:3500';
+// const BASE_URL = 'https://bonoland.co.kr';
 
 export default axios.create({
     baseURL: BASE_URL
@@ -19,8 +19,11 @@ export const consoleErr = (err) => {
 export const authHeader = () => {
     const auth = USER_AUTH.get();
     if(auth && auth.accessToken) {
-        return { 'x-access-token' : auth.accessToken }
+        return { 
+            "Content-Type": 'application/json',
+            "x-access-token" : auth.accessToken 
+        }
     } else {
-        return {};
+        return { "Content-Type": 'application/json' };
     }
 };
