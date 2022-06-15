@@ -10,16 +10,14 @@ export const userLogin = async user => {
     console.log(user);
 
     try {
-        const response = await axios.post("https://bonoland.co.kr/user/loginProc", {
+        const response = await axios.post("/user/loginProc", {
             userEmail : user.userId,
             userPwd : user.userPwd
         }, { 
             cancelToken: source.token
         });
-
         return response;
     } catch(err) {
-        console.log(err);
         consoleErr(err);
     } finally {
         source.cancel();

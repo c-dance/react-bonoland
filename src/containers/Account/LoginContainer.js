@@ -27,13 +27,12 @@ const LoginContainer = () => {
         handleStoredId(data.userStoreId, data.userId);
 
         const response = await userLogin(data);
-
         console.log(response);
 
-        dispatch(login({ 
-            id: data.userId,
-            password: data.userPwd
-        }));
+        // dispatch(login({ 
+        //     id: data.userId,
+        //     password: data.userPwd
+        // }));
     };
 
     const modalProps = {
@@ -43,10 +42,6 @@ const LoginContainer = () => {
         onCloseClick: () => {dispatch(deactivateLogin())},
         title: "로그인"
     };
-
-    useEffect(() => {
-        test();
-    }, []);
 
     return (
         <>
