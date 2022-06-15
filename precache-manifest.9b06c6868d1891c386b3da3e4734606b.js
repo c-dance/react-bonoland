@@ -200,16 +200,16 @@ self.__precacheManifest = [
     "url": "./static/media/ico-accordion_black.50bd0339.svg"
   },
   {
-    "revision": "8d9622fcef97cee42410488899bc60b1",
-    "url": "./static/media/ico-zoomout.8d9622fc.svg"
-  },
-  {
     "revision": "1e633579041fafd5870be95f888efa37",
     "url": "./static/media/ico-infowindow.1e633579.svg"
   },
   {
     "revision": "a55966608c33202f63887015f6550670",
     "url": "./static/media/ico-zoomin.a5596660.svg"
+  },
+  {
+    "revision": "8d9622fcef97cee42410488899bc60b1",
+    "url": "./static/media/ico-zoomout.8d9622fc.svg"
   },
   {
     "revision": "ff47fdb3d0f78ec0eb364acf586bf1ca",
