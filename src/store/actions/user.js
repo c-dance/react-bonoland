@@ -16,7 +16,7 @@ export const login = data => async dispatch => {
         const USER_INFO = { 
             id: RESPONSE.data.result.userEmail,
             name: RESPONSE.data.result.userName, 
-            type: RESPONSE.data.result.userCtg,
+            // type: RESPONSE.data.result.userCtg,
             tel: RESPONSE.data.result.userTel
         };
 
@@ -24,10 +24,7 @@ export const login = data => async dispatch => {
 
         dispatch({
             type: USER.LOGIN,
-            payload: {
-               id: USER_INFO.id,
-               name: USER_INFO.name
-            }
+            payload: USER_INFO
         })  
     } else {
         dispatch({
@@ -42,10 +39,7 @@ export const login = data => async dispatch => {
 
 export const setLoggedIn = user => ({
     type: USER.LOGIN, 
-    payload: {
-        id: user.id,
-        name: user.name
-    }
+    payload: user
 });
 
 export const logout = () => async dispatch => {

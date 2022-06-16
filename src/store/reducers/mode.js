@@ -5,7 +5,8 @@ import {
     FIND_PWD,
     CALCULATOR,
     CONTACT,
-    ALARM
+    ALARM,
+    LOGIN_REQUIRED
 } from '../actions/mode';
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
     findPwd: false,
     calculator: false, 
     contact: false,
-    alarm: false
+    alarm: false,
+    loginRequired: false
 };
 
 const ModeReducer = (state = initialState, action ) => {
@@ -48,6 +50,10 @@ const ModeReducer = (state = initialState, action ) => {
             return {...initialState, alarm: true };
         case ALARM.DEACTIVATE:
             return {...initialState, alarm: false };
+        case LOGIN_REQUIRED.ACTIVATE: 
+            return {...initialState, loginRequired: true };
+        case LOGIN_REQUIRED.DEACTIVATE:
+            return {...initialState, loginRequired: false };
         default:
             return initialState;
     }

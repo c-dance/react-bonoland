@@ -4,7 +4,7 @@ export const USER_AUTH = {
         window.localStorage.setItem(USER_AUTH.USER_KEY, JSON.stringify(user));
     }, 
     get: () => {
-        const auth = window.localStorage.getItem(USER_AUTH.USER_KEY) || null;
+        const auth = JSON.parse(window.localStorage.getItem(USER_AUTH.USER_KEY)) || null;
         return auth;
     }, 
     remove: () => {

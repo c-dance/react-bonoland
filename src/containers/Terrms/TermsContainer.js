@@ -21,9 +21,9 @@ const TermsContainer = () => {
     }, []);
 
     useEffect(() => {
-        // setTerms(data);
-        if(Object.keys(data).length > 0) {
-            setTerms(data[Object.keys(data)[0]]);
+        if(data) {
+            const TERMS = data.arrayResult;
+            setTerms(TERMS);
         }
     }, [data]);
     

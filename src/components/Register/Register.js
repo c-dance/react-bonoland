@@ -7,12 +7,21 @@ import { useDispatch } from 'react-redux/es/exports';
 import { activateAlert } from '../../store/actions/alert';
 
 const Register = ({
+    user, 
     onFormSubmit
 }) => {
 
     const dispatch = useDispatch();
     
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit" });
+    const { register, handleSubmit, formState: { errors } } = useForm({ 
+        mode: "onSubmit", 
+        reValidateMode: "onSubmit",
+        defaultValues: {
+            uName: user.uName || "",
+            uEmail: user.uEmail || "",
+            uTel: user.uTel || "",
+        }
+    });
 
     /* === 필수입력값 처리 === */
     const sumErrors = errors => {
@@ -134,13 +143,17 @@ const Register = ({
                                     <th><label htmlFor="cSigun">시/군</label></th>
                                     <td>
                                         <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
-                                            <option value="" disabled>지역 선택</option>
+                                            <option value="서울시">서울시</option>
+                                            <option value="부산시">부산시</option>
                                         </select>
                                     </td>
                                     <th><label htmlFor="cGugun">구/군</label></th>
                                     <td>
                                         <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                            <option value="" disabled>세부지역 선택</option>
+                                            <option value="강서구">강서구</option>
+                                            <option value="강남구">강남구</option>
+                                            <option value="강북구">강북구</option>
+                                            <option value="강동구">강동구</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -148,7 +161,9 @@ const Register = ({
                                     <th><label htmlFor="cType">요양시설 유형</label></th>
                                     <td>
                                         <select name="cType" id="cType" {...register("cType", { required: true })}>
-                                            <option value="" disabled>유형 선택</option>
+                                            <option value="단독요양원">단독요양원</option>
+                                            <option value="상가요양원">상가요양원</option>
+                                            <option value="주간보호">주야간보호센터</option>
                                         </select>
                                     </td>
                                     <th><label htmlFor="cSize">면적(m2)</label></th>
@@ -249,19 +264,25 @@ const Register = ({
                             <div className="wrap">
                                 <label htmlFor="cSigun">시/군</label>
                                 <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
-                                    <option value="" disabled>지역 선택</option>
+                                    <option value="서울시">서울시</option>
+                                    <option value="부산시">부산시</option>
                                 </select>
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cGugun">구/군</label>
                                 <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                    <option value="" disabled>세부지역 선택</option>
+                                    <option value="강서구">강서구</option>
+                                    <option value="강남구">강남구</option>
+                                    <option value="강북구">강북구</option>
+                                    <option value="강동구">강동구</option>
                                 </select>
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cType">요양시설 유형</label>
                                 <select name="cType" id="cType" {...register("cType", { required: true })}>
-                                    <option value="" disabled>유형 선택</option>
+                                    <option value="단독요양원">단독요양원</option>
+                                    <option value="상가요양원">상가요양원</option>
+                                    <option value="주간보호">주야간보호센터</option>
                                 </select>
                             </div>
                             <div className="wrap">

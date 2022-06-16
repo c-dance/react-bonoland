@@ -2,7 +2,7 @@ import api, { consoleErr, authHeader } from ".";
 import axios from "axios";
 
 const USER_URL = {
-    login: 'user/loginProc',
+    login: '/user/loginProc',
     signUp: '/user/joinProc',
     findId: '/user/findEmailProc',
     findPwd: '/user/findPwdProc',
@@ -10,28 +10,20 @@ const USER_URL = {
 };
 
 /* === 로그인 === */
-export const userLogin = async user => {
-    const response = await api.post(USER_URL.login, {
-        userEmail : user.id,
-        userPwd : user.password
-    });
-
-    return response;
-};
+export const userLogin = async user => await api.post(USER_URL.login, {
+    userEmail : user.id,
+    userPwd : user.password
+});
 
 /* === 회원가입 === */
-export const userSignup = async user => {
-    const RESPONSE = await api.post(USER_URL.signUp, {
-        userName: user.userName,
-        userEmail: user.userId, 
-        userTel: user.userTel,
-        userPwd: user.userPwd01,
-        userCtg: user.userCtg,
-        userState: 1
-    });
-    
-    return RESPONSE;
-};
+export const userSignup = async user => await api.post(USER_URL.signUp, {
+    userName: user.userName,
+    userEmail: user.userId, 
+    userTel: user.userTel,
+    userPwd: user.userPwd01,
+    userCtg: user.userCtg,
+    userState: 1
+});
 
 
 /* === LOGOUT === */

@@ -10,6 +10,8 @@ const AuthenticationContainer = ({
     
     /* === 전화번호 === */
     const [ phoneNumber, setPhoneNumber ] = useState('');
+
+    const [ authNum, setAuthNum ] = useState('');
     
     /* === 타이머 === */
     const TIME_LIMIT = 15;
@@ -25,8 +27,12 @@ const AuthenticationContainer = ({
     /* === 전화번호 제출 === */
     const onPhoneSubmit = async data => {
         const RESPONSE = await getAuthNumber(data.phoneNumber);
+        console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) {
+            const AUTH_NUM = RESPONSE.data.message.substring(RESPONSE.data.message.length - 6);
             setPhoneNumber(data.phoneNumber);
+            setAuthNum(AUTH_NUM);
+            console.log(AUTH_NUM);
             setGetAuth(true);
         } else {
             setGetAuth(false);
@@ -36,12 +42,18 @@ const AuthenticationContainer = ({
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
-        const RESPONSE = await authApi(data.authNumber);
-
-        if(RESPONSE && RESPONSE.data.code === 1 ) {
-            onResultSubmit(RESPONSE); 
-        } else {
+        if(data.authNumber !== authNum) {
             setAuthNumberError("인증번호가 일치하지 않습니다.");
+        } else {
+            const RESPONSE = await authApi(data.authNumber);
+
+            console.log(RESPONSE);
+            if(RESPONSE && RESPONSE.data.code === 1 ) {
+                onResultSubmit(RESPONSE); 
+            } else {
+                console.log('error');
+                console.log('메시지 처리');
+            }
         }
     };
 

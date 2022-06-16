@@ -18,7 +18,7 @@ const UserInfoContainer = () => {
     const navigate = useNavigate();
 
     // 유저 아이디
-    const USER_ID = useSelector(state => state.User.id);
+    const USER_ID = useSelector(state => state.User.userInfo.id);
     const [ passwordMatch, setPasswordMatch ] = useState(false);
 
     const [ user, setUser ] = useState({});

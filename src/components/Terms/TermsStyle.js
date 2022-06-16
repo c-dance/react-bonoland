@@ -91,6 +91,7 @@ export const TabNavs = styled.div`
         color: ${ ({theme}) => theme.colors.gray600 };
         font-weight: ${({theme}) => theme.fontWeights.medium };
         text-align: center;
+        cursor: pointer;
 
         .mobile &  {
             display: flex;

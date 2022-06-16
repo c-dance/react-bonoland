@@ -34,6 +34,11 @@ export const ALARM = {
     DEACTIVATE: '/', 
 };
 
+export const LOGIN_REQUIRED = {
+    ACTIVATE: '/loginRequired',
+    DEACTIVATE: '/'
+}
+
 /* === ACTOIN CREATOR === */
 export const activateSignup = () => ({
     type: SIGNUP.ACTIVATE,
@@ -67,6 +72,11 @@ export const activateContact = () => ({
 
 export const activateAlarm = () => ({
     type: ALARM.ACTIVATE,
+    payload: true
+});
+
+export const activateLoginRequired = () => ({
+    type: LOGIN_REQUIRED.ACTIVATE,
     payload: true
 });
 
@@ -104,3 +114,9 @@ export const deactivateAlarm = () => ({
     type: ALARM.DEACTIVATE,
     payload: false
 });
+
+export const deactivateLoginRequired = () => ({
+    type: LOGIN_REQUIRED.DEACTIVATE,
+    payload: false
+});
+

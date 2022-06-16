@@ -13,7 +13,7 @@ const GlobalHeader = () => {
 
     const dispatch = useDispatch();
     const LOGGEDIN = useSelector(state => state.User.loggedIn);
-    const USER_NAME = useSelector(state => state.User.name);
+    const USER_NAME = useSelector(state => state.User.userInfo.name);
     
     return (
         <Header>

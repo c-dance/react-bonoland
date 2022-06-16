@@ -5,30 +5,27 @@ import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
 import Register from '../../components/Register/Register';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { activateAlert } from '../../store/actions/alert';
+import { registerCenter } from '../../api/service';
+import { isBrowser, isMobile } from 'react-device-detect';
+import { USER_AUTH } from '../../utils/user';
 
 const RegisterContainer = () => {
 
     const dispatch = useDispatch();
-
-    // 매물접수 디바이스별 레이아웃 처리
-    const MOBILE_DEVICE = useContext(LayoutContext) === 'mobile';
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     // 개인정보 활용동의 (1) 약관 받아오기
     const [ term, setTerm ] = useState('');
 
     // 개인정보 활용동의 (1) 활용동의 체크 (2) 활용동의 저장
-    const [ agreed, setAgreed ] = useState(false);
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
 
-    // 매물 접수폼 작성 (1) 접수 입력폼 (2) 접수 입력폼 검사 (3) 접수 입력폼 submit
-    const [ form, setForm ] = useState({});
-    const [ formFilled, setFormFilled ] = useState(false);
-    const [ formSubmitted, setFormSubmitted ] = useState(false);
+    // 로그인 되었을 때
+    const [ user, setUser ] = useState(null);
 
-    // 매물 접수폼 전송
-    const [ registerSuccess, setRegistereSuccess ] = useState(false);
+    
     
     // 매물접수 닫기
     const navigate = useNavigate();
@@ -36,30 +33,61 @@ const RegisterContainer = () => {
         navigate('/');
     };
     
-    const onAgreeSubmit = (data) => {
-        console.log(data);
+    const onAgreeSubmit = data => setAgreeSubmitted(data.agree);
 
-        setAgreeSubmitted(true);
-    };
-
-    const onFormSubmit = (event) => {
-        event.preventDefault();
-        setRegistereSuccess(true);
-    };
-
-    useEffect(() => {
-        if(registerSuccess) {
+    const onFormSubmit = async data => {
+        const RESPONSE = await registerCenter(data);
+        if(RESPONSE) {
+            deactivateRegister();
             dispatch(activateAlert({
-                title:"접수 완료",
-                contents: "매물 접수가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
+                title:"매물 접수",
+                contents: RESPONSE.data.message || "매물 접수가 완료되었습니다."
+            }));
+        } else {
+            dispatch(activateAlert({
+                title:"매물 접수 오류",
+                contents: "매물 접수 중 오류가 발생했습니다."
             }))
         }
-    }, [registerSuccess])
+    };
+
+    const RENDER_REGISTER = () => (
+        <>
+            {
+                !agreeSubmitted &&
+                <Agreement
+                    subTitle="개인정보 수집 동의"
+                    label="개인정보수집에 대한 내용에 동의합니다."
+                    content={ term }
+                    onAgreeSubmit={ onAgreeSubmit }
+                />
+            }
+            {
+                agreeSubmitted && 
+                <Register 
+                    device={ isBrowser? "browser" : "mobile" } 
+                    user={ user }
+                    onFormSubmit={ onFormSubmit }
+                />
+            }
+        </>
+    );
+
+    useEffect(() => {
+        if(IS_LOGGEDIN) {
+            const USER = USER_AUTH.get();
+            setUser({
+                uEmail: USER.id,
+                uName: USER.name,
+                uTel: USER.tel, 
+            });
+        }
+    }, [])
     
     return (
         <>
             {
-                !MOBILE_DEVICE && !registerSuccess &&
+                isBrowser &&
                 <Modal
                         open={ true }
                         close={ true }
@@ -67,45 +95,16 @@ const RegisterContainer = () => {
                         width="890"
                         title="매물 접수"
                     >
-                    {
-                        !agreeSubmitted &&
-                        <Agreement
-                            subTitle="개인정보 수집 동의"
-                            label="개인정보수집에 대한 내용에 동의합니다."
-                            content={ term }
-                            onAgreeSubmit={ onAgreeSubmit }
-                        />
-                    }
-                    {
-                        agreeSubmitted && 
-                        <Register 
-                            device="browser" 
-                            onFormSubmit={ onFormSubmit }
-                        />
-                    }
+                    { RENDER_REGISTER() }
                 </Modal>
             }
             {
-                MOBILE_DEVICE && !registerSuccess &&
+                isMobile &&
                 <MobileSection 
                         title="매물접수"
                         onBackClick={ deactivateRegister }
                     >
-                        {
-                            !agreeSubmitted &&
-                            <Agreement
-                                subTitle="개인정보 수집 동의"
-                                label="개인정보수집에 대한 내용에 동의합니다."
-                                content={ term }
-                                onAgreeSubmit={ onAgreeSubmit }
-                            />
-                        }
-                        {
-                            agreeSubmitted && 
-                            <Register 
-                                onFormSubmit={ onFormSubmit }
-                            />
-                        }
+                    { RENDER_REGISTER() }
                 </MobileSection>
             }
         </>

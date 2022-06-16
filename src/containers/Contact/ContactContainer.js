@@ -1,66 +1,71 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { LayoutContext } from '../../hooks/layout';
 import { useNavigate } from 'react-router';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
 import Contact from '../../components/Contact/Contact';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { activateAlert } from '../../store/actions/alert';
+import { contactCenter } from '../../api/service';
+import { USER_AUTH } from '../../utils/user';
+
 
 const ContactContainer = () => {
 
     const dispatch = useDispatch();
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     // 개인정보 활용동의 (1) 약관 받아오기
     const [ term, setTerm ] = useState('');
 
     // 개인정보 활용동의 (1) 활용동의 체크 (2) 활용동의 저장
-    const [ agreed, setAgreed ] = useState(false);
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
-
-    // 매수 문의폼 작성 (1) 접수 입력폼 (2) 접수 입력폼 검사 (3) 접수 입력폼 submit
-    const [ form, setForm ] = useState({});
-    const [ formFilled, setFormFilled ] = useState(false);
-    const [ formSubmitted, setFormSubmitted ] = useState(false);
 
     // 로그인 되었을 때
     const [ user, setUser ] = useState(null);
-
-    // 매수 문의폼 전송
-    const [ contactSuccess, setContactSuccess ] = useState(false);
     
-
-    // 약관 동의 제출
-    const onAgreeSubmit = data => {
-        console.log(data);
-
-        setAgreeSubmitted(true);
-    };
-
-    // 문의 폼 제출
-    const onFormSubmit = data => {
-        console.log(data);
-        setContactSuccess(true);
-    };
-
     // 매수문의 닫기
     const navigate = useNavigate();
     const deactivatContact = () => {
         navigate('/');
     };
 
-    useEffect(() => {
-        if(contactSuccess) {
+    // 약관 동의 제출
+    const onAgreeSubmit = data => setAgreeSubmitted(data.agree);
+
+    // 문의 폼 제출
+    const onFormSubmit = async data => {
+        const RESPONSE = await contactCenter(data);
+
+        if(RESPONSE) {
+            deactivatContact();
             dispatch(activateAlert({
-                title:"문의 완료",
-                contents: "매수 문의가 완료되었습니다. \n 입력하신 연락처 및 이메일을 통해 담당자가 회신 예정입니다. \n 감사합니다."
+                title:"매수 문의",
+                contents: RESPONSE.data.message || "매수 문의가 완료되었습니다."
+            }));
+        } else {
+            dispatch(activateAlert({
+                title:"문의 접수 오류",
+                contents: "문의 접수 중 오류가 발생했습니다."
             }))
         }
-    }, [contactSuccess]);
+    };
 
-    const template = () => (
+    useEffect(() => {
+        if(IS_LOGGEDIN) {
+            const USER = USER_AUTH.get();
+            console.log(USER);
+            setUser({
+                uEmail: USER.id,
+                uName: USER.name,
+                uTel: USER.tel
+            });
+        }
+    }, [])
+
+
+    const RENDER_CONTACT = () => (
         <>
             {
                 !agreeSubmitted && 
@@ -73,7 +78,6 @@ const ContactContainer = () => {
             }
             {
                 agreeSubmitted && 
-                !contactSuccess &&
                 <Contact 
                     user = { user } 
                     onFormSubmit={ onFormSubmit }
@@ -85,7 +89,7 @@ const ContactContainer = () => {
     return (
         <>
         {
-            isBrowser && !contactSuccess &&
+            isBrowser &&
             <Modal
                 open={ true }
                 close={ true }
@@ -93,16 +97,16 @@ const ContactContainer = () => {
                 width="890"
                 title="매수 문의"
             >
-                { template() }
+                { RENDER_CONTACT() }
             </Modal>
         }
         {
-            isMobile && !contactSuccess &&
+            isMobile &&
             <MobileSection 
                 title="매수문의" 
                 onBackClick={ deactivatContact }
             >
-                    { template() }
+                    { RENDER_CONTACT() }
             </MobileSection>
         }
     </>

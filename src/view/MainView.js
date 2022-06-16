@@ -16,6 +16,7 @@ import FindIdContainer from '../containers/Account/FindIdContainer';
 import LoginContainer from '../containers/Account/LoginContainer';
 import MapChartContainer from '../containers/MapChart/MapChartContainer';
 import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
+import LoginRequired from '../components/global/LoginRequired/LoginRequired';
 import Alert from '../containers/Alert/Alert';
 
 const MainView = ({ list, children }) => {
@@ -28,6 +29,7 @@ const MainView = ({ list, children }) => {
     const LOGIN_MODE  = useSelector(state => state.Mode.login);
     const FIND_ID_MODE  = useSelector(state => state.Mode.findId);
     const FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
+    const LOGIN_REQUIRED_MODE = useSelector(state => state.Mode.loginRequired);
     const CALCULATOR_MODE = useSelector(state => state.Mode.calculator);
     const ALARM_MODE = useSelector(state => state.Mode.alarm);
     const ALERT_MODE = useSelector(state => state.Alert.active);
@@ -44,6 +46,7 @@ const MainView = ({ list, children }) => {
                 { !IS_LOGGEDIN && LOGIN_MODE && <LoginContainer /> }
                 { !IS_LOGGEDIN && FIND_ID_MODE && <FindIdContainer /> }
                 { !IS_LOGGEDIN && FIND_PWD_MODE && <FindPwdContainer /> }
+                { !IS_LOGGEDIN && LOGIN_REQUIRED_MODE && <LoginRequired /> }
                 { IS_LOGGEDIN && CALCULATOR_MODE && <CalculatorContainer /> }
                 { ALERT_MODE && <Alert /> }
                 <MapChartContainer />
