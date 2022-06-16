@@ -14,7 +14,7 @@ export const useInput = initialValue => {
 export const useOnlyNum = initialValue => {
     const [value, setValue] = useState(initialValue);
 
-    const isOnlyNumber = event => {
+    const setOnlyNumber = event => {
         let value = getNumber(event.currentTarget.value);
         if(typeof value === "string") {
             event.preventDefault();
@@ -24,5 +24,9 @@ export const useOnlyNum = initialValue => {
         }
     };
 
-    return [ value, isOnlyNumber ];
+    const setClear = (defaultValue="") => {
+        setValue("");
+    };
+
+    return [ value, setOnlyNumber, setClear ];
 };

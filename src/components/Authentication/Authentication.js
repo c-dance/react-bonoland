@@ -1,9 +1,8 @@
 import { Form, Time, Description } from './AuthenticationStyle';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { isMobile } from 'react-device-detect';
 import { REGEXP } from '../../sheme/form';
 import { useForm } from 'react-hook-form';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 const timeFormat = seconds => {
     const second = parseInt(seconds%60).toString();
@@ -22,7 +21,17 @@ const Authentication = ({
     authNumberError
 }) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onSubmit", reValidateMode: "onSubmit", defaultValues: { "phoneNumber":phoneNumber } });
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({ 
+        mode: "onSubmit", 
+        reValidateMode: "onSubmit", 
+        defaultValues: { 
+            "phoneNumber": phoneNumber, 
+        } 
+    });
+
+    useEffect(() => {
+        setValue("authNumber", "");
+    }, [onAuth]);
 
     return (
         <Form onSubmit={handleSubmit(onAuth? onAuthSubmit : onPhoneSubmit)}>

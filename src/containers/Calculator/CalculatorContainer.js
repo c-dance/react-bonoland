@@ -10,8 +10,8 @@ import { module } from '../../themes/module';
 import { INCOME_DATASET, INCOME_RESULT, GET_INCOME_RESULT } from '../../sheme/calculator';
 
 const initialFormData = {
-    type: "주간보호센터",
-    capacity: "29",
+    type: "단독요양원",
+    capacity: "0",
     commons: "0",
     premiums: "0",
     premiumPrice: "0",
@@ -33,41 +33,39 @@ const CalculatorContainer = () => {
     const [ result, setResult ] = useState({});
 
     // 수익계산기 submit
-    const submitForm = data => {
-        setFormData(data);
-    };
+    const submitForm = data => calculateIncome(data);
 
     // 수익계산기 초기화
-    const resetForm = event => {
-        // event.preventDefault();
-        setFormData(INCOME_DATASET);
+    const resetForm = (event) => {
+        event.preventDefault();
+        setFormData(Object.assign({},initialFormData));
     };
 
     const calculateIncome = data => {
-        const results = GET_INCOME_RESULT(data);
-        setResult(results);
+        const HAS_DATA = Object.keys(data).filter( key => data[key] !== "0").length > 1;
+
+        if(HAS_DATA) {
+            const results = GET_INCOME_RESULT(data);
+            setResult(results);
+        } else {
+            setResult({});
+        }
     };
 
-    // 수익계산기 닫기
-    const closeCaclulator = () => {
-        dispatch(deactivateCalculator());
-    };
+    useEffect(() => {
+        calculateIncome(formData);
+    }, [formData]);
+    
 
     const CALCULATOR_TEMPLATE = () => (
         <CalculatorForm
-            formData02={ formData }
+            initialData={ formData }
             onFormSubmit={ submitForm }
             onFormReset={ resetForm }
         >
             { Object.keys(result).length > 0 && <CalculatorResult result={ result } />}
         </CalculatorForm>
     );
-
-    // [1] 직접 입력 후 form data 변경
-    // [2] fetch data 후 form data 변경
-    useEffect(() => {
-        calculateIncome(formData);
-    }, [formData]);
 
     return (
         <> 
@@ -76,7 +74,7 @@ const CalculatorContainer = () => {
             <Modal
                 open={ true }
                 close={ true }
-                onCloseClick={ closeCaclulator }
+                onCloseClick={() => {dispatch(deactivateCalculator());}}
                 title="수익 계산"
                 width="970"
             >
@@ -87,7 +85,7 @@ const CalculatorContainer = () => {
             isMobile &&
             <MobileSection 
                 title="수익 계산"
-                onBackClick={ closeCaclulator }
+                onBackClick={() => {dispatch(deactivateCalculator());}}
             >
             { CALCULATOR_TEMPLATE() }
             </MobileSection>

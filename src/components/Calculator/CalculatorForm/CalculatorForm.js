@@ -12,9 +12,9 @@ const getOptionsFromObject = (obj) => {
     return Object.keys(obj).map(key => key);
 };
 
-const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => {
+const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) => {
 
-    const [formData, setFormData] = useState(formData02);
+    const [formData, setFormData] = useState(initialData);
 
     /* === 입력값 세팅 & VALIDATION === */
     const [type, setType] = useState(formData.type); // 요양시설 타입
@@ -25,11 +25,11 @@ const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => 
     const [loan, setLoan] = useState(formData.loan); // 대출금(readonly)
     const [rent,  setRent] = useState(formData.Rent); // 월차임(readonly)
 
-    const [commons, setCommons] = useOnlyNum(formData.commons); // 일반병실 현원수
-    const [premiums, setPremiums] = useOnlyNum(formData.premiums); // 상급병실 현원수
-    const [premiumPrice, setPremiumPrice] = useOnlyNum(formData.premiumPrice); // 상급병실료
+    const [commons, setCommons, clearCommons] = useOnlyNum(formData.commons); // 일반병실 현원수
+    const [premiums, setPremiums, clearPremiums] = useOnlyNum(formData.premiums); // 상급병실 현원수
+    const [premiumPrice, setPremiumPrice, clearPremiumPrice] = useOnlyNum(formData.premiumPrice); // 상급병실료
     
-    const [helpers, setHelpers] = useOnlyNum(formData.helpers); // 추가 요양보호사 수
+    const [helpers, setHelpers, clearHelpers] = useOnlyNum(formData.helpers); // 추가 요양보호사 수
 
     const [warning, setWarning] = useState(false);
     const [warningText, setWarningText] = useState("");
@@ -96,6 +96,24 @@ const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => 
         onFormSubmit(dataset);  
     };
 
+    const setData = data => {
+        // 데이터 초기화
+        setCapacity(data.capacity);
+        setPrice(data.price);
+        setLoan(data.loan);
+        setRent(data.Rent);
+        setWarning(false);
+        setWarningText("");
+        clearCommons();
+        clearPremiums();
+        clearPremiumPrice();
+        clearHelpers();
+    };
+
+    useEffect(() => {
+        setData(initialData);
+    }, [initialData]);
+
     useEffect(() => {
         toggleCapacityOptions(type);
     }, [type]);
@@ -106,7 +124,7 @@ const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => 
 
 
     return (
-        <Wrapper>
+        <Wrapper className={ children? "calced" : "" }>
             <div>
             {
                 isBrowser && 
@@ -196,37 +214,68 @@ const CalculatorForm = ({ formData02, onFormSubmit, onFormReset, children }) => 
             }
             {
                 isMobile && 
-                <module.MobileForm onSubmit={ (event) => onFormSubmit(event) }>
+                <module.MobileForm 
+                    onSubmit={ event => handleSubmit(event) }
+                    onReset={ event => onFormReset(event) }
+                >
                     <fieldset className="cols">
-                        {
-                            CALCULATOR_FORM.map((item, idx) => (
-                            <div className="wrap" key={idx}>
-                                <label htmlFor={`cform${idx}`}>{ item.label }</label>
+                        <div className="wrap">
+                            <label htmlFor="cf01">1. 요양시설 타입</label>
+                            <select id="cf01" name="cf01" value={type} onChange={ event => setType(event.currentTarget.value) }>
+                                <option value="단독요양원">단독요양원</option>
+                                <option value="상가요양원">상가요양원</option>
+                                <option value="주간보호센터">주간보호센터</option>
+                            </select>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf02">2. 정원수</label>
+                            <select id="cf02" name="cf02" value={capacity} onChange={ event => setCapacity(event.currentTarget.value) }>
                                 {
-                                    item.type === "select" &&
-                                    <select name={`cform${idx}`} id={`cform${idx}`}>
-                                        {
-                                            item.options.map((item, idx) => (
-                                                <option 
-                                                    key={item}
-                                                    value={item} 
-                                                    selected={ idx === 0 }
-                                                >{item}</option>
-                                            ))
-                                        }
-                                    </select>
+                                    capacityOptions.map((item, idx) => 
+                                        <option 
+                                            key={idx}
+                                            value={item} 
+                                        >{item}</option>
+                                    )
                                 }
-                                {
-                                    item.type === "input" &&
-                                    <input type="text" name={`cform${idx}`} id={`cform${idx}`} placeholder={item.value} />
-                                }
-                            </div>
-                            ))
-                        }
+                            </select>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf03">3. 현원수(일반병실)</label>
+                            <input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "commons") }/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf04">4. 현원수(상급병실)</label>
+                            <input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "premiums") }/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf05">5. 상급병실료</label>
+                            <input type="text" id="cf05" name="cf05" value={premiumPrice} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiumPrice(event) }/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf01">6. 추가 요양보호사</label>
+                            <input type="text" id="cf06" name="cf06" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) }/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf02">7. 예상 가산금(원/월)</label>
+                            <input type="text" id="cf07" name="cf07" readOnly={true} placeholder="-" autoComplete="off"/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf03">8. 매매가(보증금)</label>
+                            <input type="text" id="cf08" name="cf08" readOnly={true} value={price}/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf04">9. 대출금</label>
+                            <input type="text" id="cf09" name="cf09" readOnly={true} value={loan}/>
+                        </div>
+                        <div className="wrap">
+                            <label htmlFor="cf05">10. 월차임(주간보호)</label>
+                            <input type="text" id="cf10" name="cf10" readOnly={true} value={rent}/>
+                        </div>
                     </fieldset>
                     <div className="actions">
                         <button type="submit">계산하기</button>
-                        <button type="reset">초기화</button>
+                        {/* <button type="reset">초기화</button> */}
                     </div>
                 </module.MobileForm>
             }

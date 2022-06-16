@@ -2,8 +2,10 @@ import styled from 'styled-components';
 import { module } from '../../../themes/module';
 
 export const Wrapper = styled(module.scrollWrapper)`
-    height: 600px;
+    height: auto;
     max-height: calc(100vh - 200px);
+
+    &.calced { height: 600px; }
 
     > div {
         display: flex;

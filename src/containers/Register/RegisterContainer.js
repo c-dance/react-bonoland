@@ -23,7 +23,7 @@ const RegisterContainer = () => {
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
 
     // 로그인 되었을 때
-    const [ user, setUser ] = useState(null);
+    const [ user, setUser ] = useState({ uName: "", uEmail: "", uTel: "" });
 
     
     

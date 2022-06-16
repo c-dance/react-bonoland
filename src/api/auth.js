@@ -4,7 +4,7 @@ const AUTH_URL = {
     authNum: '/user/authNumCheck', 
     signUpAuth: '/user/joinAuthProc', 
     findIdAuth: '/user/findEmailProc',
-    findPwdAuth: '',
+    findPwdAuth: '/user/findPwdProc',
     newPhone: '',
 }
 

@@ -47,7 +47,7 @@ const MainView = ({ list, children }) => {
                 { !IS_LOGGEDIN && FIND_ID_MODE && <FindIdContainer /> }
                 { !IS_LOGGEDIN && FIND_PWD_MODE && <FindPwdContainer /> }
                 { !IS_LOGGEDIN && LOGIN_REQUIRED_MODE && <LoginRequired /> }
-                { IS_LOGGEDIN && CALCULATOR_MODE && <CalculatorContainer /> }
+                { CALCULATOR_MODE && <CalculatorContainer /> }
                 { ALERT_MODE && <Alert /> }
                 <MapChartContainer />
                 <MapContainer />

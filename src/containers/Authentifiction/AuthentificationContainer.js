@@ -8,13 +8,12 @@ const AuthenticationContainer = ({
     description 
 }) => {
     
-    /* === 전화번호 === */
+    /* === 전화번호 | 인증번호 === */
     const [ phoneNumber, setPhoneNumber ] = useState('');
-
     const [ authNum, setAuthNum ] = useState('');
     
     /* === 타이머 === */
-    const TIME_LIMIT = 15;
+    const TIME_LIMIT = 5;
     const [ timer, setTimer ] = useState(TIME_LIMIT);
     let intervalTimer;
     let timeout;
@@ -27,13 +26,13 @@ const AuthenticationContainer = ({
     /* === 전화번호 제출 === */
     const onPhoneSubmit = async data => {
         const RESPONSE = await getAuthNumber(data.phoneNumber);
-        console.log(RESPONSE);
+
         if(RESPONSE && RESPONSE.data.code === 1) {
             const AUTH_NUM = RESPONSE.data.message.substring(RESPONSE.data.message.length - 6);
             setPhoneNumber(data.phoneNumber);
             setAuthNum(AUTH_NUM);
-            console.log(AUTH_NUM);
             setGetAuth(true);
+            alert(AUTH_NUM);
         } else {
             setGetAuth(false);
             setPhoneNumberError('전화번호 전송에 실패했습니다. 전화번호를 다시 입력해 주세요.');
@@ -42,6 +41,7 @@ const AuthenticationContainer = ({
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
+
         if(data.authNumber !== authNum) {
             setAuthNumberError("인증번호가 일치하지 않습니다.");
         } else {
@@ -50,6 +50,7 @@ const AuthenticationContainer = ({
             console.log(RESPONSE);
             if(RESPONSE && RESPONSE.data.code === 1 ) {
                 onResultSubmit(RESPONSE); 
+
             } else {
                 console.log('error');
                 console.log('메시지 처리');
@@ -103,7 +104,6 @@ const AuthenticationContainer = ({
             setIntervalTimer();
             return () => clearIntervalTimer();
         } else {
-
         }
     }, [getAuth]);
 

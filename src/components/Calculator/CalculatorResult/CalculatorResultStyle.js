@@ -20,10 +20,24 @@ export const Caption = styled.div`
     font-weight: ${ ({theme}) => theme.fontWeights.medium };
 `;
 
+export const CalcHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 2px solid ${({theme}) => theme.colors.primary };
+    color: ${({theme}) => theme.colors.gray900 };
+    
+    .title { 
+        font-size: ${({theme}) => theme.fontSizes.l };
+        font-weight: ${({theme}) => theme.fontWeights.medium };
+    }
+`;
+
 export const CalcForm = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 24px;
     width: 100%;
     ${'' /* height: auto; */}
 
