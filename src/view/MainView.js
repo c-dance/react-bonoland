@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useSelector } from 'react-redux';
@@ -18,6 +19,9 @@ import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
 import Alert from '../containers/Alert/Alert';
 
 const MainView = ({ list, children }) => {
+
+    const { params } = useParams();
+    console.log(params);
 
     const LIST_MODE = list;
     const SIGNUP_MODE  = useSelector(state => state.Mode.signup);

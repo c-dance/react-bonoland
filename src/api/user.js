@@ -1,28 +1,38 @@
 import api, { consoleErr, authHeader } from ".";
 import axios from "axios";
 
-/* === LOGIN === */
+const USER_URL = {
+    login: 'user/loginProc',
+    signUp: '/user/joinProc',
+    findId: '/user/findEmailProc',
+    findPwd: '/user/findPwdProc',
+    newPwd: '/user/modifyPwdProc'
+};
+
+/* === 로그인 === */
 export const userLogin = async user => {
-    const source = axios.CancelToken.source();
-    // const url = 'http://localhost:3500/login';
-    // const url = 'user/loginProc';
+    const response = await api.post(USER_URL.login, {
+        userEmail : user.id,
+        userPwd : user.password
+    });
 
-    console.log(user);
+    return response;
+};
 
-    try {
-        const response = await axios.post("/user/loginProc", {
-            userEmail : user.userId,
-            userPwd : user.userPwd
-        }, { 
-            cancelToken: source.token
-        });
-        return response;
-    } catch(err) {
-        consoleErr(err);
-    } finally {
-        source.cancel();
-    }
-}
+/* === 회원가입 === */
+export const userSignup = async user => {
+    const RESPONSE = await api.post(USER_URL.signUp, {
+        userName: user.userName,
+        userEmail: user.userId, 
+        userTel: user.userTel,
+        userPwd: user.userPwd01,
+        userCtg: user.userCtg,
+        userState: 1
+    });
+    
+    return RESPONSE;
+};
+
 
 /* === LOGOUT === */
 export const userLogout = async () => {
@@ -32,7 +42,6 @@ export const userLogout = async () => {
 
     try {
         const response = await api.get(url, {
-            headers: authHeader(),
             cancelToken: source.token
         });
 
@@ -42,53 +51,8 @@ export const userLogout = async () => {
     } finally {
         source.cancel();
     }
-}
+};
 
-/* === SIGN_UP === */
-export const userSignup = async user => {
-
-    const source = axios.CancelToken.source();
-    // const url = '/user/joinProc';
-    // const url = '/user/joinProc';
-
-    try {
-        // const response = await axios.get('https://random-data-api.com/api/app/random_app', {
-        //     userName: user.name,
-        //     userEmail: user.id, 
-        //     userTel: user.phone,
-        //     userPwd: user.password,
-        //     userCtg: user.type,
-        //     userState: 1
-        //     // userAgreement: user.agreement
-        // }, { 
-        //     cancelToken: source.token,
-        // });
-        const response = await axios.post('https://bonoland.co.kr/user/joinProc', {
-            userName: user.name,
-            userEmail: user.id, 
-            userTel: user.phone,
-            userPwd: user.password,
-            userCtg: user.type,
-            userState: 1
-            // userAgreement: user.agreement
-        }, { 
-            cancelToken: source.token,
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods':  'GET, POST, OPTIONS, PUT, PATCH, DELETE',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-            }
-        });
-        console.log(response);
-        return response;
-    } catch (err) {
-        console.log(err);
-    } finally {
-        source.cancel();
-    }
-}
 
 /* === UNSUBSCRIBE === */
 export const UserUnsubecribe = async user => {
@@ -101,8 +65,7 @@ export const UserUnsubecribe = async user => {
             userEmail: user.id,
             userAgree: user.agreement
         },{ 
-            cancelToken: source.token, 
-            headers: authHeader()
+            cancelToken: source.token
         });
         return response;
     } catch(err) {
@@ -124,7 +87,7 @@ export const getUserInfo = async user => {
                 userPwd: user.password
             },
             cancelToken: source.token, 
-            headers: authHeader()
+            
         });
         return response;
     } catch(err) {
@@ -146,7 +109,7 @@ export const modifyUserInfo = async user => {
             userMemo: user.memo
         },{ 
             cancelToken: source.token, 
-            headers: authHeader()
+            
         });
         return response;
     } catch(err) {
@@ -168,7 +131,6 @@ export const getUserRecentCenters = async id => {
 
     try {
         const response = await api.get(url , { 
-            headers: authHeader(),
             cancelToken: source.token 
         });
         return response;
@@ -189,7 +151,6 @@ export const getUserScrapCenters = async id => {
 
     try {
         const response = await api.get(url , { 
-            headers: authHeader(),
             cancelToken: source.token 
         });
         return response;
@@ -210,7 +171,6 @@ export const getUserAlarmCenters = async id => {
 
     try {
         const response = await api.get(url , { 
-            headers: authHeader(),
             cancelToken: source.token 
         });
         return response;

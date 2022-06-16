@@ -8,55 +8,36 @@ export const USER = {
 };
 
 export const login = data => async dispatch => {
-
     const RESPONSE = await userLogin(data);
 
-    if(RESPONSE) {
-        const LOGIN_SUCCESS = RESPONSE.status === 201;
-    
-        if(LOGIN_SUCCESS) {
-            const USER_INFO = { 
-                id: "asdf@asdf.com", 
-                name: `김보노 (${new Date().getHours()}시 ${new Date().getMinutes()}분)`, 
-                accessToken: "1234asdf", 
-                refresToken: "123asdf" 
-            }; // dummy data
-            // const USER_INFO = RESPONSE.data;
-            USER_AUTH.store(USER_INFO); // id, name, accessToken, refreshToken
-            dispatch({
-                type: USER.LOGIN,
-                payload: {
-                   id: USER_INFO.id,
-                   name: USER_INFO.name
-                }
-            })
-            dispatch({
-                type: ALERT.ACTIVATE, 
-                payload: {
-                    title: "로그인 성공",
-                    contents: RESPONSE.message || "로그인 성공"
-                }
-            })
-            
-        } else {
-            dispatch({
-                type: ALERT.ACTIVATE, 
-                payload: {
-                    title: "로그인 실패",
-                    contents: RESPONSE.message || "다시 시도해 주세요"
-                }
-            })
-        }
+    console.log(RESPONSE);
 
+    if(RESPONSE && RESPONSE.data.code === 1) {
+        const USER_INFO = { 
+            id: RESPONSE.data.result.userEmail,
+            name: RESPONSE.data.result.userName, 
+            type: RESPONSE.data.result.userCtg,
+            tel: RESPONSE.data.result.userTel
+        };
+
+        USER_AUTH.store(USER_INFO); 
+
+        dispatch({
+            type: USER.LOGIN,
+            payload: {
+               id: USER_INFO.id,
+               name: USER_INFO.name
+            }
+        })  
     } else {
         dispatch({
-            type: ALERT.ACTIVATE,
+            type: ALERT.ACTIVATE, 
             payload: {
-                title: "로그인 오류", 
-                contents: "다시 시도해 주세요."
+                title: "로그인 실패",
+                contents: RESPONSE.data.message || "다시 시도해 주세요"
             }
         })
-    }
+    }   
 }
 
 export const setLoggedIn = user => ({

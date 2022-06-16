@@ -25,10 +25,7 @@ const AuthenticationContainer = ({
     /* === 전화번호 제출 === */
     const onPhoneSubmit = async data => {
         const RESPONSE = await getAuthNumber(data.phoneNumber);
-
-        console.log(RESPONSE);
-
-        if(RESPONSE) { // if(RESPONSE.data.success === true)
+        if(RESPONSE && RESPONSE.data.code === 1) {
             setPhoneNumber(data.phoneNumber);
             setGetAuth(true);
         } else {
@@ -39,11 +36,9 @@ const AuthenticationContainer = ({
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
-        const RESPONSE = await authApi(data.phoneNumber, data.authNumber);
+        const RESPONSE = await authApi(data.authNumber);
 
-        console.log(RESPONSE);
-
-        if(RESPONSE) {
+        if(RESPONSE && RESPONSE.data.code === 1 ) {
             onResultSubmit(RESPONSE); 
         } else {
             setAuthNumberError("인증번호가 일치하지 않습니다.");

@@ -6,7 +6,7 @@ export const getAllTerms = async () => {
 
     const source = axios.CancelToken.source();
     // const url = '/terms';
-    const url = 'data02/terms.json';
+    const url = 'http://localhost:3500/data02/terms.json';
 
     try {
         const response = await api.get(url , { cancelToken: source.token });

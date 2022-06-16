@@ -1,49 +1,25 @@
-import api, { consoleErr } from '.';
-import axios from 'axios';
+import api from '.';
 
-/* === 전화번호 인증(계정찾기/정보조회) : 인증번호 받기 === */
+const AUTH_URL = {
+    authNum: '/user/authNumCheck', 
+    signUpAuth: '/user/joinAuthProc', 
+    findIdAuth: '/user/findEmailProc',
+    findPwdAuth: '',
+    newPhone: '',
+}
+
 export const getAuthNumber = async phoneNumber  => {
-    const source = axios.CancelToken.source();
-    // const url = '/user/authNumCheck';
-    const url = 'http://localhost:3500/auth';
-    
-    try {
-        const response = await api.post(url, {
-            userTel: phoneNumber
-        }, {
-            cancelToken: source.token
-        });
-        console.log(response);
-        return response;
-    } catch(err) {
-        consoleErr(err);
-    } finally {
-        source.cancel();
-    }
+    const RESPONSE = await api.post(AUTH_URL.authNum, phoneNumber);
+    return RESPONSE;
 };
 
-const getAuth = async (authUrl, phoneNumber, authNumber) => {
-    const source = axios.CancelToken.source();
-    // const url = `/user/${authUrl}`;
-    const url = `http://localhost:3500/${authUrl}`;
-    
-    try {
-        const response = await api.post(url, {
-            userTel: phoneNumber, 
-            userAuth: authNumber
-        }, {
-            cancelToken: source.token
-        });
-        return response;
-    } catch(err) {
-        consoleErr(err);
-    } finally {
-        source.cancel();
-    }
+const getAuth = async (authUrl,authNumber) => {
+    const RESPONSE = await api.post(authUrl, authNumber);
+    return RESPONSE;
 };
 
-export const getSignUpAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
-export const getFindIdAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
-export const getFindPwdAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
-export const getNewPhoneAuth = (phoneNumber, authNumber) => getAuth("auth", phoneNumber, authNumber);
+export const getSignUpAuth = authNumber => getAuth(AUTH_URL.signUpAuth,authNumber);
+export const getFindIdAuth = authNumber => getAuth(AUTH_URL.findIdAuth, authNumber);
+export const getFindPwdAuth = authNumber => getAuth(AUTH_URL.findPwdAuth, authNumber);
+export const getNewPhoneAuth = authNumber => getAuth(AUTH_URL.newPhone, authNumber);
 

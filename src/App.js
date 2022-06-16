@@ -3,11 +3,9 @@ import React, { useEffect } from 'react';
 import { USER_AUTH } from "./utils/user";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggedIn } from "./store/actions/user";
-import { activateLogin } from './store/actions/mode';
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-import LoginRequired from './containers/global/LoginRequired/LoginRequired';
 // CENTERS
 import CenterListContainer from './containers/Center/CenterListContainer';
 import CenterItemContainer from './containers/Center/CenterItemContainer';
@@ -43,18 +41,20 @@ const App = () => {
         id: infos.id,
         name: infos.name
     }))
-  }
+  };
 
   const ONLY_USER = component => {
     if(USER_LOGGEDIN) return component;
-    else return <Navigate to='/login' replace />;
-  }
+    else return <Navigate to='/auth' replace />;
+  };
+
+  const LOGIN_REQUIRED = useLocation().pathname === auth;
 
   return (
     <Routes>
       <Route element={ <MainView list={ true }/> }>
         <Route exact path="/"/>
-        <Route exact path="/login" element={<LoginRequired />}/>
+        <Route exact path="/auth"/>
         <Route exact path="/user" element={ ONLY_USER(<UserMenuContainer />) } />
         <Route exact path="/user/recent" element={ ONLY_USER(<UserRecentContainer />) } />
         <Route exact path="/user/scrap" element={ ONLY_USER(<UserScrapContainer />) } />
