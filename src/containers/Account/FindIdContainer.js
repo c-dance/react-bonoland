@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { useSelector, useDispatch } from 'react-redux';
-import { activateFindPwd, deactivateFindId } from '../../store/actions/mode';
+import { useDispatch } from 'react-redux';
+import { activateFindPwd, deactivateFindId, activateSignup } from '../../store/actions/mode';
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import { module } from '../../themes/module';
@@ -16,7 +16,7 @@ const FindIdContainer = () => {
     const dispatch = useDispatch();
 
     const [ modalProps, setModalProps ] = useState(modalBaseProps);
-    const [ authSuccess, setAuthSuccess ] = useState(false);
+    const [ authSuccess, setAuthSuccess ] = useState(null);
     const [ userId, setUserId ] = useState("");
 
     const initModalProps = (prop) => {
@@ -24,19 +24,14 @@ const FindIdContainer = () => {
     };
 
     const onResultSubmit = result => {
-        // test
-        const RESULT = {
-            bonoUser: true,
-            message: 'bono12@naver.com'
-        }
-        const IS_USER = RESULT.bonoUser;
-        if(!IS_USER) {
+        console.log(result);
+        if(result && result.data.code === 1) {
+            setUserId(result.data.message);
+            setAuthSuccess(true);
+            initModalProps(FIND_ID.SUCCESS);
+        } else {
             setAuthSuccess(false);
             initModalProps(FIND_ID.FAIL);
-        } else {
-            setAuthSuccess(true);
-            setUserId(RESULT.message);
-            initModalProps(FIND_ID.SUCCESS);
         }
     };
 
@@ -63,7 +58,7 @@ const FindIdContainer = () => {
     const RENDER_TEMPLATE = () => (
         <>
             {
-                !authSuccess && 
+                authSuccess === null && 
                 <AuthenticationContainer
                     authApi={ getFindIdAuth }
                     onResultSubmit={ onResultSubmit }
@@ -71,8 +66,14 @@ const FindIdContainer = () => {
                 />
             }
             {
-                authSuccess &&
+                authSuccess === true &&
                 <FindIdSuccess data={ userId } />
+            }
+            {
+                authSuccess === false &&
+                <module.SubmitButton
+                    onClick={ () => dispatch(activateSignup()) }
+                >회원가입</module.SubmitButton>
             }
         </>
     );

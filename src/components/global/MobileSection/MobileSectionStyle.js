@@ -42,5 +42,5 @@ export const Contents = styled(module.scrollWrapper)`
     left: 0;
     width: 100%;
     height: calc(100% - 56px);
-    padding: 40px 16px;
+    padding: 40px 16px 56px;
 `;

@@ -27,7 +27,7 @@ const Login = ({
                         name="userId"
                         id="userId"
                         type="text" 
-                        className={ isMobile && "bd" } 
+                        className={ isMobile? "bd" : "" } 
                         placeholder="아이디"  
                         {...register("userId", { required: true, pattern: REGEXP.email })}
                     />
@@ -44,7 +44,7 @@ const Login = ({
                         name="userPwd"
                         id="userPwd"
                         type="password" 
-                        className={ isMobile && "bd" } 
+                        className={ isMobile? "bd" : "" } 
                         placeholder="비밀번호"
                         {...register("userPwd", { required: true })}
                     />

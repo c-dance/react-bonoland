@@ -1,18 +1,31 @@
 import styled from 'styled-components';
 import { module } from '../../../themes/module';
+import { isBrowser } from 'react-device-detect';
 
 export const Wrapper = styled(module.scrollWrapper)`
     height: auto;
     max-height: calc(100vh - 200px);
 
-    &.calced { height: 600px; }
+    &.calced { 
+        height: 600px;
+        .mobile & {
+            height: 100%;
+            max-height: calc(100% - 56px);
+        }
+    }
 
     > div {
         display: flex;
         flex-direction: column;
         gap: 56px;
         padding-bottom: 40px;
+
+        .mobile & {
+            gap: 0;
+            padding-bottom: 0;
+        }
     }
+
 `;
 
 export const Form = styled.form`

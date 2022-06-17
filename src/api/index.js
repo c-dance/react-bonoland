@@ -13,8 +13,8 @@ api.interceptors.request.use(function(config){
     config.headers["cache-control"] = "no-cache";
 
     return config;
-}, function(req) {
-    const currentRequest = req;
+}, function(request) {
+    const currentRequest = request;
 
     if(executingRequests[currentRequest.url]) {
         const source = executingRequests[currentRequest.url];

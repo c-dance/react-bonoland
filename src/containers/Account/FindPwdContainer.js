@@ -1,34 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import NewPassword from '../../components/Account/NewPassword/NewPassword';
 import { module } from '../../themes/module';
 import { FIND_PWD } from '../../sheme/modal';
-import { activateLogin, activateFindId, deactivateFindPwd } from '../../store/actions/mode';
+import { activateLogin, activateFindId, deactivateFindPwd, activateSignup } from '../../store/actions/mode';
 import Section from '../../components/ui/Section/Section';
 import FindPwdSuccess from '../../components/Account/FindPwdSuccess/FindPwdSuccess';
-import { getFindPwdAuth } from '../../api/auth';
+import { getFindPwdAuth, getNewPwdAuth } from '../../api/auth';
+import { activateAlert } from '../../store/actions/alert';
 
 const FindPwdContainer = () => {
 
     const dispatch = useDispatch();
 
-    let auth = useSelector(state => state.Auth.authentificated);
-    let phone = useSelector(state => state.Auth);
-
-    const [ authResult, setAuthResult ] = useState(false);
+    const [ authSuccess, setAuthSuccess ] = useState(null);
     const [ noAccount, setNoAccount ] = useState(null);
-    const [ newPwdSuccess, setNewPwdSuccess ] = useState(false);
+    const [ newPwdSuccess, setNewPwdSuccess ] = useState(null);
 
-    const onFormSubmit = data => {
+    const onFormSubmit = async data => {
         console.log(data);
-        setNewPwdSuccess(true);
+        // setNewPwdSuccess(true);
+        const RESPONSE = await getNewPwdAuth(data.newPwd01);
+        console.log(RESPONSE);
+        if(RESPONSE && RESPONSE.data.code === 1) {
+            setNewPwdSuccess(true);
+        } else {
+            setNewPwdSuccess(false);
+            alert(RESPONSE.data.message);
+        }
     };
 
     const onResultSubmit = result => {
-        setAuthResult(result);
+        console.log(result);
+        if(result && result.data.code === 1) {
+            setAuthSuccess(true);
+        } else {
+            setAuthSuccess(false);
+            dispatch(activateAlert({
+                title: "비밀번호 찾기",
+                contents: result.data.message || "비밀번호 찾기에 실패했습니다. 다시 시도해 주세요."
+            }))
+        }
     };
 
     /* === props === */
@@ -60,9 +75,10 @@ const FindPwdContainer = () => {
                 isBrowser &&
                 <>
                     {
-                        !authResult && 
+                        authSuccess === null && 
                         <Modal {...modalProps}>
                             <AuthenticationContainer 
+                                authApi={ getFindPwdAuth }
                                 onResultSubmit={ onResultSubmit }
                                 description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 아이디를 확인하실 수 있습니다."
                             />
@@ -72,16 +88,18 @@ const FindPwdContainer = () => {
                         </Modal>
                     }
                     {
-                        !authResult && noAccount &&
+                        authSuccess === false && 
                         <Modal {...failedModalProps}>
-                            <>경고</>
+                            <module.SubmitButton
+                                onClick={ () => dispatch(activateSignup()) }
+                            >회원가입</module.SubmitButton>
                             <module.ModalAction>
                                 <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
                             </module.ModalAction>
                         </Modal>
                     }
                     {
-                        authResult && !newPwdSuccess &&
+                        authSuccess === true && !newPwdSuccess &&
                         <Modal {...writeModalProps}>
                             <NewPassword 
                                 onFormSubmit={ onFormSubmit } 
@@ -92,7 +110,7 @@ const FindPwdContainer = () => {
                         </Modal>
                     }
                     {
-                        authResult && newPwdSuccess &&
+                        authSuccess && newPwdSuccess &&
                         <Modal {...successModalProps}>
                             <module.ModalAction>
                                 <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button>
@@ -106,7 +124,7 @@ const FindPwdContainer = () => {
                 isMobile &&
                 <Section {...sectionProps}>
                     {
-                        !authResult && 
+                        !authSuccess && 
                         <>
                             <AuthenticationContainer 
                                 onResultSubmit={ onResultSubmit }
@@ -115,19 +133,19 @@ const FindPwdContainer = () => {
                         </>
                     }
                     {
-                        !authResult && noAccount &&
+                        !authSuccess && noAccount &&
                         <>
                             <>경고</>
                         </>
                     }
                     {
-                        authResult && !newPwdSuccess &&
+                        authSuccess && !newPwdSuccess &&
                         <NewPassword 
                             onFormSubmit={ onFormSubmit } 
                         />
                     }
                     {
-                        authResult && newPwdSuccess &&
+                        authSuccess && newPwdSuccess &&
                         <FindPwdSuccess />
                     }
                     <module.SectionLink className="btm">

@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
-import { getAuthNumber, getAuthResult } from '../../api/auth';
+import { getAuthNumber } from '../../api/auth';
+import { useDispatch } from "react-redux";
+import { activateAlert } from '../../store/actions/alert';
 
 const AuthenticationContainer = ({ 
     authApi,
     onResultSubmit,
+    onPhoneSave = () => {},
     description 
 }) => {
     
+    const dispatch = useDispatch();
+
     /* === 전화번호 | 인증번호 === */
     const [ phoneNumber, setPhoneNumber ] = useState('');
     const [ authNum, setAuthNum ] = useState('');
     
     /* === 타이머 === */
-    const TIME_LIMIT = 5;
+    const TIME_LIMIT = 180;
     const [ timer, setTimer ] = useState(TIME_LIMIT);
     let intervalTimer;
     let timeout;
@@ -41,20 +46,13 @@ const AuthenticationContainer = ({
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
-
         if(data.authNumber !== authNum) {
             setAuthNumberError("인증번호가 일치하지 않습니다.");
         } else {
-            const RESPONSE = await authApi(data.authNumber);
-
-            console.log(RESPONSE);
-            if(RESPONSE && RESPONSE.data.code === 1 ) {
-                onResultSubmit(RESPONSE); 
-
-            } else {
-                console.log('error');
-                console.log('메시지 처리');
-            }
+            const RESPONSE = await authApi(phoneNumber);
+            onPhoneSave(phoneNumber);
+            if(RESPONSE) onResultSubmit(RESPONSE);
+            else onResultSubmit(null);
         }
     };
 

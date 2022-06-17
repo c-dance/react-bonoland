@@ -13,6 +13,9 @@ export const Card = styled.article`
     p{
         color: ${({ theme }) => theme.colors.gray600 };
         line-height: 1.625;
+        max-height: 104px;
+        ${'' /* height: 104px; */}
+        text-overflow: ellipsis;
     }
 
     &.wrapper {

@@ -1,9 +1,10 @@
 import UserAlarmForm from '../../components/User/UserAlarmForm/UserAlarmForm';
 import Section from '../../components/ui/Section/Section';
-import React, { useState, useEvent, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { deactivateAlarm } from '../../store/actions/mode';
 import { Regions } from '../../sheme/alarm';
+import { setUserLocalAlarm } from '../../api/user';
 
 const UserAlarmFormContainer = () => {
 
@@ -11,9 +12,20 @@ const UserAlarmFormContainer = () => {
 
     const [ data, setData ] = useState(new Object(Regions));
 
-    const onFormSubtmit = () => {
+    const onFormSubtmit = async () => {
         console.log(data);
-        // 데이터 전송
+        const alaramData = {
+            userEmail: useSelector(state => state.User.userInfo.id),
+            sidos: [],
+            gyeonggidos: []
+        };
+
+        // const RESPONSE = await setUserLocalAlarm(alaramData);
+        // if(RESPONSE) {
+        //     //알람 세팅 완료
+        // } else {
+        //     //알람 세팅 실패
+        // }
     };
 
     const onFormChange = (key, idx, value) => {

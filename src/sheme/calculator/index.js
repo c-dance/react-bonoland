@@ -445,8 +445,8 @@ export const TYPE_AND_INSURANCE = {
 export  const TYPE_AND_ADMIN_EXPENSE = {
     단독요양원: {
         rate: 0.0714,
-        unit: 7500,
-        calc: capacity => Math.round(0.0714 * 7500 * capacity) * 100
+        unit: 5000,
+        calc: capacity => Math.round(0.0714 * 5000 * capacity) * 100
     },
     상가요양원: {
         rate: 0.0714,
@@ -462,6 +462,8 @@ export  const TYPE_AND_ADMIN_EXPENSE = {
 
 export const GET_INCOME_RESULT = dataset => {
 
+    console.log(dataset);
+
     const currentCapacity = getNumber(dataset.commons) + getNumber(dataset.premiums);
     const INCOME = TYPE_AND_UNITS[dataset.type];
     const EXPENDITURE = TYPE_AND_EXPENDITURE[dataset.type];
@@ -471,46 +473,16 @@ export const GET_INCOME_RESULT = dataset => {
     EMPLOY["요양보호사"] = parseInt(currentCapacity / 2.5);
 
     const ADMIN_EXPENSE = TYPE_AND_ADMIN_EXPENSE[dataset.type].calc(getNumber(dataset.capacity));
+    console.log( parseInt(0.0714 * 7500 * dataset.capacity) * 100);
     const RENT_EXPENSE = Math.round((getNumber(dataset.loan) * 0.035) / 12);
-    let INSURANCE_EXPENSE = 0;
-
-    let TOTAL_INCOME = 0;
-    let TOTAL_EMPLOY = 0;
-    let TOTAL_EXPENDITURE = 0;
-    let TOTAL_NOT_EMPLOY = 0;
-    let TOTAL_INCOME_PER_MONTH = 0;
     
-    /* TOTAL_INCOME */
-    Object.keys(INCOME).map(key => { TOTAL_INCOME += INCOME[key] * currentCapacity; });
-    TOTAL_INCOME += getNumber(dataset.premiumPrice) * getNumber(dataset.premiums); // 상급병실료
-
-    /* TOTAL_EMPLOY */
-    Object.keys(EMPLOY).map(key => { 
-        if(key === "시설장" || key === "관리인") TOTAL_EMPLOY += EMPLOY_AND_SALARY[key][dataset.type] * EMPLOY[key];
-        else TOTAL_EMPLOY += EMPLOY_AND_SALARY[key] * EMPLOY[key];
-    });
-
-
-    
-    /* TOTAL_NOT_EMPLOY */
-    Object.keys(EXPENDITURE).map(key => {
-        if(key === "식재료비") TOTAL_NOT_EMPLOY += EXPENDITURE[key] * currentCapacity * 30;
-        else TOTAL_NOT_EMPLOY += EXPENDITURE[key] * currentCapacity;
-    });
-    INSURANCE_EXPENSE = Math.round(TOTAL_EMPLOY * 0.0707) + (150000*currentCapacity);
-    TOTAL_NOT_EMPLOY += ADMIN_EXPENSE + RENT_EXPENSE + INSURANCE_EXPENSE //  관리비, 월차임, 퇴직금/보험
-
-    /* TOTAL_EXPENDITURE */
-    TOTAL_EXPENDITURE = TOTAL_EMPLOY + TOTAL_NOT_EMPLOY;
-    TOTAL_INCOME_PER_MONTH = TOTAL_INCOME - TOTAL_EXPENDITURE;
-
     const resultSet = {
         수입: {
             합계: {
                 title: "합계",
                 capacity: "",
                 unitPrice: "",
-                totalPrice: getLocalNumber(TOTAL_INCOME)
+                totalPrice: "0"
             },
             공단지원금: {
                 title: "공단지원금 80%",
@@ -544,9 +516,9 @@ export const GET_INCOME_RESULT = dataset => {
             },
             가산금: {
                 title: "가산금",
-                capacity: currentCapacity,
-                unitPrice: dataset.penalty,
-                totalPrice: dataset.penalty
+                capacity: "",
+                unitPrice: "",
+                totalPrice: getLocalNumber(dataset.penalty)
             }
         },
         지출: {
@@ -554,13 +526,13 @@ export const GET_INCOME_RESULT = dataset => {
                 title: "합계",
                 capacity: "",
                 unitPrice: "",
-                totalPrice: getLocalNumber(TOTAL_EXPENDITURE)
+                totalPrice: "0"
             },
             인건비 : {
                 title: "인건비",
                 capacity: "",
                 unitPrice: "",
-                totalPrice: getLocalNumber(TOTAL_EMPLOY)
+                totalPrice: "0"
             },
             시설장: {
                 title: "시설장",
@@ -588,15 +560,21 @@ export const GET_INCOME_RESULT = dataset => {
             },
             요양보호사: {
                 title: "요양보호사",
-                capacity: EMPLOY["요양보호사"],
+                // capacity: EMPLOY["요양보호사"],
+                // unitPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"]),
+                // totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * EMPLOY["요양보호사"]),
+                capacity: getLocalNumber(Math.ceil(currentCapacity / 2.5)),
                 unitPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"]),
-                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * EMPLOY["요양보호사"]),
+                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * Math.ceil(currentCapacity / 2.5)),
             },
             물리치료사: {
                 title: "물리치료사",
-                capacity: EMPLOY["물리치료사"],
+                // capacity: EMPLOY["물리치료사"],
+                // unitPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"]),
+                // totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * EMPLOY["물리치료사"]),
+                capacity: getLocalNumber(currentCapacity >= 30? currentCapacity >=100 ? 2: 1: 0 ),
                 unitPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"]),
-                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * EMPLOY["물리치료사"]),
+                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * (currentCapacity >= 30? currentCapacity >=100 ? 2: 1: 0)),
             },
             의사: {
                 title: "(촉탁)의사",
@@ -638,7 +616,7 @@ export const GET_INCOME_RESULT = dataset => {
                 title: "인건비 외",
                 capacity: "",
                 unitPrice: "",
-                totalPrice: getLocalNumber(TOTAL_NOT_EMPLOY)
+                totalPrice: "0"
             },
             식재료비: {
                 title: "식재료비/간식비",
@@ -681,9 +659,37 @@ export const GET_INCOME_RESULT = dataset => {
             title: "월수익",
             capacity: "",
             unitPrice: "",
-            totalPrice: getLocalNumber(TOTAL_INCOME_PER_MONTH)
+            totalPrice: "0"
         }
     };
+
+    
+    // 총 수입 합계
+    let TOTAL_INCOME = 0;
+    Object.keys(resultSet["수입"]).map(key => { TOTAL_INCOME += getNumber(resultSet["수입"][key].totalPrice) });
+    
+    // 총 인건비
+    let TOTAL_EMPLOY = 0;
+    const EMPLOYMENT = Object.keys(EMPLOY_AND_SALARY);
+    for(const emp of EMPLOYMENT) TOTAL_EMPLOY += getNumber(resultSet["지출"][emp].totalPrice)
+    
+    // 퇴직금, 보험
+    let INSURANCE_EXPENSE = 0; // 퇴직금, 보험
+    INSURANCE_EXPENSE = Math.round(TOTAL_EMPLOY * 0.0707) + (150000 * currentCapacity);
+
+    // 인건비 외
+    let TOTAL_ETC = 0;
+    const ETCS = ["식재료비", "관리비", "소모품비", "기타비용", "대출이자"];
+    for(const etc of ETCS) TOTAL_ETC += getNumber(resultSet["지출"][etc].totalPrice);
+    TOTAL_ETC += INSURANCE_EXPENSE //  관리비, 월차임, 퇴직금/보험
+    
+    
+    resultSet["수입"]["합계"].totalPrice = getLocalNumber(TOTAL_INCOME);
+    resultSet["지출"]["인건비"].totalPrice = getLocalNumber(TOTAL_EMPLOY);
+    resultSet["지출"]["퇴직금"].totalPrice = getLocalNumber(INSURANCE_EXPENSE);
+    resultSet["지출"]["인건비외"].totalPrice = getLocalNumber(TOTAL_ETC);
+    resultSet["지출"]["합계"].totalPrice = getLocalNumber(TOTAL_EMPLOY + TOTAL_ETC);
+    resultSet["월수익"].totalPrice = getLocalNumber(TOTAL_INCOME - (TOTAL_EMPLOY + TOTAL_ETC));
 
     return resultSet;
 };

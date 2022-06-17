@@ -6,7 +6,8 @@ const USER_URL = {
     signUp: '/user/joinProc',
     findId: '/user/findEmailProc',
     findPwd: '/user/findPwdProc',
-    newPwd: '/user/modifyPwdProc'
+    newPwd: '/user/modifyPwdProc',
+    localAlarm: "/user/localAlerts"
 };
 
 /* === 로그인 === */
@@ -24,6 +25,12 @@ export const userSignup = async user => await api.post(USER_URL.signUp, {
     userCtg: user.userCtg,
     userState: 1
 });
+
+export const setUserLocalAlarm = async data => await api.post(USER_URL.localAlarm, {
+    userEmail : data.userEamil,
+    localAlertsDepth1 : data.sidos,
+    localAlertsDepth2 : data.gyeonggidos
+})
 
 
 /* === LOGOUT === */

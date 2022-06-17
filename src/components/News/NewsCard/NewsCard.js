@@ -13,9 +13,9 @@ const NewsCard = ({
 
     const CONTENTS = (news) => (
         <div>
-            <h3>{ news["제목"] }</h3>
-            { news["file"] && <img /> }
-            <p>{ news["내용"] }</p>
+            <h3>{ news.newsTitle }</h3>
+            { news.newsFileName && <img /> }
+            <p>{ news.newsContent }</p>
         </div>
     );
 
@@ -27,7 +27,7 @@ const NewsCard = ({
             {
                 type === "list" && news &&
                 <Card>
-                    <Link to={`/news/${news["id"]}`}>
+                    <Link to={`/news/${news["newsNo"]}`}>
                         { CONTENTS(news) }
                     </Link>
                 </Card>

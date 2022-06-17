@@ -26,7 +26,7 @@ const SignupContaienr = () => {
     const [ typeSumitted, setTypeSubmitted ] = useState(false);
 
     /* === 휴대폰 인증 결과 === */
-    const [ phoneNumber, setPhoneNumber ] = useState(true);
+    const [ phoneNumber, setPhoneNumber ] = useState("");
     const [ authSuccess, setAuthSuccess ] = useState(false);
 
     // 회원가입 성공
@@ -45,7 +45,6 @@ const SignupContaienr = () => {
         else alert('매도/매수중 하나를 선택해주세요.');
     };
 
-
     // 회원가입 폼 제출
     const onFormSubmit = async data => {
         const RESPONSE = await userSignup({
@@ -53,7 +52,6 @@ const SignupContaienr = () => {
             userTel: phoneNumber, 
             userCtg: type
         });
-
         if(RESPONSE && RESPONSE.data.code === 1) {
             setSignupSuccess(true);
         } else {
@@ -62,26 +60,18 @@ const SignupContaienr = () => {
                 contents: RESPONSE.data.message || "회원가입에 실패했습니다. 다시 시도해 주세요."
             }))
         }
-
     };
 
     const onResultSubmit = result => {
-        // test
-        const RESULT = {
-            auth: true,
-            phoneNumber: '01000000000'
+        if(result && result.data.code === 1) {
+            setAuthSuccess(true);
+        } else {
+            dispatch(deactivateSignup());
+            dispatch(activateAlert({
+                title: "회원가입 실패",
+                contents: result.data.message || "해당 휴대폰 번호로 이미 가입된 회원입니다. \n 로그인 서비스를 이용해 주세요."
+            }));
         }
-        setPhoneNumber(RESULT.phoneNumber);
-        setAuthSuccess(RESULT.auth);
-        // if(result.bonoUser) {
-        //     dispatch(activateAlert({
-        //         title: "회원가입 실패",
-        //         contents: "해당 휴대폰 번호로 이미 가입된 회원입니다. \n 로그인 서비스를 이용해 주세요."
-        //     }))
-        // } else {
-        //     setPhoneNumber(result.phoneNumber);
-        //     setAuthSuccess(result.auth);
-        // }
     };
 
     const modalProps = {
@@ -126,6 +116,7 @@ const SignupContaienr = () => {
                             <AuthenticationContainer
                                 authApi={ getSignUpAuth }
                                 onResultSubmit={ onResultSubmit }
+                                onPhoneSave={ setPhoneNumber }
                                 description="본인인증을 위해 휴대폰 번호를 입력해주세요!"
                             />
                         </Modal>

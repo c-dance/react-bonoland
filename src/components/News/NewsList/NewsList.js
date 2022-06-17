@@ -10,6 +10,7 @@ const NewsList = ({
     error,
     noData,
  }) => {
+    console.log(news);
     return (
         <List>
             <div>
@@ -18,13 +19,13 @@ const NewsList = ({
                 { noData && NoData() }
                 {   news && news.length > 0 &&
                     news.map((data, idx) => (
-                            <div key={ idx }>
-                                <NewsCard 
-                                    news={ data } 
-                                    type="list" 
-                                />
-                                { idx < (news.length) && <hr />}
-                            </div>
+                        <div key={ idx }>
+                            <NewsCard 
+                                news={ data } 
+                                type="list" 
+                            />
+                            { idx < (news.length) && <hr />}
+                        </div>
                     ))
                 }
             </div>

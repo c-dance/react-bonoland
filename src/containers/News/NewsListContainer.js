@@ -20,10 +20,7 @@ const NewsListContainer = () => {
     }, []);
 
     useEffect(() => {
-        // setNewsList(data);
-        if(Object.keys(data).length > 0) {
-            setNewsList(data[Object.keys(data)[0]]);
-        }
+        if(data && data.arrayResult) setNewsList(data.arrayResult);
     }, [data]);
     
     return (

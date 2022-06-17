@@ -27,6 +27,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
     const [premiums, setPremiums, clearPremiums] = useOnlyNum(""); // 상급병실 현원수
     const [premiumPrice, setPremiumPrice, clearPremiumPrice] = useOnlyNum(""); // 상급병실료
     const [helpers, setHelpers, clearHelpers] = useOnlyNum(""); // 추가 요양보호사 수
+    const [penalty, setPenalty, clearPenalty] = useOnlyNum("");
 
     const [warning, setWarning] = useState(false); // 경고 문구
     const [warningText, setWarningText] = useState("");
@@ -43,20 +44,20 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
         clearPremiums();
         clearPremiumPrice();
         clearHelpers();
+        clearPenalty();
     };
 
     /* === 정원수 옵션 세팅 === */
-    const toggleCapacityOptions = type => {
+    const handleCapacityOptions = type => {
         const options = getOptionsFromObject(CAPACITY_AND_PRICE[type].match);
         const hasNotPrevValue = options.filter(item => item === capacity).length <= 0;
-        setCapacityOptions(options);
-
-        if(hasNotPrevValue) setCapacity(options[0]);
         
+        setCapacityOptions(options);
+        if(hasNotPrevValue) setCapacity(options[0]);
     };
 
     /* === 매매가, 대출금, 월차임 자동입력 === */
-    const setPriceAndRent = (type, capacity) => {
+    const handlePriceAndRent = (type, capacity) => {
         const center =  CAPACITY_AND_PRICE[type];
 
         if(center) {
@@ -77,9 +78,9 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
     };
 
     /* === 일반병실 현원수 설정 === */
-    const handleMaxCapacity = (event, name) => {
+    const handlePeople = (event, name) => {
         const nums = getNumber(event.currentTarget.value);
-        const max = capacity - getNumber( name === "premiums" ? premiums : commons);
+        const max = capacity - getNumber( name === "premiums" ? commons : premiums);
 
         if(nums > max) {
             event.preventDefault();
@@ -91,8 +92,17 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
         }
     };
 
+    const handleCapacity = capacity => {
+        const CAPACITY_EXCESS = getNumber(capacity) - (getNumber(commons) + getNumber(premiums));
+        if(CAPACITY_EXCESS) {
+            clearCommons();
+            clearPremiums();
+        }
+    };
+
     const handleSubmit = event => {
         event.preventDefault();
+        
         onFormSubmit({
             type: type,
             capacity: capacity,
@@ -102,7 +112,8 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
             helpers: helpers,
             price: price,
             loan: loan,
-            rent: rent
+            rent: rent,
+            penalty: penalty
         });  
     };
 
@@ -113,12 +124,19 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
     }, [initialData]);
 
     useEffect(() => {
-        if(type.length > 0) toggleCapacityOptions(type);
+        if(type.length > 0) handleCapacityOptions(type);
     }, [type]);
     
     useEffect(() => {
-        if(type.length > 0 && capacity.length > 0) setPriceAndRent(type, capacity);
+        if(type.length > 0 && capacity.length > 0){ 
+            handlePriceAndRent(type, capacity);
+            handleCapacity(capacity);
+        }
     }, [type, capacity]);
+
+    // useEffect(() => {
+    //     if(commons.length > 0) 
+    // }, [commons]);
 
 
     return (
@@ -170,8 +188,8 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
                                             }
                                         </select>
                                     </td>
-                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "commons") }/></td>
-                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "premiums") }/></td>
+                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "commons") }/></td>
+                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "premiums") }/></td>
                                     <td><input type="text" id="cf05" name="cf05" value={premiumPrice} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiumPrice(event) }/></td>
                                 </tr>
                             </tbody>
@@ -196,7 +214,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
                             <tbody>
                                 <tr>
                                     <td><input type="text" id="cf06" name="cf06" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) }/></td>
-                                    <td><input type="text" id="cf07" name="cf07" readOnly={true} placeholder="-" autoComplete="off"/></td>
+                                    <td><input type="text" id="cf07" name="cf07" value={penalty} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPenalty(event) }/></td>
                                     <td><input type="text" id="cf08" name="cf08" readOnly={true} value={price}/></td>
                                     <td><input type="text" id="cf09" name="cf09" readOnly={true} value={loan}/></td>
                                     <td><input type="text" id="cf10" name="cf10" readOnly={true} value={rent}/></td>
@@ -240,11 +258,11 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf03">3. 현원수(일반병실)</label>
-                            <input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "commons") }/>
+                            <input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "commons") }/>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf04">4. 현원수(상급병실)</label>
-                            <input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handleMaxCapacity(event, "premiums") }/>
+                            <input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "premiums") }/>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf05">5. 상급병실료</label>

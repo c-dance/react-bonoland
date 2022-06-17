@@ -1,22 +1,11 @@
 import api, { consoleErr } from ".";
 import axios from "axios";
 
-export const getNewsList = async () => {
-    console.log('뉴스 목록');
+const NEWS_URL = {
+    list: '/api/newsList'
+}
 
-    const source = axios.CancelToken.source();
-    // const url = '/news';
-    const url = 'data02/news.json';
-
-    try {
-        const response = await api.get(url , { cancelToken: source.token });
-        return response;
-    } catch (err) {
-        consoleErr(err);
-    } finally {
-        source.cancel();
-    }
-};
+export const getNewsList = async () => await api.get(NEWS_URL.list);
 
 export const getNewsPost = async (id="") => {
     console.log('뉴스 포스트');
