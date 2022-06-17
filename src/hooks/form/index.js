@@ -1,4 +1,3 @@
-import { isFocusable } from '@testing-library/user-event/dist/utils';
 import React, { useState } from 'react';
 import { getNumber, getLocalNumber } from '../../utils/number';
 

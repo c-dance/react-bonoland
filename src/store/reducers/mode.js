@@ -55,7 +55,7 @@ const ModeReducer = (state = initialState, action ) => {
         case LOGIN_REQUIRED.DEACTIVATE:
             return {...initialState, loginRequired: false };
         default:
-            return initialState;
+            return state;
     }
 };
 

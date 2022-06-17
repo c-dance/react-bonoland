@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
 import { QuickLink, QuickBtn } from './QuickMenuStyle';
-import { activateCalculator, activateLogin } from '../../../store/actions/mode';
+import { activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/mode';
 import { activateCadastral, deactivateCadastral, updateMapFilter } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { GEOLOCATION } from '../../../utils/user';
@@ -56,10 +56,6 @@ const QuickMenu = () => {
             })
     };
 
-    const testLogin = () => {
-        dispatch(activateLogin());
-    };
-
     useEffect(()=> {
         if(IS_GUGUN && CHART_DATA) setChartReady(true);
         else setChartReady(false);
@@ -69,7 +65,8 @@ const QuickMenu = () => {
         <>
             { isBrowser && USER_LOGGEDIN && <QuickLink className="user on" to="/user">마이페이지</QuickLink> }
             { isBrowser && !USER_LOGGEDIN && <QuickBtn className="user" onClick={() => dispatch(activateLogin())}>로그인</QuickBtn> }
-            { isBrowser && <QuickLink className="alarm" to="/user/alarm">알람설정</QuickLink> }
+            { isBrowser && USER_LOGGEDIN && <QuickLink className="alarm" to="/user/alarm">알람 보기</QuickLink> }
+            { isBrowser && !USER_LOGGEDIN && <QuickBtn className="alarm" onClick={() => dispatch(activateLoginRequired())}>알람 보기</QuickBtn> }
             <QuickBtn className={`location ${ (USER_GEO && USER_GEO.length > 0)? 'active' : '' }`} onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>
             <QuickLink className="news" to="/news">뉴스</QuickLink>

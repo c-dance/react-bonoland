@@ -102,6 +102,7 @@ export const CheckBox = styled.div`
         font-size: ${ ({theme}) => theme.fontSizes.s };
     }
 
+    input.highlight + label,
     input:checked + label {
         background-color: ${ ({theme}) => theme.colors.primary };
         color: #fff;

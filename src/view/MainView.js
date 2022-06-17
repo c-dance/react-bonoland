@@ -19,10 +19,9 @@ import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
 import LoginRequired from '../components/global/LoginRequired/LoginRequired';
 import Alert from '../containers/Alert/Alert';
 
-const MainView = ({ list, children }) => {
+import Modal from '../components/Modal/Modal';
 
-    const { params } = useParams();
-    console.log(params);
+const MainView = ({ list, children }) => {
 
     const LIST_MODE = list;
     const SIGNUP_MODE  = useSelector(state => state.Mode.signup);
@@ -46,13 +45,13 @@ const MainView = ({ list, children }) => {
                 { !IS_LOGGEDIN && LOGIN_MODE && <LoginContainer /> }
                 { !IS_LOGGEDIN && FIND_ID_MODE && <FindIdContainer /> }
                 { !IS_LOGGEDIN && FIND_PWD_MODE && <FindPwdContainer /> }
-                { !IS_LOGGEDIN && LOGIN_REQUIRED_MODE && <LoginRequired /> }
                 { CALCULATOR_MODE && <CalculatorContainer /> }
                 { ALERT_MODE && <Alert /> }
                 <MapChartContainer />
                 <MapContainer />
                 <Outlet />
                 { IS_LOGGEDIN && ALARM_MODE && <UserAlarmFormContainer /> }
+                { !IS_LOGGEDIN && LOGIN_REQUIRED_MODE && <LoginRequired /> }
             </Main>
         </>
     )

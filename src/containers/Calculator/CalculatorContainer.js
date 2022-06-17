@@ -6,8 +6,7 @@ import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
 import { deactivateCalculator } from '../../store/actions/mode';
-import { module } from '../../themes/module';
-import { INCOME_DATASET, INCOME_RESULT, GET_INCOME_RESULT } from '../../sheme/calculator';
+import { GET_INCOME_RESULT } from '../../sheme/calculator';
 
 const initialFormData = {
     type: "단독요양원",
@@ -27,8 +26,7 @@ const CalculatorContainer = () => {
     const dispatch = useDispatch();
 
     // 수익계산기 입력폼, 입력폼 subtmit
-    const [ formData, setFormData ] = useState(initialFormData);
-
+    const [ formData, setFormData ] = useState(Object.assign({}, initialFormData));
     // 수익계산기 결과폼
     const [ result, setResult ] = useState({});
 
@@ -36,9 +34,9 @@ const CalculatorContainer = () => {
     const submitForm = data => calculateIncome(data);
 
     // 수익계산기 초기화
-    const resetForm = (event) => {
+    const resetForm = event => {
         event.preventDefault();
-        setFormData(Object.assign({},initialFormData));
+        setFormData(Object.assign({}, initialFormData));
     };
 
     const calculateIncome = data => {

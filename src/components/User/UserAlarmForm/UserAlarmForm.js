@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Regions } from '../../../sheme/alarm';
+import React, { useEffect, useState } from 'react';
 import {
     AlarmWrap,
     AlarmForm, 
@@ -12,10 +11,16 @@ import {
     CheckBox,
 } from './UserAlarmFormStyle';
 
-const UserAlarmForm = ({ data }) => {
+const UserAlarmForm = ({ 
+    form,
+    onFormChange
+}) => {
 
     const [ accordion, setAccordion ] = useState(false);
     const toggleAccordion = () => { setAccordion(!accordion); };
+
+    const [ gyeonggiDo, setGyeonggiDo ] = useState(form["gyeonggiDo"].filter(item => item.value === true).length);
+    const onGyeonggiDoCount = checked => {setGyeonggiDo(gyeonggiDo => gyeonggiDo + `${ checked? 1 :(-1) }`);}
 
     return (
         <AlarmForm>
@@ -31,17 +36,33 @@ const UserAlarmForm = ({ data }) => {
                         <Accordion>
                             <AccordionSummary active={ accordion }>
                                 <CheckBox>
-                                    <input type="checkbox" name="aRegion" id={"aRegion0"} value="경기도" readOnly />
+                                    <input 
+                                        type="checkbox" 
+                                        className={ gyeonggiDo > 0? "highlight" : "" } 
+                                        name="aRegion" 
+                                        id={"aRegion0"} 
+                                        value="gyeonggiDo"
+                                        readOnly 
+                                    />
                                     <label htmlFor={"aRegion0"} onClick={ () => toggleAccordion() }>경기도</label>
                                 </CheckBox>
                             </AccordionSummary>
                             <AccordionDetails active={ accordion }>
                                 <fieldset>
                                 {
-                                    Regions["gyeonggiDo"].map((si, idx) => (
+                                    form["gyeonggiDo"].map((si, idx) => (
                                         <CheckWrap key={ idx }>
-                                            <input type="checkbox" name="aRegion" id={`aRegion0_${idx}`} value={ si } />
-                                            <label htmlFor={`aRegion0_${idx}`}>{ si }</label>
+                                            <input 
+                                                type="checkbox" 
+                                                name="aRegion" 
+                                                id={`aRegion0_${idx}`} 
+                                                value={ si.label } 
+                                                onChange={ event => {
+                                                    onGyeonggiDoCount(event.currentTarget.checked);
+                                                    onFormChange("gyeonggiDo", idx, event.currentTarget.checked);
+                                                } }
+                                            />
+                                            <label htmlFor={`aRegion0_${idx}`}>{ si.label }</label>
                                         </CheckWrap>
                                     ))
                                 }
@@ -50,10 +71,16 @@ const UserAlarmForm = ({ data }) => {
                         </Accordion>
                         <fieldset>
                             {
-                                Regions["sidos"].map((sido, idx) => (
+                                form["sidos"].map((sido, idx) => (
                                     <CheckBox key={ idx }>
-                                        <input type="checkbox" name="aRegion" id={`aRegion${idx + 1}`} value={ sido } />
-                                        <label htmlFor={`aRegion${idx + 1}`}>{ sido }</label>
+                                        <input 
+                                            type="checkbox" 
+                                            name="aRegion" 
+                                            id={`aRegion${idx + 1}`} 
+                                            value={ sido.value }  
+                                            onChange={ event => onFormChange("sidos", idx, event.currentTarget.checked) }   
+                                        />
+                                        <label htmlFor={`aRegion${idx + 1}`}>{ sido.label }</label>
                                     </CheckBox>
                                 ))
                             }

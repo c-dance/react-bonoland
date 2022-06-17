@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { LayoutContext } from '../../hooks/layout';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";

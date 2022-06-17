@@ -1,4 +1,5 @@
 import { isMobile } from 'react-device-detect';
+import axios from 'axios';
 
 const { naver } = window;
 
@@ -236,3 +237,13 @@ export const removeInfoWindow = async infoWindow => {
   console.log('clean infowindow');
   return infoWindow;
 }
+
+export const getBoundary = async () => {
+  const RESPONSE = await axios.post('https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth.json', {
+    consumer_key: "4c6d59d02339420baa0c",
+    consumer_secret: "b7fb326fb8fa4d93a030"
+  });
+  console.log(RESPONSE);
+  console.log('boundary');
+  // console.log(RESPONSE);
+};

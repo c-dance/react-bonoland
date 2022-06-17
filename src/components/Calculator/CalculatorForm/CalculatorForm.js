@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Wrapper, Form } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { CALCULATOR_FORM, CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
+import { CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
 import { getNumber, getLocalNumber } from '../../../utils/number';
 import { useOnlyNum } from '../../../hooks/form';
 import Modal from '../../Modal/Modal'; 
@@ -14,33 +14,45 @@ const getOptionsFromObject = (obj) => {
 
 const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) => {
 
-    const [formData, setFormData] = useState(initialData);
-
     /* === 입력값 세팅 & VALIDATION === */
-    const [type, setType] = useState(formData.type); // 요양시설 타입
-    const [capacity, setCapacity] = useState(formData.capacity); // 정원수
+    const [type, setType] = useState(""); // 요양시설 타입
+    const [capacity, setCapacity] = useState(""); // 정원수
     const [capacityOptions, setCapacityOptions] = useState([]); // 정원수 옵션
 
-    const [price,  setPrice] = useState(formData.price); // 매매가(readonly)
-    const [loan, setLoan] = useState(formData.loan); // 대출금(readonly)
-    const [rent,  setRent] = useState(formData.Rent); // 월차임(readonly)
+    const [price,  setPrice] = useState(""); // 매매가(readonly)
+    const [loan, setLoan] = useState(""); // 대출금(readonly)
+    const [rent,  setRent] = useState(""); // 월차임(readonly)
 
-    const [commons, setCommons, clearCommons] = useOnlyNum(formData.commons); // 일반병실 현원수
-    const [premiums, setPremiums, clearPremiums] = useOnlyNum(formData.premiums); // 상급병실 현원수
-    const [premiumPrice, setPremiumPrice, clearPremiumPrice] = useOnlyNum(formData.premiumPrice); // 상급병실료
-    
-    const [helpers, setHelpers, clearHelpers] = useOnlyNum(formData.helpers); // 추가 요양보호사 수
+    const [commons, setCommons, clearCommons] = useOnlyNum(""); // 일반병실 현원수
+    const [premiums, setPremiums, clearPremiums] = useOnlyNum(""); // 상급병실 현원수
+    const [premiumPrice, setPremiumPrice, clearPremiumPrice] = useOnlyNum(""); // 상급병실료
+    const [helpers, setHelpers, clearHelpers] = useOnlyNum(""); // 추가 요양보호사 수
 
-    const [warning, setWarning] = useState(false);
+    const [warning, setWarning] = useState(false); // 경고 문구
     const [warningText, setWarningText] = useState("");
 
+    const initForm = data => {
+        setType(data.type || "");
+        setCapacity(data.capacity | "");
+        setPrice(data.price | "");
+        setLoan(data.loan | "'");
+        setRent(data.Rent | "");
+        setWarning(false);
+        setWarningText("");
+        clearCommons();
+        clearPremiums();
+        clearPremiumPrice();
+        clearHelpers();
+    };
 
     /* === 정원수 옵션 세팅 === */
     const toggleCapacityOptions = type => {
         const options = getOptionsFromObject(CAPACITY_AND_PRICE[type].match);
         const hasNotPrevValue = options.filter(item => item === capacity).length <= 0;
         setCapacityOptions(options);
+
         if(hasNotPrevValue) setCapacity(options[0]);
+        
     };
 
     /* === 매매가, 대출금, 월차임 자동입력 === */
@@ -81,8 +93,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
 
     const handleSubmit = event => {
         event.preventDefault();
-        const dataset = {
-            ...INCOME_DATASET.capacity,
+        onFormSubmit({
             type: type,
             capacity: capacity,
             commons: commons,
@@ -92,34 +103,21 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
             price: price,
             loan: loan,
             rent: rent
-        };
-        onFormSubmit(dataset);  
+        });  
     };
 
-    const setData = data => {
-        // 데이터 초기화
-        setCapacity(data.capacity);
-        setPrice(data.price);
-        setLoan(data.loan);
-        setRent(data.Rent);
-        setWarning(false);
-        setWarningText("");
-        clearCommons();
-        clearPremiums();
-        clearPremiumPrice();
-        clearHelpers();
-    };
+
 
     useEffect(() => {
-        setData(initialData);
+        initForm(initialData);
     }, [initialData]);
 
     useEffect(() => {
-        toggleCapacityOptions(type);
+        if(type.length > 0) toggleCapacityOptions(type);
     }, [type]);
     
     useEffect(() => {
-        setPriceAndRent(type, capacity);
+        if(type.length > 0 && capacity.length > 0) setPriceAndRent(type, capacity);
     }, [type, capacity]);
 
 

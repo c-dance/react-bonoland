@@ -17,7 +17,8 @@ import {
     getZoomLevel, 
     renderItemMarkers, 
     renderInfoWindow, 
-    removeInfoWindow 
+    removeInfoWindow,
+    getBoundary
 } from '../../utils/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Map from '../../components/Map/Map';
@@ -98,6 +99,7 @@ const MapContainer = () => {
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
     const resetMapPoint = () => {
+       
         const point = new naver.maps.Point(LATLNG[0], LATLNG[1]);
         if(map && point) {
             map.morph(point, ZOOM, "easeOutCubic");
@@ -292,8 +294,14 @@ const MapContainer = () => {
         }
     };
 
+    const drawBoundary = async() => {
+        const res = await getBoundary();
+        console.log(res);
+    };
+
     useEffect(()=> {
         initMap();
+        drawBoundary();
     }, []);
 
     useEffect(() => {
