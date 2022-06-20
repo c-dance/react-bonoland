@@ -4,6 +4,7 @@ import { isMobile, isBrowser } from 'react-device-detect';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux/es/exports';
 import { activateAlert } from '../../store/actions/alert';
+import { REGEXP } from '../../sheme/form';
 
 const Contact = ({
     user,
@@ -42,7 +43,9 @@ const Contact = ({
                     break;
                 case "u" :
                     FORM_ERROR["u"].count++;
-                    break;
+                    if(errorType === "uEmail") FORM_ERROR["u"].alert += "\n - 이메일 정보를 정확히 입력해 주세요."
+                    if(errorType === "uTel") FORM_ERROR["u"].alert += "\n - 휴대폰 번호를 정확히 입력해 주세요."
+                break;
                 default: 
                     break;
             }
@@ -54,7 +57,7 @@ const Contact = ({
     const handleErrors = (errorTypes) => {
         for(let key in errorTypes) {;
             if(errorTypes[key].count > 0) {
-                dispatch(activateAlert({
+                return dispatch(activateAlert({
                     title: "매수 문의", 
                     contents: errorTypes[key].alert
                 }))
@@ -91,13 +94,13 @@ const Contact = ({
                                     <label htmlFor="uTel">연락처</label>
                                 </th>
                                 <td colSpan="1">
-                                    <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
+                                    <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true, pattern: REGEXP.phone })}/> 
                                 </td>
                                 <th colSpan="1">
                                     <label htmlFor="uEmail">이메일</label>
                                 </th>
                                 <td colSpan="1">
-                                    <input type="text" name="uEmail" id="uEmail" {...register("uEamil", { required: true })}/> 
+                                    <input type="text" name="uEmail" id="uEmail" {...register("uEamil", { required: true, pattern: REGEXP.email })}/> 
                                 </td>
                             </tr>
                         </table>

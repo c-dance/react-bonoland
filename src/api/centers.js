@@ -8,7 +8,7 @@ export const getFilteredCenters = async (filter = { category: "", capacity: [] }
     const url = `/centers?category=${filter.category}?capacity=${filter.capacity}`;
 
     try {
-        const response = await api.get(url , { cancelToken: source.token });
+        const response = await api.get("http://localhost:3500/centers" , { cancelToken: source.token });
         return response;
     } catch (err) {
         consoleErr(err);
@@ -25,7 +25,7 @@ export const getAllRecommendCenters = async (region=null) => {
     const url = 'data02/allrecommends.json';
 
     try {
-        const response = await api.get(url, { cancelToken: source.token });
+        const response = await api.get("http://localhost:3500/centers", { cancelToken: source.token });
         return response;
     } catch (err) {
         consoleErr(err);
@@ -42,7 +42,7 @@ export const getRecommendCenters = async (region=null) => {
     const url = 'data02/recommends.json';
 
     try {
-        const response = await api.get(url, { cancelToken: source.token });
+        const response = await api.get("http://localhost:3500/recommends", { cancelToken: source.token });
         console.log(response);
         return response;
     } catch (err) {
@@ -60,7 +60,7 @@ export const getSalesCenters = async (region=null) => {
     const url = 'data02/sales.json';
 
     try {
-        const response = await api.get(url, { cancelToken: source.token });
+        const response = await api.get("http://localhost:3500/sales", { cancelToken: source.token });
         console.log(response);
         return response;
     } catch (err) {

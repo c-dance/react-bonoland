@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Wrapper, Form } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
+import { TYPE_AND_CAPACITY, CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
 import { getNumber, getLocalNumber } from '../../../utils/number';
 import { useOnlyNum } from '../../../hooks/form';
 import Modal from '../../Modal/Modal'; 
+import { useDispatch } from 'react-redux';
 
 /* === 옵션 가져오기 === */
 const getOptionsFromObject = (obj) => {
@@ -33,11 +34,17 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
     const [warningText, setWarningText] = useState("");
 
     const initForm = data => {
-        setType(data.type || "");
-        setCapacity(data.capacity | "");
-        setPrice(data.price | "");
-        setLoan(data.loan | "'");
-        setRent(data.Rent | "");
+        const DEFAULT_TYPE = data.type || TYPE_AND_CAPACITY[Object.keys(TYPE_AND_CAPACITY)[0]];
+        const DEFAULT_CAPACITY = data.capacity || TYPE_AND_CAPACITY[DEFAULT_TYPE][0];
+        const DEFAULT_PRICE = data.price || CAPACITY_AND_PRICE[DEFAULT_TYPE]["match"][DEFAULT_CAPACITY];
+        const DEFAULT_LOAN = DEFAULT_TYPE === "주간보호센터"? "" : (data.loan || CAPACITY_AND_PRICE[DEFAULT_TYPE]["loan"] * DEFAULT_PRICE);
+        const DEFAULT_RENT = DEFAULT_TYPE === "주간보호센터"? (data.rent || CAPACITY_AND_PRICE[DEFAULT_PRICE]["rent"][DEFAULT_CAPACITY]) : "" ;
+
+        setType(DEFAULT_TYPE);
+        setCapacity(DEFAULT_CAPACITY);
+        setPrice(DEFAULT_PRICE);
+        setLoan(DEFAULT_LOAN);
+        setRent(DEFAULT_RENT);
         setWarning(false);
         setWarningText("");
         clearCommons();
@@ -102,19 +109,26 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
 
     const handleSubmit = event => {
         event.preventDefault();
+
+        console.log(commons);
+        console.log(penalty);
+        if(commons.length <= 0 || penalty.length <= 0){
+            alert("4. 현원수, 7. 예산 가산금 항목은 필수 입력값 입니다.")
+        } else {
+            onFormSubmit({
+                type: type,
+                capacity: capacity,
+                commons: commons,
+                premiums: premiums, 
+                premiumPrice: premiumPrice,
+                helpers: helpers,
+                price: price,
+                loan: loan,
+                rent: rent,
+                penalty: penalty
+            });  
+        }
         
-        onFormSubmit({
-            type: type,
-            capacity: capacity,
-            commons: commons,
-            premiums: premiums, 
-            premiumPrice: premiumPrice,
-            helpers: helpers,
-            price: price,
-            loan: loan,
-            rent: rent,
-            penalty: penalty
-        });  
     };
 
 
@@ -133,10 +147,6 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
             handleCapacity(capacity);
         }
     }, [type, capacity]);
-
-    // useEffect(() => {
-    //     if(commons.length > 0) 
-    // }, [commons]);
 
 
     return (
@@ -274,7 +284,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf02">7. 예상 가산금(원/월)</label>
-                            <input type="text" id="cf07" name="cf07" readOnly={true} placeholder="-" autoComplete="off"/>
+                            <input type="text" id="cf07" name="cf07" value={penalty} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPenalty(event) }/>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf03">8. 매매가(보증금)</label>

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { isMobile, isBrowser } from 'react-device-detect';
 import { useDispatch } from 'react-redux/es/exports';
 import { activateAlert } from '../../store/actions/alert';
+import { REGEXP } from '../../sheme/form';
 
 const Register = ({
     user, 
@@ -48,6 +49,8 @@ const Register = ({
                     break;
                 case "u" :
                     FORM_ERROR["u"].count++;
+                    if(errorType === "uEmail") FORM_ERROR["u"].alert += "\n - 이메일 정보를 정확히 입력해 주세요."
+                    if(errorType === "uTel") FORM_ERROR["u"].alert += "\n - 휴대폰 번호를 정확히 입력해 주세요."
                     break;
                 case "r" : 
                     FORM_ERROR["r"].count++;
@@ -119,13 +122,13 @@ const Register = ({
                                             <label htmlFor="uTel">연락처</label>
                                         </th>
                                         <td colSpan="1">
-                                            <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
+                                            <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true, pattern: REGEXP.phone })}/> 
                                         </td>
                                         <th colSpan="1">
                                             <label htmlFor="uEmail">이메일</label>
                                         </th>
                                         <td colSpan="1">
-                                            <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true })}/> 
+                                            <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true, pattern: REGEXP.email })}/> 
                                         </td>
                                 </tr>
                             </table>

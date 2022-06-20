@@ -2,103 +2,26 @@ import { CALCULATOR, getLocalNumber, getNumber } from "../../utils/number";
 
 export const INCOME_DATASET = {
     type: "단독요양원",
-    capacity: "0",
-    commons: "0",
-    premiums: "0",
-    premiumPrice: "0",
-    helpers: "0",
-    penalty: "0",
-    price: "0",
-    loan: "0",
-    rent: "0"
+    capacity: "29",
+    commons: "",
+    premiums: "",
+    premiumPrice: "",
+    helpers: "",
+    penalty: "",
+    price: "2,200,000,000",
+    loan: "1,760,000,000",
+    rent: ""
 };
 
-export const CALCULATOR_FORM = [
-    {
-        label: "요양시설 타입",
-        type: "select",
-        options: [
-            "단독요양원",
-            "상가요양원",
-            "주간보호센터"
-        ],
-    },
-    {
-        label:"정원수",
-        type: "select",
-        options: [
-            "29",
-            "35",
-            "49",
-            "59",
-            "79",
-            "99",
-            "120",
-        ]
-    },
-    {
-        label:"현원수(일반병실)",
-        type: "input",
-        value: "0", 
-        placeholder: "숫자 입력",
-        readonly: false
-    },
-    {
-        label:"현원수(상급병실)",
-        type: "input",
-        value: "0",
-        placeholder: "숫자 입력",
-        readonly: false
-    },
-    {
-        label:"상급병실료(원/월)",
-        type: "input",
-        value: "0",
-        placeholder: "금액 입력",
-        readonly: false
-    },
-    {
-        label:"추가 요양보호사",
-        type: "input",
-        value: "0",
-        placeholder: "숫자 입력",
-        readonly: false
-    },
-    {
-        label:"예상 가산금(원/월)",
-        type: "input",
-        value: "0",
-        placeholder: "숫자 입력",
-        readonly: false
-    },
-    {
-        label:"매매가(보증금)",
-        type: "input",
-        value: "0",
-        placeholder: "자동 계산", 
-        readonly: true,
-    },
-    {
-        label:"대출금",
-        type: "input",
-        value: "0",
-        placeholder: "자동 계산",
-        readonly: true
-    },
-    {
-        label: "월차임(주간보호)",
-        type: "input",
-        value: "0",
-        placeholder: "자동 계산",
-        readonly: true
-    }
-];
+export const TYPE_AND_CAPACITY = {
+    단독요양원: ["29", "35", "49", "59", "79", "99", "100"],
+    상가요양원: ["25", "29", "35", "49", "59", "79", "99", "100"],
+    주간보호센터: ["29", "39", "49"]
+}
 
 export const CAPACITY_AND_PRICE = {
-
     단독요양원 : {
         match: {
-            "0" : "0",
             "29": "2,200,000,000",
             "35": "2,500,000,000",
             "49": "3,700,000,000",
@@ -111,7 +34,6 @@ export const CAPACITY_AND_PRICE = {
     },
     상가요양원 :  {
         match: {
-            "0" : "0",
             "25": "1,600,000,000", 
             "29": "1,800,000,000",
             "35": "2,000,000,000",
@@ -125,13 +47,11 @@ export const CAPACITY_AND_PRICE = {
     },
     주간보호센터 : {
         match: {
-            "0" : "0",
             "29": "30,000,000", 
             "39": "30,000,000", 
             "49": "50,000,000"
         },
         rent: {
-            "0" : "0",
             "29": "2,300,000", 
             "39": "2,800,000", 
             "49": "3,500,000"
@@ -189,7 +109,6 @@ export const INCOME_RESULT = {
         },
         {
             item: "인건비",
-
         },
         {
             item: "시설장",
@@ -237,7 +156,7 @@ export const INCOME_RESULT = {
         },
         {
             item: "관리인",
-            unitPrice: 2100000,
+            unitPrice: 2100000
         },
         {
             item: "인건비 외",
@@ -245,15 +164,15 @@ export const INCOME_RESULT = {
         },
         {
             item: "식재료비 / 간식비",
-            unitPrice: 8000,
+            unitPrice: 8000
         },
         {
             item: "관리비 (난방,전기,가스 외)",
-            unitPrice: 7500,
+            unitPrice: 7500
         },
         {
             item: "소모품비",
-            unitPrice: 30000,
+            unitPrice: 30000
         },
         {
             item: "기타비용",
@@ -311,98 +230,26 @@ export const TYPE_AND_EXPENDITURE = {
         기타비용: 10000
     },
     주간보호센터: {
-        식재료비: 8000,
+        식재료비: 3000,
         소모품비: 30000,
         기타비용: 10000
     }
 };
 
-export const CAPACITY_AND_EMPLOY = {
-    29: {
-        시설장: 1,
-        사무국장: 0,
-        사회복지사: 1,
-        간호사: 1,
-        요양보호사: 12,
-        물리치료사: 0,
-        의사: 1,
-        영양사: 0,
-        조리원: 1,
-        위생원: 0,
-        사무원: 0,
-        관리인: 0
-    },
-    35: {
-        시설장: 1,
-        사무국장: 0,
-        사회복지사: 1,
-        간호사: 1,
-        요양보호사: 14,
-        물리치료사: 1,
-        의사: 1,
-        영양사: 0,
-        조리원: 1,
-        위생원: 0,
-        사무원: 0,
-        관리인: 0
-    },
-    49: {
-        시설장: 1,
-        사무국장: 0,
-        사회복지사: 1,
-        간호사: 2,
-        요양보호사: 20,
-        물리치료사: 1,
-        의사: 1,
-        영양사: 0,
-        조리원: 2,
-        위생원: 1,
-        사무원: 0,
-        관리인: 0
-    },
-    58: {
-        시설장: 1,
-        사무국장: 1,
-        사회복지사: 1,
-        간호사: 2,
-        요양보호사: 23,
-        물리치료사: 1,
-        의사: 1,
-        영양사: 1,
-        조리원: 2,
-        위생원: 1,
-        사무원: 1,
-        관리인: 1
-    },
-    99: {
-        시설장: 1,
-        사무국장: 1,
-        사회복지사: 1,
-        간호사: 4,
-        요양보호사: 40,
-        물리치료사: 1,
-        의사: 1,
-        영양사: 1,
-        조리원: 4,
-        위생원: 1,
-        사무원: 1,
-        관리인: 1
-    },
-    120: {
-        시설장: 1,
-        사무국장: 1,
-        사회복지사: 2,
-        간호사: 5,
-        요양보호사: 48,
-        물리치료사: 2,
-        의사: 1,
-        영양사: 1,
-        조리원: 5,
-        위생원: 2,
-        사무원: 1,
-        관리인: 1
-    },
-};
+export const CAPACITY_AND_EMPLOY = (type, count) => ({
+    시설장: 1,
+    사무국장: count >= 50? 1 : 0,
+    사회복지사: (type === "주간보호센터" && count < 10)? 0 : 1 + parseInt(count/101),
+    간호사: type === "주간보호센터"? 1 + parseInt(count / 40) :  Math.round(count / 25),
+    요양보호사: type === "주간보호센터"? Math.round(count/7) : Math.ceil(count/2.5),
+    물리치료사: count < 30? 0 : 1 + parseInt(count / 101),
+    의사: 1,
+    영양사: count >= 50? 1 : 0,
+    조리원: type === "주간보호센터"? (1 + parseInt(count / 40)) : Math.round(count / 25),
+    위생원: type === "주간보호센터"? ( count >= 50? 1 : 0) : (count < 30? 0 : 1 + parseInt(count / 101)),
+    사무원: type === "주간보호센터"? ( count >= 25 ? 1 : 0 ) : ( count >= 50? 1 : 0 ),
+    관리인: type === "주간보호센터"? ( count >= 10 ? 1 : 0 ) : ( count >= 50? 1 : 0 )
+});
 
 export const EMPLOY_AND_SALARY = {
     시설장: {
@@ -446,35 +293,33 @@ export  const TYPE_AND_ADMIN_EXPENSE = {
     단독요양원: {
         rate: 0.0714,
         unit: 5000,
-        calc: capacity => Math.round(0.0714 * 5000 * capacity) * 100
+        calc: capacity => Math.round(7.14 * 5000 * capacity)
     },
     상가요양원: {
         rate: 0.0714,
         unit: 7500,
-        calc: capacity => Math.round(0.0714 * 7500 * capacity) * 100
+        calc: capacity => Math.round(7.14 * 7500 * capacity)
     },
     주간보호센터: {
         rate: 0.27225,
         unit: 5000,
-        calc: capacity => Math.round((0.27225 * 5000) + (5000 * (capacity - 5) * 2)) * 100
+        calc: capacity => Math.round((27.225 * 5000) + (5000 * (capacity - 5) * 2))
     },
 }
 
 export const GET_INCOME_RESULT = dataset => {
 
-    console.log(dataset);
+    console.log(dataset.type);
 
     const currentCapacity = getNumber(dataset.commons) + getNumber(dataset.premiums);
     const INCOME = TYPE_AND_UNITS[dataset.type];
     const EXPENDITURE = TYPE_AND_EXPENDITURE[dataset.type];
     
-    const EMPLOY_NUM = Object.keys(CAPACITY_AND_EMPLOY).filter(key => key <= currentCapacity).length;
-    const EMPLOY = CAPACITY_AND_EMPLOY[Object.keys(CAPACITY_AND_EMPLOY)[EMPLOY_NUM]];
-    EMPLOY["요양보호사"] = parseInt(currentCapacity / 2.5);
+    const EMPLOY = CAPACITY_AND_EMPLOY(dataset.type, currentCapacity);
+    EMPLOY["요양보호사"] +=getNumber(dataset.helpers);
 
     const ADMIN_EXPENSE = TYPE_AND_ADMIN_EXPENSE[dataset.type].calc(getNumber(dataset.capacity));
-    console.log( parseInt(0.0714 * 7500 * dataset.capacity) * 100);
-    const RENT_EXPENSE = Math.round((getNumber(dataset.loan) * 0.035) / 12);
+    const RENT_EXPENSE = dataset.type === "주간보호센터"? getNumber(dataset.rent) : Math.round((getNumber(dataset.loan) * 0.035) / 12);
     
     const resultSet = {
         수입: {
@@ -560,21 +405,15 @@ export const GET_INCOME_RESULT = dataset => {
             },
             요양보호사: {
                 title: "요양보호사",
-                // capacity: EMPLOY["요양보호사"],
-                // unitPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"]),
-                // totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * EMPLOY["요양보호사"]),
-                capacity: getLocalNumber(Math.ceil(currentCapacity / 2.5)),
+                capacity: EMPLOY["요양보호사"],
                 unitPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"]),
-                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * Math.ceil(currentCapacity / 2.5)),
+                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["요양보호사"] * EMPLOY["요양보호사"]),
             },
             물리치료사: {
                 title: "물리치료사",
-                // capacity: EMPLOY["물리치료사"],
-                // unitPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"]),
-                // totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * EMPLOY["물리치료사"]),
-                capacity: getLocalNumber(currentCapacity >= 30? currentCapacity >=100 ? 2: 1: 0 ),
+                capacity: EMPLOY["물리치료사"],
                 unitPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"]),
-                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * (currentCapacity >= 30? currentCapacity >=100 ? 2: 1: 0)),
+                totalPrice: getLocalNumber(EMPLOY_AND_SALARY["물리치료사"] * EMPLOY["물리치료사"]),
             },
             의사: {
                 title: "(촉탁)의사",
@@ -611,6 +450,7 @@ export const GET_INCOME_RESULT = dataset => {
                 capacity: EMPLOY["관리인"],
                 unitPrice: getLocalNumber(EMPLOY_AND_SALARY["관리인"][dataset.type]),
                 totalPrice: getLocalNumber(EMPLOY_AND_SALARY["관리인"][dataset.type] * EMPLOY["관리인"]),
+                memo: "주간보호센터 : 보조원(운전사)"
             },
             인건비외: {
                 title: "인건비 외",
@@ -621,38 +461,44 @@ export const GET_INCOME_RESULT = dataset => {
             식재료비: {
                 title: "식재료비/간식비",
                 capacity: currentCapacity,
-                unitPrice: getLocalNumber(EXPENDITURE["식재료비"]),
-                totalPrice: getLocalNumber(EXPENDITURE["식재료비"] * currentCapacity * 30),
+                unitPrice: getLocalNumber(TYPE_AND_EXPENDITURE[dataset.type]["식재료비"]),
+                totalPrice: getLocalNumber(TYPE_AND_EXPENDITURE[dataset.type]["식재료비"] * currentCapacity * 30),
+                memo: `1인당 ${getLocalNumber(TYPE_AND_EXPENDITURE[dataset.type]["식재료비"])}원/일`
             },
             관리비: {
                 title: "관리비(냉난방, 전기, 가스 외)",
-                capacity: currentCapacity,
+                capacity: dataset.capacity,
                 unitPrice: getLocalNumber(TYPE_AND_ADMIN_EXPENSE[dataset.type].unit),
                 totalPrice: getLocalNumber(ADMIN_EXPENSE),
+                memo: `평당 ${getLocalNumber(TYPE_AND_ADMIN_EXPENSE[dataset.type].unit)}원`
             },
             소모품비: {
                 title: "소모품비",
                 capacity: currentCapacity,
                 unitPrice: getLocalNumber(EXPENDITURE["소모품비"]),
                 totalPrice: getLocalNumber(EXPENDITURE["소모품비"] * currentCapacity),
+                memo: `1인당 ${getLocalNumber(EXPENDITURE["소모품비"])}원`
             },
             기타비용: {
                 title: "기타비용",
                 capacity: currentCapacity,
                 unitPrice: getLocalNumber(EXPENDITURE["기타비용"]),
                 totalPrice: getLocalNumber(EXPENDITURE["기타비용"] * currentCapacity),
+                memo: `1인당 ${getLocalNumber(EXPENDITURE["기타비용"])}원`
             },
             대출이자: {
                 title: "대출이자(월차임)",
                 capacity: "",
                 unitPrice: dataset.rent,
                 totalPrice: getLocalNumber(RENT_EXPENSE),
+                memo: dataset.type === "주간보호센터"? "월임대료" : "N억 X 3.5% / 12개월"
             },
             퇴직금: {
                 title: "퇴직금/보험",
                 capacity: "",
                 unitPrice: "",
                 totalPrice: getLocalNumber(INSURANCE_EXPENSE),
+                memo: `인건비 X 7.1% + ${getLocalNumber(TYPE_AND_INSURANCE[dataset.type].unit)}원/인`
             },
         },
         월수익: {
@@ -675,7 +521,8 @@ export const GET_INCOME_RESULT = dataset => {
     
     // 퇴직금, 보험
     let INSURANCE_EXPENSE = 0; // 퇴직금, 보험
-    INSURANCE_EXPENSE = Math.round(TOTAL_EMPLOY * 0.0707) + (150000 * currentCapacity);
+    const PAY = dataset.type === "주간보호센터"? 130000 : 150000;
+    INSURANCE_EXPENSE = Math.round(TOTAL_EMPLOY * 0.0707) + (PAY * currentCapacity);
 
     // 인건비 외
     let TOTAL_ETC = 0;

@@ -185,8 +185,8 @@ export const renderInfoWindow = props => {
           </div>
       </div>
       <div class="info-window__actions">
-          <a href="/center${props.data.id}" class="btn btn--details">상세</a>
-          <button class="btn">문의</button>
+          <a href="/center/${props.data.id}/" onClick=${() => alert("상세")} class="btn btn--details">상세</a>
+          <button class="btn btn--contact" onClick=${() => alert("문의합니다")}>문의</button>
       </div>
     </div>
   `;
@@ -213,7 +213,8 @@ export const renderInfoWindow = props => {
 
   naver.maps.Event.addListener(infoWindow, "click", (e) => {
     const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
-    if(outerClicked) removeInfoWindow();
+    const btnClicked = e.pointerEvent.path.filter(p => p.className && p.className.includes("btn")).length > 0;
+    if(outerClicked && !btnClicked) removeInfoWindow();
   });
 
   naver.maps.Event.addListener(props.map, "click", () => { removeInfoWindow(); });

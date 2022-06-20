@@ -18,12 +18,12 @@ import MapChartContainer from '../containers/MapChart/MapChartContainer';
 import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
 import LoginRequired from '../components/global/LoginRequired/LoginRequired';
 import Alert from '../containers/Alert/Alert';
-
-import Modal from '../components/Modal/Modal';
+import CenterItem from '../containers/Center/CenterItemContainer';
 
 const MainView = ({ list, children }) => {
 
     const LIST_MODE = list;
+
     const SIGNUP_MODE  = useSelector(state => state.Mode.signup);
     const LOGIN_MODE  = useSelector(state => state.Mode.login);
     const FIND_ID_MODE  = useSelector(state => state.Mode.findId);

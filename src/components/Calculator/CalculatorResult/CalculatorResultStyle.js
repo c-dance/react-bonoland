@@ -57,6 +57,12 @@ export const CalcForm = styled.form`
             text-align: center;
             border-right: 1px solid ${({theme}) => theme.colors.gray300 };
 
+            &.memo {
+                padding-left: 6px;
+                text-align: left;
+                font-size: ${({theme}) => theme.fontSizes.xs};
+            }
+
             .mobile & {
                 height: 40px;
                 font-size: ${ ({theme}) => theme.fontSizes.s };
@@ -94,13 +100,14 @@ export const CalcForm = styled.form`
                 &.cost {
                     background-color: #DFE7FD;
                     font-weight: ${({theme}) => theme.fontWeights.bold};
+
                     .mobile { 
                         background-color: #fff;
                         font-weight: ${({theme}) => theme.fontWeights.regular}; 
                     }
                     
                     td:first-child { 
-                        background-color: ${({theme}) => theme.colors.gray200 }; 
+                        background-color: #DFE7FD; 
                         .mobile & { background-color: #fff; }
                     }
 

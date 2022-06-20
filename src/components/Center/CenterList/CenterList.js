@@ -10,7 +10,6 @@ const CenterList = ({
     error,
     noData
 }) => {
-    console.log(centers);
     return (
         <CardList type={ type }>
             <ListWrap>

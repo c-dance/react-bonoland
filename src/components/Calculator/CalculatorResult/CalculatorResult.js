@@ -52,13 +52,13 @@ const CalculatorResult = ({ result }) => {
                     Object.keys(result["수입"]).map((key, idx) => {
                         const item = result["수입"][key];
                         return (
-                            <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                            <tr key={idx} className={ item.title === "합계"? "total" : item.title.includes("인건비")? "cost" : "" }>
                                 { idx === 0 && <td rowSpan={ Object.keys(result["수입"]).length }>1 수입</td> }
                                 <td>{item.title}</td>
                                 <td>{item.capacity}</td>
                                 <td>{item.unitPrice}</td>
                                 <td>{item.totalPrice}</td>
-                                <td>{item.contents && item.contents}</td>
+                                <td className="memo">{item.memo && item.memo}</td>
                             </tr>
                         )
                     })
@@ -67,13 +67,13 @@ const CalculatorResult = ({ result }) => {
                     Object.keys(result["지출"]).map((key, idx) => {
                         const item = result["지출"][key];
                         return (
-                            <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                            <tr key={idx} className={ item.title === "합계"? "total" : item.title.includes("인건비")? "cost" : "" }>
                                 { idx === 0 && <td rowSpan={ Object.keys(result["지출"]).length }>2. 지출</td> }
                                 <td>{item.title}</td>
                                 <td>{item.capacity}</td>
                                 <td>{item.unitPrice}</td>
                                 <td>{item.totalPrice}</td>
-                                <td>{item.contents && item.contents}</td>
+                                <td className="memo">{item.memo && item.memo}</td>
                             </tr>
                         )
                     })
@@ -103,7 +103,7 @@ const CalculatorResult = ({ result }) => {
                         Object.keys(result["수입"]).map((key, idx) => {
                             const item = result["수입"][key];
                             return (
-                                <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                                <tr key={idx} className={ item.title === "합계"? "total" : item.title.includes("인건비")? "cost" : "" }>
                                     <td>{item.title}</td>
                                     <td>{item.capacity}</td>
                                     <td>{item.unitPrice}</td>
@@ -123,7 +123,7 @@ const CalculatorResult = ({ result }) => {
                         Object.keys(result["지출"]).map((key, idx) => {
                             const item = result["지출"][key];
                             return (
-                                <tr key={idx} className={ item.title === "합계"? "total" : "" }>
+                                <tr key={idx} className={ item.title === "합계"? "total" : item.title.includes("인건비")? "cost" : "" }>
                                     <td>{item.title}</td>
                                     <td>{item.capacity}</td>
                                     <td>{item.unitPrice}</td>

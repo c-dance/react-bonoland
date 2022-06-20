@@ -41,7 +41,7 @@ const CenterItem = ({
     noData
 }) => {
 
-    const navifate = useNavigate();
+    const navigate = useNavigate();
     
     // UI FUNCTION
     const [ tabIdx, setTabIdx ] = useState(0);
@@ -69,7 +69,7 @@ const CenterItem = ({
                             <div className="addr">{ center["주소"] }</div>
                         </AccordionDetails>
                     </Accordion>
-                    <Back onClick={ () => navifate(-1)} ></Back>
+                    <Back onClick={ () => navigate(-1)} ></Back>
                     <TabNavs>
                         <TabNav className={ tabIdx === 0 && "active" } onClick={() => toggleTab(0)}>상세정보</TabNav>
                         <TabNav className={ tabIdx === 1 && "active" } onClick={() => toggleTab(1)} >부동산</TabNav>

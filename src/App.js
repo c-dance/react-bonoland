@@ -3,9 +3,7 @@ import React, { useEffect } from 'react';
 import { USER_AUTH } from "./utils/user";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoggedIn } from "./store/actions/user";
-import { activateLoginRequired } from './store/actions/mode';
-
-import { Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 // CENTERS
 import CenterListContainer from './containers/Center/CenterListContainer';
@@ -65,8 +63,10 @@ const App = () => {
       </Route>
       <Route element={ <MainView list={ false }/> }>
         <Route exact path="/sales" element={ <SalesListContainer /> } />
-        <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
         <Route exact path="/recommend" element={ <RecommendListContainer /> } />
+        <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
+        <Route exact path="/sales/center/:id" element={ <SalesListContainer /> } />
+        <Route exact path="/recommend/center/:id" element={ <RecommendListContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
     </Routes>

@@ -14,7 +14,7 @@ const combinedReducer = combineReducers({
      Mode: ModeReducer,
      Chart: ChartReducer,
      Alert: AlertReducer,
-     Geolocation: GeolocationReducer,
+     Geolocation: GeolocationReducer
 });
 
 export default combinedReducer;

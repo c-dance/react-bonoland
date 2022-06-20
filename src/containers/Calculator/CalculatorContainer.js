@@ -6,27 +6,14 @@ import MobileSection from '../../components/global/MobileSection/MobileSection';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
 import { deactivateCalculator } from '../../store/actions/mode';
-import { GET_INCOME_RESULT } from '../../sheme/calculator';
-
-const initialFormData = {
-    type: "단독요양원",
-    capacity: "0",
-    commons: "0",
-    premiums: "0",
-    premiumPrice: "0",
-    helpers: "0",
-    penalty: "0",
-    price: "0",
-    loan: "0",
-    rent: "0"
-};
+import { INCOME_DATASET, GET_INCOME_RESULT } from '../../sheme/calculator';
 
 const CalculatorContainer = () => {
 
     const dispatch = useDispatch();
 
     // 수익계산기 입력폼, 입력폼 subtmit
-    const [ formData, setFormData ] = useState(Object.assign({}, initialFormData));
+    const [ formData, setFormData ] = useState(Object.assign({}, INCOME_DATASET));
     // 수익계산기 결과폼
     const [ result, setResult ] = useState({});
 
@@ -36,11 +23,12 @@ const CalculatorContainer = () => {
     // 수익계산기 초기화
     const resetForm = event => {
         event.preventDefault();
-        setFormData(Object.assign({}, initialFormData));
+        setFormData(Object.assign({}, INCOME_DATASET));
     };
 
     const calculateIncome = data => {
-        const HAS_DATA = Object.keys(data).filter( key => data[key] !== "0").length > 1;
+        console.log(data);
+        const HAS_DATA = data.commons.length > 0 && data.penalty.length > 0;
 
         if(HAS_DATA) {
             const results = GET_INCOME_RESULT(data);

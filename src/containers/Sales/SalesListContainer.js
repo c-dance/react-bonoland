@@ -20,11 +20,9 @@ const SalesListContainer = () => {
 
     useEffect(() => {
         // data[Object.keys(data)[0]]
-        // setNursings(data["요양원"]);
-        // setDayCares(data["주간보호"]);
         if(Object.keys(data).length > 0) {
-            setNursings(data[Object.keys(data)[0]]["요양원"]);
-            setDayCares(data[Object.keys(data)[0]]["주간보호"]);
+            setNursings(data["요양원"]);
+            setDayCares(data["주간보호"]);
         }
     }, [data]);
 
@@ -41,12 +39,14 @@ const SalesListContainer = () => {
                         error={ error }  
                         noData={ noData }
                         centers={ nursings } 
+                        cardUrl="sales"
                     />,
                     <CenterList 
                         loading={ loading }
                         error={ error }  
                         noData={ noData }
                         centers={ daycares } 
+                        cardUrl="sales"
                     />,
                 ]}
             />

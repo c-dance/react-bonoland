@@ -19,11 +19,9 @@ const RecommendListContainer = () => {
     }, []);
 
     useEffect(() => {
-        // setBizs(data["신규 사업지"]);
-        // setremodelings(data["신규 리모델링"]);
         if(Object.keys(data).length > 0) {
-            setBizs(data[Object.keys(data)[0]]["신규 사업지"]);
-            setremodelings(data[Object.keys(data)[0]]["신규 리모델링"]);
+            setBizs(data["신규 사업지"]);
+            setremodelings(data["신규 리모델링"]);
         }
     }, [data]);
 
@@ -40,12 +38,14 @@ const RecommendListContainer = () => {
                         error={ error }  
                         noData={ noData }
                         centers={ bizs } 
+                        cardUrl="sales"
                     />,
                     <CenterList 
                         loading={ loading }
                         error={ error }  
                         noData={ noData }
                         centers={ remodelings } 
+                        cardUrl="sales"
                     />,
                 ]}
             />

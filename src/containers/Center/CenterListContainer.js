@@ -72,7 +72,9 @@ const CenterListContainer = () => {
 
     useEffect(() => {
         // setCenters(data);
-        setCenters(data[Object.keys(data)[0]]);
+        console.log(data);
+        setCenters(data);
+        // setCenters(data[Object.keys(data)[0]]);
     }, [data]);
 
     /* ==== RENDER_TEMPLATE === */

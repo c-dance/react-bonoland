@@ -32,7 +32,7 @@ const CenterCard = ({ type, center }) => {
                         type ==="sub" && 
                         <Head>{`${center["기관"]} ${center["정원"]}인 시설 ${center["분류"]}`}</Head> 
                     }
-                    <Wrap to={ '/center/' + center.id }>
+                    <Wrap to={`/center/${center.id}`}>
                         {
                             type !== "abstract" &&
                             <Thumbnail>
