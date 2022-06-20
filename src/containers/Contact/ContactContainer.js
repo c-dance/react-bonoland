@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import React, { useState, useEffect } from 'react';
 import Modal from '../../components/Modal/Modal';
 import MobileSection from '../../components/global/MobileSection/MobileSection';
 import Agreement from "../../components/Agreement/Agreement";
@@ -9,9 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activateAlert } from '../../store/actions/alert';
 import { contactCenter } from '../../api/service';
 import { USER_AUTH } from '../../utils/user';
+import { deactivateContact } from '../../store/actions/mode'
 
 
-const ContactContainer = () => {
+const ContactContainer = ({ centerInfo }) => {
 
     const dispatch = useDispatch();
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
@@ -24,12 +24,6 @@ const ContactContainer = () => {
 
     // 로그인 되었을 때
     const [ user, setUser ] = useState({ uName: "", uEmail: "", uTel: "" });
-    
-    // 매수문의 닫기
-    const navigate = useNavigate();
-    const deactivatContact = () => {
-        navigate('/');
-    };
 
     // 약관 동의 제출
     const onAgreeSubmit = data => setAgreeSubmitted(data.agree);
@@ -39,7 +33,7 @@ const ContactContainer = () => {
         const RESPONSE = await contactCenter(data);
 
         if(RESPONSE) {
-            deactivatContact();
+            dispatch(deactivateContact());
             dispatch(activateAlert({
                 title:"매수 문의",
                 contents: RESPONSE.data.message || "매수 문의가 완료되었습니다."
@@ -93,7 +87,7 @@ const ContactContainer = () => {
             <Modal
                 open={ true }
                 close={ true }
-                onCloseClick={ deactivatContact }
+                onCloseClick={ () => {dispatch(deactivateContact())} }
                 width="890"
                 title="매수 문의"
             >
@@ -104,7 +98,7 @@ const ContactContainer = () => {
             isMobile &&
             <MobileSection 
                 title="매수문의" 
-                onBackClick={ deactivatContact }
+                onBackClick={  () => {dispatch(deactivateContact())} }
             >
                     { RENDER_CONTACT() }
             </MobileSection>

@@ -19,10 +19,13 @@ import UserAlarmFormContainer from '../containers/User/UserAlarmFormContainer';
 import LoginRequired from '../components/global/LoginRequired/LoginRequired';
 import Alert from '../containers/Alert/Alert';
 import CenterItem from '../containers/Center/CenterItemContainer';
+import ContactContaier from '../containers/Contact/ContactContainer';
 
 const MainView = ({ list, children }) => {
 
     const LIST_MODE = list;
+
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const SIGNUP_MODE  = useSelector(state => state.Mode.signup);
     const LOGIN_MODE  = useSelector(state => state.Mode.login);
@@ -32,7 +35,8 @@ const MainView = ({ list, children }) => {
     const CALCULATOR_MODE = useSelector(state => state.Mode.calculator);
     const ALARM_MODE = useSelector(state => state.Mode.alarm);
     const ALERT_MODE = useSelector(state => state.Alert.active);
-    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
+    const CONTACT_MODE = useSelector(state => state.Mode.contact);
+    
 
     return(
         <>      
@@ -46,6 +50,7 @@ const MainView = ({ list, children }) => {
                 { !IS_LOGGEDIN && FIND_ID_MODE && <FindIdContainer /> }
                 { !IS_LOGGEDIN && FIND_PWD_MODE && <FindPwdContainer /> }
                 { CALCULATOR_MODE && <CalculatorContainer /> }
+                { CONTACT_MODE && <ContactContaier /> }
                 { ALERT_MODE && <Alert /> }
                 <MapChartContainer />
                 <MapContainer />

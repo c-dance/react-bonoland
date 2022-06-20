@@ -4,6 +4,7 @@ import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 import React from "react";
 
 const CenterList = ({
+    list,
     type, 
     centers,
     loading,
@@ -20,7 +21,7 @@ const CenterList = ({
                 centers && centers.length > 0 &&
                 centers.map(( center, idx ) => 
                 <div key={ idx }>
-                    <CenterCard type={ type } center = { center } />
+                    <CenterCard list={list} type={ type } center = { center } />
                     <CardDivider />
                 </div>
                 )

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
-import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
 import Panel from '../../components/ui/Panel/Panel';
 import { getSalesCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
+import AddressFilterContainer from '../filters/AddressFilterContainer';
 
 
 const SalesListContainer = () => {
@@ -29,12 +29,13 @@ const SalesListContainer = () => {
     return (
         <Panel>
             <ListHeader title="시설매매">
-                <AddressFilter type="sub" />
+                <AddressFilterContainer type="sub" />
             </ListHeader>
             <ListTab 
                 navs={["요양원", "주간보호"]} 
                 contents={[
                     <CenterList 
+                        list="sales"
                         loading={ loading }
                         error={ error }  
                         noData={ noData }
@@ -42,6 +43,7 @@ const SalesListContainer = () => {
                         cardUrl="sales"
                     />,
                     <CenterList 
+                        list="sales"
                         loading={ loading }
                         error={ error }  
                         noData={ noData }

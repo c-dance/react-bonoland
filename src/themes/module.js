@@ -185,11 +185,12 @@ const TableForm = styled.form`
         width: 160px;
         height: 52px; 
         margin: 0 auto;
-        color: ${ theme.colors.gray400 };
+        background-color: ${ theme.colors.primary };
+        color: #fff;
 
-        &.active {
-            background-color: ${ theme.colors.primary };
-            color: #fff;
+        &.disabled {
+            background-color: ${ theme.colors.gray100 };
+            color: ${ theme.colors.gray400 };
         }
     }
 `;

@@ -30,7 +30,7 @@ import DoughnutChart from '../../Chart/DoughnutChart/DoughnutChart';
 import RadarChart from '../../Chart/RadarChart/RadarChart';
 import { isMobile } from 'react-device-detect';
 import { Loading, Error, NoData } from '../../ui/Inform/Inform';
-import { getLocalNumber } from '../../../utils/number';
+import { getLocalNumber, getPyeong } from '../../../utils/number';
 
 const CenterItem = ({ 
     center, 
@@ -49,6 +49,9 @@ const CenterItem = ({
 
     const toggleTab = (idx) => { setTabIdx(idx); };
     const toggleAccordion = (accordian) => { setAccordion(!accordian); };
+
+    // 평수 계산
+    console.log(getPyeong("1,234"));
 
     return (
         <>
@@ -83,6 +86,26 @@ const CenterItem = ({
                                 <Action icon="scrap">스크랩</Action>
                                 <Action icon="share">공유</Action>
                             </Actions>
+                            <Section>
+                                <h3>매매 정보</h3>
+                                <hr />
+                                <Table>
+                                    <tbody>
+                                        <tr>
+                                            <th>실거래가</th>
+                                            <td>{ center["기본정보"]["실거래가"] }</td>
+                                        </tr>
+                                        <tr>
+                                            <th>투자</th>
+                                            <td>{ center["기본정보"]["투자"] }</td>
+                                        </tr>
+                                        <tr>
+                                            <th>대출</th>
+                                            <td>{ center["기본정보"]["대출"]}</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </Section>
                             <Section>
                                 <h3>기본 정보</h3>
                                 <hr />

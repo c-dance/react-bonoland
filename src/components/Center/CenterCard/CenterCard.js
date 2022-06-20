@@ -20,8 +20,24 @@ import {
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import React from "react";
+import { useLocation } from 'react-router';
 
-const CenterCard = ({ type, center }) => {
+const LIST_PATH = ["/", "recommend", "sales"];
+
+const CenterCard = ({ list, type, center }) => {
+
+    const CENTER_PATH = centerId => {
+        if(list && list.length > 0) {
+            const parentPath = list === "main"? "" : "/" + list;
+            return parentPath + `/center/${centerId}`
+        } else {
+            const currentPath = useLocation().pathname.split('/')[1];
+            let parentPath = LIST_PATH.filter(pathName => pathName === currentPath)[0] || "";
+            if(parentPath.length > 0) parentPath = "/" + parentPath;
+            return parentPath + `/center/${centerId}` 
+        }
+    };
+
 
     return (
         <>
@@ -32,7 +48,7 @@ const CenterCard = ({ type, center }) => {
                         type ==="sub" && 
                         <Head>{`${center["기관"]} ${center["정원"]}인 시설 ${center["분류"]}`}</Head> 
                     }
-                    <Wrap to={`/center/${center.id}`}>
+                    <Wrap to={ CENTER_PATH(center.id) }>
                         {
                             type !== "abstract" &&
                             <Thumbnail>

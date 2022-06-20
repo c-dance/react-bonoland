@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { useFetch } from '../../hooks';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Panel from "../../components/ui/Panel/Panel";
 import CenterItem from "../../components/Center/CenterItem/CenterItem";
 import { activateAlert } from '../../store/actions/alert';
@@ -10,10 +9,14 @@ import { useGet } from "../../hooks";
 import { getCenter } from '../../api/center';
 import Modal from '../../components/Modal/Modal';
 import CalculatorResult from "../../components/Calculator/CalculatorResult/CalculatorResult";
+import { activateContact } from "../../store/actions/mode";
+
 
 const CenterItemContainer = () => {
 
     const dispatch = useDispatch();
+
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const { id } = useParams();
     const [ center, setCetner ] = useState(null);
@@ -21,11 +24,18 @@ const CenterItemContainer = () => {
     const [ calcMode, setCalcMode ] = useState(false);
 
     const onContactClick = () => {
-        const alertMsg = {
-            title: "비회원 매수문의",
-            contents: `비회원의 경우 ${ isBrowser? "상단 우측의" : "메인 페이지 하단 메뉴의" } 매수문의를 통해 문의할 수 있습니다.`
+        if(IS_LOGGEDIN) {
+            dispatch(activateContact());
+        } else {            
+            dispatch(activateAlert({
+                title: "비회원 매수문의",
+                contents: `비회원의 경우 ${ isBrowser? "상단 우측의" : "메인 페이지 하단 메뉴의" } 매수문의를 통해 문의할 수 있습니다.`
+            }));
         }
-        dispatch(activateAlert(alertMsg));
+    };
+
+    const handleMapFilter = (data) => {
+        // const address = data.
     };
 
     const onCalcClick = () => {
@@ -45,6 +55,7 @@ const CenterItemContainer = () => {
 
     useEffect(() => {
         // setCetner(data);
+        console.log(data);
         setCetner(data[Object.keys(data)[0]]);
     }, [data]);
 

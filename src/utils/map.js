@@ -66,11 +66,16 @@ export const getSearchByAddress = address => {
         }
         
         const data = response.v2.addresses[0];
-        const result = {
-          latlng: [data.x, data.y],
-          region: data.roadAddress,
-          zoom: getZoomByAddress(data.addressElements)
-        };
+        let result = null;
+
+        if(data) {
+          result = {
+            latlng: [data.x, data.y],
+            region: data.roadAddress,
+            zoom: getZoomByAddress(data.addressElements)
+          };
+        }
+
         resolve(result);
       });
   })

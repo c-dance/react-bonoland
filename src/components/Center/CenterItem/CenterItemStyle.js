@@ -326,6 +326,7 @@ export const Back = styled.div`
 export const TabNavs = styled.div`
     display: flex;
     gap: 0;
+
     .mobile & {
         padding-bottom: 16px;
     }
@@ -340,6 +341,7 @@ export const TabNav = styled.div`
     background-color: ${ ({theme}) => theme.colors.gray100 };
     color: ${ ({theme}) => theme.colors.gray500 };
     border: none;
+    cursor: pointer;
 
     .mobile & {
         background-color: #fff;

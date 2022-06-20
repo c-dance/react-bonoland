@@ -100,6 +100,7 @@ const CenterListContainer = () => {
 
     const RENDER_LIST = () => (
         <CenterList 
+            list="main"
             type={ isBrowser? "main" : "abstract" }
             centers={ centers }   
             loading={ loading }

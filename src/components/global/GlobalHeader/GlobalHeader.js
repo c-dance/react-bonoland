@@ -6,6 +6,7 @@ import {
     activateSignup,
     activateLogin,
     activateCalculator,
+    activateContact
 } from '../../../store/actions/mode';
 import { useSelector } from "react-redux";
 
@@ -19,39 +20,38 @@ const GlobalHeader = () => {
         <Header>
             <HomeLink to="/" />
             <Menu>
-                    <NavMenu>
-                        <Nav>
-                            <Link to="/register">매물접수</Link>
-                        </Nav>
-                        <Nav>
-                            <Link to="/contact">매수문의</Link>
-                        </Nav>
-                        <Nav>
-                            <Link to="/news">뉴스</Link>
-                        </Nav>
-                    </NavMenu>
-                    <UtilMenu>
-                    {
-                        LOGGEDIN &&
-                        <Hello>안녕하세요, { USER_NAME } 님!</Hello>
-                    }
-                    {
-                        !LOGGEDIN &&
-                        <>
-                            <Button
-                                onClick={ () => dispatch(activateLogin()) }
-                            >로그인</Button>
-                            <Button 
-                                className="highlight"
-                                onClick={ () => dispatch(activateSignup()) }
-                            >회원가입</Button>
-
-                        </>
-                    }
-                        <Calculate
-                            onClick={ () => dispatch(activateCalculator()) }
-                        >수익계산기</Calculate>
-                    </UtilMenu>
+                <NavMenu>
+                    <Nav>
+                        <Link to="/register">매물접수</Link>
+                    </Nav>
+                    <Nav>
+                        <button onClick={() => dispatch(activateContact())}>매수문의</button>
+                    </Nav>
+                    <Nav>
+                        <Link to="/news">뉴스</Link>
+                    </Nav>
+                </NavMenu>
+                <UtilMenu>
+                {
+                    LOGGEDIN &&
+                    <Hello>안녕하세요, { USER_NAME } 님!</Hello>
+                }
+                {
+                    !LOGGEDIN &&
+                    <>
+                        <Button
+                            onClick={ () => dispatch(activateLogin()) }
+                        >로그인</Button>
+                        <Button 
+                            className="highlight"
+                            onClick={ () => dispatch(activateSignup()) }
+                        >회원가입</Button>
+                    </>
+                }
+                    <Calculate
+                        onClick={ () => dispatch(activateCalculator()) }
+                    >수익계산기</Calculate>
+                </UtilMenu>
             </Menu>
         </Header>
     )

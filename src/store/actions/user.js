@@ -1,7 +1,7 @@
-import { userLogin, userLogout } from '../../api/user';
+import { userLogin } from '../../api/user';
 import { ALERT } from './alert';
 import { USER_AUTH } from '../../utils/user';
-import { LOGIN, MODE } from './mode';
+import { LOGIN } from './mode';
 
 export const USER = {
     LOGIN: 'login',
@@ -12,11 +12,12 @@ export const login = data => async dispatch => {
     const RESPONSE = await userLogin(data);
 
     if(RESPONSE && RESPONSE.data.code === 1) {
+        console.log(RESPONSE);
         const USER_INFO = { 
             id: RESPONSE.data.result.userEmail,
             name: RESPONSE.data.result.userName, 
-            // type: RESPONSE.data.result.userCtg, // 사용자 타입
-            tel: RESPONSE.data.result.userTel
+            tel: RESPONSE.data.result.userTel,
+            memo: RESPONSE.data.result.userRemarks
         };
 
         USER_AUTH.store(USER_INFO); 
@@ -45,10 +46,9 @@ export const setLoggedIn = user => ({
     payload: user
 });
 
-export const logout = () => async dispatch => {
-    await userLogout()
-        .then(() => {
-            USER_AUTH.remove();
-            dispatch({ type: USER.LOGOUT })
-        })
-};
+export const logout = () => {
+    USER_AUTH.remove();
+    return {
+        type: USER.LOGOUT
+    }
+}

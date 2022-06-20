@@ -53,7 +53,7 @@ api.interceptors.response.use(function(response){
 
 export const consoleErr = (err) => {
     if(err.response) {
-        console.log(`status: ${err.response.status} | headers: ${err.response.headers} | data: ${err.response.data}`);
+        console.log(`status: ${err.response.status} | headers: ${JSON.stringify(err.response.headers)} | data: ${JSON.stringify(err.response.data)}`);
     } else {
         console.log(`ERROR: ${ err.message }`)
     }

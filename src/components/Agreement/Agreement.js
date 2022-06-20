@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { module } from '../../themes/module';
 import { AgreementBox, Terms } from './AgreementStyle';
 import { get, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { activateAlert } from '../../store/actions/alert';
-import { getValue } from '@testing-library/user-event/dist/utils';
 
 const Agreement = ({ 
     subTitle, 
@@ -15,14 +14,13 @@ const Agreement = ({
 
     const dispatch = useDispatch();
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: "onSubmit" });
+    const [ submitAble, setSubmitAble ] = useState(false);
+    const { register, handleSubmit, formState: { errors }, getValues, watch } = useForm({ mode: "onSubmit" });
+    const watching = watch("agree");
 
-    if(errors.agree) {
-        dispatch(activateAlert({
-            title: "개인정보 수집 동의",
-            contents: "개인정보 수집 및 이용에 동의 시 매물 접수가 가능합니다."
-        }));
-    }
+    useEffect(() => {
+        setSubmitAble(watching);
+    }, [watching]);
 
     return (
         <AgreementBox>
@@ -45,9 +43,10 @@ const Agreement = ({
                     >
                         { label }
                     </label>
+                    { errors.agree && <span className="warn">개인정보 수집 및 이용에 동의 시 매물 접수가 가능합니다.</span>}
                 </fieldset>
                 <module.SubmitButton
-                    className={ !getValues("agree") && "disabled"}
+                    className={ submitAble? "" : "disabled"}
                 >
                     다음
                 </module.SubmitButton>

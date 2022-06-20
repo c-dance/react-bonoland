@@ -14,6 +14,7 @@ export const AgreementBox = styled.div`
         gap: 56px;
 
         fieldset {
+            position: relative;
             display: flex;
             gap: 8px;
         }
@@ -23,10 +24,17 @@ export const AgreementBox = styled.div`
             height: 52px;
             margin: 0 auto;
         }
+
+        .warn {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 24px;
+            font-size: ${({theme}) => theme.fontSizes.xs };
+            color: ${({theme}) => theme.colors.red };
+        }
     }
 
     
-
     /* === MOBILE === */
     .mobile & {
         height: 100%;

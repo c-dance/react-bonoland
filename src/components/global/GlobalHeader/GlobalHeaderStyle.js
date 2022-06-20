@@ -46,6 +46,9 @@ export const Nav = styled.div`
     a {
         color: ${ ({ theme }) => theme.colors.gray900 };
     }
+    button {
+        background-color: #fff;
+    }
 `; 
 
 export const UtilMenu = styled.div`

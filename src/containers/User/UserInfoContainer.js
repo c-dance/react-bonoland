@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGet } from '../../hooks';
 import Section from "../../components/ui/Section/Section";
 import UserAuthForm from '../../components/User/UserAuthForm/UserAuthForm';
 import UserInfoForm from '../../components/User/UserInfoForm/UserInfoForm';
@@ -9,8 +8,9 @@ import { activateAlert } from '../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscribe';
-import { getUserInfo, modifyUserInfo } from '../../api/user';
+import { getUserInfo, modifyUserInfo, getPasswordMatch } from '../../api/user';
 import { getNewPhoneAuth } from '../../api/auth';
+
 
 const UserInfoContainer = () => {
 
@@ -22,6 +22,7 @@ const UserInfoContainer = () => {
     const [ passwordMatch, setPasswordMatch ] = useState(false);
 
     const [ user, setUser ] = useState({});
+    const USER_INFO = useSelector(state => state.User.userInfo);
 
     const [ newPhoneMode, setNewPhoneMode ] = useState(false);
     const [ unsubscribeMode, setUnsubscribeMode ] = useState(false);
@@ -31,20 +32,21 @@ const UserInfoContainer = () => {
 
     
     const onPwdSubmit = async user => {
-        console.log(user);
-        const RESPONSE = await getUserInfo(user);
-        if(RESPONSE) {
-            setPasswordMatch(true);
-            setUser(RESPONSE.data);
-            // 비밀번호 불일치 할 때
-            // dispatch(activateAlert({
-            //     title: "비밀번호 오류",
-            //     contents: "입력하신 정보가 일치하지 않습니다."
-            // }))
+        // setPasswordMatch(true);
+        // setUser(USER_INFO);
+
+        const RESPONSE = await getPasswordMatch({ 
+            userEmail: user.id, 
+            userPwd: user.password 
+        });
+
+        if(RESPONSE && RESPONSE.data.code === 0) {
         } else {
+            console.log("false");
+            setPasswordMatch(false);
             dispatch(activateAlert({
-                title: "조회 실패",
-                contents: "계정 정보 조회에 실패했습니다. 다시 시도해 주세요."
+                title: "회원정보 확인",
+                contents: RESPONSE.data.message || "계정 정보 조회에 실패했습니다. 다시 시도해 주세요."
             }))
         }
     };

@@ -6,7 +6,6 @@ const AUTH_URL = {
     findIdAuth: '/user/findEmailProc',
     findPwdAuth: '/user/findPwdProc',
     newPwdAuth: '/user/modifyPwdProc',
-    newPhone: '',
 }
 
 export const getAuthNumber = async phoneNumber  => await api.post(AUTH_URL.authNum, { userTel: phoneNumber });
@@ -15,5 +14,7 @@ export const getSignUpAuth = async phoneNumber => await api.post(AUTH_URL.signUp
 export const getFindIdAuth = async phoneNumber => await api.post(AUTH_URL.findIdAuth, { userTel: phoneNumber });
 export const getFindPwdAuth = async phoneNumber => await api.post(AUTH_URL.findPwdAuth, { userTel: phoneNumber });
 export const getNewPwdAuth = async pwdString => await api.post(AUTH_URL.newPwdAuth, { userPwd: pwdString });
+
+// 회원 정보
 export const getNewPhoneAuth = async phoneNumber => await api.post(AUTH_URL.newPhone,  { userTel: phoneNumber });
 

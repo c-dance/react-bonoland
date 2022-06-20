@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CenterList from '../../components/Center/CenterList/CenterList';
-import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import ListHeader from '../../components/List/ListHead/ListHead';
 import ListTab from '../../components/List/ListTab/ListTab';
 import Panel from '../../components/ui/Panel/Panel'
 import { getRecommendCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
+import AddressFilterContainer from '../filters/AddressFilterContainer';
 
 const RecommendListContainer = () => {
     const [ bizs, setBizs ] = useState([]);
@@ -28,12 +28,13 @@ const RecommendListContainer = () => {
     return (
         <Panel>
             <ListHeader title="추천매물">
-                <AddressFilter type="sub" />
+                <AddressFilterContainer type="sub" />
             </ListHeader>
             <ListTab 
                 navs={["신규 사업지", "신규 리모델링"]} 
                 contents={[
                     <CenterList 
+                        list="recommend"
                         loading={ loading }
                         error={ error }  
                         noData={ noData }
@@ -41,6 +42,7 @@ const RecommendListContainer = () => {
                         cardUrl="sales"
                     />,
                     <CenterList 
+                        list="recommend"
                         loading={ loading }
                         error={ error }  
                         noData={ noData }

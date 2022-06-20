@@ -4,7 +4,6 @@ import primaryBackIcon from '../../../assets/images/icon/ico-back_dark.svg';
 import secondaryCloseIcon from '../../../assets/images/icon/ico-x_white.svg';
 import secondaryBackIcon from '../../../assets/images/icon/ico-back_white.svg';
 import secondaryArrowBackIcon from '../../../assets/images/icon/ico-arrowback_white.svg';
-import { module } from '../../../themes/module';
 
 export const Section = styled.section`
     z-index: 30;
@@ -98,7 +97,7 @@ export const Back = styled.div`
     color: ${ props =>
         props.themeColor === "primary"?
         props.theme.colors.gray600 
-        :'#ffff'
+        :'#000'
     };
     background-color: transparent;
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { module } from '../../themes/module';
 import { isMobile, isBrowser } from 'react-device-detect';
 import { useForm } from 'react-hook-form';
@@ -12,8 +12,11 @@ const Contact = ({
 }) => {
 
     const dispatch = useDispatch();
+
+    const [submitAble, setSubmitAble] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
     
-    const { register, handleSubmit, formState: { errors } } = useForm({ 
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
         mode: "onSubmit", 
         reValidateMode: "onSubmit",
         defaultValues: {
@@ -22,6 +25,8 @@ const Contact = ({
             uTel: user.uTel || "",
         }
     });
+
+    const watching = watch(["uName", "uTel", "uEmail", "cSido", "cGugun", "cType", "cContact", "cAssets", "cContents"]);
     
     /* === 필수입력값 처리 === */
     const sumErrors = errors => {
@@ -67,6 +72,10 @@ const Contact = ({
     
     if(errors) handleErrors(sumErrors(errors));
 
+    useEffect(() => {
+        setSubmitAble(watching.filter(value => value && value.length > 0).length === watching.length);
+    }, [watching]);
+
     return (
         <>
             {
@@ -100,7 +109,7 @@ const Contact = ({
                                     <label htmlFor="uEmail">이메일</label>
                                 </th>
                                 <td colSpan="1">
-                                    <input type="text" name="uEmail" id="uEmail" {...register("uEamil", { required: true, pattern: REGEXP.email })}/> 
+                                    <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true, pattern: REGEXP.email })}/> 
                                 </td>
                             </tr>
                         </table>
@@ -115,9 +124,9 @@ const Contact = ({
                             <col width="25%"/>
                         </colgroup>
                             <tr>
-                                <th><label htmlFor="cSigun">시/군</label></th>
+                                <th><label htmlFor="cSido">시/군</label></th>
                                 <td>
-                                    <select name="cSigun" id="cSido" {...register("cSido", { required: true })}>
+                                    <select name="cSido" id="cSido" {...register("cSido", { required: true })}>
                                         <option value="서울시">서울시</option>
                                         <option value="부산시">부산시</option>
                                     </select>
@@ -165,9 +174,11 @@ const Contact = ({
                             </tr>
                         </table>
                     </fieldset>
-                    <button type="submit">
-                        접수하기
-                    </button>
+                    <span class="warn">에러메시지</span>
+                    <button 
+                        type="submit"
+                        className={ submitAble? "" : "disabled" }
+                    >접수하기</button>
                 </module.TableForm>
             }
             {

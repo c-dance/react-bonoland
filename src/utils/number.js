@@ -24,6 +24,9 @@ export const getNumber = (strValue = "") => {
     return isNaN(value)? value : Number(value);
 };
 
+/* === 면적 > 평수 산출 === */
+export const getPyeong = size => `${getLocalNumber(parseFloat(getNumber(size) / 3.3058).toFixed(2))}평`
+
 /* === 계산식 === */
 export const CALCULATOR = {
     sum: (numbers = []) => {

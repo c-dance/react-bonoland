@@ -5,7 +5,9 @@ const initialState = {
     userInfo: {
         id: '',
         name: '',
-        tel: ''
+        tel: '',
+        memo: '',
+        alarms: ''
     },
 };
 

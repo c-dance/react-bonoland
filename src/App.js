@@ -65,8 +65,8 @@ const App = () => {
         <Route exact path="/sales" element={ <SalesListContainer /> } />
         <Route exact path="/recommend" element={ <RecommendListContainer /> } />
         <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
-        <Route exact path="/sales/center/:id" element={ <SalesListContainer /> } />
-        <Route exact path="/recommend/center/:id" element={ <RecommendListContainer /> } />
+        <Route exact path="/sales/center/:id" element={ <CenterItemContainer /> } />
+        <Route exact path="/recommend/center/:id" element={ <CenterItemContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
     </Routes>

@@ -36,6 +36,7 @@ const RegisterContainer = () => {
 
     const onFormSubmit = async data => {
         const RESPONSE = await registerCenter(data);
+
         if(RESPONSE) {
             deactivateRegister();
             dispatch(activateAlert({
