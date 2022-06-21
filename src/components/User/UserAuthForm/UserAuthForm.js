@@ -6,7 +6,8 @@ import { useForm } from "react-hook-form";
 
 const UserAuthForm = ({ 
     id,
-    onFormSubmit
+    onFormSubmit, 
+    onNewPwdClick
 }) => {    
 
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onSubmit', defaultValues: { "id" : id } });
@@ -32,6 +33,7 @@ const UserAuthForm = ({
                     />
                         { errors.password && <span className="warn">비밀번호를 입력해 주세요.</span> }
                 </module.Fieldset>
+                <span className="newPwd" onClick={ () => onNewPwdClick() }>비밀번호를 잊어버리셨나요?</span>
                 <module.SubmitButton
                     type="submit"
                     className={ getValues("password") && "disabled"}

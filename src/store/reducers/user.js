@@ -21,9 +21,7 @@ const UserReducer = (state = initialState, action) => {
             const newInfo = action.payload;
             return {...state, userInfo: {...state.userInfo, ...newInfo }};
         case USER.LOGOUT: 
-            return initialState;
-        case USER.UNSUBSCRIBE: 
-            return initialState;
+            return {...state, loggedIn: false, userInfo: initialState.userInfo};
         default: 
             return state;
     }

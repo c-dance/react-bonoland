@@ -12,15 +12,18 @@ import {
 } from './UserAlarmFormStyle';
 
 const UserAlarmForm = ({ 
-    form,
+    dataset,
     onFormChange
 }) => {
 
     const [ accordion, setAccordion ] = useState(false);
     const toggleAccordion = () => { setAccordion(!accordion); };
 
-    const [ gyeonggiDo, setGyeonggiDo ] = useState(form["gyeonggiDo"].filter(item => item.value === true).length);
-    const onGyeonggiDoCount = checked => {setGyeonggiDo(gyeonggiDo => gyeonggiDo + `${ checked? 1 :(-1) }`);}
+    const [ gyeonggiDo, setGyeonggiDo ] = useState(0);
+
+    useEffect(() => {
+        setGyeonggiDo(Object.keys(dataset["경기도"]).filter(key => dataset["경기도"][key].value === true).length);
+    }, [dataset])
 
     return (
         <AlarmForm>
@@ -50,19 +53,17 @@ const UserAlarmForm = ({
                             <AccordionDetails active={ accordion }>
                                 <fieldset>
                                 {
-                                    form["gyeonggiDo"].map((si, idx) => (
+                                    Object.keys(dataset["경기도"]).map((key, idx) => (
                                         <CheckWrap key={ idx }>
                                             <input 
                                                 type="checkbox" 
                                                 name="aRegion" 
                                                 id={`aRegion0_${idx}`} 
-                                                value={ si.label } 
-                                                onChange={ event => {
-                                                    onGyeonggiDoCount(event.currentTarget.checked);
-                                                    onFormChange("gyeonggiDo", idx, event.currentTarget.checked);
-                                                } }
+                                                value={ dataset["경기도"][key].label } 
+                                                checked={ dataset["경기도"][key].value } 
+                                                onChange={ event => { onFormChange(["경기도", key]); } }
                                             />
-                                            <label htmlFor={`aRegion0_${idx}`}>{ si.label }</label>
+                                            <label htmlFor={`aRegion0_${idx}`}>{ dataset["경기도"][key].label }</label>
                                         </CheckWrap>
                                     ))
                                 }
@@ -71,16 +72,17 @@ const UserAlarmForm = ({
                         </Accordion>
                         <fieldset>
                             {
-                                form["sidos"].map((sido, idx) => (
+                                Object.keys(dataset).filter(key => key !== "경기도").map((key, idx) => (
                                     <CheckBox key={ idx }>
                                         <input 
                                             type="checkbox" 
                                             name="aRegion" 
                                             id={`aRegion${idx + 1}`} 
-                                            value={ sido.value }  
-                                            onChange={ event => onFormChange("sidos", idx, event.currentTarget.checked) }   
+                                            value={ dataset[key].label }  
+                                            checked={ dataset[key].value }  
+                                            onChange={ event => { onFormChange([key]); } }   
                                         />
-                                        <label htmlFor={`aRegion${idx + 1}`}>{ sido.label }</label>
+                                        <label htmlFor={`aRegion${idx + 1}`}>{ dataset[key].label }</label>
                                     </CheckBox>
                                 ))
                             }

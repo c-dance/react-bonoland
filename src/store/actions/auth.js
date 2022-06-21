@@ -1,14 +1,34 @@
 export const AUTH = {
-    PHONE_NUMBER: '/auth/phoneNumber',
-    SUCCESS: '/auth/success'
+    ACTIVATE: '/auth/activate',
+    DEACTIVATE: '/auth/deactivate',
+    CHECK_AUTHNUM: '/auth/match',
+    SET_AUTHNUM: '/auth/authnum',
+    GET_CHECK_MATCH: '/autn/matchResult',
+    API: '/auth/authApi',
+    GET_API_RESPONSE: '/auth/authApiResponse'
 };
 
-export const updatePhoneNumber = phoneNumber => ({
-    type: AUTH.PHONE_NUMBER,
-    payload: phoneNumber
+// 인증 활성화
+export const activateAuth = data => ({
+    type: AUTH.ACTIVATE,
+    payload: data
 });
 
-export const updateAuthState = state => ({
-    type: AUTH.SUCCESS,
-    payload: state
+// 인증 비활성화
+export const deactivateAuth = () => ({
+    type: AUTH.DEACTIVATE
 });
+
+// 인증번호 저장
+export const updateAuthNum = authNum => ({
+    type: AUTH.SET_AUTHNUM,
+    payload: authNum
+});
+
+// 인증 후 api 시도
+export const authApi = async data => {
+    const RESPONSE = {};
+
+    return RESPONSE;
+};
+

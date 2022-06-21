@@ -14,4 +14,10 @@ export const Form = styled.form`
     button {
         margin-top: 12px;
     }
+
+    .newPwd {
+        color: ${ ({theme}) => theme.colors.gray600 };
+        font-size: 13px;
+        text-decoration: underline;
+    }
 `;

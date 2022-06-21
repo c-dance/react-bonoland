@@ -12,8 +12,6 @@ const UserInfoForm = ({
 }) => {
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onChange' });
 
-    console.log(user.tel);
-
     return (
         <module.scrollWrapper>
             <Form onSubmit={ handleSubmit(onFormSubmit) }>

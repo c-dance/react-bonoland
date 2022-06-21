@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import userIcon from '../../../assets/images/menu/ico-man.svg';
 import userOnIcon from '../../../assets/images/menu/ico-man_white.svg';
 import alarmIcon from '../../../assets/images/menu/ico-bell.svg';
+import alarmActiveIcon from '../../../assets/images/menu/ico-bell_white.svg';
 import calcIcon from '../../../assets/images/menu/ico-calculator.svg';
 import cadIcon from '../../../assets/images/menu/ico-cadastral.svg';
 import locIcon from '../../../assets/images/menu/ico-location.svg';
@@ -39,6 +40,9 @@ const quickCSS = css`
         top: 154px;
         font-size: 0;
         background: url(${alarmIcon}) center no-repeat #fff;
+        &.on {
+            background: url(${alarmActiveIcon}) center no-repeat ${({theme}) => theme.colors.primary };
+        }
     }
     &.chart {
         top: 342px;

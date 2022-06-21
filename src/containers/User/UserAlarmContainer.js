@@ -11,30 +11,24 @@ const UserAlarmContainer = () => {
 
     const dispatch = useDispatch();
 
+    const USER_ALARMS = useSelector(state => state.User.userInfo.alarms);
     const [ alarms, setAlarms ] = useState([]);
-    const [id, setId] = useState('123456');
     const [ total, setTotal ] = useState(0);
     const [ loading, error, noData, data, setGet ] = useGet([]);
 
-    const onBackClick = () => {
-        console.log('back');
-        dispatch(activateAlarm())
-    }
-
     useEffect(() => {
-        setGet({ 
-            get: getUserAlarmCenters,
-            id: id
-        });
+        if(!USER_ALARMS && USER_ALARMS.length <= 0) {
+            dispatch(activateAlarm());
+        }
     }, []);
 
     useEffect(() => {
         // setAlarms(data);
         // if(data) setTotal(data.length);
-        if(Object.keys(data).length > 0) {
-            setAlarms(data[Object.keys(data)[0]]);
-            setTotal(data[Object.keys(data)[0]].length);
-        }
+        // if(Object.keys(data).length > 0) {
+        //     setAlarms(data[Object.keys(data)[0]]);
+        //     setTotal(data[Object.keys(data)[0]].length);
+        // }
     }, [data]);
 
     return (
@@ -45,7 +39,7 @@ const UserAlarmContainer = () => {
             back={ true }
             action={ false }
             backText = { "지역 설정" }
-            onBackClick={ onBackClick }
+            onBackClick={ () => { dispatch(activateAlarm()); } }
         >
             <CenterList 
                 type={ "sub" } 

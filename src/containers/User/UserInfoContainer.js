@@ -8,15 +8,17 @@ import { activateAlert } from '../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscribe';
-import { getPasswordMatch, modifyUserTel, modifyUserInfo  } from '../../api/user';
-import { updateUserInfo, logout, unsubscribe } from '../../store/actions/user';
+import { getPasswordMatch, modifyUserTel, modifyUserInfo, userUnsubscribe } from '../../api/user';
+import { updateUserInfo, logout } from '../../store/actions/user';
 
 
 const UserInfoContainer = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // 회원정보 변경 모드
+    const [ newPasswordMode, setNewPasswordMode ] = useState(false);
     const [ newPhoneMode, setNewPhoneMode ] = useState(false);
     const [ unsubscribeMode, setUnsubscribeMode ] = useState(false);
 
@@ -29,6 +31,10 @@ const UserInfoContainer = () => {
     const USER_ID = USER_INFO.id;
     const [ user, setUser ] = useState({});
     const [ newPhoneNumber, setNewPhoneNumber ] = useState("");
+
+    const onNewPwdSubmit = async phoneNumner => {
+
+    };
 
     // 비밀번호 체크 SUBMIT
     const onPwdMatchSubmit = async user => {
@@ -90,7 +96,7 @@ const UserInfoContainer = () => {
         
         const RESPONSE = await modifyUserInfo(USER_INFO);
 
-        if(RESPONSE && RESPONSE.data.code === 0) {
+        if(RESPONSE && RESPONSE.data.code === 1) {
             dispatch(activateAlert({
                 title: "회원정보 수정 완료!",
                 contents: "변경하신 회원정보가 정상적으로 변경되었습니다."
@@ -104,9 +110,21 @@ const UserInfoContainer = () => {
         }
     };
 
-    const onUnsubscribeSubmit = data => {
-        if(data.agreement) {
-            dispatch(unsubscribe(user.id));
+    const onUnsubscribeSubmit = async data => {
+        if(!data.agreement) return;
+        const RESPONSE = await userUnsubscribe(USER_ID);
+        if(RESPONSE && RESPONSE.data.code === 1) {
+            dispatch(logout());
+            dispatch(activateAlert({
+                title: "회원 탈퇴 완료",
+                contents: "회원 탈퇴가 정상적으로 완료되었습니다."
+            }))
+            navigate('/');
+        } else {
+            dispatch(activateAlert({
+                title: "회원 탈퇴 오류",
+                contents: RESPONSE.data.message || "회원 탈퇴 중 오류가 발생했습니다."
+            }))
         }
     }; 
 
@@ -130,6 +148,15 @@ const UserInfoContainer = () => {
         onCloseClick: () => { setNewPhoneMode(false); }
     };
 
+    const newPwdModalProps = {
+        title: "비밀번호 찾기",
+        description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다.",
+        open: true,
+        width: "360",
+        close: true,
+        onCloseClick: () => { setNewPasswordMode(false); }
+    };
+
     const unsubsModalProps = {
         title: "회원탈퇴",
         width: "360",
@@ -149,6 +176,7 @@ const UserInfoContainer = () => {
                     <UserAuthForm
                         id={ USER_ID }
                         onFormSubmit={ onPwdMatchSubmit }
+                        onNewPwdClick={ () => setNewPasswordMode(true) }
                     />
                 </Section>
             }
@@ -167,9 +195,20 @@ const UserInfoContainer = () => {
                     />
                 </Section>
             }
+            {
+                newPasswordMode && 
+                <Modal {...newPhoneModalProps}>
+                    <AuthenticationContainer
+                        authApi={ modifyPhoneAuth }
+                        onResultSubmit={ onNewPwdSubmit }
+                        onPhoneSave={ saveNewPhoneNumber }
+                        description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
+                    /> 
+                </Modal>
+            }
             { 
                 newPhoneMode && 
-                <Modal {...newPhoneModalProps}>
+                <Modal {...newPwdModalProps}>
                     <AuthenticationContainer
                         authApi={ modifyPhoneAuth }
                         onResultSubmit={ onNewPhoneSubmit }

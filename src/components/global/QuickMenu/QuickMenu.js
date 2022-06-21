@@ -3,24 +3,34 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
 import { QuickLink, QuickBtn } from './QuickMenuStyle';
-import { activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/mode';
+import { activateAlarm, activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/mode';
 import { activateCadastral, deactivateCadastral, updateMapFilter } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { GEOLOCATION } from '../../../utils/user';
 import { updateGeolocation } from '../../../store/actions/geolocation';
 import { activateAlert } from '../../../store/actions/alert';
+import { useNavigate } from 'react-router';
 
 const QuickMenu = () => {
 
     const dispatch = useDispatch();
-    const ZOOM = useSelector(state => state.Map.zoom);
+    const navigate = useNavigate();
+
     const IS_GUGUN = getZoomLevel(ZOOM) === 2;
-    const CHART_DATA = useSelector(state => state.Chart.data);
-    const CHART_ACTIVE = useSelector(state => state.Chart.active);
-    const [ chartReady, setChartReady ] = useState(false);
-    const CADASTRAL = useSelector(state => state.Map.cadastral);
+    const MAP = useSelector(state => state.Map);
+    const ZOOM = MAP.zoom;
+    const CADASTRAL = MAP.cadastral;
+
     const USER_GEO = useSelector(state => state.Geolocation.latlng);
-    const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
+
+    const [ chartReady, setChartReady ] = useState(false);
+    const CHART = useSelector(state => state.Chart);
+    const CHART_DATA = CHART.data;
+    const CHART_ACTIVE = CHART.active;
+    
+    const USER = useSelector(state => state.User);
+    const USER_LOGGEDIN = USER.loggedIn;
+    const LOCAL_ALARMS = USER.userInfo.alarms && USER.userInfo.alarms.length > 0;
 
     const onChartClick = () => {
         // if(chartReady && isMobile) {dispatch(activateChart());}
@@ -63,10 +73,30 @@ const QuickMenu = () => {
 
     return (
         <>
-            { isBrowser && USER_LOGGEDIN && <QuickLink className="user on" to="/user">마이페이지</QuickLink> }
-            { isBrowser && !USER_LOGGEDIN && <QuickBtn className="user" onClick={() => dispatch(activateLogin())}>로그인</QuickBtn> }
-            { isBrowser && USER_LOGGEDIN && <QuickLink className="alarm" to="/user/alarm">알람 보기</QuickLink> }
-            { isBrowser && !USER_LOGGEDIN && <QuickBtn className="alarm" onClick={() => dispatch(activateLoginRequired())}>알람 보기</QuickBtn> }
+            {
+                isBrowser &&
+                <QuickBtn 
+                    className={`user ${LOCAL_ALARMS? "on" : ""}` } 
+                    onClick={() => {
+                        if(USER_LOGGEDIN) navigate("/user");
+                        else dispatch(activateLogin())
+                    }}
+                >마이페이지</QuickBtn>
+            }
+            { 
+                isBrowser && 
+                <QuickBtn 
+                    className={`alarm ${LOCAL_ALARMS? "on" : ""}` }
+                    onClick={() => {
+                        if(USER_LOGGEDIN){ 
+                            if(LOCAL_ALARMS) navigate("/user/alarm");
+                            else dispatch(activateAlarm());
+                        } else { 
+                            dispatch(activateLoginRequired())
+                        }
+                    }}
+                >알람 설정</QuickBtn> 
+            }
             <QuickBtn className={`location ${ (USER_GEO && USER_GEO.length > 0)? 'active' : '' }`} onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>
             <QuickLink className="news" to="/news">뉴스</QuickLink>

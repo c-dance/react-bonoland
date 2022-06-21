@@ -114,7 +114,7 @@ export const Regions = {
 export const REGIONS = {
     경기도: {
         김포파주고양: {
-            label: "김포, 파주 고양",
+            label: "김포, 파주, 고양",
             value: false
         },
         부천광명시흥: {
@@ -220,7 +220,7 @@ export const REGIONS = {
     }
 }
 
-export const REGIONS_TO_DATA = regions => {
+export const OBJECT_TO_ARRAY = regions => {
     const data = Object.keys(regions).reduce((acc, key, idx) => {
         if(key === "경기도") {
             const gData = Object.keys(regions["경기도"]).reduce((gacc, key) => {
@@ -236,12 +236,12 @@ export const REGIONS_TO_DATA = regions => {
     return data;
 };
 
-export const DATA_TO_REGIONS = data => {
+export const ARRAY_TO_OBJECT = data => {
     const initialRegion = REGIONS;
     const regions = data.reduce((acc, region) => {
         if(region.substring(0, 3) === "경기도") {
-            const regionKey = region.substring(4).trim().replace(",", "");
-            const regionLabel = region.substring(4).trim().replace(",", ", ");
+            const regionKey = region.substring(4).trim().replaceAll(",", "");
+            const regionLabel = region.substring(4).trim().replaceAll(",", ", ");
             const selected = { [regionKey] : { label: regionLabel, value: true} };
             return {...acc, 경기도: {...acc["경기도"], ...selected}};
         } else {   
