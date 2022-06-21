@@ -3,22 +3,30 @@ import Section from '../../components/ui/Section/Section';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deactivateAlarm } from '../../store/actions/mode';
-import { Regions } from '../../sheme/alarm';
+import { Regions, REGIONS, REGIONS_TO_DATA, DATA_TO_REGIONS } from '../../sheme/alarm';
 import { setUserLocalAlarm } from '../../api/user';
 
 const UserAlarmFormContainer = () => {
 
     const dispatch = useDispatch();
 
-    const [ data, setData ] = useState(new Object(Regions));
+    const ALARMS = useSelector(state => state.User.userInfo.alarms);
+    const [ data, setData ] = useState(new Object({}, Regions));
+
+    const r01 = Object.assign({}, REGIONS);
+    const data01 = REGIONS_TO_DATA(r01);
+    const r02 = DATA_TO_REGIONS(['경기도 의정부,양주,남양주', '경기도 가평,양평', '광주광역시', '제주도']);
+    console.log(r01);
+    console.log(data01);
+    console.log(r02);
 
     const onFormSubtmit = async () => {
-        console.log(data);
-        const alaramData = {
-            userEmail: useSelector(state => state.User.userInfo.id),
-            sidos: [],
-            gyeonggidos: []
-        };
+        // console.log(data);
+        // const alaramData = {
+        //     userEmail: useSelector(state => state.User.userInfo.id),
+        //     sidos: [],
+        //     gyeonggidos: []
+        // };
 
         // const RESPONSE = await setUserLocalAlarm(alaramData);
         // if(RESPONSE) {
@@ -36,8 +44,7 @@ const UserAlarmFormContainer = () => {
 
     useEffect(() => {
         // 유저 값 가져오기
-        setData(new Object(Regions));
-    }, []);
+    }, [ALARMS]);
 
     return (
         <Section
@@ -48,10 +55,10 @@ const UserAlarmFormContainer = () => {
             actionText={ "확인" }
             onActionClick={ () => onFormSubtmit() }
         >
-            <UserAlarmForm 
+            {/* <UserAlarmForm 
                 form={ data }
                 onFormChange={ onFormChange }
-            />
+            /> */}
         </Section>
     )
 };
