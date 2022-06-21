@@ -14,15 +14,15 @@ export const USER_AUTH = {
 
 export const USER_ID = {
     ID_KEY: "bonouserId",
-    storeId: value => {
+    store: value => {
         window.localStorage.setItem(USER_ID.ID_KEY, JSON.stringify(value));
     },
-    getStoredId: () => {
+    get: () => {
         const value = window.localStorage.getItem(USER_ID.ID_KEY);
         if(value) return value.replaceAll('"', '');
         else return "";
     },
-    removeId: () => {
+    remove: () => {
         window.localStorage.removeItem(USER_ID.ID_KEY);
     }
 };

@@ -49,8 +49,8 @@ const AuthenticationContainer = ({
         if(data.authNumber !== authNum) {
             setAuthNumberError("인증번호가 일치하지 않습니다.");
         } else {
-            const RESPONSE = await authApi(phoneNumber);
             onPhoneSave(phoneNumber);
+            const RESPONSE = await authApi(phoneNumber);
             if(RESPONSE) onResultSubmit(RESPONSE);
             else onResultSubmit(null);
         }

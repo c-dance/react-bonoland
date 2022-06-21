@@ -9,7 +9,7 @@ const FindIdSuccess = ({ data, onLoginClick }) => {
     const dispatch = useDispatch();
 
     const openLogin = (id) => {
-        USER_ID.storeId(id);
+        USER_ID.store(id);
         dispatch(activateLogin());
     }
 

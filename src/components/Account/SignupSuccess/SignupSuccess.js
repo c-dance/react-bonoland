@@ -10,7 +10,7 @@ const SignupSuccess = () => {
     const dispatch = useDispatch();
 
     const openLogin = () => {
-        USER_ID.removeId();
+        USER_ID.remove();
         dispatch(activateLogin());
     };
 

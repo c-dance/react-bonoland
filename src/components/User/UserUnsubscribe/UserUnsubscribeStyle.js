@@ -14,6 +14,7 @@ export const Unsubscribe = styled.form`
     }
 
     div {
+        position: realative;
         display: flex;
         gap: 8px;
         justify-content: start;
@@ -22,6 +23,14 @@ export const Unsubscribe = styled.form`
         label {
             color: ${ ({theme}) => theme.colors.gray900 }; 
         }
+    }
+
+    .warn {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 24px;
+        font-size: ${ ({theme}) => theme.fontSizes.s };
+        color: ${ ({theme}) => theme.colors.red };
     }
 
 `;

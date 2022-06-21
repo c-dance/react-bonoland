@@ -8,8 +8,9 @@ const USER_URL = {
     findPwd: '/user/findPwdProc',
     newPwd: '/user/modifyPwdProc',
     localAlarm: "/user/localAlerts",
-    pwdCheck: '/user/userPwdCheck',
-    changeUserInfo: '/user/infoChangeProc',
+    pwdMatch: '/user/userPwdCheck',
+    modifyUserTel: '/user/userTelCheangeProc',
+    modifyUserInfo: '/user/infoChangeProc',
     unsubscribe: '/user/userWthdr'
 };
 
@@ -29,34 +30,29 @@ export const userSignup = async user => await api.post(USER_URL.signUp, {
     userState: 1
 });
 
+/* === 지역 알람 설정 === */
 export const setUserLocalAlarm = async data => await api.post(USER_URL.localAlarm, {
     userEmail : data.userEamil,
-    localAlertsDepth1 : data.sidos,
-    localAlertsDepth2 : data.gyeonggidos
+    localAlertsDepth1 : data.localAlertsDepth1
 });
 
 /* === 회원 정보 === */
-export const getPasswordMatch = async user => await api.post(USER_URL.pwdCheck, {
+export const getPasswordMatch = async user => await api.post(USER_URL.pwdMatch, {
     userEmail: user.userEmail,
     userPwd: user.userPwd
 });
 
-/* === 회원 정보 변경 === */
-export const modifyUserInfo = async user => await api.post(USER_URL.changeUserInfo, {
+/* === 회원 휴대전화번호 변경 ==== */
+export const modifyUserTel = async user => await api.post(USER_URL.modifyUserTel, {
     userEmail: user.userEmail,
-    userPwd: user.userPwd,
-    userMemo: user.userMemo
+    userTel: user.userTel
 });
 
-/* === 회원 정보 가져오기 === */
-// export const getUserInfo = async user => await api.get();
+/* === 회원 정보 변경 === */
+export const modifyUserInfo = async user => await api.post(USER_URL.modifyUserInfo, user);
 
 /* === 회원 탈퇴 === */
-export const UserUnsubecribe = async userId => await api.post(USER_URL.unsubscribe, {
-    userEmail: userId
-});
-
-
+export const userUnsubscribe = async userId => await api.post(USER_URL.unsubscribe, { userEmail: userId });
 
 
 /* === 최근 본 매물 가져오기 === */

@@ -10,8 +10,9 @@ const UserInfoForm = ({
     onNewPhoneClick, 
     onFormSubmit
 }) => {
-
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onChange' });
+
+    console.log(user.tel);
 
     return (
         <module.scrollWrapper>
@@ -21,7 +22,7 @@ const UserInfoForm = ({
                         <label>분류</label>
                         <module.Input
                             type="text"
-                            value={ user.userCtg }
+                            value={ user.type }
                             readOnly
                         />
                     </InputWrap>
@@ -29,7 +30,7 @@ const UserInfoForm = ({
                         <label>이름</label>
                         <module.Input
                             type="text"
-                            value={ user.userName }
+                            value={ user.name }
                             readOnly
                         />
                     </InputWrap>
@@ -37,7 +38,7 @@ const UserInfoForm = ({
                         <label>아이디</label>
                         <module.Input
                             type="text"
-                            value={ user.userEmail }
+                            value={ user.id }
                             readOnly
                         />
                     </InputWrap>
@@ -45,7 +46,7 @@ const UserInfoForm = ({
                         <label>연락처</label>
                         <module.Input
                             type="text"
-                            value={ user.userTel }
+                            value={ user.tel }
                             readOnly
                         />
                         <button type="button" onClick={ (event) => onNewPhoneClick(event) }>변경</button>
@@ -92,7 +93,7 @@ const UserInfoForm = ({
                         <module.Textarea
                             {...register("userMemo")}
                         >
-                        { user.userMemo }
+                        { user.memo }
                         </module.Textarea>
                     </InputWrap>
                 </module.Fieldset>

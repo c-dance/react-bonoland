@@ -15,13 +15,13 @@ const LoginContainer = () => {
 
     const dispatch = useDispatch();
 
-    const ID = USER_ID.getStoredId();
+    const ID = USER_ID.get();
     const STORE_ID = ID.length > 0;
     const [ failMsg, setFailMsg ] = useState('');
 
     const handleStoredId = (checked, userId) => {
-        if(checked) USER_ID.storeId(userId);
-        else USER_ID.removeId();
+        if(checked) USER_ID.store(userId);
+        else USER_ID.remove();
     };
     
     const onFormSubmit = async data => {

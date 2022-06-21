@@ -55,6 +55,7 @@ const SignupContaienr = () => {
         if(RESPONSE && RESPONSE.data.code === 1) {
             setSignupSuccess(true);
         } else {
+            dispatch(deactivateSignup());
             dispatch(activateAlert({
                 title: "회원가입 실패",
                 contents: RESPONSE.data.message || "회원가입에 실패했습니다. 다시 시도해 주세요."
