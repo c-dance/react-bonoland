@@ -110,10 +110,9 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
     const handleSubmit = event => {
         event.preventDefault();
 
-        console.log(commons);
-        console.log(penalty);
-        if(commons.length <= 0 || penalty.length <= 0){
-            alert("4. 현원수, 7. 예산 가산금 항목은 필수 입력값 입니다.")
+        if(commons.length <= 0){
+            setWarningText("4.현원수(일반병실)은 필수 입력값 입니다.");
+            setWarning(true);
         } else {
             onFormSubmit({
                 type: type,
@@ -130,7 +129,6 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
         }
         
     };
-
 
 
     useEffect(() => {
@@ -311,7 +309,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
             { 
                 warning && 
                 <Modal
-                    title="수익 계산 오류"
+                    title="수익 계산"
                     width="360"
                     close={ true }
                     onCloseClick={ () => setWarning(false) }

@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
-import { getAuthNumber } from '../../api/auth';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { activateAlert } from '../../store/actions/alert';
+import { checkAuthNumber, updatePhoneNumber } from "../../store/actions/auth";
 
-const AuthenticationContainer = ({ 
-    authApi,
-    onResultSubmit,
-    onPhoneSave = () => {},
-    description 
-}) => {
+const AuthenticationContainer = () => {
     
     const dispatch = useDispatch();
 
-    /* === 전화번호 | 인증번호 === */
-    const [ phoneNumber, setPhoneNumber ] = useState('');
-    const [ authNum, setAuthNum ] = useState('');
+    const AUTH = useSelector(state => state.Auth);
+    const AUTH_DESCRIPTION = AUTH.description;
+    const AUTH_SUCCESS = AUTH.success;
+    const AUTH_NUMBER = AUTH.authNumber;
+    const AUTH_PHONENUMBER = AUTH.phoneNumber;
     
     /* === 타이머 === */
     const TIME_LIMIT = 180;
@@ -30,30 +27,12 @@ const AuthenticationContainer = ({
 
     /* === 전화번호 제출 === */
     const onPhoneSubmit = async data => {
-        const RESPONSE = await getAuthNumber(data.phoneNumber);
-
-        if(RESPONSE && RESPONSE.data.code === 1) {
-            const AUTH_NUM = RESPONSE.data.message.substring(RESPONSE.data.message.length - 6);
-            setPhoneNumber(data.phoneNumber);
-            setAuthNum(AUTH_NUM);
-            setGetAuth(true);
-            alert(AUTH_NUM);
-        } else {
-            setGetAuth(false);
-            setPhoneNumberError('전화번호 전송에 실패했습니다. 전화번호를 다시 입력해 주세요.');
-        }
+        dispatch(updatePhoneNumber(data.phoneNumber));
     }; 
 
     /* === 인증번호 제출 === */
     const onAuthSubmit = async data => {
-        if(data.authNumber !== authNum) {
-            setAuthNumberError("인증번호가 일치하지 않습니다.");
-        } else {
-            onPhoneSave(phoneNumber);
-            const RESPONSE = await authApi(phoneNumber);
-            if(RESPONSE) onResultSubmit(RESPONSE);
-            else onResultSubmit(null);
-        }
+        dispatch(checkAuthNumber(data.authNumber));
     };
 
     /* === 타이머 시작 === */
@@ -78,7 +57,7 @@ const AuthenticationContainer = ({
         clearIntervalTimer();
         alert("입력시간이 초과되었습니다. 휴대폰 인증을 다시 시도해 주세요");
         setTimer(TIME_LIMIT);
-        setPhoneNumber("");
+        // setPhoneNumber("");
         setPhoneNumberError("");
         setAuthNumberError("");
         setGetAuth (false);
@@ -86,12 +65,14 @@ const AuthenticationContainer = ({
 
     /* === 인증폼 PROPS === */
     const authProps = {
-        phoneNumber: phoneNumber,
+        // phoneNumber: phoneNumber,
+        phoneNumber: AUTH_PHONENUMBER,
         onPhoneSubmit: onPhoneSubmit,
         onAuth: getAuth,
         timer: timer,
         onAuthSubmit: onAuthSubmit,
-        description: description, 
+        // description: description, 
+        description: AUTH_DESCRIPTION, 
         phoneNumberError: phoneNumberError,
         authNumberError: authNumberError
     };
@@ -109,6 +90,24 @@ const AuthenticationContainer = ({
     useEffect(() => {
         if(timer <= 0) firetimer();
     }, [timer]);
+
+
+    useEffect(() => {
+
+        if(AUTH_NUMBER.length > 0){ 
+            setGetAuth(true);
+        } else {
+            setGetAuth(false);
+        }
+
+        if(AUTH_SUCCESS) {
+            // 성공처리는 api 갖다 쓰는 컴포넌트에서
+        } else {
+            console.log(AUTH.error)
+            setAuthNumberError(AUTH.error);
+        }
+
+    }, [AUTH])
 
     return (
         <Authentication {...authProps}/>

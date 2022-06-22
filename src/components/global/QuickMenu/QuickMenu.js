@@ -16,7 +16,6 @@ const QuickMenu = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const IS_GUGUN = getZoomLevel(ZOOM) === 2;
     const MAP = useSelector(state => state.Map);
     const ZOOM = MAP.zoom;
     const CADASTRAL = MAP.cadastral;
@@ -24,16 +23,14 @@ const QuickMenu = () => {
     const USER_GEO = useSelector(state => state.Geolocation.latlng);
 
     const [ chartReady, setChartReady ] = useState(false);
-    const CHART = useSelector(state => state.Chart);
-    const CHART_DATA = CHART.data;
-    const CHART_ACTIVE = CHART.active;
+    const CHART_DATA = useSelector(state => state.Chart.data);
+    const CHART_ACTIVE = useSelector(state => state.Chart.active);
     
     const USER = useSelector(state => state.User);
     const USER_LOGGEDIN = USER.loggedIn;
     const LOCAL_ALARMS = USER.userInfo.alarms && USER.userInfo.alarms.length > 0;
 
     const onChartClick = () => {
-        // if(chartReady && isMobile) {dispatch(activateChart());}
         if(chartReady) {
             if(CHART_ACTIVE) dispatch(deactivateChart());
             else dispatch(activateChart());
@@ -67,7 +64,7 @@ const QuickMenu = () => {
     };
 
     useEffect(()=> {
-        if(IS_GUGUN && CHART_DATA) setChartReady(true);
+        if(getZoomLevel(ZOOM) === 2 && CHART_DATA) setChartReady(true);
         else setChartReady(false);
     }, [ZOOM, CHART_DATA]);
 

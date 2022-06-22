@@ -3,7 +3,7 @@ import Section from '../../components/ui/Section/Section';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deactivateAlarm } from '../../store/actions/mode';
-import { REGIONS, OBJECT_TO_ARRAY, ARRAY_TO_OBJECT } from '../../sheme/alarm';
+import { REGIONS } from '../../sheme/alarm';
 import { setUserLocalAlarm } from '../../api/user';
 import { updateUserInfo } from '../../store/actions/user';
 import { activateAlert } from '../../store/actions/alert';
@@ -14,18 +14,22 @@ const UserAlarmFormContainer = () => {
 
     const USER_EMAIL = useSelector(state => state.User.userInfo.id);
     const ALARMS = useSelector(state => state.User.userInfo.alarms);
-    const [ dataset, setDataset ] = useState(Object.assign(REGIONS));
+    const [ dataset, setDataset ] = useState(Object.assign(REGIONS.dataset));
 
     const onFormSubtmit = async () => {
-        const alarmSet = OBJECT_TO_ARRAY(dataset);
+        const alarmSet = REGIONS.objectToArray(dataset);
         const RESPONSE = await setUserLocalAlarm({
             userEmail: USER_EMAIL,
             localAlertsDepth1: alarmSet
         });
-        console.log(RESPONSE);
+
         if(RESPONSE && RESPONSE.data.code === 0) {
             dispatch(updateUserInfo({
                 alarms: alarmSet
+            }));
+            dispatch(activateAlert({
+                title: "지역 알림 설정",
+                contents: "지역알림 설정이 완료되었습니다."
             }))
         } else {
             dispatch(activateAlert({
@@ -46,7 +50,8 @@ const UserAlarmFormContainer = () => {
     };
 
     useEffect(() => {
-        setDataset(ARRAY_TO_OBJECT(ALARMS));
+        console.log(ALARMS);
+        setDataset(REGIONS.arrayToObject(ALARMS));
     }, [ALARMS]);
 
     return (

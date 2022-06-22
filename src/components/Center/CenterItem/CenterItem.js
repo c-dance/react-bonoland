@@ -22,7 +22,7 @@ import {
     TabCont, 
     ChartWrap
 } from './CenterItemStyle';
-import { Actions, Action } from '../CenterCard/CenterCardStyle';
+import CenterAction from '../CenterAction/CenterAction';
 import { useNavigate } from 'react-router';
 import ItemImg from '../../../assets/test/item-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
@@ -82,10 +82,12 @@ const CenterItem = ({
                     <div>
                         <Thumbnail><img src={ ItemImg } /></Thumbnail>
                         <TabCont active={tabIdx === 0}>
-                            <Actions style={{ marginBottom: "30px" }}>
-                                <Action icon="scrap">스크랩</Action>
-                                <Action icon="share">공유</Action>
-                            </Actions>
+                            <div style={{ marginBottom: "30px" }}>
+                                <CenterAction
+                                    scrapped={false}
+                                    centerId={"0"}
+                                />
+                            </div>
                             <Section>
                                 <h3>매매 정보</h3>
                                 <hr />

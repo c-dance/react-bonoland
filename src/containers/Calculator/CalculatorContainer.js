@@ -27,10 +27,7 @@ const CalculatorContainer = () => {
     };
 
     const calculateIncome = data => {
-        console.log(data);
-        const HAS_DATA = data.commons.length > 0 && data.penalty.length > 0;
-
-        if(HAS_DATA) {
+        if(data.commons.length > 0) {
             const results = GET_INCOME_RESULT(data);
             setResult(results);
         } else {

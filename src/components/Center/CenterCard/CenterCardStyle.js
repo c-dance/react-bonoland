@@ -169,20 +169,3 @@ export const Assets = styled.div`
         }
     }
 `;
-
-export const Actions = styled.div`
-    display: flex;
-    gap: 12px;
-`;
-
-export const Action = styled.button`
-    flex: 1;
-    height: 40px;
-    border: 1px solid ${ props => props.theme.colors.gray300 };
-    border-radius: 2px;
-    font-size: 0;
-    background: url(${ props => 
-        (props.icon === "scrap" && scrapIcon) 
-        || (props.icon === "share" && shareIcon)  
-    }) center no-repeat #fff;
-`;

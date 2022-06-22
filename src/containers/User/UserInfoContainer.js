@@ -8,8 +8,10 @@ import { activateAlert } from '../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscribe';
-import { getPasswordMatch, modifyUserTel, modifyUserInfo, userUnsubscribe } from '../../api/user';
+import { getPasswordMatch, modifyUserTel, modifyUserInfo, modifyUserPwd, userUnsubscribe } from '../../api/user';
 import { updateUserInfo, logout } from '../../store/actions/user';
+import { activateAuth, deactivateAuth } from '../../store/actions/auth';
+import { activateFindPwd } from '../../store/actions/mode';
 
 
 const UserInfoContainer = () => {
@@ -17,8 +19,12 @@ const UserInfoContainer = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const AUTH = useSelector(state => state.Auth);
+    const AUTH_MODE = AUTH.active;
+    const AUTH_PHONENUMBER = AUTH.phoneNumber;
+    const AUTH_SUCCESS = AUTH.success;
+
     // 회원정보 변경 모드
-    const [ newPasswordMode, setNewPasswordMode ] = useState(false);
     const [ newPhoneMode, setNewPhoneMode ] = useState(false);
     const [ unsubscribeMode, setUnsubscribeMode ] = useState(false);
 
@@ -27,14 +33,12 @@ const UserInfoContainer = () => {
     const [ newPhoneSuccess, setNewPhoneSuccess ] = useState(false);
 
     // 유저 정보
+    const USER = useSelector(state => state.User);
     const USER_INFO = useSelector(state => state.User.userInfo);
     const USER_ID = USER_INFO.id;
-    const [ user, setUser ] = useState({});
-    const [ newPhoneNumber, setNewPhoneNumber ] = useState("");
-
-    const onNewPwdSubmit = async phoneNumner => {
-
-    };
+    const USER_TEL = USER_INFO.tel;
+    const [ user, setUser ] = useState(USER);
+    const [ newPhoneNumber, setNewPhoneNumber ] = useState();
 
     // 비밀번호 체크 SUBMIT
     const onPwdMatchSubmit = async user => {
@@ -54,27 +58,46 @@ const UserInfoContainer = () => {
         setPwdMatchSuccess(RESPONSE.data.code === 0);
     };
 
-    // 전화번호 수정 api
-    const modifyPhoneAuth = phoneNumber => modifyUserTel({ userEmail: user.id, userTel: phoneNumber});
+    const setNewPhone = async phoneNumber => {
+        console.log(phoneNumber);
+        const RESPONSE = await modifyUserTel({ 
+            userEmail: user.id, 
+            userTel: phoneNumber
+        });
+        
+        deactivateNewPhoneMode();
 
-    // 전화번호 저장 api
-    const saveNewPhoneNumber = phoneNumber => { setNewPhoneNumber(phoneNumber)};
+        console.log(RESPONSE);
 
-    // 전화번호 수정 api RESPONSE
-    const onNewPhoneSubmit = async result => {
-        const RESPONSE = result;
-        if(RESPONSE && RESPONSE.data.code === 0) {
+        if(RESPONSE && RESPONSE.data.code === 1) {
             dispatch(activateAlert({
                 title: "연락처 변경 완료!",
                 contents: "회원님의 새로운 연락처가 정상적으로 변경되었습니다!"
             }));
-            setNewPhoneSuccess(true);
+            console.log(phoneNumber);
+            dispatch(updateUserInfo({ tel: phoneNumber }));
+            setNewPhoneNumber(phoneNumber);
         } else {
             dispatch(activateAlert({
                 title: "연락처 변경 실패",
                 contents: RESPONSE.data.message || "다시 시도해 주세요"
             }));
         }
+    };
+
+    const activateNewPwdMode = () => {
+        dispatch(activateFindPwd());
+    };
+
+    const activateNewPhoneMode = () => {
+        dispatch(activateAuth({
+            description: "변경하실 연락처를 입력해주세요."
+        }));
+        setNewPhoneMode(true);
+    };
+
+    const deactivateNewPhoneMode = () => {
+        dispatch(deactivateAuth());
         setNewPhoneMode(false);
     };
 
@@ -91,7 +114,7 @@ const UserInfoContainer = () => {
             }))
         } else {
             if(user.memo != data.userMemo) USER_INFO.userRemarks = data.userMemo;
-            if(pwdChange) USER_INFO.userPwd = data
+            if(pwdChange) USER_INFO.userPwd = data.newPwd01;
         }
         
         const RESPONSE = await modifyUserInfo(USER_INFO);
@@ -129,11 +152,14 @@ const UserInfoContainer = () => {
     }; 
 
     useEffect(() => {
-        if(newPhoneSuccess === true) {
-            dispatch(updateUserInfo({ tel: newPhoneNumber }));
-            setNewPhoneSuccess(false);
+        if(AUTH_SUCCESS) {
+            if(newPhoneMode) setNewPhone(AUTH_PHONENUMBER);
         }
-    }, [newPhoneSuccess])
+        // if(newPhoneSuccess === true) {
+        //     dispatch(updateUserInfo({ tel: newPhoneNumber }));
+        //     setNewPhoneSuccess(false);
+        // }
+    }, [AUTH_SUCCESS]);
 
     useEffect(() => {
         setUser(USER_INFO);
@@ -145,16 +171,7 @@ const UserInfoContainer = () => {
         open: true,
         width: "360",
         close: true,
-        onCloseClick: () => { setNewPhoneMode(false); }
-    };
-
-    const newPwdModalProps = {
-        title: "비밀번호 찾기",
-        description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다.",
-        open: true,
-        width: "360",
-        close: true,
-        onCloseClick: () => { setNewPasswordMode(false); }
+        onCloseClick: () => { deactivateNewPhoneMode() }
     };
 
     const unsubsModalProps = {
@@ -176,7 +193,7 @@ const UserInfoContainer = () => {
                     <UserAuthForm
                         id={ USER_ID }
                         onFormSubmit={ onPwdMatchSubmit }
-                        onNewPwdClick={ () => setNewPasswordMode(true) }
+                        onNewPwdClick={ () => activateNewPwdMode() }
                     />
                 </Section>
             }
@@ -190,31 +207,15 @@ const UserInfoContainer = () => {
                     <UserInfoForm
                         user={ user }
                         onUnsubsClick={ () => { setUnsubscribeMode(true); }}
-                        onNewPhoneClick={ () => { setNewPhoneMode(true); } }
+                        onNewPhoneClick={ () => { activateNewPhoneMode(); } }
                         onFormSubmit={ onFormSubmit }
                     />
                 </Section>
             }
-            {
-                newPasswordMode && 
-                <Modal {...newPhoneModalProps}>
-                    <AuthenticationContainer
-                        authApi={ modifyPhoneAuth }
-                        onResultSubmit={ onNewPwdSubmit }
-                        onPhoneSave={ saveNewPhoneNumber }
-                        description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
-                    /> 
-                </Modal>
-            }
             { 
                 newPhoneMode && 
-                <Modal {...newPwdModalProps}>
-                    <AuthenticationContainer
-                        authApi={ modifyPhoneAuth }
-                        onResultSubmit={ onNewPhoneSubmit }
-                        onPhoneSave={ saveNewPhoneNumber }
-                        description="변경하실 연락처를 입력해주세요."
-                    /> 
+                <Modal {...newPhoneModalProps}>
+                    <AuthenticationContainer /> 
                 </Modal>
             }
             { 

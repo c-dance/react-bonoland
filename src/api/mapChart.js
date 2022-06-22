@@ -10,7 +10,7 @@ export const getMapChart = async (region="") => {
     const url = 'data02/mapchart.json';
 
     try {
-        const response = await api.get(url , { cancelToken: source.token });
+        const response = await api.get('http://localhost:3500/mapchart', { cancelToken: source.token });
         return response;
     } catch (err) {
         consoleErr(err);

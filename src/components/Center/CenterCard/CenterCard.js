@@ -12,10 +12,9 @@ import {
     Region,
     Price,
     Infos,
-    Assets,
-    Actions,
-    Action
+    Assets
 } from './CenterCardStyle';
+import CenterAction from '../CenterAction/CenterAction';
 //테스트 사진
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
@@ -95,10 +94,10 @@ const CenterCard = ({ list, type, center }) => {
                     </Wrap>
                     {
                         type !== "abstract" && 
-                        <Actions>
-                            <Action icon="scrap">스크랩</Action>
-                            <Action icon="share">공유</Action>
-                        </Actions>
+                        <CenterAction 
+                            scrapped={ false }
+                            centerId={"0"}     
+                        />
                     }
                 </Card>
             }

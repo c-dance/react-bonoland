@@ -12,3 +12,5 @@ export const List = styled(module.scrollWrapper)`
         background-color: ${ ({theme}) => theme.colors.gray100 };
     }
 `;
+
+

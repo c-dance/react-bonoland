@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
@@ -9,48 +9,87 @@ import { FIND_PWD } from '../../sheme/modal';
 import { activateLogin, activateFindId, deactivateFindPwd, activateSignup } from '../../store/actions/mode';
 import Section from '../../components/ui/Section/Section';
 import FindPwdSuccess from '../../components/Account/FindPwdSuccess/FindPwdSuccess';
-import { getFindPwdAuth, getNewPwdAuth } from '../../api/auth';
+import { getFindPwdAuth } from '../../api/auth';
+import { modifyUserPwd } from '../../api/user';
 import { activateAlert } from '../../store/actions/alert';
+import { activateAuth, deactivateAuth } from '../../store/actions/auth';
 
 const FindPwdContainer = () => {
 
     const dispatch = useDispatch();
 
+    const AUTH = useSelector(state => state.Auth);
+    const AUTH_MODE = AUTH.active;
+    const AUTH_PHONENUMBER = AUTH.phoneNumber;
+    const AUTH_SUCCESS = AUTH.success;
+
+    const [ phoneNumber, setPhoneNumber ] = useState("");
     const [ authSuccess, setAuthSuccess ] = useState(null);
-    const [ noAccount, setNoAccount ] = useState(null);
     const [ newPwdSuccess, setNewPwdSuccess ] = useState(null);
 
-    const onFormSubmit = async data => {
-        console.log(data);
-        // setNewPwdSuccess(true);
-        const RESPONSE = await getNewPwdAuth(data.newPwd01);
+    const setNewPwd = async data => {
+        const RESPONSE = await modifyUserPwd({
+            userTel: phoneNumber,
+            userPwd: data["newPwd01"]
+        });
+
         console.log(RESPONSE);
+        quitFindPwd();
+
         if(RESPONSE && RESPONSE.data.code === 1) {
-            setNewPwdSuccess(true);
+            dispatch(activateAlert({
+                title: "비밀번호 변경 완료",
+                contents: "비밀번호 변경이 완료되었습니다."
+            }));
         } else {
-            setNewPwdSuccess(false);
-            alert(RESPONSE.data.message);
+            dispatch(activateAlert({
+                title: "비밀번호 변경 실패",
+                contents: "비밀번호 변경 중 오류가 발생했습니다. \n 다시 시도해 주세요."
+            }));
         }
     };
 
-    const onResultSubmit = result => {
-        console.log(result);
-        if(result && result.data.code === 1) {
+    const getNewPwdForm = async phoneNumber => {
+        const RESPONSE = await getFindPwdAuth(phoneNumber);
+        
+        console.log(RESPONSE);
+        dispatch(deactivateAuth());
+
+        if(RESPONSE && RESPONSE.data.code === 1) {
             setAuthSuccess(true);
         } else {
             setAuthSuccess(false);
+            dispatch(deactivateFindPwd());
             dispatch(activateAlert({
                 title: "비밀번호 찾기",
-                contents: result.data.message || "비밀번호 찾기에 실패했습니다. 다시 시도해 주세요."
-            }))
+                contents: RESPONSE.data.message || "계정 찾기에 실패했습니다. \n 다시 시도해 주세요."
+            }));
         }
     };
+
+    const quitFindPwd = () => {
+        dispatch(deactivateFindPwd());
+        dispatch(deactivateAuth());
+    };
+
+    useEffect(() => {
+        if(AUTH_SUCCESS) {
+            setPhoneNumber(AUTH_PHONENUMBER);
+            getNewPwdForm(AUTH_PHONENUMBER);
+        }
+    }, [AUTH_SUCCESS])
+
+    useEffect(() => {
+        dispatch(activateAuth({
+            description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 재설정 할 수 있습니다."
+        }));
+    }, []);
 
     /* === props === */
     const modalProps = {
         open: true ,
         close: true,
-        onCloseClick: () => { dispatch(deactivateFindPwd()) },
+        onCloseClick: () => { quitFindPwd() },
         width: "360",
         title: "비밀번호 찾기",
         description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 확인하실 수 있습니다."
@@ -65,7 +104,7 @@ const FindPwdContainer = () => {
         themeColor: "primary",
         close: false,
         back: true,
-        onBackClick: () => {dispatch(deactivateFindPwd())},
+        onBackClick: () => { quitFindPwd() },
         action: false
     };
 
@@ -77,11 +116,7 @@ const FindPwdContainer = () => {
                     {
                         authSuccess === null && 
                         <Modal {...modalProps}>
-                            <AuthenticationContainer 
-                                authApi={ getFindPwdAuth }
-                                onResultSubmit={ onResultSubmit }
-                                description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 아이디를 확인하실 수 있습니다."
-                            />
+                            <AuthenticationContainer />
                             <module.ModalAction>
                                 <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
                             </module.ModalAction>
@@ -102,7 +137,7 @@ const FindPwdContainer = () => {
                         authSuccess === true && !newPwdSuccess &&
                         <Modal {...writeModalProps}>
                             <NewPassword 
-                                onFormSubmit={ onFormSubmit } 
+                                onFormSubmit={ setNewPwd } 
                             />
                             <module.ModalAction>
                                 <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
@@ -126,22 +161,13 @@ const FindPwdContainer = () => {
                     {
                         !authSuccess && 
                         <>
-                            <AuthenticationContainer 
-                                onResultSubmit={ onResultSubmit }
-                                description="회원가입 시 입력하신 ‘연락처’ 인증을 통해 아이디를 확인하실 수 있습니다."
-                            />
-                        </>
-                    }
-                    {
-                        !authSuccess && noAccount &&
-                        <>
-                            <>경고</>
+                            <AuthenticationContainer />
                         </>
                     }
                     {
                         authSuccess && !newPwdSuccess &&
                         <NewPassword 
-                            onFormSubmit={ onFormSubmit } 
+                            setNewPwd={ setNewPwd } 
                         />
                     }
                     {

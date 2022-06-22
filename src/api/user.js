@@ -45,8 +45,8 @@ export const modifyUserTel = async user => await api.post(USER_URL.modifyUserTel
 
 /* === 회원 비밀번호 변경 === */
 export const modifyUserPwd = async user => await api.post(USER_URL.modifyUserPwd, { 
-    userEmail: user.userEmail, 
-    userTel: user.userTel 
+    userTel: user.userTel,
+    userPwd: user.userPwd 
 });
 
 /* === 지역 알람 설정 === */

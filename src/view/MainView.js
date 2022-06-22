@@ -23,6 +23,8 @@ import ContactContaier from '../containers/Contact/ContactContainer';
 
 const MainView = ({ list, children }) => {
 
+    console.log('main view rendering');
+
     const LIST_MODE = list;
 
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
@@ -48,13 +50,13 @@ const MainView = ({ list, children }) => {
                 { !IS_LOGGEDIN && SIGNUP_MODE && <SignupContaienr /> }
                 { !IS_LOGGEDIN && LOGIN_MODE && <LoginContainer /> }
                 { !IS_LOGGEDIN && FIND_ID_MODE && <FindIdContainer /> }
-                { !IS_LOGGEDIN && FIND_PWD_MODE && <FindPwdContainer /> }
                 { CALCULATOR_MODE && <CalculatorContainer /> }
                 { CONTACT_MODE && <ContactContaier /> }
                 { ALERT_MODE && <Alert /> }
                 <MapChartContainer />
                 <MapContainer />
                 <Outlet />
+                { FIND_PWD_MODE && <FindPwdContainer /> }
                 { IS_LOGGEDIN && ALARM_MODE && <UserAlarmFormContainer /> }
                 { !IS_LOGGEDIN && LOGIN_REQUIRED_MODE && <LoginRequired /> }
             </Main>
