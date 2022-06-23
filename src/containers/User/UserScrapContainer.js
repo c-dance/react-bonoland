@@ -6,20 +6,22 @@ import React, { useState, useEffect } from "react";
 import { useGet } from '../../hooks';
 import { getUserScrapCenters } from '../../api/user';
 
+
+
 const UserScrapContainer = () => {
 
-    const [ centers, setCenters ] = useState({});
+    const [ centers, setCenters ] = useState([]);
     const [ sales, setSales ] = useState([]);
     const [ total, setTotal ] = useState(0);
+
     const [id, setId] = useState('123456');
     const [ loading, error, noData, data, setGet ] = useGet([]);
+    const [ salesLoading, salesError, salesNoData, setSalesGet ] = useGet([]);
 
-    useEffect(() => {
-        setGet({ 
-            get: getUserScrapCenters,
-            id: id
-        });
-    }, []);
+    const loadData = (category = "매물") => {
+        const selected = category === "시설"? sales : centers;
+    };  
+
 
     useEffect(() => {
         // setCenters(data["시설"]);
@@ -51,6 +53,7 @@ const UserScrapContainer = () => {
             <ListTab 
                 type={ "full" }
                 navs={["매물", "시설"]} 
+                onNavClick={ loadData }
                 contents={[
                     <CenterList 
                         type={ "sub" } 

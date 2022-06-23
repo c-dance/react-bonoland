@@ -2,79 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { module } from '../../themes/module';
 import { isMobile, isBrowser } from 'react-device-detect';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux/es/exports';
-import { activateAlert } from '../../store/actions/alert';
 import { REGEXP } from '../../sheme/form';
+import { LOCATION } from '../../sheme/location';
 
 const Contact = ({
     user,
+    center,
     onFormSubmit
 }) => {
-
-    const dispatch = useDispatch();
-
-    const [submitAble, setSubmitAble] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
     
     const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
         mode: "onSubmit", 
-        reValidateMode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             uName: user.uName || "",
             uEmail: user.uEmail || "",
             uTel: user.uTel || "",
+            cSido: center? center.sido : Object.keys(LOCATION)[0], 
+            cGugun: center? center.gugun : LOCATION[Object.keys(LOCATION)[0]][0]
         }
     });
 
-    const watching = watch(["uName", "uTel", "uEmail", "cSido", "cGugun", "cType", "cContact", "cAssets", "cContents"]);
-    
-    /* === 필수입력값 처리 === */
-    const sumErrors = errors => {
-        const FORM_ERROR = { 
-            c: {
-                count: 0,
-                alert: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다",
-            },
-            u: {
-                count: 0,
-                alert: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다.",
-            }
-        };
+    const formWatching = watch();
 
-        for(const errorType in errors) {
-            switch(errorType[0]) {
-                case "c" : 
-                    FORM_ERROR["c"].count++;
-                    break;
-                case "u" :
-                    FORM_ERROR["u"].count++;
-                    if(errorType === "uEmail") FORM_ERROR["u"].alert += "\n - 이메일 정보를 정확히 입력해 주세요."
-                    if(errorType === "uTel") FORM_ERROR["u"].alert += "\n - 휴대폰 번호를 정확히 입력해 주세요."
-                break;
-                default: 
-                    break;
-            }
-        }
-
-        return FORM_ERROR;
-    }
-    
-    const handleErrors = (errorTypes) => {
-        for(let key in errorTypes) {;
-            if(errorTypes[key].count > 0) {
-                return dispatch(activateAlert({
-                    title: "매수 문의", 
-                    contents: errorTypes[key].alert
-                }))
-            }
-        }
+    const submitAble = formValues => {
+        return (
+            Object.keys(formWatching).filter(key => 
+                formWatching[key].length <= 0
+            ).length <= 0
+        )
     };
-    
-    if(errors) handleErrors(sumErrors(errors));
-
-    useEffect(() => {
-        setSubmitAble(watching.filter(value => value && value.length > 0).length === watching.length);
-    }, [watching]);
 
     return (
         <>
@@ -95,7 +52,14 @@ const Contact = ({
                                     <label htmlFor="uName">이름</label>
                                 </th>
                                 <td colSpan="3">
-                                    <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                                    <input 
+                                        type="text" 
+                                        name="uName" 
+                                        id="uName" 
+                                        {...register("uName", {
+                                            required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                        })}
+                                    /> 
                                 </td>
                             </tr>
                             <tr>
@@ -103,13 +67,29 @@ const Contact = ({
                                     <label htmlFor="uTel">연락처</label>
                                 </th>
                                 <td colSpan="1">
-                                    <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true, pattern: REGEXP.phone })}/> 
+                                    <input 
+                                        type="text" 
+                                        name="uTel" 
+                                        id="uTel" 
+                                        {...register("uTel", { 
+                                            required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                            pattern: { value: REGEXP.phone, message: '휴대폰 번호를 정확히 입력해 주세요.'} 
+                                        })}
+                                    /> 
                                 </td>
                                 <th colSpan="1">
                                     <label htmlFor="uEmail">이메일</label>
                                 </th>
                                 <td colSpan="1">
-                                    <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true, pattern: REGEXP.email })}/> 
+                                    <input 
+                                        type="text" 
+                                        name="uEmail" 
+                                        id="uEmail" 
+                                        {...register("uEmail",{ 
+                                            required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                            pattern: { value: REGEXP.email, message: '이메일 주소를 정확히 입력해 주세요.'} 
+                                        })}
+                                    /> 
                                 </td>
                             </tr>
                         </table>
@@ -126,25 +106,47 @@ const Contact = ({
                             <tr>
                                 <th><label htmlFor="cSido">시/군</label></th>
                                 <td>
-                                    <select name="cSido" id="cSido" {...register("cSido", { required: true })}>
-                                        <option value="서울시">서울시</option>
-                                        <option value="부산시">부산시</option>
+                                    <select 
+                                        name="cSido" 
+                                        id="cSido" 
+                                        {...register("cSido", { 
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    >
+                                    {                                        
+                                        Object.keys(LOCATION).map(sido => (
+                                            <option key={sido} value={sido}>{sido}</option>
+                                        ))
+                                    }
                                     </select>
                                 </td>
                                 <th><label htmlFor="cGugun">구/군</label></th>
                                 <td>
-                                    <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                        <option value="강서구">강서구</option>
-                                        <option value="강남구">강남구</option>
-                                        <option value="강북구">강북구</option>
-                                        <option value="강동구">강동구</option>
+                                    <select 
+                                        name='cGugun' 
+                                        id="cGugun" 
+                                        {...register("cGugun", {
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    >
+                                    {                                     
+                                        LOCATION[formWatching["cSido"]].map(gugun => (
+                                            <option key={gugun} value={gugun}>{gugun}</option>
+                                        ))
+                                    }
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <th><label htmlFor="cType">시설 분류</label></th>
                                 <td>
-                                    <select name="cType" id="cType" {...register("cType", { required: true })}>
+                                    <select 
+                                        name="cType" 
+                                        id="cType" 
+                                        {...register("cType", { 
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    >
                                         <option value="단독요양원">단독요양원</option>
                                         <option value="상가요양원">상가요양원</option>
                                         <option value="주간보호">주야간보호센터</option>
@@ -152,7 +154,13 @@ const Contact = ({
                                 </td>
                                 <th><label htmlFor="cContact">문의 구분</label></th>
                                 <td>
-                                    <select name="cContact" id="cContact" {...register("cContact", { required: true })}>
+                                    <select 
+                                        name="cContact" 
+                                        id="cContact" 
+                                        {...register("cContact", {
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    >
                                         <option value="일반매물">일반매물</option>
                                         <option value="신규사업자">신규사업자</option>
                                         <option value="신규리모델링">신규리모델링</option>
@@ -163,21 +171,37 @@ const Contact = ({
                             <tr>
                                 <th><label htmlFor="cAssets">예상 자본금</label></th>
                                 <td colSpan="3">
-                                    <input type="text" name="cAssets" id="cAssets" {...register("cAssets", { required: true })}/> 
+                                    <input 
+                                        type="text" 
+                                        name="cAssets" 
+                                        id="cAssets" 
+                                        {...register("cAssets", { 
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    /> 
                                 </td>
                             </tr>
                             <tr>
                                 <th><label htmlFor="cContents">요청 내용</label></th>
                                 <td colSpan="3">
-                                    <textarea name="cContents" id="cContents" {...register("cContents", { required: true })}></textarea> 
+                                    <textarea 
+                                        name="cContents" 
+                                        id="cContents" 
+                                        {...register("cContents", {
+                                            required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                        })}
+                                    ></textarea> 
                                 </td>
                             </tr>
                         </table>
                     </fieldset>
-                    <span class="warn">에러메시지</span>
+                    {
+                        Object.keys(errors).length > 0 &&
+                        <span className="warn">{ errors[Object.keys(errors)[0]].message }</span>
+                    }
                     <button 
                         type="submit"
-                        className={ submitAble? "" : "disabled" }
+                        className={ submitAble(formWatching)? "" : "disabled" }
                     >접수하기</button>
                 </module.TableForm>
             }
@@ -188,38 +212,83 @@ const Contact = ({
                         <legend>의뢰인 정보</legend>
                         <div className="wrap">
                             <label htmlFor="uName">이름</label>
-                            <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                            <input 
+                                type="text" 
+                                name="uName" 
+                                id="uName" 
+                                {...register("uName", {
+                                    required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                })}
+                            />                         
                         </div>
                         <div className="wrap">
                             <label htmlFor="uTel">연락처</label>
-                            <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
+                            <input 
+                                type="text" 
+                                name="uTel" 
+                                id="uTel" 
+                                {...register("uTel", { 
+                                    required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                    pattern: { value: REGEXP.phone, message: '휴대폰 번호를 정확히 입력해 주세요.'} 
+                                })}
+                            />                         
                         </div>
                         <div className="wrap">
                             <label htmlFor="uEmail">이메일</label>
-                            <input type="text" name="uEmail" id="uEmail" {...register("uEamil", { required: true })}/>
+                            <input 
+                                type="text" 
+                                name="uEmail" 
+                                id="uEmail" 
+                                {...register("uEmail",{ 
+                                    required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                    pattern: { value: REGEXP.email, message: '이메일 주소를 정확히 입력해 주세요.'} 
+                                })}
+                            />                         
                         </div>
                     </fieldset>
                     <fieldset>
                         <legend>요양시설 정보</legend>
                         <div className="wrap">
                             <label htmlFor="cSigun">시/도</label>
-                            <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
-                                <option value="서울시">서울시</option>
-                                <option value="부산시">부산시</option>
+                            <select 
+                                name="cSido" 
+                                id="cSido" 
+                                {...register("cSido", { 
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            >
+                            {                                        
+                                Object.keys(LOCATION).map(sido => (
+                                    <option key={sido} value={sido}>{sido}</option>
+                                ))
+                            }
                             </select>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cGugun">구/군</label>
-                            <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                    <option value="강서구">강서구</option>
-                                    <option value="강남구">강남구</option>
-                                    <option value="강북구">강북구</option>
-                                    <option value="강동구">강동구</option>
+                            <select 
+                                name='cGugun' 
+                                id="cGugun" 
+                                {...register("cGugun", {
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            >
+                            {                                     
+                                LOCATION[formWatching["cSido"]].map(gugun => (
+                                    <option key={gugun} value={gugun}>{gugun}</option>
+                                ))
+                            }
                             </select>
                         </div>
                         <div className="wrap">
                             <label htmlFor="cType">시설 분류</label>
-                            <select name="cType" id="cType" {...register("cType", { required: true })}>
+                            <select 
+                                name="cType" 
+                                id="cType" 
+                                {...register("cType", { 
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            >
                                 <option value="단독요양원">단독요양원</option>
                                 <option value="상가요양원">상가요양원</option>
                                 <option value="주간보호">주야간보호센터</option>
@@ -227,7 +296,13 @@ const Contact = ({
                         </div>
                         <div className="wrap">
                             <label htmlFor="cContact">문의 구분</label>
-                            <select name="cContact" id="cContact" {...register("cContact", { required: true })}>
+                            <select 
+                                name="cContact" 
+                                id="cContact" 
+                                {...register("cContact", {
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            >
                                 <option value="일반매물">일반매물</option>
                                 <option value="신규사업자">신규사업자</option>
                                 <option value="신규리모델링">신규리모델링</option>
@@ -236,16 +311,34 @@ const Contact = ({
                         </div>
                         <div className="wrap">
                             <label htmlFor="cAssets">예상 자본금</label>
-                            <input type="text" name="cAssets" id="cAssets" {...register("cAssets", { required: true })}/> 
+                            <input 
+                                type="text" 
+                                name="cAssets" 
+                                id="cAssets" 
+                                {...register("cAssets", { 
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            />                         
                         </div>
                         <div className="wrap">
                             <label htmlFor="cContents">요청 내용</label>
-                            <textarea name="cContents" id="cContents" {...register("cContents", { required: true })}></textarea> 
+                            <textarea 
+                                name="cContents" 
+                                id="cContents" 
+                                {...register("cContents", {
+                                    required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                })}
+                            ></textarea>                         
                         </div>
                     </fieldset>
-                    <button type="submit">
-                        접수하기
-                    </button>
+                    {
+                        Object.keys(errors).length > 0 &&
+                        <span className="warn">{ errors[Object.keys(errors)[0]].message }</span>
+                    }
+                    <button 
+                        type="submit"
+                        className={ submitAble(formWatching)? "" : "disabled" }
+                    >접수하기</button>
                 </module.MobileForm>
             }
         </>

@@ -10,6 +10,7 @@ import FindIdSuccess from '../../components/Account/FindIdSuccess/FindIdSuccess'
 import Section from '../../components/ui/Section/Section';
 import { getFindIdAuth } from '../../api/auth';
 import { activateAuth, deactivateAuth } from '../../store/actions/auth';
+import FindIdFailed from '../../components/Account/FindIdFailed/FindIdFailed';
 
 
 const FindIdContainer = () => {
@@ -89,9 +90,15 @@ const FindIdContainer = () => {
             }
             {
                 authSuccess === false &&
-                <module.SubmitButton
-                    onClick={ () => dispatch(activateSignup()) }
-                >회원가입</module.SubmitButton>
+                <>
+                    { isMobile && <FindIdFailed />}
+                    {
+                        isBrowser && 
+                        <module.SubmitButton
+                            onClick={ () => dispatch(activateSignup()) }
+                        >회원가입</module.SubmitButton>
+                    }
+                </>
             }
         </>
     );
@@ -103,7 +110,10 @@ const FindIdContainer = () => {
                 <Modal {...modalProps}>
                     { RENDER_TEMPLATE() }
                     <module.ModalAction>
-                        <button className="link" onClick={() => dispatch(activateFindPwd())}>비밀번호 찾기</button>
+                        <button 
+                            className="link" 
+                            onClick={() => dispatch(activateFindPwd())}
+                        >비밀번호 찾기</button>
                     </module.ModalAction>
                 </Modal>
         }
@@ -112,7 +122,10 @@ const FindIdContainer = () => {
             <Section {...sectionProps}>
                 { RENDER_TEMPLATE() }
                 <module.SectionLink className="btm">
-                    <button className="link" onClick={() => dispatch(activateFindPwd())}>비밀번호 찾기</button>
+                    <button 
+                        className="link" 
+                        onClick={() => dispatch(activateFindPwd())}
+                    >비밀번호 찾기</button>
                 </module.SectionLink>
             </Section>
         }

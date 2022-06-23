@@ -14,13 +14,23 @@ const UserAlarmContainer = () => {
     const USER_ALARMS = useSelector(state => state.User.userInfo.alarms);
     const [ alarms, setAlarms ] = useState([]);
     const [ total, setTotal ] = useState(0);
+    const [ sales, setSales ] = useState([]);
+    const [ centers, setCenters ] = useState([]);
     const [ loading, error, noData, data, setGet ] = useGet([]);
 
     useEffect(() => {
-        if(!USER_ALARMS && USER_ALARMS.length <= 0) {
+        if(!Array.isArray(USER_ALARMS) || USER_ALARMS.length <= 0) {
             dispatch(activateAlarm());
+        } else {
+            // 매물 목록 가져오기
+
+            // 매물목록이 없으면, 시설목록 가져오기 > 시설목록 on
+
+            
         }
     }, []);
+
+
 
     useEffect(() => {
         // setAlarms(data);

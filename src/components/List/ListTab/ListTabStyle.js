@@ -55,7 +55,8 @@ export const TabNavs = styled.div`
 
             &.on {
                 border: 0;
-                background-color: ${({theme}) => theme.colors.gray200 };
+                ${'' /* background-color: ${({theme}) => theme.colors.gray200 }; */}
+                background-color: ${({theme}) => theme.colors.primary };
                 color: #fff;
             }
 

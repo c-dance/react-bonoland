@@ -14,7 +14,7 @@ const UserAlarmFormContainer = () => {
 
     const USER_EMAIL = useSelector(state => state.User.userInfo.id);
     const ALARMS = useSelector(state => state.User.userInfo.alarms);
-    const [ dataset, setDataset ] = useState(Object.assign(REGIONS.dataset));
+    const [ dataset, setDataset ] = useState(REGIONS.arrayToObject(ALARMS));
 
     const onFormSubtmit = async () => {
         const alarmSet = REGIONS.objectToArray(dataset);
@@ -50,7 +50,6 @@ const UserAlarmFormContainer = () => {
     };
 
     useEffect(() => {
-        console.log(ALARMS);
         setDataset(REGIONS.arrayToObject(ALARMS));
     }, [ALARMS]);
 

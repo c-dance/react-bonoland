@@ -193,6 +193,12 @@ const TableForm = styled.form`
             color: ${ theme.colors.gray400 };
         }
     }
+
+    .warn {
+        display: block;
+        font-size: ${ theme.fontSizes.xs };
+        color: ${ theme.colors.red };
+    }
 `;
 
 const MobileForm = styled.form`
@@ -265,11 +271,20 @@ const MobileForm = styled.form`
         left: 0;
         width: 100%;
         height: 52px;
-        color: ${ theme.colors.gray400 };
-        &.active {
-            background-color: ${ theme.colors.primary };
-            color: #fff;
+        background-color: ${ theme.colors.primary };
+        color: #fff;
+
+        &.disabled {
+            background-color: ${ theme.colors.gray100 };
+            color: ${ theme.colors.gray400 };
+
         }
+    }
+
+    .warn {
+        display: block;
+        font-size: ${ theme.fontSizes.xs };
+        color: ${ theme.colors.red };
     }
 `;
 

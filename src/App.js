@@ -53,19 +53,26 @@ const App = () => {
         <Route exact path="/"/>
         <Route exact path="/user" element={ ONLY_USER(<UserMenuContainer />) } />
         <Route exact path="/user/recent" element={ ONLY_USER(<UserRecentContainer />) } />
+
         <Route exact path="/user/scrap" element={ ONLY_USER(<UserScrapContainer />) } />
+        <Route exact path="/user/scrap/:category" element={ ONLY_USER(<UserScrapContainer />) } />
+
         <Route exact path="/user/alarm" element={ ONLY_USER(<UserAlarmContainer />) } />
         <Route exact path="/user/info" element={ ONLY_USER(<UserInfoContainer />) } />
+
         <Route exact path="/news" element={ <NewsListContainer /> } />
         <Route exact path="/news/:id" element={ <NewsItemContainer /> } />
         <Route exact path="/register" element={ <RegisterContainer /> } />
-        <Route exact path="/contact" element={ <ContactContainer /> } />
       </Route>
       <Route element={ <MainView list={ false }/> }>
-        <Route exact path="/sales" element={ <SalesListContainer /> } />
-        <Route exact path="/recommend" element={ <RecommendListContainer /> } />
         <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
+
+        <Route exact path="/sales" element={ <SalesListContainer /> } />
+        <Route exact path="/sales/:category" element={ <SalesListContainer /> } />
         <Route exact path="/sales/center/:id" element={ <CenterItemContainer /> } />
+
+        <Route exact path="/recommend" element={ <RecommendListContainer /> } />
+        <Route exact path="/recommend/:category" element={ <RecommendListContainer /> } />
         <Route exact path="/recommend/center/:id" element={ <CenterItemContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />

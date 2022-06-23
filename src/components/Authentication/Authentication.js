@@ -21,13 +21,15 @@ const Authentication = ({
     authNumberError
 }) => {
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm({ 
-        mode: "onSubmit", 
-        reValidateMode: "onSubmit", 
+    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({ 
+        mode: "onChange", 
+        reValidateMode: "onChange", 
         defaultValues: { 
             "phoneNumber": phoneNumber, 
         } 
     });
+
+    const phoneWatching = watch("phoneNumber");
 
     useEffect(() => {
         setValue("authNumber", "");
@@ -61,7 +63,10 @@ const Authentication = ({
             </fieldset>
             { isMobile && description && <Description>{ description }</Description> }
             <div className="action">
-                <button type="submit"> { onAuth? "인증완료" : "인증번호 발송" }</button>
+                <button 
+                    type="submit"
+                    className={ REGEXP.phone.test(phoneWatching)? "" : "disabled"  }
+                > { onAuth? "인증완료" : "인증번호 발송" }</button>
             </div>
         </Form>
     )

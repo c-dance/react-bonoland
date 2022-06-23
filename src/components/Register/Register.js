@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { module } from '../../themes/module';
 import { Inform, RegisterWrap } from './RegisterStyle';
 import { useForm } from 'react-hook-form';
@@ -6,77 +6,35 @@ import { isMobile, isBrowser } from 'react-device-detect';
 import { useDispatch } from 'react-redux/es/exports';
 import { activateAlert } from '../../store/actions/alert';
 import { REGEXP } from '../../sheme/form';
+import { LOCATION } from '../../sheme/location';
 
 const Register = ({
     user, 
+    center,
     onFormSubmit
 }) => {
-
-    const dispatch = useDispatch();
     
-    const { register, handleSubmit, formState: { errors } } = useForm({ 
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
         mode: "onSubmit", 
-        reValidateMode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             uName: user.uName || "",
             uEmail: user.uEmail || "",
             uTel: user.uTel || "",
+            cSido: center? center.sido : Object.keys(LOCATION)[0], 
+            cGugun: center? center.gugun : LOCATION[Object.keys(LOCATION)[0]][0]
         }
     });
 
-    /* === 필수입력값 처리 === */
-    const sumErrors = errors => {
+    const formWatching = watch();
 
-        const FORM_ERROR = { 
-            c: {
-                count: 0,
-                alert: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다",
-            },
-            u: {
-                count: 0,
-                alert: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다.",
-            },
-            r: {
-                count: 0,
-                alert: "필수대행비용 정책에 동의 시 매물 접수가 가능합니다.",
-            }
-        };
-
-        for(const errorType in errors) {
-            switch(errorType[0]) {
-                case "c" : 
-                    FORM_ERROR["c"].count++;
-                    break;
-                case "u" :
-                    FORM_ERROR["u"].count++;
-                    if(errorType === "uEmail") FORM_ERROR["u"].alert += "\n - 이메일 정보를 정확히 입력해 주세요."
-                    if(errorType === "uTel") FORM_ERROR["u"].alert += "\n - 휴대폰 번호를 정확히 입력해 주세요."
-                    break;
-                case "r" : 
-                    FORM_ERROR["r"].count++;
-                    break;
-                default: 
-                    break;
-            }
-        }
-
-        return FORM_ERROR;
-    }
-
-    const handleErrors = (errorTypes) => {
-        console.log(errorTypes);
-        for(let key in errorTypes) {;
-            if(errorTypes[key].count > 0) {
-                dispatch(activateAlert({
-                    title: "매물 접수", 
-                    contents: errorTypes[key].alert
-                }))
-            }
-        }
+    const submitAble = formValues => {
+        return (
+            Object.keys(formWatching).filter(key => 
+                formWatching[key].length <= 0
+            ).length <= 0
+        )
     };
-
-    
-    if(errors) handleErrors(sumErrors(errors));
 
     return (
         <>
@@ -98,38 +56,75 @@ const Register = ({
                                         <label htmlFor="uName">이름</label>
                                     </th>
                                     <td colSpan="3">
-                                        <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="uName" 
+                                            id="uName" 
+                                            {...register("uName", {
+                                                required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                            })}
+                                        /> 
                                     </td>
                                 </tr>
                                 <tr>
-                                        <th>
-                                            <label htmlFor="cName">요양시설 이름</label>
-                                        </th>
-                                        <td colSpan="3">
-                                            <input type="text" name="cName" id="cName" {...register("cName", { required: true })}/> 
-                                        </td>
+                                    <th>
+                                        <label htmlFor="cName">요양시설 이름</label>
+                                    </th>
+                                    <td colSpan="3">
+                                        <input 
+                                            type="text" 
+                                            name="cName" 
+                                            id="cName" 
+                                            {...register("cName", {
+                                                required: { value: true, message: "시설 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                            })}
+                                        />                                     
+                                    </td>
                                 </tr>
                                 <tr>
-                                        <th>
-                                            <label htmlFor="cAddr">요양시설 주소</label>
-                                        </th>
-                                        <td colSpan="3">
-                                            <input type="text" name="cAddr" id="cAddr" {...register("cAddr", { required: true })}/> 
-                                        </td>
+                                    <th>
+                                        <label htmlFor="cAddr">요양시설 주소</label>
+                                    </th>
+                                    <td colSpan="3">
+                                        <input 
+                                            type="text" 
+                                            name="cAddr" 
+                                            id="cAddr" 
+                                            {...register("cAddr", {
+                                                required: { value: true, message: "시설 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                            })}
+                                        />                                      
+                                    </td>
                                 </tr>
                                 <tr>
-                                        <th colSpan="1">
-                                            <label htmlFor="uTel">연락처</label>
-                                        </th>
-                                        <td colSpan="1">
-                                            <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true, pattern: REGEXP.phone })}/> 
-                                        </td>
-                                        <th colSpan="1">
-                                            <label htmlFor="uEmail">이메일</label>
-                                        </th>
-                                        <td colSpan="1">
-                                            <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true, pattern: REGEXP.email })}/> 
-                                        </td>
+                                    <th colSpan="1">
+                                        <label htmlFor="uTel">연락처</label>
+                                    </th>
+                                    <td colSpan="1">
+                                        <input 
+                                            type="text" 
+                                            name="uTel" 
+                                            id="uTel" 
+                                            {...register("uTel", { 
+                                                required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                                pattern: { value: REGEXP.phone, message: '휴대폰 번호를 정확히 입력해 주세요.'} 
+                                            })}
+                                        />                                     
+                                    </td>
+                                    <th colSpan="1">
+                                        <label htmlFor="uEmail">이메일</label>
+                                    </th>
+                                    <td colSpan="1">
+                                        <input 
+                                            type="text" 
+                                            name="uEmail" 
+                                            id="uEmail" 
+                                            {...register("uEmail",{ 
+                                                required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                                pattern: { value: REGEXP.email, message: '이메일 주소를 정확히 입력해 주세요.'} 
+                                            })}
+                                        />                                     
+                                    </td>
                                 </tr>
                             </table>
                         </fieldset>
@@ -143,27 +138,49 @@ const Register = ({
                                 <col width="25%"/>
                             </colgroup>
                                 <tr>
-                                    <th><label htmlFor="cSigun">시/군</label></th>
+                                    <th><label htmlFor="cSido">시/도</label></th>
                                     <td>
-                                        <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
-                                            <option value="서울시">서울시</option>
-                                            <option value="부산시">부산시</option>
+                                        <select 
+                                            name="cSido" 
+                                            id="cSido" 
+                                            {...register("cSido", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        >
+                                        {                                        
+                                            Object.keys(LOCATION).map(sido => (
+                                                <option key={sido} value={sido}>{sido}</option>
+                                            ))
+                                        }
                                         </select>
                                     </td>
                                     <th><label htmlFor="cGugun">구/군</label></th>
                                     <td>
-                                        <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                            <option value="강서구">강서구</option>
-                                            <option value="강남구">강남구</option>
-                                            <option value="강북구">강북구</option>
-                                            <option value="강동구">강동구</option>
+                                        <select 
+                                            name='cGugun' 
+                                            id="cGugun" 
+                                            {...register("cGugun", {
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        >
+                                        {                                     
+                                            LOCATION[formWatching["cSido"]].map(gugun => (
+                                                <option key={gugun} value={gugun}>{gugun}</option>
+                                            ))
+                                        }
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label htmlFor="cType">요양시설 유형</label></th>
                                     <td>
-                                        <select name="cType" id="cType" {...register("cType", { required: true })}>
+                                        <select 
+                                            name="cType" 
+                                            id="cType" 
+                                            {...register("cType", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        >
                                             <option value="단독요양원">단독요양원</option>
                                             <option value="상가요양원">상가요양원</option>
                                             <option value="주간보호">주야간보호센터</option>
@@ -171,37 +188,86 @@ const Register = ({
                                     </td>
                                     <th><label htmlFor="cSize">면적(m2)</label></th>
                                     <td>
-                                        <input type="text" name="cSize" id="cSize" {...register("cSize", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cSize" 
+                                            id="cSize" 
+                                            {...register("cSize", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                     
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label htmlFor="cPrice">매매가(보증금)</label></th>
                                     <td>
-                                        <input type="text" name="cPrice" id="cPrice" {...register("cPrice", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cPrice" 
+                                            id="cPrice" 
+                                            {...register("cPrice", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                       
                                     </td>
                                     <th><label htmlFor="cRent">월세</label></th>
                                     <td>
-                                        <input type="text" name="cRent" id="cRent" {...register("cRent", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cRent" 
+                                            id="cRent" 
+                                            {...register("cRent", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                      
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label htmlFor="cCapcity">인가정원</label></th>
                                     <td>
-                                        <input type="text" name="cCapacity" id="cCapacity" {...register("cCapacity", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cCapcity" 
+                                            id="cCapcity" 
+                                            {...register("cCapcity", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                      
                                     </td>
                                     <th><label htmlFor="cPremium">권리금</label></th>
                                     <td>
-                                        <input type="text" name="cPremium" id="cPremium" {...register("cPremiun", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cPremium" 
+                                            id="cPremium" 
+                                            {...register("cPremium", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                      
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label htmlFor="cPerson">현원</label></th>
                                     <td>
-                                        <input type="text" name="cPerson" id="cPerson" {...register("cPerson", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cPerson" 
+                                            id="cPerson" 
+                                            {...register("cPerson", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                    
                                     </td>
                                     <th><label htmlFor="cDesc">소개내용</label></th>
                                     <td>
-                                        <input type="text" name="cDesc" id="cDesc" {...register("cDesc", { required: true })}/> 
+                                        <input 
+                                            type="text" 
+                                            name="cDesc" 
+                                            id="cDesc" 
+                                            {...register("cDesc", { 
+                                                required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                            })}
+                                        />                                      
                                     </td>
                                 </tr>
                             </table>
@@ -229,9 +295,14 @@ const Register = ({
                                 부동산 광도 등에 대한 ‘필수대행비용’으로 계약체결 시 최소한의 비용인 3백만원(부가세 별도)을 청구드리고 있습니다.
                             </div>
                         </Inform>
-                        <button type="submit">
-                            접수하기
-                        </button>
+                        {
+                            Object.keys(errors).length > 0 &&
+                            <span className="warn">{ errors[Object.keys(errors)[0]].message }</span>
+                        }
+                        <button 
+                            type="submit"
+                            className={ submitAble(formWatching)? "" : "disabled" }
+                        >접수하기</button>
                     </module.TableForm>
                 </RegisterWrap>
             }
@@ -243,46 +314,105 @@ const Register = ({
                             <legend>의뢰인 정보</legend>
                             <div className="wrap">
                                 <label htmlFor="uName">이름</label>
-                                <input type="text" name="uName" id="uName" {...register("uName", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="uName" 
+                                    id="uName" 
+                                    {...register("uName", {
+                                        required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                    })}
+                                />                             
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cCtName">요양시설 이름</label>
-                                <input type="text" name="cCtName" id="cCtName" {...register("cName", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cName" 
+                                    id="cName" 
+                                    {...register("cName", {
+                                        required: { value: true, message: "시설 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                    })}
+                                />                               
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cCtAddr">요양시설 주소</label>
-                                <input type="text" name="cCtAddr" id="cCtAddr" {...register("cAddr", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cAddr" 
+                                    id="cAddr" 
+                                    {...register("cAddr", {
+                                        required: { value: true, message: "시설 정보를 모두 입력 시 매물 접수가 가능합니다." } 
+                                    })}
+                                />                               
                             </div>
                             <div className="wrap">
                                 <label htmlFor="uTel">연락처</label>
-                                <input type="text" name="uTel" id="uTel" {...register("uTel", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="uTel" 
+                                    id="uTel" 
+                                    {...register("uTel", { 
+                                        required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                        pattern: { value: REGEXP.phone, message: '휴대폰 번호를 정확히 입력해 주세요.'} 
+                                    })}
+                                />                              
                             </div>
                             <div className="wrap">
                                 <label htmlFor="uEmail">이메일</label>
-                                <input type="text" name="uEmail" id="uEmail" {...register("uEmail", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="uEmail" 
+                                    id="uEmail" 
+                                    {...register("uEmail",{ 
+                                        required: { value: true, message: "의뢰인 정보를 모두 입력 시 매물 접수가 가능합니다." }, 
+                                        pattern: { value: REGEXP.email, message: '이메일 주소를 정확히 입력해 주세요.'} 
+                                    })}
+                                />                             
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend></legend>
                             <div className="wrap">
                                 <label htmlFor="cSigun">시/군</label>
-                                <select name="cSigun" id="cSigun" {...register("cSido", { required: true })}>
-                                    <option value="서울시">서울시</option>
-                                    <option value="부산시">부산시</option>
+                                <select 
+                                    name="cSido" 
+                                    id="cSido" 
+                                    {...register("cSido", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                >
+                                {                                        
+                                    Object.keys(LOCATION).map(sido => (
+                                        <option key={sido} value={sido}>{sido}</option>
+                                    ))
+                                }
                                 </select>
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cGugun">구/군</label>
-                                <select name='cGugun' id="cGugun" {...register("cGugun", { required: true })}>
-                                    <option value="강서구">강서구</option>
-                                    <option value="강남구">강남구</option>
-                                    <option value="강북구">강북구</option>
-                                    <option value="강동구">강동구</option>
+                                <select 
+                                    name='cGugun' 
+                                    id="cGugun" 
+                                    {...register("cGugun", {
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                >
+                                {                                     
+                                    LOCATION[formWatching["cSido"]].map(gugun => (
+                                        <option key={gugun} value={gugun}>{gugun}</option>
+                                    ))
+                                }
                                 </select>
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cType">요양시설 유형</label>
-                                <select name="cType" id="cType" {...register("cType", { required: true })}>
+                                <select 
+                                    name="cType" 
+                                    id="cType" 
+                                    {...register("cType", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                >
                                     <option value="단독요양원">단독요양원</option>
                                     <option value="상가요양원">상가요양원</option>
                                     <option value="주간보호">주야간보호센터</option>
@@ -290,31 +420,80 @@ const Register = ({
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cSize">면적(m2)</label>
-                                <input type="text" name="cSize" id="cSize" {...register("cSize", { required: true })}/>
+                                <input 
+                                    type="text" 
+                                    name="cSize" 
+                                    id="cSize" 
+                                    {...register("cSize", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                                
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cPrice">매매가(보증금)</label>
-                                <input type="text" name="cPrice" id="cPrice" {...register("cPrice", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cPrice" 
+                                    id="cPrice" 
+                                    {...register("cPrice", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                                
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cRent">월세</label>
-                                <input type="text" name="cRent" id="cRent" {...register("cRent", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cRent" 
+                                    id="cRent" 
+                                    {...register("cRent", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                             
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cCapcity">인가정원</label>
-                                <input type="text" name="cCapacity" id="cCapacity" {...register("cCapacity", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cCapcity" 
+                                    id="cCapcity" 
+                                    {...register("cCapcity", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                             
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cPremium">권리금</label>
-                                <input type="text" name="cPremium" id="cPremium" {...register("cPremiun", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cPremium" 
+                                    id="cPremium" 
+                                    {...register("cPremium", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                               
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cPerson">현원</label>
-                                <input type="text" name="cPerson" id="cPerson" {...register("cPerson", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cPerson" 
+                                    id="cPerson" 
+                                    {...register("cPerson", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                              
                             </div>
                             <div className="wrap">
                                 <label htmlFor="cDesc">소개내용</label>
-                                <input type="text" name="cDesc" id="cDesc" {...register("cDesc", { required: true })}/> 
+                                <input 
+                                    type="text" 
+                                    name="cDesc" 
+                                    id="cDesc" 
+                                    {...register("cDesc", { 
+                                        required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
+                                    })}
+                                />                             
                             </div>
                         </fieldset>
                         <Inform>
@@ -340,7 +519,14 @@ const Register = ({
                                 부동산 광도 등에 대한 ‘필수대행비용’으로 계약체결 시 최소한의 비용인 3백만원(부가세 별도)을 청구드리고 있습니다.
                             </div>
                         </Inform>
-                        <button type="submit">접수하기</button>
+                        {
+                            Object.keys(errors).length > 0 &&
+                            <span className="warn">{ errors[Object.keys(errors)[0]].message }</span>
+                        }
+                        <button 
+                            type="submit"
+                            className={ submitAble(formWatching)? "" : "disabled" }
+                        >접수하기</button>
                     </module.MobileForm>
                 </RegisterWrap>
             }

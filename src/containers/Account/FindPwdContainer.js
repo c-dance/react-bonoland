@@ -13,6 +13,7 @@ import { getFindPwdAuth } from '../../api/auth';
 import { modifyUserPwd } from '../../api/user';
 import { activateAlert } from '../../store/actions/alert';
 import { activateAuth, deactivateAuth } from '../../store/actions/auth';
+import FindIdFailed from '../../components/Account/FindIdFailed/FindIdFailed';
 
 const FindPwdContainer = () => {
 
@@ -27,20 +28,23 @@ const FindPwdContainer = () => {
     const [ authSuccess, setAuthSuccess ] = useState(null);
     const [ newPwdSuccess, setNewPwdSuccess ] = useState(null);
 
+    const [ modalProps, setModalProps ] = useState({});
+
     const setNewPwd = async data => {
         const RESPONSE = await modifyUserPwd({
             userTel: phoneNumber,
             userPwd: data["newPwd01"]
         });
 
-        console.log(RESPONSE);
         quitFindPwd();
 
         if(RESPONSE && RESPONSE.data.code === 1) {
-            dispatch(activateAlert({
-                title: "비밀번호 변경 완료",
-                contents: "비밀번호 변경이 완료되었습니다."
-            }));
+            setNewPwdSuccess(true);
+            if(isBrowser) setModalProps(successModalProps);
+            // dispatch(activateAlert({
+            //     title: "비밀번호 변경 완료",
+            //     contents: "비밀번호 변경이 완료되었습니다."
+            // }));
         } else {
             dispatch(activateAlert({
                 title: "비밀번호 변경 실패",
@@ -52,18 +56,19 @@ const FindPwdContainer = () => {
     const getNewPwdForm = async phoneNumber => {
         const RESPONSE = await getFindPwdAuth(phoneNumber);
         
-        console.log(RESPONSE);
         dispatch(deactivateAuth());
 
         if(RESPONSE && RESPONSE.data.code === 1) {
             setAuthSuccess(true);
+            if(isBrowser) setModalProps(writeModalProps);
         } else {
             setAuthSuccess(false);
-            dispatch(deactivateFindPwd());
-            dispatch(activateAlert({
-                title: "비밀번호 찾기",
-                contents: RESPONSE.data.message || "계정 찾기에 실패했습니다. \n 다시 시도해 주세요."
-            }));
+            if(isBrowser) setModalProps(failedModalProps);
+            // dispatch(deactivateFindPwd());
+            // dispatch(activateAlert({
+            //     title: "비밀번호 찾기",
+            //     contents: RESPONSE.data.message || "계정 찾기에 실패했습니다. \n 다시 시도해 주세요."
+            // }));
         }
     };
 
@@ -80,13 +85,14 @@ const FindPwdContainer = () => {
     }, [AUTH_SUCCESS])
 
     useEffect(() => {
+        setModalProps(baseModalProps);
         dispatch(activateAuth({
             description: "회원가입 시 입력하신 ‘연락처’ 인증을 통해 비밀번호를 재설정 할 수 있습니다."
         }));
     }, []);
 
     /* === props === */
-    const modalProps = {
+    const baseModalProps = {
         open: true ,
         close: true,
         onCloseClick: () => { quitFindPwd() },
@@ -98,6 +104,7 @@ const FindPwdContainer = () => {
     const writeModalProps = Object.assign({}, modalProps, FIND_PWD.FORM);
     const successModalProps = Object.assign({}, modalProps, FIND_PWD.SUCCESS);
     const failedModalProps = Object.assign({}, modalProps, FIND_PWD.FAIL);
+
     
     const sectionProps = {
         title: "비밀번호 찾기",
@@ -108,64 +115,48 @@ const FindPwdContainer = () => {
         action: false
     };
 
+
     return (
         <>
             {
                 isBrowser &&
-                <>
+                <Modal {...modalProps}>
                     {
                         authSuccess === null && 
-                        <Modal {...modalProps}>
-                            <AuthenticationContainer />
-                            <module.ModalAction>
-                                <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
-                            </module.ModalAction>
-                        </Modal>
+                        <AuthenticationContainer />
+
                     }
                     {
-                        authSuccess === false && 
-                        <Modal {...failedModalProps}>
-                            <module.SubmitButton
-                                onClick={ () => dispatch(activateSignup()) }
-                            >회원가입</module.SubmitButton>
-                            <module.ModalAction>
-                                <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
-                            </module.ModalAction>
-                        </Modal>
+                        authSuccess === false &&
+                        <module.SubmitButton
+                            onClick={ () => dispatch(activateSignup()) }
+                        >회원가입</module.SubmitButton>
                     }
                     {
                         authSuccess === true && !newPwdSuccess &&
-                        <Modal {...writeModalProps}>
-                            <NewPassword 
-                                onFormSubmit={ setNewPwd } 
-                            />
-                            <module.ModalAction>
-                                <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
-                            </module.ModalAction>
-                        </Modal>
+                        <NewPassword 
+                            onFormSubmit={ setNewPwd } 
+                        />
                     }
-                    {
-                        authSuccess && newPwdSuccess &&
-                        <Modal {...successModalProps}>
-                            <module.ModalAction>
-                                <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button>
-                                <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
-                            </module.ModalAction>
-                        </Modal>
-                    }
-                </>
+                    <module.ModalAction>
+                        { newPwdSuccess && <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button> }
+                        <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
+                    </module.ModalAction>
+                </Modal>
             }
             {
                 isMobile &&
                 <Section {...sectionProps}>
                     {
-                        !authSuccess && 
-                        <>
-                            <AuthenticationContainer />
-                        </>
+                        authSuccess === null && 
+                        <AuthenticationContainer />
                     }
                     {
-                        authSuccess && !newPwdSuccess &&
+                        authSuccess === false &&
+                        <FindIdFailed />
+                    }
+                    {
+                        authSuccess === true && !newPwdSuccess &&
                         <NewPassword 
                             setNewPwd={ setNewPwd } 
                         />

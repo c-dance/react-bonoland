@@ -10,8 +10,8 @@ const UserAuthForm = ({
     onNewPwdClick
 }) => {    
 
-    const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onSubmit', defaultValues: { "id" : id } });
-
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({ mode: 'onSubmit', defaultValues: { "id" : id } });
+    const pwdWatching = watch("password");
 
     return (
         <>
@@ -36,7 +36,7 @@ const UserAuthForm = ({
                 <span className="newPwd" onClick={ () => onNewPwdClick() }>비밀번호를 잊어버리셨나요?</span>
                 <module.SubmitButton
                     type="submit"
-                    className={ getValues("password") && "disabled"}
+                    className={ ( pwdWatching && pwdWatching.length > 0)?  "" : "disabled"}
                 >
                     확인
                 </module.SubmitButton>

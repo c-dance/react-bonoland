@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Tab, TabNavs, TabConts } from './ListTabStyle';
 
-const ListTab = ({ navs, contents, type }) => {
-
-    console.log(type);
+const ListTab = ({ 
+    navs, 
+    onNavClick = () => {},
+    contents, 
+    type 
+}) => {
 
     const [ activeIdx, setActiveIdx ] = useState(0);
     const toggleActive = idx => setActiveIdx(idx);
@@ -11,7 +14,10 @@ const ListTab = ({ navs, contents, type }) => {
     const tabNavs = navs.map((nav, idx) => (
         <div
             className={ idx === activeIdx? 'tabNav on' : 'tabNav' } 
-            onClick={ () => toggleActive(idx) }
+            onClick={ () => {
+                onNavClick(nav);
+                toggleActive(idx);
+            } }
             key={ idx }
         >{ nav }</div>
     ));
@@ -21,7 +27,7 @@ const ListTab = ({ navs, contents, type }) => {
             className={ idx === activeIdx? 'tabCont on' : 'tabCont' } 
             key={ idx }
         >{ content }</div>
-    ))
+    ));
 
     return (
         <Tab className={ type? type : "" }>
