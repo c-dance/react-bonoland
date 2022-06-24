@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "653a5f9acfa0955089f8",
-    "url": "./static/css/main.fe0127c1.chunk.css"
+    "revision": "d36fdb91226e8402e01e",
+    "url": "./static/css/main.d1ed26d1.chunk.css"
   },
   {
-    "revision": "653a5f9acfa0955089f8",
-    "url": "./static/js/main.653a5f9a.chunk.js"
+    "revision": "d36fdb91226e8402e01e",
+    "url": "./static/js/main.d36fdb91.chunk.js"
   },
   {
-    "revision": "c801fb59f5d226692d3d",
-    "url": "./static/css/1.bc72aa36.chunk.css"
+    "revision": "077418e8a4af979f406d",
+    "url": "./static/css/1.96c164da.chunk.css"
   },
   {
-    "revision": "c801fb59f5d226692d3d",
-    "url": "./static/js/1.c801fb59.chunk.js"
+    "revision": "077418e8a4af979f406d",
+    "url": "./static/js/1.077418e8.chunk.js"
   },
   {
     "revision": "4a686d48d5a089750c49",
@@ -36,6 +36,10 @@ self.__precacheManifest = [
     "url": "./static/media/ico-calculator.25e0b4a9.svg"
   },
   {
+    "revision": "7c7506d92aeef356d813f50524c7e129",
+    "url": "./static/media/ico-reset_white.7c7506d9.svg"
+  },
+  {
     "revision": "ac6476deb211addf0161164a764c2640",
     "url": "./static/media/ico-back_white.ac6476de.svg"
   },
@@ -54,6 +58,14 @@ self.__precacheManifest = [
   {
     "revision": "bb7504bf54f8a6c3f7a0b55dd43cf304",
     "url": "./static/media/ico-checkbox_checked.bb7504bf.svg"
+  },
+  {
+    "revision": "c24121f2280dbdc60a6d59b9f341a391",
+    "url": "./static/media/ico-star.c24121f2.svg"
+  },
+  {
+    "revision": "f2ed6af437fb82da481dd54c654cb052",
+    "url": "./static/media/ico-share.f2ed6af4.svg"
   },
   {
     "revision": "9791ba7fd6127a288b2d0b3dd0287bea",
@@ -100,12 +112,8 @@ self.__precacheManifest = [
     "url": "./static/media/ico-slider.7e57c842.svg"
   },
   {
-    "revision": "c24121f2280dbdc60a6d59b9f341a391",
-    "url": "./static/media/ico-star.c24121f2.svg"
-  },
-  {
-    "revision": "f2ed6af437fb82da481dd54c654cb052",
-    "url": "./static/media/ico-share.f2ed6af4.svg"
+    "revision": "da11883b96e9a7be4888d8be556f774f",
+    "url": "./static/media/ico-star_brown.da11883b.svg"
   },
   {
     "revision": "dafa7ebfedb077d91a3c025b43073c6c",
@@ -126,10 +134,6 @@ self.__precacheManifest = [
   {
     "revision": "27f718dfa8ff018156448fa1ca0a423c",
     "url": "./static/media/item-thumbnail.27f718df.png"
-  },
-  {
-    "revision": "7c7506d92aeef356d813f50524c7e129",
-    "url": "./static/media/ico-reset_white.7c7506d9.svg"
   },
   {
     "revision": "fb6f6a929711be00edfc08166f6ae60c",
@@ -176,6 +180,10 @@ self.__precacheManifest = [
     "url": "./static/media/ico-bell.7256eba4.svg"
   },
   {
+    "revision": "bfcff5374630f9ae42793330ad9ffe98",
+    "url": "./static/media/ico-bell_white.bfcff537.svg"
+  },
+  {
     "revision": "d26c50d9df365cbe2e24d8d27e5ac9a7",
     "url": "./static/media/ico-cadastral.d26c50d9.svg"
   },
@@ -200,19 +208,19 @@ self.__precacheManifest = [
     "url": "./static/media/ico-accordion_black.50bd0339.svg"
   },
   {
-    "revision": "a55966608c33202f63887015f6550670",
-    "url": "./static/media/ico-zoomin.a5596660.svg"
+    "revision": "8d9622fcef97cee42410488899bc60b1",
+    "url": "./static/media/ico-zoomout.8d9622fc.svg"
   },
   {
     "revision": "1e633579041fafd5870be95f888efa37",
     "url": "./static/media/ico-infowindow.1e633579.svg"
   },
   {
-    "revision": "8d9622fcef97cee42410488899bc60b1",
-    "url": "./static/media/ico-zoomout.8d9622fc.svg"
+    "revision": "a55966608c33202f63887015f6550670",
+    "url": "./static/media/ico-zoomin.a5596660.svg"
   },
   {
-    "revision": "2f04975015721d37f9f305b2cfa2f1a4",
+    "revision": "2efc363a66522e9795032e45274f0213",
     "url": "./index.html"
   }
 ];
