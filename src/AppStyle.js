@@ -42,6 +42,7 @@ const AppStyle = createGlobalStyle`
     textarea:active {
         border: 0;
         outline: 0;
+        font-family: 'Noto Sans KR', sans-serif;
     }
     
 `;

@@ -49,7 +49,6 @@ const ContactContainer = ({ centerInfo }) => {
     useEffect(() => {
         if(IS_LOGGEDIN) {
             const USER = USER_AUTH.get();
-            console.log(USER);
             setUser({
                 uEmail: USER.id,
                 uName: USER.name,

@@ -5,23 +5,24 @@ import Section from '../../components/ui/Section/Section'
 import { useGet } from "../../hooks";
 import { getAllTerms } from '../../api/terms';
 import { isBrowser, isMobile } from "react-device-detect";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 
 const TermsContainer = () => {
 
     const navigate = useNavigate();
+    const { category } = useParams();
 
     const [ terms, setTerms ] = useState([]);
+    const [ activeCtg, setActiveCtg ] = useState(category || "");
     const [ loading, error, noData, data, setGet ] = useGet({});
 
     useEffect(() => {
-        setGet(getAllTerms)
+        setGet(getAllTerms);
     }, []);
 
     useEffect(() => {
         if(data) {
-            const TERMS = data.arrayResult;
-            setTerms(TERMS);
+            setTerms(data.arrayResult);
         }
     }, [data]);
     
@@ -35,6 +36,7 @@ const TermsContainer = () => {
                         loading={ loading }
                         error={ error }
                         noData={ noData }
+                        category={ activeCtg }
                     />
                     <GlobalFooter />
                 </>
@@ -53,6 +55,7 @@ const TermsContainer = () => {
                             loading={ loading }
                             error={ error }
                             noData={ noData }
+                            category={ activeCtg }
                         >
                             <GlobalFooter />
                         </Terms>

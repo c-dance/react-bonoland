@@ -133,7 +133,7 @@ const SignupForm = ({
                         />
                         <label htmlFor="agree0"></label>
                     </div>
-                    <Link to="/terms">이용약관</Link>
+                    <Link target="_blank" to="/terms/이용약관">이용약관</Link>
                 </div>
                 <div>
                     <div>
@@ -147,7 +147,7 @@ const SignupForm = ({
                         />
                         <label htmlFor="agree1"></label>
                     </div>
-                    <Link to="/terms">개인정보처리방침</Link>
+                    <Link target="_blank" to="/terms/개인정보처리방침">개인정보처리방침</Link>
                 </div>
                 <div>
                     <div>
@@ -161,7 +161,7 @@ const SignupForm = ({
                         />
                         <label htmlFor="agree2"></label>
                     </div>
-                    <Link to="/terms">위치기반서비스 이용동의</Link>
+                    <Link target="_blank" to="/terms/위치기반서비스이용동의">위치기반서비스 이용동의</Link>
                 </div>
             </Agreement>
             <div className="action">

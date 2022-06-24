@@ -3,6 +3,7 @@ import { getAuthNumber } from "../../api/auth";
 export const AUTH = {
     ACTIVATE: '/auth/activate',
     DEACTIVATE: '/auth/deactivate',
+    RESET: '/auth/reset',
     SET_PHONENUMBER: '/auth/phonenum',
     SET_AUTHNUMBER: '/auth/authnum',
     CHECK_AUTHNUM: '/auth/match',
@@ -20,6 +21,11 @@ export const activateAuth = settings => ({
 // 인증 비활성화
 export const deactivateAuth = () => ({
     type: AUTH.DEACTIVATE
+});
+
+// 인증 재시도(시간 초과)
+export const resetAuth = () => ({
+    type: AUTH.RESET
 });
 
 // 전화번호 저장 > 전화번호 저장하고 authnum 받아서 넣기

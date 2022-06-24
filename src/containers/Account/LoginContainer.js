@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deactivateLogin } from '../../store/actions/mode';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
@@ -7,13 +7,12 @@ import Login from '../../components/Account/Login/Login';
 import { USER_ID } from '../../utils/user';
 import Section from "../../components/ui/Section/Section";
 import { login } from '../../store/actions/user'; 
-import { userLogin } from '../../api/user';
-import { activateAlert } from '../../store/actions/alert';
-
 
 const LoginContainer = () => {
 
     const dispatch = useDispatch();
+
+    const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const ID = USER_ID.get();
     const STORE_ID = ID.length > 0;
@@ -26,10 +25,14 @@ const LoginContainer = () => {
     
     const onFormSubmit = async data => {
         handleStoredId(data.userStoreId, data.userId);
-        dispatch(login({ 
+        setFailMsg("");
+
+        const RESULT = await dispatch(login({ 
             id: data.userId,
             password: data.userPwd
         }));
+
+        if(!RESULT.success) setFailMsg(RESULT.message.toString());
     };
 
     const modalProps = {
@@ -40,6 +43,10 @@ const LoginContainer = () => {
         title: "로그인"
     };
 
+    useEffect(() => {
+        if(USER_LOGGEDIN) dispatch(deactivateLogin());
+    }, [USER_LOGGEDIN])
+
     return (
         <>
         {
@@ -49,7 +56,7 @@ const LoginContainer = () => {
                         id={ ID }
                         storeId={ STORE_ID }
                         onFormSubmit={ onFormSubmit }
-                        failMsg = { failMsg }
+                        message = { failMsg }
                     />
                 </Modal>
         }
@@ -67,7 +74,7 @@ const LoginContainer = () => {
                     id={ ID }
                     storeId={ STORE_ID }
                     onFormSubmit={ onFormSubmit }
-                    failMsg = { failMsg }
+                    message = { failMsg }
                 />
             </Section>
         }

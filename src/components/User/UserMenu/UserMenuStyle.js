@@ -27,8 +27,5 @@ export const Logout = styled.div`
     color: ${({ theme }) => theme.colors.gray500 };
     font-size: ${({ theme }) => theme.fontSizes.s };
     font-weight: ${({ theme }) => theme.fontWeights.medium };
-
-    &.mobile {
-        
-    }
+    cursor: pointer;
 `;

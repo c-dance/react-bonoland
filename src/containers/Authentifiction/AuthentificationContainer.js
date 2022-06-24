@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Authentication from "../../components/Authentication/Authentication";
 import { useDispatch, useSelector } from "react-redux";
 import { activateAlert } from '../../store/actions/alert';
-import { checkAuthNumber, updatePhoneNumber } from "../../store/actions/auth";
+import { checkAuthNumber, resetAuth, updatePhoneNumber } from "../../store/actions/auth";
 
 const AuthenticationContainer = () => {
     
@@ -15,14 +15,13 @@ const AuthenticationContainer = () => {
     const AUTH_PHONENUMBER = AUTH.phoneNumber;
     
     /* === 타이머 === */
-    const TIME_LIMIT = 180;
+    const TIME_LIMIT = 10;
     const [ timer, setTimer ] = useState(TIME_LIMIT);
     let intervalTimer;
     let timeout;
     
     /* === 인증번호 받기, 인증결과 === */
     const [ getAuth, setGetAuth ] = useState(false);
-    const [ phoneNumberError, setPhoneNumberError ] = useState("");
     const [ authNumberError, setAuthNumberError ] = useState("");
 
     /* === 전화번호 제출 === */
@@ -39,6 +38,7 @@ const AuthenticationContainer = () => {
     const setIntervalTimer = () => {
         intervalTimer = window.setInterval(() => {
             setTimer(timer => timer - 1);
+            console.log(timer);
         }, 1000);
 
         timeout = window.setTimeout(() => {
@@ -54,26 +54,22 @@ const AuthenticationContainer = () => {
 
     /* === 입력시간 초과 처리 === */
     const firetimer = () => {
+        dispatch(resetAuth());
         clearIntervalTimer();
         alert("입력시간이 초과되었습니다. 휴대폰 인증을 다시 시도해 주세요");
         setTimer(TIME_LIMIT);
-        // setPhoneNumber("");
-        setPhoneNumberError("");
         setAuthNumberError("");
         setGetAuth (false);
     };
 
     /* === 인증폼 PROPS === */
     const authProps = {
-        // phoneNumber: phoneNumber,
         phoneNumber: AUTH_PHONENUMBER,
         onPhoneSubmit: onPhoneSubmit,
         onAuth: getAuth,
         timer: timer,
         onAuthSubmit: onAuthSubmit,
-        // description: description, 
         description: AUTH_DESCRIPTION, 
-        phoneNumberError: phoneNumberError,
         authNumberError: authNumberError
     };
 
@@ -82,7 +78,6 @@ const AuthenticationContainer = () => {
         if(getAuth) {
             setIntervalTimer();
             return () => clearIntervalTimer();
-        } else {
         }
     }, [getAuth]);
 
@@ -91,22 +86,10 @@ const AuthenticationContainer = () => {
         if(timer <= 0) firetimer();
     }, [timer]);
 
-
     useEffect(() => {
-
-        if(AUTH_NUMBER.length > 0){ 
-            setGetAuth(true);
-        } else {
-            setGetAuth(false);
-        }
-
-        if(AUTH_SUCCESS) {
-            // 성공처리는 api 갖다 쓰는 컴포넌트에서
-        } else {
-            console.log(AUTH.error)
-            setAuthNumberError(AUTH.error);
-        }
-
+        setGetAuth(AUTH_NUMBER.length > 0);
+        // 성공처리는 api 갖다 쓰는 컴포넌트에서
+        if(!AUTH_SUCCESS) setAuthNumberError(AUTH.error);
     }, [AUTH])
 
     return (

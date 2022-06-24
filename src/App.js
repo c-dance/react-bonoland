@@ -36,7 +36,7 @@ const App = () => {
   const USER = USER_AUTH.get();
   if(USER) dispatch(setLoggedIn(USER));
   
-  
+
   const ONLY_USER = component => {
     const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
@@ -76,6 +76,7 @@ const App = () => {
         <Route exact path="/recommend/center/:id" element={ <CenterItemContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
+      <Route exact path="/terms/:category" element={ <TermsContainer /> } />
     </Routes>
 )};
 

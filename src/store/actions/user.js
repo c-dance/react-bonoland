@@ -13,12 +13,14 @@ export const login = data => async dispatch => {
     const RESPONSE = await userLogin(data);
 
     if(RESPONSE && RESPONSE.data.code === 1) {
-        console.log(RESPONSE);
+        console.log(`로그인 response: ${RESPONSE}`);
         const USER_INFO = { 
+            no: RESPONSE.data.result.userNo,
             type: RESPONSE.data.result.userCtg,
             id: RESPONSE.data.result.userEmail,
             name: RESPONSE.data.result.userName, 
             tel: RESPONSE.data.result.userTel,
+            alarms: RESPONSE.data.result["localAlertsDepth1"],
             memo: RESPONSE.data.result.userRemarks
         };
 
@@ -28,19 +30,12 @@ export const login = data => async dispatch => {
             type: USER.LOGIN,
             payload: USER_INFO
         })  
-    } else {
-        dispatch({
-            type: LOGIN.DEACTIVATE,
-            payload: false
-        })
-        dispatch({
-            type: ALERT.ACTIVATE, 
-            payload: {
-                title: "로그인 실패",
-                contents: RESPONSE.data.message || "계정을 찾을 수 없습니다. 다시 시도해 주세요"
-            }
-        })
-    }   
+    }
+    
+    return ({
+        success: RESPONSE && RESPONSE.data.code === 1,
+        message: RESPONSE.data.message || "아이디 또는 비밀번호가 일치하지 않습니다."
+    });
 }
 
 export const setLoggedIn = user => ({

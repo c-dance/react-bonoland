@@ -1,5 +1,5 @@
 import { Form, Time, Description } from './AuthenticationStyle';
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { isMobile } from 'react-device-detect';
 import { REGEXP } from '../../scheme/form';
 import { useForm } from 'react-hook-form';
@@ -17,7 +17,6 @@ const Authentication = ({
     timer,
     onAuthSubmit, 
     description,
-    phoneNumberError,
     authNumberError
 }) => {
 
@@ -46,7 +45,6 @@ const Authentication = ({
                         {...register("phoneNumber", { required: true, pattern: REGEXP.phone })}
                     />
                     { errors.phoneNumber && <span className="warn">휴대폰 번호를 다시 확인해 주세요.</span> }
-                    { !errors.phoneNumber && phoneNumberError.length > 0 && <span className="warn">{ phoneNumberError }</span> }
                 </div>
                 {
                     onAuth &&

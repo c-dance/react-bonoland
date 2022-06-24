@@ -1,6 +1,38 @@
 import api, { consoleErr } from ".";
 import axios from "axios";
 
+const CENTERS_URL = {
+    recommend: {
+        business: '/', 
+        remodeling: '/'
+    },
+    sales: {
+        nursing: '/bono/totalSale',
+        daycare: '/'
+    }
+};
+
+/*  신규 사업지 목록  */
+export const getBusinessCenters = async data => await api.post(CENTERS_URL.recommend.business, {
+
+});
+
+/*  신규 리모델링 목록  */
+export const getRemodelingCenters = async data => await api.post(CENTERS_URL.recommend.business, {
+
+});
+
+/*  신규 요양원 목록  */
+export const getNursingCenters = async data => await api.post(CENTERS_URL.recommend.business, {
+
+});
+
+/*  신규 주간보호 목록  */
+export const getDaycareCenters = async data => await api.post(CENTERS_URL.recommend.business, {
+
+});
+
+
 export const getFilteredCenters = async (filter = { category: "", capacity: [] }) => {
     console.log('필터링 목록');
 

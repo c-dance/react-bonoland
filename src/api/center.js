@@ -1,15 +1,20 @@
 import api from ".";
 
 const CENTER_URL = {
-    center: '/sisul/detailPage'
+    center: '/sisul/detailPage', 
+    sales: ''
 };
 
-/*  시설 상세페이지  */
+/*  일반 시설 상세페이지  */
 export const getCenter = async data => await api.post(CENTER_URL.center, {
     longTermAdminSym : data.centerNo,
     userNo : data.userNo
 });
 
+/*  매물 상세페이지  */
+export const getSalesItem = async data => await api.post(CENTER_URL.sales, {
+    userNo: data.userNo
+});
 
 // export const getCenter = async (id = "") => {
 

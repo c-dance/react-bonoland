@@ -70,10 +70,10 @@ const CapacityFilter = ({
                     ))
                 }
             </RadioWrap>
-            <Reset type="reset">선택 해제</Reset>
+            <Reset type="reset">초기화</Reset>
             <Actions>
-                <button type="submit">확인</button>
-                <button type="button" onClick={ event => onCloseClick(event) }>닫기</button>
+                <button type="submit">선택</button>
+                <button type="button" onClick={ event => onCloseClick(event) }>선택해제</button>
             </Actions>
         </CapacityForm>
     )

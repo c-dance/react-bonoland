@@ -49,6 +49,7 @@ export const Head = styled.div`
     p {
         font-size: ${ ({theme}) => theme.fontSizes.s };
         line-height: 1.7;
+        word-break: keep-all;
     }
 `;
 

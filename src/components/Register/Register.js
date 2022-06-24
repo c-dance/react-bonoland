@@ -520,8 +520,7 @@ const Register = ({
                             </div>
                         </Inform>
                         {
-                            Object.keys(errors).length > 0 &&
-                            <span className="warn">{ errors[Object.keys(errors)[0]].message }</span>
+                            Object.keys(errors).length > 0 && alert(errors[Object.keys(errors)[0]].message)
                         }
                         <button 
                             type="submit"

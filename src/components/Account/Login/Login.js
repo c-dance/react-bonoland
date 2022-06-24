@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Metas, Signup } from './LoginStyle';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -10,13 +10,26 @@ import { REGEXP } from '../../../scheme/form';
 const Login = ({
     id,
     storeId,
-    storeLogin,
     onFormSubmit,
-    failMsg
+    message
 }) => {
 
     const dispatch = useDispatch();
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onSubmit', defaultValues: { "userId" : id, "userStoreId" :  storeId } });
+    const [ failMsg, setFailMsg ] = useState(message);
+    const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
+        mode: 'onSubmit', 
+        reValidateMode: 'onSubmit',
+        defaultValues: { "userId" : id, "userStoreId" :  storeId } 
+    });
+    const pwdWatching = watch("userPwd");
+
+    useEffect(() => {
+        setFailMsg(message);
+    }, [message]);
+
+    useEffect(() => {
+        setFailMsg("");
+    }, [pwdWatching])
 
     return (
         <Form onSubmit={ handleSubmit(onFormSubmit) }>

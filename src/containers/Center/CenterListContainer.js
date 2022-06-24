@@ -16,7 +16,7 @@ import { useGet } from "../../hooks";
 
 const CenterListContainer = () => {
 
-    const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"]
+    const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"] //list
     const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
     const [ capacityValues, setCapacityValues ] = useState(null); // 정원필터 값 설정
 
@@ -44,15 +44,22 @@ const CenterListContainer = () => {
         setCapacityValues(TYPE_AND_CAPACITY[category][0].value);
     };
     
+    // category, value 함께 받아야 함
+    const selectCapacity = value => {
+        LOCAL_STORAGE.store(category, value);
+        setCapacityValues(value);
+    };
+
+    // category만 받으면 됨
+    const cancleCapacity = category => {
+
+    };
+
     const closeCapacity = (event) => {
         event.preventDefault();
         setCapacityActive(false);
     };
     
-    const selectCapacity = value => {
-        LOCAL_STORAGE.store(category, value);
-        setCapacityValues(value);
-    };
     
     const slideCapacity = value => {
         setCapacityValues(value);
