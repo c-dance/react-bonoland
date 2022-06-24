@@ -91,8 +91,6 @@ export const Back = styled.div`
     left: 24px;
     width: auto;
     height: 24px;
-    line-height: 24px;
-    font-size: ${ ({theme}) => theme.fontSizes.s };
     cursor: pointer;
     color: ${ props =>
         props.themeColor === "primary"?
@@ -111,5 +109,35 @@ export const Back = styled.div`
         background-color: transparent;
         &.ico-primary { background: url(${primaryBackIcon}) center no-repeat; }
         &.ico-secondary { background: url(${secondaryArrowBackIcon}) center no-repeat; }
+    }
+`;
+
+export const Option = styled.button`
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    width: auto;
+    height: 24px;
+    line-height: 24px;
+    font-size: ${ ({theme}) => theme.fontSizes.s };
+    cursor: pointer;
+    background-color: transparent;
+    color: ${ props =>
+        props.themeColor === "primary"?
+        props.theme.colors.gray600 
+        :'#000'
+    };
+
+    background-color: transparent;
+
+    .mobile & {
+        top: 16px;
+        left: auto;
+        right: 16px;
+        color: ${ props =>
+            props.themeColor === "primary"?
+            props.theme.colors.gray600 
+            :'#fff'
+        };
     }
 `;

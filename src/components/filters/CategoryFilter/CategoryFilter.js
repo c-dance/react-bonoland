@@ -1,7 +1,7 @@
 import { CategoryForm, Category } from "./CategoryFilterStyle";
 import { isMobile } from "react-device-detect";
 import React from "react";
-import { CATEGORY } from "../../../sheme/filter";
+import { CATEGORY } from "../../../scheme/filter";
 
 const CategoryFilter = ({ value, onCategorySelect }) => {
     return (

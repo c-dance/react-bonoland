@@ -12,10 +12,7 @@ const UserRecentContainer = () => {
     const [ loading, error, noData, data, setGet ] = useGet([]);
 
     useEffect(() => {
-        setGet({ 
-            get: getUserRecentCenters,
-            id: id
-        });
+        setGet(getUserRecentCenters(id));
     }, []);
 
     useEffect(() => {

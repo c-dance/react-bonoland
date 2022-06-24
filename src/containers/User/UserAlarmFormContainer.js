@@ -3,10 +3,11 @@ import Section from '../../components/ui/Section/Section';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deactivateAlarm } from '../../store/actions/mode';
-import { REGIONS } from '../../sheme/alarm';
+import { REGIONS } from '../../scheme/alarm';
 import { setUserLocalAlarm } from '../../api/user';
 import { updateUserInfo } from '../../store/actions/user';
 import { activateAlert } from '../../store/actions/alert';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const UserAlarmFormContainer = () => {
 
@@ -55,9 +56,12 @@ const UserAlarmFormContainer = () => {
 
     return (
         <Section
+            title={ isMobile && "지역 알림" }
             themeColor="primary"
-            close={ true }
+            close={  isBrowser && true }
+            back={ isMobile && true }
             onCloseClick={ () => dispatch(deactivateAlarm()) }
+            onBackClick={ () => dispatch(deactivateAlarm()) }
             action={ true }
             actionText={ "확인" }
             onActionClick={ () => onFormSubtmit() }

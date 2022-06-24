@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from './NewPasswordStyle'; 
 import { useForm } from 'react-hook-form';
-import { REGEXP } from "../../../sheme/form";
+import { REGEXP } from "../../../scheme/form";
 
 const NewPassword = ({
     onFormSubmit

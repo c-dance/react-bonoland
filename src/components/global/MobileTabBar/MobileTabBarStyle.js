@@ -53,4 +53,5 @@ export const TabLink = styled(Link)`
 `;
 export const TabBtn = styled.button`
     ${ TabBtnCss }
+    padding-top: 28px;
 `;

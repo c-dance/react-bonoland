@@ -15,7 +15,7 @@ const RecommendListContainer = () => {
 
 
     useEffect(() => {
-        setGet({ get: getRecommendCenters });
+        setGet(getRecommendCenters);
     }, []);
 
     useEffect(() => {

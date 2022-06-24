@@ -25,10 +25,7 @@ const MapChartContainer = () => {
     /* === 렌더링 이후 차트 데이터 받아오기(모바일 일 때) === */
     useEffect(() => {
         if(IS_GUGUN) {
-            setGet({
-                get: getMapChart,
-                params: REGION
-            }) 
+            setGet(getMapChart(REGION)) 
         } else {
             dispatch(deactivateChart());
         }

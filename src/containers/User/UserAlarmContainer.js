@@ -45,11 +45,11 @@ const UserAlarmContainer = () => {
         <Section
             title={ `알림 매물(${total})` }
             themeColor={ isBrowser? "primary" : "secondary" }
-            close={ true }
-            back={ true }
-            action={ false }
-            backText = { "지역 설정" }
-            onBackClick={ () => { dispatch(activateAlarm()); } }
+            close={ isBrowser && true }
+            back={ isMobile &&  true }
+            option={ true }
+            optionText = { "지역설정" }
+            onOptionClick={ () => { dispatch(activateAlarm()); } }
         >
             <CenterList 
                 type={ "sub" } 

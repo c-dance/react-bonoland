@@ -4,7 +4,7 @@ import Slider from 'rc-slider';
 import sliderIcon from '../../../assets/images/icon/ico-slider.svg';
 import './rcSlider.css';
 import React from "react";
-import { TYPE_AND_CAPACITY, TYPE_AND_MARKERS } from "../../../sheme/filter";
+import { TYPE_AND_CAPACITY, TYPE_AND_MARKERS } from "../../../scheme/filter";
 
 const CapacityFilter = ({ 
     category, 

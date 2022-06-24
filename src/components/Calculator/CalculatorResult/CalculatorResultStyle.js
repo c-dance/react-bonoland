@@ -56,6 +56,7 @@ export const CalcForm = styled.form`
             vertical-align: middle;
             text-align: center;
             border-right: 1px solid ${({theme}) => theme.colors.gray300 };
+            padding: 4px;
 
             &.memo {
                 padding-left: 6px;
@@ -101,18 +102,22 @@ export const CalcForm = styled.form`
                     background-color: #DFE7FD;
                     font-weight: ${({theme}) => theme.fontWeights.bold};
 
-                    .mobile { 
+                    .mobile & { 
                         background-color: #fff;
                         font-weight: ${({theme}) => theme.fontWeights.regular}; 
                     }
                     
                     td:first-child { 
                         background-color: #DFE7FD; 
-                        .mobile & { background-color: #fff; }
+                        .mobile & { 
+                            background-color: #fff; 
+                            color: #0091EA;
+                        }
                     }
 
                     td {
                         .mobile & { color: #DFE7FD; }
+                        .mobile & { color: #0091EA; }
                     }
                 }
             }
@@ -128,11 +133,18 @@ export const CalcForm = styled.form`
                 height: 36px;
                 font-weight: ${({theme}) => theme.fontWeights.bold};
                 color: #DD2C00;
-                .mobile $ { 
+
+                .mobile & { 
                     height: 40px; 
                     border-right: 0;
                     color: ${({theme}) => theme.colors.gray900 };
                     font-weight: ${({theme}) => theme.fontWeights.regular};
+
+                    &:last-child { 
+                        text-align: right;
+                        font-weight: ${({theme}) => theme.fontWeights.m};
+                        padding-right: 16px;
+                    }
                 }
             }
         }

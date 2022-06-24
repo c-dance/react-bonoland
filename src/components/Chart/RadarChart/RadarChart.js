@@ -1,6 +1,6 @@
 import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler, defaults } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-import { BONOSCORE } from '../../../sheme/chart';
+import { BONOSCORE } from '../../../scheme/chart';
 import { ChartWrap, Average } from './RadarChartStyle';
 import { isBrowser } from 'react-device-detect';
 import React from "react";

@@ -9,17 +9,16 @@ import { useGet } from "../../hooks";
 const NewsItemContainer = () => {
 
     const [ news, setNews ] = useState({});
-    const { newsID } = useParams();
+    const { id } = useParams();
 
     const navigate = useNavigate();
     const [ loading, error, noData, data, setGet ] = useGet({});
 
+    console.log(id);
+
 
     useEffect(() => {
-        setGet({
-            get: getNewsPost,
-            params: newsID
-        })
+        setGet(getNewsPost(id));
     }, []);
 
     useEffect(() => {

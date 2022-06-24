@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form';
 import { isMobile, isBrowser } from 'react-device-detect';
 import { useDispatch } from 'react-redux/es/exports';
 import { activateAlert } from '../../store/actions/alert';
-import { REGEXP } from '../../sheme/form';
-import { LOCATION } from '../../sheme/location';
+import { REGEXP } from '../../scheme/form';
+import { LOCATION } from '../../scheme/location';
 
 const Register = ({
     user, 

@@ -4,6 +4,7 @@ import Section from '../../components/ui/Section/Section';
 import { useNavigate } from 'react-router';
 import { getNewsList } from '../../api/news';
 import { useGet } from "../../hooks";
+import { isBrowser, isMobile } from 'react-device-detect';
 
 const NewsListContainer = () => {
 
@@ -14,9 +15,7 @@ const NewsListContainer = () => {
     const [ loading, error, noData, data, setGet ] = useGet({});
 
     useEffect(() => {
-        setGet({
-            get: getNewsList
-        })
+        setGet(getNewsList);
     }, []);
 
     useEffect(() => {
@@ -27,7 +26,8 @@ const NewsListContainer = () => {
         <Section
             title={ "뉴스" }
             themeColor={ "secondary" }
-            close={ true }
+            close={ isBrowser && true }
+            back={ isMobile && true }
             onCloseClick={ onCloseClick }
         >
             <NewsList 

@@ -1,4 +1,4 @@
-import { CATEGORY, TYPE_AND_CAPACITY } from "../sheme/filter"; 
+import { CATEGORY, TYPE_AND_CAPACITY } from "../scheme/filter"; 
 
 export const LOCAL_STORAGE = {
     store : (name, value) => {

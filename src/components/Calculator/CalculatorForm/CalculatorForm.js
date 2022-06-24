@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Wrapper, Form } from './CalculatorFormStyle';
+import { Wrapper, Form, ResetIcon } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { TYPE_AND_CAPACITY, CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../sheme/calculator';
+import { TYPE_AND_CAPACITY, CAPACITY_AND_PRICE, INCOME_DATASET } from '../../../scheme/calculator';
 import { getNumber, getLocalNumber } from '../../../utils/number';
 import { useOnlyNum } from '../../../hooks/form';
 import Modal from '../../Modal/Modal'; 
-import { useDispatch } from 'react-redux';
 
 /* === 옵션 가져오기 === */
 const getOptionsFromObject = (obj) => {
     return Object.keys(obj).map(key => key);
 };
 
-const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) => {
+const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, children }) => {
 
     /* === 입력값 세팅 & VALIDATION === */
     const [type, setType] = useState(""); // 요양시설 타입
@@ -111,7 +110,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
         event.preventDefault();
 
         if(commons.length <= 0){
-            setWarningText("4.현원수(일반병실)은 필수 입력값 입니다.");
+            setWarningText("3.현원수(일반병실)은 필수 입력값 입니다.");
             setWarning(true);
         } else {
             onFormSubmit({
@@ -298,8 +297,8 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, children }) =>
                         </div>
                     </fieldset>
                     <div className="actions">
-                        <button type="submit">계산하기</button>
-                        {/* <button type="reset">초기화</button> */}
+                        { !resetAble && <button type="submit">계산하기</button>}
+                        { resetAble &&  <button type="reset">초기화<ResetIcon /></button> }
                     </div>
                 </module.MobileForm>
             }

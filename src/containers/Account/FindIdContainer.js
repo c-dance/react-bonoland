@@ -5,7 +5,7 @@ import { activateFindPwd, deactivateFindId, activateSignup } from '../../store/a
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import { module } from '../../themes/module';
-import { FIND_ID } from '../../sheme/modal';
+import { FIND_ID } from '../../scheme/modal';
 import FindIdSuccess from '../../components/Account/FindIdSuccess/FindIdSuccess';
 import Section from '../../components/ui/Section/Section';
 import { getFindIdAuth } from '../../api/auth';

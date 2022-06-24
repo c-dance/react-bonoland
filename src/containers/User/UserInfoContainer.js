@@ -8,10 +8,11 @@ import { activateAlert } from '../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscribe';
-import { getPasswordMatch, modifyUserTel, modifyUserInfo, modifyUserPwd, userUnsubscribe } from '../../api/user';
+import { getPasswordMatch, modifyUserTel, modifyUserInfo, userUnsubscribe } from '../../api/user';
 import { updateUserInfo, logout } from '../../store/actions/user';
 import { activateAuth, deactivateAuth } from '../../store/actions/auth';
 import { activateFindPwd } from '../../store/actions/mode';
+import { isBrowser, isMobile } from 'react-device-detect';
 
 
 const UserInfoContainer = () => {
@@ -187,7 +188,8 @@ const UserInfoContainer = () => {
                 !pwdMatchSuccess && 
                 <Section
                     title={"회원 정보 변경"}
-                    close={ true }
+                    close={ isBrowser && true }
+                    back={ isMobile && true }
                     themeColor={ "primary" }
                 >
                     <UserAuthForm
@@ -201,7 +203,8 @@ const UserInfoContainer = () => {
                 pwdMatchSuccess && 
                 <Section
                     title="회원 정보 변경"
-                    close={ true }
+                    close={ isBrowser && true }
+                    back={ isMobile && true }
                     themeColor={ "primary" }
                 >
                     <UserInfoForm
@@ -213,10 +216,27 @@ const UserInfoContainer = () => {
                 </Section>
             }
             { 
-                newPhoneMode && 
-                <Modal {...newPhoneModalProps}>
-                    <AuthenticationContainer /> 
-                </Modal>
+                newPhoneMode &&
+                <>
+                    {
+                        isBrowser &&
+                        <Modal {...newPhoneModalProps}>
+                            <AuthenticationContainer /> 
+                        </Modal>
+                    }
+                    {
+
+                        isMobile &&
+                        <Section
+                            title="연락처 변경"
+                            close={ isBrowser && true }
+                            back={ isMobile && true }
+                            themeColor={ "primary" }
+                        >
+                            <AuthenticationContainer /> 
+                        </Section>
+                    }
+                </>
             }
             { 
                 unsubscribeMode && 

@@ -4,17 +4,32 @@ import defualtCheckIcon from '../../../assets/images/form/ico-checkbox_default.s
 import checkedCheckIcon from '../../../assets/images/form/ico-checkbox_checked.svg';
 import accordionIcon from '../../../assets/images/form/ico-accordion_black.svg';
 
+export const AlarmWrap = styled(module.scrollWrapper)`
+    height: 100%;
+    overflow-y: hidden;
+
+    .mobile & {
+        height: calc(100% - 56px);
+        overflow-y: auto;
+    }
+`;
+
 export const AlarmForm = styled.div`
     height: 100%;
+    
     hr {
         width: 100%;
         height: 10px;
         border: 0;
         background-color: ${ ({theme}) => theme.colors.gray100 };
+        .mobile & {
+            display: none;
+        }
     }
-    ${'' /* .mobile & {
+
+    .mobile & {
         height: calc(100% - 56px);
-    } */}
+    }
 `;
 
 export const Head = styled.div`
@@ -22,6 +37,10 @@ export const Head = styled.div`
     flex-direction: column;
     gap: 12px;
     padding: 24px;
+
+    .mobile & {
+        gap: 8px;
+    }
 
     h2 {
         font-size: ${ ({theme}) => theme.fontSizes.l };
@@ -34,11 +53,11 @@ export const Head = styled.div`
 `;
 
 export const Body = styled(module.scrollWrapper)`
-    height: 100%;
+    height: calc(100% - 180px);
 
     .mobile &  {
-        height: calc(100% - 160px);
-        padding-bottom: 32px;
+        height: auto;
+        overflow-y: hidden;
     }
 
     form {

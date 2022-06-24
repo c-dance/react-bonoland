@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { isBrowser, isMobile } from 'react-device-detect';
 import {
     AlarmWrap,
     AlarmForm, 
@@ -25,8 +26,10 @@ const UserAlarmForm = ({
         setGyeonggiDo(Object.keys(dataset["경기도"]).filter(key => dataset["경기도"][key].value === true).length);
     }, [dataset])
 
+
     return (
-        <AlarmForm>
+        <AlarmWrap>
+            <AlarmForm>
                 <Head>
                     <h2>지역 알림 설정</h2>
                     <p>
@@ -89,7 +92,8 @@ const UserAlarmForm = ({
                         </fieldset>
                     </form>
                 </Body>
-        </AlarmForm>
+            </AlarmForm>
+        </AlarmWrap>
     )
 };
 

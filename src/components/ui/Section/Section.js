@@ -1,4 +1,4 @@
-import { Section as SectionBlock, Title, Body, Close, Back, Action } from './SectionStyle';
+import { Section as SectionBlock, Title, Body, Close, Back, Option, Action } from './SectionStyle';
 import { useNavigate } from 'react-router';
 import React from "react";
 
@@ -8,8 +8,10 @@ const Section = ({
     close,
     onCloseClick,
     back, 
-    backText,
     onBackClick,
+    option, 
+    optionText,
+    onOptionClick,
     action,
     actionText,
     onActionClick,
@@ -19,23 +21,31 @@ const Section = ({
     const navigate = useNavigate();
     const goBack = () => { navigate(-1); };
 
+    console.log(option);
+
     return(
         <SectionBlock>
             <Title themeColor={ themeColor }>{ title }</Title>
             { back && 
                 <Back  
-                    className={ !backText && `ico-${themeColor}` }
+                    className={`ico-${themeColor}`}
                     onClick={ () => {
                         onBackClick? onBackClick() : goBack()
                     }}
-                    >{ backText && backText }</Back> 
+                />
             }
             { close && 
                 <Close 
                     themeColor={ themeColor } 
                     onClick={ () => {
                         onCloseClick? onCloseClick() : goBack()
-                    } }></Close> 
+                    } }
+                /> 
+            }
+            { option && 
+                <Option 
+                    onClick={ () => onOptionClick() }
+                >{ optionText }</Option>
             }
             <Body className={ action? '' : 'full' }>
                 { children }

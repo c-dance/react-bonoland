@@ -16,12 +16,12 @@ export const useGet = (initialValue) => {
     const [noData, setNoData] = useState(false);
     const [data, setData] = useState(initialValue);
     
-    const getResponse = async () => {
-        const response = await api.get(api.params);
+    const getResponse = async api => {
+        const response = await api;
+        console.log(response);
 
         if(response) {
             const data = response.data;
-
             if(Array.isArray(data) && response.data.length <= 0) setNoData(true);
             else if(typeof data === 'object' && Object.keys(data).length <= 0) setNoData(true);
             else setNoData(false);
@@ -43,12 +43,13 @@ export const useGet = (initialValue) => {
     useEffect(() => {
         if(api !== null) {
             initProps();
-            getResponse();
+            getResponse(api);
         }
     }, [api]);
 
     return [loading, error, noData, data, setApi];
 };
+
 
 
 export const useFetch = (initialValue, url) => {

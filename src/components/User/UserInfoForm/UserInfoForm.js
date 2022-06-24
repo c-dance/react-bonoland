@@ -2,7 +2,7 @@ import React from "react";
 import { module } from '../../../themes/module';
 import { Form, InputWrap, Unsubscribe } from "./UserInfoFormStyle";
 import { useForm } from 'react-hook-form';
-import { REGEXP } from "../../../sheme/form";
+import { REGEXP } from "../../../scheme/form";
 
 const UserInfoForm = ({
     user,

@@ -15,7 +15,7 @@ const SalesListContainer = () => {
     const [ loading, error, noData, data, setGet ] = useGet({});
 
     useEffect(() => {
-        setGet({ get: getSalesCenters });
+        setGet(getSalesCenters);
     }, []);
 
     useEffect(() => {

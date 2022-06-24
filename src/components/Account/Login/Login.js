@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
 import { isBrowser, isMobile } from 'react-device-detect';
-import { REGEXP } from '../../../sheme/form';
+import { REGEXP } from '../../../scheme/form';
 
 
 const Login = ({

@@ -15,9 +15,7 @@ const TermsContainer = () => {
     const [ loading, error, noData, data, setGet ] = useGet({});
 
     useEffect(() => {
-        setGet({
-            get: getAllTerms
-        })
+        setGet(getAllTerms)
     }, []);
 
     useEffect(() => {

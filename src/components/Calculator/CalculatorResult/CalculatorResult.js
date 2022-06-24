@@ -1,6 +1,6 @@
 import { CalcWrap, CalcForm, Caption, CalcHeader } from "./CalculatorResultStyle";
 import React from "react";
-import { INCOME_RESULT } from "../../../sheme/calculator";
+import { INCOME_RESULT } from "../../../scheme/calculator";
 import { isBrowser, isMobile } from 'react-device-detect';
 
 const tableHead = () => (
@@ -135,8 +135,8 @@ const CalculatorResult = ({ result }) => {
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td>3. 월 수익</td>
-                            <td colSpan={3}>{result["월수익"].totalPrice}</td>
+                            <td>월 수익</td>
+                            <td colSpan={3}>{result["월수익"].totalPrice} 원</td>
                         </tr>
                     </tfoot>
                 </table>

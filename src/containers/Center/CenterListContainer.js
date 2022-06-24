@@ -10,7 +10,7 @@ import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { LOCAL_STORAGE } from '../../utils/filter';
-import { CATEGORY, TYPE_AND_CAPACITY } from "../../sheme/filter";
+import { CATEGORY, TYPE_AND_CAPACITY } from "../../scheme/filter";
 import { getAllRecommendCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
 
@@ -29,13 +29,13 @@ const CenterListContainer = () => {
         event.preventDefault();
         LOCAL_STORAGE.store(category, capacityValues);
         setCapacityActive(false);
-        setGet({ 
-            get: getFilteredCenters, 
-            params: {
-                category: category,
-                capacity: capacityValues
-            }
-        });
+        // setGet({ 
+        //     get: getFilteredCenters, 
+        //     params: {
+        //         category: category,
+        //         capacity: capacityValues
+        //     }
+        // });
     };
     
     const resetCapacity = (event) => {

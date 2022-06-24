@@ -1,6 +1,6 @@
 import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController, plugins } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
-import { MARKETS } from '../../../sheme/chart';
+import { MARKETS } from '../../../scheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
 import { isBrowser } from 'react-device-detect';
 import React, { useEffect, useRef } from "react";

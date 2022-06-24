@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 import { module } from '../../../themes/module';
-import { isBrowser } from 'react-device-detect';
+import resetIcon from '../../../assets/images/form/ico-reset_white.svg';
 
 export const Wrapper = styled(module.scrollWrapper)`
     height: auto;
     max-height: calc(100vh - 200px);
+
+    .mobile & {
+        height: 100%;
+        max-height: calc(100vh - 52px);
+        padding: 40px 8px 0 16px;
+    }
 
     &.calced { 
         height: 600px;
@@ -100,4 +106,12 @@ export const Form = styled.form`
         }
     }
 
+`;
+
+export const ResetIcon = styled.i`
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    transform: translate(5px, 2px);
+    background: url(${resetIcon}) center no-repeat;
 `;

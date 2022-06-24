@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Form, Agreement } from './SignupFormStyle';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { module } from '../../../themes/module';
-import { REGEXP } from '../../../sheme/form';
+import { REGEXP } from '../../../scheme/form';
 
 const SignupForm = ({
     onFormSubmit

@@ -1,7 +1,7 @@
 import { Form, Time, Description } from './AuthenticationStyle';
 import React, { useState, useEffect } from "react";
 import { isMobile } from 'react-device-detect';
-import { REGEXP } from '../../sheme/form';
+import { REGEXP } from '../../scheme/form';
 import { useForm } from 'react-hook-form';
 
 const timeFormat = seconds => {

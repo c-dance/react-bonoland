@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { module } from '../../themes/module';
 import { isMobile, isBrowser } from 'react-device-detect';
 import { useForm } from 'react-hook-form';
-import { REGEXP } from '../../sheme/form';
-import { LOCATION } from '../../sheme/location';
+import { REGEXP } from '../../scheme/form';
+import { LOCATION } from '../../scheme/location';
 
 const Contact = ({
     user,
