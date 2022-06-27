@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { REGEXP } from '../../../scheme/form';
-import { getValue } from "@testing-library/user-event/dist/utils";
 
 
 const Login = ({

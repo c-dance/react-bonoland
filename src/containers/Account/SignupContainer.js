@@ -33,24 +33,23 @@ const SignupContaienr = () => {
 
     // 회원가입 성공
     const [ signupSuccess, setSignupSuccess ] = useState(false);
-
-
-    // type 값 입력
-    const onTypeChange = event => {
-        setType(event.currentTarget.value);
-    };
     
     // type 폼 제출
-    const onTypeSubmit = event => {
-        if(type.length > 0) { 
+    const onTypeSubmit = userType => {
+        if(userType.length < 0) {
+            alert("매도/매수중 하나를 선택해주세요.");
+        } else {
+            setType(userType);
             setTypeSubmitted(true);
             dispatch(activateAuth({
                 description: "본인인증을 위해 휴대폰 번호를 입력해주세요!"
             }));
         }
-        else {
-            alert('매도/매수중 하나를 선택해주세요.');
-        }
+    };
+
+    const quitSignup = () => {
+        dispatch(deactivateSignup());
+        dispatch(deactivateAuth());
     };
 
     // 회원가입 폼 제출
@@ -95,7 +94,7 @@ const SignupContaienr = () => {
     const modalProps = {
         open: true ,
         close: true,
-        onCloseClick: () => {dispatch(deactivateSignup())},
+        onCloseClick: () => { quitSignup() },
         width: "360",
         title: "회원가입"
     };
@@ -105,7 +104,7 @@ const SignupContaienr = () => {
         themeColor: "primary",
         close: false,
         back: true,
-        onBackClick: () => {dispatch(deactivateSignup())},
+        onBackClick: () => { quitSignup() },
         action: false
     };
 
@@ -113,7 +112,6 @@ const SignupContaienr = () => {
 
     const typeProps = {
         type: type,
-        onTypeChange: onTypeChange,
         onTypeSubmit: onTypeSubmit
     };
 

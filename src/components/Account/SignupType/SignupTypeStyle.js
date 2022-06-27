@@ -4,6 +4,10 @@ import { module } from '../../../themes/module';
 export const Form = styled(module.AccountForm)`
     height: 270px;
 
+    .desc.warn {
+        color: ${ ({theme}) => theme.colors.red };
+    }
+
     .mobile & {
         text-align: center;
     }

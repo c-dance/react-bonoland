@@ -66,14 +66,14 @@ export const Metas = styled.div`
         label {
             display: block;
             padding-left: 22px;
-            line-height: 13px;
-            background: url(${checkboxDefaultIcon}) left center no-repeat;
+            line-height: 15px;
+            background: url(${checkboxDefaultIcon}) left center / 15px 15px no-repeat;
             font-size: ${ ({theme}) => theme.fontSizes.s };
             color: ${ ({theme}) => theme.colors.gray600 };
         }
 
         input:checked + label { 
-            background: url(${checkboxCheckedtIcon}) left center no-repeat; 
+            background: url(${checkboxCheckedtIcon}) left center / 15px 15px no-repeat; 
         }
     }
 
