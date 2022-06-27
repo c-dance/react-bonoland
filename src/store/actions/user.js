@@ -13,7 +13,7 @@ export const login = data => async dispatch => {
     const RESPONSE = await userLogin(data);
 
     if(RESPONSE && RESPONSE.data.code === 1) {
-        console.log(`로그인 response: ${RESPONSE}`);
+        console.log(RESPONSE);
         const USER_INFO = { 
             no: RESPONSE.data.result.userNo,
             type: RESPONSE.data.result.userCtg,

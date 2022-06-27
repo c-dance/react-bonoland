@@ -6,6 +6,7 @@ import ModeReducer from "./mode";
 import ChartReducer from "./chart";
 import AlertReducer from "./alert";
 import GeolocationReducer from "./geolocation";
+import FilterReducer from "./filter";
 
 const combinedReducer = combineReducers({
      User: UserReducer,
@@ -14,7 +15,8 @@ const combinedReducer = combineReducers({
      Mode: ModeReducer,
      Chart: ChartReducer,
      Alert: AlertReducer,
-     Geolocation: GeolocationReducer
+     Geolocation: GeolocationReducer,
+     Filter: FilterReducer
 });
 
 export default combinedReducer;

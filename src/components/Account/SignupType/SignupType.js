@@ -12,6 +12,7 @@ const SignupType = ({
     const handleSubmit = (event) => {
         event.preventDefault();
         if(submitAble) {
+            setWarn(false);
             onTypeSubmit(type);
         } else {
             setWarn(true);

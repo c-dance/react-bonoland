@@ -126,45 +126,48 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
     return marker;
     }
   )
-
-  console.log('add group markers');
   return markers;
+
 };
 
 export const renderItemMarkers = (data, map, onMarkerClick) => {
 
-  const markers = data.map(item => {
-
-    const date = item["거래일"];
-    const price = item["거래가"];
-    const bono = item["보노매물"];
-    const latlng = item["latlng"];
-
-    const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(latlng),
-      map: map, 
-      icon: {
-        content: `
-          <div class="iMarker ${bono&&'bono'}">
-            <div class="iMarker-box">
-                <em class="iMarker-date">${date} 거래</em>
-                <span class="iMarker-price">실거래가 ${price}}</span>
-            </div>
-            <div class="iMarker-tail"></sdiv>
-          </div>
-        `,
-        // anchor: new naver.maps.Point(11, 35)
-        anchor: new naver.maps.Point(0, 0)
-      },
-      draggable: false
-    });
+  setTimeout(function(){
+    const markers = data.map(item => {
   
-    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
+      const date = item["거래일"];
+      const price = item["거래가"];
+      const bono = item["보노매물"];
+      const latlng = item["latlng"];
+  
+      console.log('add Items');
+      const marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(latlng),
+        map: map, 
+        icon: {
+          content: `
+            <div class="iMarker ${bono&&'bono'}">
+              <div class="iMarker-box">
+                  <em class="iMarker-date">${date} 거래</em>
+                  <span class="iMarker-price">실거래가 ${price}}</span>
+              </div>
+              <div class="iMarker-tail"></sdiv>
+            </div>
+          `,
+          // anchor: new naver.maps.Point(11, 35)
+          anchor: new naver.maps.Point(0, 0)
+        },
+        draggable: false
+      });
+    
+      naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
+  
+      return marker;
+    });
+    
+    return markers;
+  }, 500);
 
-    return marker;
-  });
-  console.log('add item markers');
-  return markers;
 };
 
 export const renderInfoWindow = props => {
@@ -190,8 +193,8 @@ export const renderInfoWindow = props => {
           </div>
       </div>
       <div class="info-window__actions">
-          <a href="/center/${props.data.id}/" onClick=${() => alert("상세")} class="btn btn--details">상세</a>
-          <button class="btn btn--contact" onClick=${() => alert("문의합니다")}>문의</button>
+          <button class="btn btn--details">상세</>
+          <button class="btn btn--contact">문의</button>
       </div>
     </div>
   `;
@@ -218,8 +221,14 @@ export const renderInfoWindow = props => {
 
   naver.maps.Event.addListener(infoWindow, "click", (e) => {
     const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
-    const btnClicked = e.pointerEvent.path.filter(p => p.className && p.className.includes("btn")).length > 0;
-    if(outerClicked && !btnClicked) removeInfoWindow();
+    const btnClicked = e.pointerEvent.path.filter(p => p.tagName === "BUTTON").length > 0;
+    if(outerClicked && !btnClicked) {
+      removeInfoWindow();
+    } else {
+      const mode =  e.pointerEvent.path.filter(p => p.tagName === "BUTTON")[0].className.split('btn--')[1];
+      if(mode === "contact") props.onContactClick(props.data["ID"]);
+      if(mode === "details") props.onDetailsClick(props.data["ID"]);
+    }
   });
 
   naver.maps.Event.addListener(props.map, "click", () => { removeInfoWindow(); });

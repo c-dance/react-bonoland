@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { 
-    updateMapZoom, 
-    updateMapRegion, 
-    updateMapLatlng, 
+    updateMapInfos,
     updateMapMarkers, 
     updateMapInfoWindow, 
-    updateMapFilter 
 } from '../../store/actions/map';
+import { updateFilter } from '../../store/actions/filter';
 import { 
     getRegionByLatlng, 
     getRegionByZoom, 
     removeMarkers, 
-    getSearchByAddress, 
     renderedGroupMarker, 
     getZoomLevel, 
     renderItemMarkers, 
@@ -25,31 +23,104 @@ import Map from '../../components/Map/Map';
 import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
+import { activateContact } from '../../store/actions/mode';
+
+const guguns = [
+    {
+        "주소": "범안동",
+        "요양원": 7,
+        "주간보호": 9, 
+        "latlng": ['126.8068977', '37.4784166']
+    },
+    {
+        "주소": "향동",
+        "요양원": 10,
+        "주간보호": 11,
+        "latlng":  ['126.8925', '37.6005']
+    }, 
+    {
+        "주소": "대산동",
+        "요양원": 14,
+        "주간보호": 8,
+        "latlng":  ['126.7789446', '37.4824389']
+    }, 
+    {
+        "주소": "신월 7동",
+        "요양원": 8,
+        "주간보호": 4,
+        "latlng":  ['126.8346571', '37.5219343']
+    }
+];
+
+const dongs = [
+    {
+        "ID" : 0,
+        "주소" :"경기 부천시 소삼로 38 101동 102호",
+        "거래일" : "2022.01.02",
+        "거래가": "100,000,000",
+        "포화도": 7,
+        "보노매물": false,
+        "latlng":  ['126.7970470', '37.4782160']
+    },
+    {
+        "ID" : 1,
+        "주소" :"경기 부천시 경인옛로 25 104호",
+        "거래일" : "2022.03.02",
+        "거래가": "200,000,000",
+        "포화도": 2,
+        "보노매물": true,
+        "latlng":  ['126.7951166', '37.4816231']
+    },
+    {
+        "ID" : 2,
+        "주소" :"경기 부천시 소사동로 85",
+        "거래일" : "2022.04.02",
+        "거래가": "300,000,000",
+        "포화도": 9,
+        "보노매물": true,
+        "latlng":  ['126.8039843', '37.4738793']
+    },
+    {
+        "ID" : 3,
+        "주소" :"경기 부천시 은성로62번길 13 백암빌딩 101호",
+        "거래일" : "2022.05.02",
+        "거래가": "500,000,000",
+        "포화도": 5,
+        "보노매물": false,
+        "latlng":  ['126.7976639', '37.4747131']
+    }
+];
 
 const { naver } = window; 
 
 const MapContainer = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     /* === 지도, 지적편집도 === */
     const [ map, setMap ] = useState(null);
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
     const [ mobileInfoWindow, setMobileInfoWindow ] = useState(false);
     const [ infoWindowData, setInfoWindowData ] = useState(null);
 
+    const [ mapMarkers, setMapMarkers ] = useState([]);
+    const [ removeMapMarkers, setRemoveMapMarkers ] = useState(() => {});
+    
     /* === 지도 속성 === */
-    const dispatch = useDispatch();
-    const LATLNG = useSelector(state => state.Map.latlng); //위경도
-    const ZOOM = useSelector(state => state.Map.zoom); // 줌
-    const REGION = useSelector(state => state.Map.region); // 지역
+    const MAP_INFOS = useSelector(state => state.Map.infos);
     const MARKERS = useSelector(state => state.Map.markers); // 마커 목록
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
-    const FILTERED = useSelector(state => state.Map.filtered); // 필터링 여부
+
+    const FILTER = useSelector(state => state.Filter);
+
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
    /* === 지도 생성 === */
     const initMap = () => {
         const nvMap = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(LATLNG[0], LATLNG[1]),
-            zoom: ZOOM,
+            center: new naver.maps.LatLng(MAP_INFOS.latlng[0], MAP_INFOS.latlng[1]),
+            zoom: MAP_INFOS.zoom,
             minZoom: 9,
             maxZoom: 16,
             mapTypeId: naver.maps.MapTypeId.NORMAL,
@@ -73,7 +144,7 @@ const MapContainer = () => {
             });
         });
 
-        // 지도 이벤트 : zoom_changed, bounds_changed, deragend
+        // 지도 이벤트 : zoom_changed, bounds_changed, deragend, idle
         naver.maps.Event.addListener(nvMap, 'idle', () => { 
             updateMapDatas(nvMap);
             alertZoomLevel(nvMap.getZoom()); 
@@ -98,11 +169,13 @@ const MapContainer = () => {
     };
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
-    const resetMapPoint = () => {
-       
-        const point = new naver.maps.Point(LATLNG[0], LATLNG[1]);
-        if(map && point) {
-            map.morph(point, ZOOM, "easeOutCubic");
+    const reDrawMap = mapProps => {
+        if(!map) return;
+        
+        // 줌 이동
+        if(mapProps.latlng.length === 2 && mapProps.zoom !== null) {
+            const point = new naver.maps.Point(mapProps.latlng[0], mapProps.latlng[1]);
+            map.morph(point, mapProps.zoom, "easeOutCubic");
         }
     };
 
@@ -112,9 +185,13 @@ const MapContainer = () => {
         const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
 
-        dispatch(updateMapLatlng(latlng));
-        dispatch(updateMapZoom(zoom));
-        dispatch(updateMapRegion(region));
+        console.log('이벤트 발생');
+
+        dispatch(updateMapInfos({
+            latlng: latlng,
+            zoom: zoom,
+            region: region
+        }));
     };
 
     /* === 최소 줌 레벨 경고 === */
@@ -127,107 +204,35 @@ const MapContainer = () => {
         }
     };
 
-    const guguns = [
-        {
-            "주소": "범안동",
-            "요양원": 7,
-            "주간보호": 9
-        },
-        {
-            "주소": "향동",
-            "요양원": 10,
-            "주간보호": 11
-        }, 
-        {
-            "주소": "대산동",
-            "요양원": 14,
-            "주간보호": 8
-        }, 
-        {
-            "주소": "신월 7동",
-            "요양원": 8,
-            "주간보호": 4
-        }
-    ];
-
-    const dongs = [
-        {
-            "ID" : 0,
-            "주소" :"경기 부천시 소삼로 38 101동 102호",
-            "거래일" : "2022.01.02",
-            "거래가": "100,000,000",
-            "포화도": 7,
-            "보노매물": false
-        },
-        {
-            "ID" : 1,
-            "주소" :"경기 부천시 경인옛로 25 104호",
-            "거래일" : "2022.03.02",
-            "거래가": "200,000,000",
-            "포화도": 2,
-            "보노매물": true
-        },
-        {
-            "ID" : 2,
-            "주소" :"경기 부천시 소사동로 85",
-            "거래일" : "2022.04.02",
-            "거래가": "300,000,000",
-            "포화도": 9,
-            "보노매물": true
-        },
-        {
-            "ID" : 3,
-            "주소" :"경기 부천시 은성로62번길 13 백암빌딩 101호",
-            "거래일" : "2022.05.02",
-            "거래가": "500,000,000",
-            "포화도": 5,
-            "보노매물": false
-        }
-    ]
-
-    /* === 마커 데이터 준비 (with latlng) === */
-    const getMarkersData = async data => {
-
-        const dataWithLatlng = (await Promise.all(
-            data.map(item => {
-                return getSearchByAddress(item["주소"]);
-            })
-        )).reduce((res, value, idx) =>{
-            const dt = data[idx];
-            if(value.latlng){
-                dt.latlng = value.latlng;
-                return res.concat([dt]);
-            } 
-        }, []);
-
-        return dataWithLatlng;
-    };
-
-    /* === 인포 윈도우 문의하기 === */
-    const alertMsg = {
-        title: "비회원 매수문의",
-        contents: "비회원은 따로 문의"
-    };
-
-    const closeInfoWindow = () => {
-        removeInfoWindow(INFO_WINDOW);
-    };  
-
-    const onContactClick = () => {
-        dispatch(activateAlert(alertMsg));
-    };
-
-    /* === 모바일 인포윈도우 보이기 === */
     const showMobileInfoWindow = (data) => {
         setInfoWindowData(data);
         setMobileInfoWindow(true);
     };
 
-    /* === 모바일 인포윈도우 닫기 === */
-    const clsoeMobileInfoWindow = () => {
+    const closeInfoWindow = () => {
         removeInfoWindow(INFO_WINDOW);
-        setInfoWindowData(null);
-        setMobileInfoWindow(false);
+        if(isMobile) {
+            setInfoWindowData(null);
+            setMobileInfoWindow(false);
+        }
+    };  
+
+    const onContactClick = centerId => {
+        console.log(centerId);
+        if(IS_LOGGEDIN) {
+            // 데이터 함께 전달
+            dispatch(activateContact());
+        } else {
+            dispatch(activateAlert({
+                title: "비회원 매수문의", 
+                contents: "비회원은 상단 매수문의를 통해서 문의. (문구 수정 예정)"
+            }))
+        }
+    };
+
+    const onDetailsClick = centerId => {
+        console.log( '상세 클릭', centerId);
+        navigate(`/center/${centerId}`);
     };
 
     /* === 인포윈도우 활성화 === */
@@ -236,14 +241,13 @@ const MapContainer = () => {
 
         let idata = dongs[centerId];
         
-        /* === 네이버 인포 윈도우 설정 === */
+        /* === 네이버 인포 윈도우 옵션 설정 === */
         const infoWindowOption = {
             data: idata,
             map: map,
-            onCloseClick: isMobile? 
-                clsoeMobileInfoWindow 
-                :closeInfoWindow,
+            onCloseClick: closeInfoWindow,
             onContactClick: onContactClick,
+            onDetailsClick: onDetailsClick
         };
         
         dispatch(updateMapInfoWindow(renderInfoWindow(infoWindowOption)));
@@ -252,16 +256,15 @@ const MapContainer = () => {
     };
 
     /* === 그룹 마커 클릭 === */
-    const onGroupMarkerClick = (latlng) => {
-
-        const level = getZoomLevel(ZOOM);
+    const onGroupMarkerClick = latlng => {
+        const level = getZoomLevel(MAP_INFOS.zoom);
         const nZoom = level <= 1 ? 14 : 16;
 
-        dispatch(updateMapFilter({
+        // 새로운 필터 적용
+        dispatch(updateFilter({
             latlng: latlng,
-            zoom: nZoom
+            zoom: nZoom,
         }));
-
     };
 
     /* === 아이템 마커 클릭 === */
@@ -272,55 +275,91 @@ const MapContainer = () => {
         //     }));
         // }
         // 아이템 아이디 넘기기
+
         updateInfoWindow(itemId);
     };
+
     
     
     /* === 네이버 마커 설정 === */
-    const updateMarkers = async () => {
+    const updateMarkers = async mapProps => {
         if(!map) return;
 
-        const IS_DONG = getZoomLevel(ZOOM) === 3;
-        const DATAS = IS_DONG? dongs : guguns;  
-        
-        if(DATAS.length > 0) {
-            await getMarkersData(DATAS)
-                .then(data => {
-                    let mks = IS_DONG? 
-                        renderItemMarkers(data, map, onItemMarkerClick) 
-                        : renderedGroupMarker(data, map, onGroupMarkerClick);
-                    dispatch(updateMapMarkers(mks));
-                })
-        }
+        console.log('마커 데이터 불러오기', mapProps);
+
+        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 3;
+        // 맵 데이터 불러오기
+        const RESPONSE = ITEM_MARKER? dongs : guguns;
+
+        setTimeout(function(){
+            if(RESPONSE) {
+                let mks = ITEM_MARKER? 
+                    renderItemMarkers(RESPONSE, map, onItemMarkerClick) 
+                    : renderedGroupMarker(RESPONSE, map, onGroupMarkerClick);
+                dispatch(updateMapMarkers(mks));
+            }
+        },  1000);
     };
 
-    const drawBoundary = async() => {
-        const res = await getBoundary();
-        console.log(res);
+    // 검색했을 때 영역 그려주기
+    const drawBoundary = async region => {
+        console.log(`${region} 영역 그려주기`);
+        // const res = await getBoundary();
+        // console.log(res);
+    };
+
+    const handleMarkers = (MAP_INFOS) => {
+        removeMarkers(MARKERS);
+        removeInfoWindow(INFO_WINDOW);
+
+        setTimeout(function(){
+            updateMarkers({
+                latlng: MAP_INFOS.latlng,
+                zoom: MAP_INFOS.zoom,
+                category: MAP_INFOS.category,
+            });
+        }, [500]);
     };
 
     useEffect(()=> {
         initMap();
-        drawBoundary();
     }, []);
+    
+    useEffect(() => {
+        updateMarkers({
+            latlng: MAP_INFOS.latlng,
+            zoom: MAP_INFOS.zoom,
+            category: MAP_INFOS.category,
+        });
+    }, [map])
 
     useEffect(() => {
-        updateMarkers();
-        // return () => {
-        //     removeMarkers(MARKERS);
-        //     removeInfoWindow(INFO_WINDOW);
-        // }
-        alertZoomLevel(ZOOM);
-    }, [LATLNG, ZOOM]);
+        reDrawMap(FILTER); 
+        dispatch(updateMapInfos({ category: FILTER.category })); // 카테고리 업데이트
+        // drawBoundary(FILTER.region); // (동일때) 경계 그리기
+    }, [FILTER]);
     
     useEffect(() => {
+        console.log('map info 변경시', MAP_INFOS.zoom);
+
+        // 맵 데이터가 변경되었을 때, 새로운 마커 데이터 요청
+        updateMarkers({
+            latlng: MAP_INFOS.latlng,
+            zoom: MAP_INFOS.zoom,
+            category: MAP_INFOS.category,
+        });
+    }, [MAP_INFOS]);
+
+    useEffect(() => {
+        // 맵 데이터 변경전 마커, 인포윈도우 삭제
         return () => {
-            removeInfoWindow(INFO_WINDOW);
             removeMarkers(MARKERS);
+            removeInfoWindow(INFO_WINDOW);
         }
-    }, [MARKERS]);
-    
-    useEffect(() => {
+    }, [MARKERS])
+
+    useEffect(()=> {
+        // 값 변경전 인포윈도우 삭제
         return () => {
             removeInfoWindow(INFO_WINDOW);
         }
@@ -330,22 +369,18 @@ const MapContainer = () => {
         toggleCadastralMode(CADASTRAL_MODE);
     }, [CADASTRAL_MODE]);
 
-    useEffect(() => {
-        resetMapPoint(LATLNG);
-    }, [FILTERED]);
-
     return (
         <>
             <Map />
             { 
                 isBrowser && 
-                <MapRegion region = { REGION } /> 
+                <MapRegion region = { MAP_INFOS.region } /> 
             }
             { 
                 isMobile && mobileInfoWindow && 
                 <InfoWindow 
                     data={ infoWindowData } 
-                    onCloseClick={ clsoeMobileInfoWindow } 
+                    onCloseClick={ closeInfoWindow } 
                     onContactClick = { onContactClick }    
                 /> 
             }

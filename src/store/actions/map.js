@@ -1,17 +1,17 @@
 export const MAP = {
-    UPDATE_PROPS: 'map/',
-    UPDATE_LATLNG : 'map/latlng',
-    UPDATE_ZOOM : 'map/zoom',
-    UPDATE_REGION: 'map/region',
-    UPDATE_MARKERS: 'map/markers',
+    UPDATE_INFOS: 'map/infos',
+    UPDATE_LATLNG : 'map/latlng', // 필수 - 위도, 경도
+    UPDATE_ZOOM : 'map/zoom', // 필수 - 줌
+    UPDATE_REGION: 'map/region', // 필수 - 지역명(지역명박스)
+    ACTIVATE_CADASTRAL: 'map/cadastralOn', // 필수 - 지적도 ON
+    DEACTIVATE_CADASTRAL: 'map/cadastralOff', // 필수 - 지적도 OFF
+    UPDATE_MARKERS: 'map/markers', 
     UPDATE_INFOWINDOW: 'map/infowindow',
-    UPDATE_FILTER: 'map/filter',
-    ACTIVATE_CADASTRAL: 'map/cadastralOn',
-    DEACTIVATE_CADASTRAL: 'map/cadastralOff'
+    UPDATE_FILTER: 'map/filter'
 };
 
-export const updateMapProps = (value) => ({
-    type: MAP.UPDATE_PROPS,
+export const updateMapInfos = value => ({
+    type: MAP.UPDATE_INFOS,
     payload: value
 });
 

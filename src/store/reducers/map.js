@@ -1,9 +1,13 @@
 import { MAP } from '../actions/map';
+import { getZoomLevel, removeInfoWindow, removeMarkers } from '../../utils/map';
 
 const initialState = {
-    latlng: [37.5036875, 126.7869375],
-    zoom: 14,
-    region: '경기도 부천시', 
+    infos: {
+        latlng: [37.5036875, 126.7869375],
+        zoom: 14,
+        region: '경기도 부천시', 
+        category: '',
+    },
     markers: [],
     infoWindow: null,
     filtered: false,
@@ -12,9 +16,8 @@ const initialState = {
 
 const MapReducer = ( state = initialState, action ) => {
     switch(action.type) {
-        case MAP.UPDATE_PROPS:
-            const mapProps = action.payload;
-            return Object.assign({}, state, mapProps);
+        case MAP.UPDATE_INFOS:
+            return {...state, infos: {...state.infos,...action.payload}}
         case MAP.UPDATE_LATLNG: 
             const latlng = action.payload;
             return { ...state, latlng: latlng };

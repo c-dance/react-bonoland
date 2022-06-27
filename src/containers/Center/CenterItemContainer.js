@@ -50,13 +50,14 @@ const CenterItemContainer = () => {
         setApi({
             get: getCenter,
             params: id
-        })
+        });
+        // 지도 검색 필터 재설정(latlng 설정)
     }, []);
 
     useEffect(() => {
         // setCetner(data);
         console.log(data);
-        setCetner(data[Object.keys(data)[0]]);
+        // setCetner(data[Object.keys(data)[0]]);
     }, [data]);
 
 

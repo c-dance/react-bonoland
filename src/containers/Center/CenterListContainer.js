@@ -1,120 +1,76 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { isBrowser, isMobile } from "react-device-detect";
 import Panel from '../../components/ui/Panel/Panel';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
-import CapacityFilter from "../../components/filters/CapacityFIlter/CapacityFilter";
 import CenterList from "../../components/Center/CenterList/CenterList";
 import ListMore from "../../components/List/ListMore/ListMore";
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
-import { LOCAL_STORAGE } from '../../utils/filter';
 import { CATEGORY, TYPE_AND_CAPACITY } from "../../scheme/filter";
 import { getAllRecommendCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
+import { updateFilterCategory } from "../../store/actions/filter";
+
+const categorySet = Object.keys(CATEGORY).reduce((acc, key) => {
+    return Object.assign({}, acc, {
+        [key] : {
+            capacity: TYPE_AND_CAPACITY[key][0].value,
+            selected: false
+        }
+    });
+}, {});
 
 const CenterListContainer = () => {
 
-    const [ category, setCategory ] = useState(null); // 카테고리["단독요양원", "상가요양원", "주간보호"] //list
-    const [ capacityActive, setCapacityActive ] = useState(false); // 정원필터 활성화
-    const [ capacityValues, setCapacityValues ] = useState(null); // 정원필터 값 설정
+    const dispatch = useDispatch();
 
+    // redux에서 가져오도록
+    const FILTER = useSelector(state => state.Filter);
+
+    const [ categories, setCategories ] = useState(categorySet);
     const region = useSelector(state => state.Map.region);
     
     const [ centers, setCenters ] = useState([]);
     const [ loading, error, noData, data, setGet ] = useGet([]);
 
-    const submitCapacity = (event) => {
-        event.preventDefault();
-        LOCAL_STORAGE.store(category, capacityValues);
-        setCapacityActive(false);
-        // setGet({ 
-        //     get: getFilteredCenters, 
-        //     params: {
-        //         category: category,
-        //         capacity: capacityValues
-        //     }
-        // });
+    const submitCategory = (category, capacity, selected) => {
+        const value = {
+            [category]: {
+                capacity: capacity,
+                selected: selected
+            }
+        };
+        setCategories(Object.assign({}, categories, value));
+
+        // update Filter Store => data 없데이트 되도록
+        dispatch(updateFilterCategory(categories));
     };
     
-    const resetCapacity = (event) => {
-        event.preventDefault();
-        LOCAL_STORAGE.store(category, TYPE_AND_CAPACITY[category][0].value);
-        setCapacityValues(TYPE_AND_CAPACITY[category][0].value);
-    };
-    
-    // category, value 함께 받아야 함
-    const selectCapacity = value => {
-        LOCAL_STORAGE.store(category, value);
-        setCapacityValues(value);
-    };
-
-    // category만 받으면 됨
-    const cancleCapacity = category => {
-
-    };
-
-    const closeCapacity = (event) => {
-        event.preventDefault();
-        setCapacityActive(false);
-    };
-    
-    
-    const slideCapacity = value => {
-        setCapacityValues(value);
-    };
-
-    const selectCategory = selected => {
-        setCategory(CATEGORY[selected].value);
-        const capacity = LOCAL_STORAGE.get(selected);
-        setCapacityValues(capacity);
-        setCapacityActive(true);
-    };
 
     useEffect(() => {
-        if(category !== null) setGet({ get: getFilteredCenters, params: { category: category, capacity: capacityValues }});
-        else setGet({ get: getAllRecommendCenters });
-    }, []);
+        console.log(FILTER);
+
+        // 필터 카테고리로 재구성 : data 변수에 새로운 값 던져 줌 (검색 카테고리가 같을 경우 던져주지 않음 - submit category에서 처리)
+        
+        // if(Object.keys(categories).filter(key => categories[key].selected).length < 0) {
+        //     setGet({ get: getAllRecommendCenters });
+        // } else {
+        //     setGet({ 
+        //         get: getFilteredCenters, 
+        //         params: {
+        //             category: category,
+        //             capacity: capacityValues
+        //         }
+        //     });
+        // }
+    }, [FILTER]);
 
     useEffect(() => {
-        // setCenters(data);
-        console.log(data);
         setCenters(data);
         // setCenters(data[Object.keys(data)[0]]);
     }, [data]);
-
-    /* ==== RENDER_TEMPLATE === */
-    const RENDER_FILTER = () => (
-        <>
-            <CategoryFilter 
-                value={ category }
-                onCategorySelect={ selectCategory }
-            />
-            {   category !== null &&
-                <CapacityFilter 
-                category={ category }
-                values={ capacityValues } 
-                active={ capacityActive }
-                onFormSubmit={ submitCapacity }
-                onFormReset={ resetCapacity }
-                onCloseClick={ closeCapacity }
-                onCapacitySelect={ selectCapacity }
-                onCapacitySlide={ slideCapacity }
-            />}
-        </>
-    );
-
-    const RENDER_LIST = () => (
-        <CenterList 
-            list="main"
-            type={ isBrowser? "main" : "abstract" }
-            centers={ centers }   
-            loading={ loading }
-            error={ error }  
-            noData={ noData }
-        />
-    );
 
     return (
         <>
@@ -126,23 +82,43 @@ const CenterListContainer = () => {
                 fold={ true }
             >
                 <AddressFilterContainer type="main" />
-                { RENDER_FILTER() }
+                <CategoryFilter 
+                    categories={ categories }
+                    onFormSubmit={ submitCategory }
+                />
                 <ListMore
                     links={[
                         { path: '/sales', title: '시설매물' },
                         { path: '/recommend', title: '추천매물' }
                     ]}
                 />
-                { RENDER_LIST() }
+                <CenterList 
+                    list="main"
+                    type={ isBrowser? "main" : "abstract" }
+                    centers={ centers }   
+                    loading={ loading }
+                    error={ error }  
+                    noData={ noData }
+                />
             </Panel>
         }
         {
             isMobile &&
             <>
                 <AddressFilterContainer type="main" />
-                { RENDER_FILTER() }
+                <CategoryFilter 
+                    categories={ categories }
+                    onFormSubmit={ submitCategory }
+                />
                 <SwipePanel>
-                { RENDER_LIST() }
+                <CenterList 
+                    list="main"
+                    type={ isBrowser? "main" : "abstract" }
+                    centers={ centers }   
+                    loading={ loading }
+                    error={ error }  
+                    noData={ noData }
+                />
                 </SwipePanel>
             </>
         }

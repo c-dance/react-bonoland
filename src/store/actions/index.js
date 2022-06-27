@@ -2,7 +2,7 @@ import { MAP } from './types';
 import { MODAL } from './types';
 
 /* === MAP ACTIONS === */
-export const updateMapProps = (value) => ({
+export const updateMapInfos = (value) => ({
     type: MAP.UPDATE_PROPS,
     payload: value
 });
