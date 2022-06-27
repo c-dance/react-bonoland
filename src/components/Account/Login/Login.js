@@ -5,23 +5,31 @@ import { useForm } from 'react-hook-form';
 import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { REGEXP } from '../../../scheme/form';
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 
 const Login = ({
     id,
     storeId,
+    onStoreIdChange,
     onFormSubmit,
     message
 }) => {
 
     const dispatch = useDispatch();
     const [ failMsg, setFailMsg ] = useState(message);
-    const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
+    const { register, handleSubmit, formState: { errors }, watch, getValues } = useForm({ 
         mode: 'onSubmit', 
         reValidateMode: 'onSubmit',
         defaultValues: { "userId" : id, "userStoreId" :  storeId } 
     });
     const pwdWatching = watch("userPwd");
+    const storeIdWatching = watch("userStoreId");
+
+    useEffect(() => {
+        onStoreIdChange(storeIdWatching, getValues("userId"));
+    }, [storeIdWatching])
+ 
 
     useEffect(() => {
         setFailMsg(message);
@@ -66,25 +74,15 @@ const Login = ({
                 </div>
             </fieldset>
             <Metas>
-                {
-                    isBrowser &&
-                    <div className="store">
-                        <input 
-                            type="checkbox" 
-                            id="userStoreId" 
-                            name="uerStoreId" 
-                            {...register("userStoreId") }
-                            />
-                        <label htmlFor="userStoreId">아이디 저장</label>
-                    </div>
-                }
-                {
-                    isMobile &&
-                    <div className="store">
-                        <input type="checkbox" id="uStoreLogin" name="uStoreLogin" />
-                        <label htmlFor="uStoreLogin">자동 로그인</label>
-                    </div>
-                }
+                <div className="store">
+                    <input 
+                        type="checkbox" 
+                        id="userStoreId" 
+                        name="uerStoreId" 
+                        {...register("userStoreId") }
+                        />
+                    <label htmlFor="userStoreId">아이디 저장</label>
+                </div>
                 <div className="finds">
                     <button type="button" onClick={ () => {dispatch(activateFindId())}  }>아이디 찾기</button>
                     <button type="button" onClick={ () => {dispatch(activateFindPwd())}  }>비밀번호 찾기</button>

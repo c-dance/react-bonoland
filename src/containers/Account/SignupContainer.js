@@ -74,9 +74,7 @@ const SignupContaienr = () => {
 
     const getSignUpForm = async phoneNumber => {
         const RESPONSE = await getSignUpAuth(phoneNumber);
-
         dispatch(deactivateAuth());
-
         if(RESPONSE && RESPONSE.data.code === 1) {
             setAuthSuccess(true);
         } else {
@@ -97,7 +95,7 @@ const SignupContaienr = () => {
     const modalProps = {
         open: true ,
         close: true,
-        onCloseClick: () => dispatch(deactivateSignup()),
+        onCloseClick: () => {dispatch(deactivateSignup())},
         width: "360",
         title: "회원가입"
     };
@@ -107,7 +105,7 @@ const SignupContaienr = () => {
         themeColor: "primary",
         close: false,
         back: true,
-        onBackClick: () => dispatch(deactivateSignup()),
+        onBackClick: () => {dispatch(deactivateSignup())},
         action: false
     };
 
@@ -137,7 +135,7 @@ const SignupContaienr = () => {
                         </Modal>
                     }
                     {
-                        AUTH_SUCCESS && !signupSuccess &&
+                        authSuccess && signupSuccess === false &&
                         <Modal {...modalProps}>
                             <SignupForm
                                 onFormSubmit={ onFormSubmit }

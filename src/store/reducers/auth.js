@@ -18,7 +18,7 @@ const AuthReducer = (state = initialState, action) => {
         case AUTH.DEACTIVATE: 
             return initialState;
         case AUTH.RESET: 
-            return {...state, authNumber: '', error: '', success: false };
+            return {...state, active: true, authNumber: '', error: '', success: false };
         case AUTH.SET_PHONENUMBER: 
             const phoneNum = action.payload;
             return {...state, phoneNumber: phoneNum};

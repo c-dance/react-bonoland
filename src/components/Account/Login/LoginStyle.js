@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { module } from '../../../themes/module';
 import checkboxDefaultIcon from '../../../assets/images/form/ico-checkbox_default.svg';
+import checkboxDefaultIconMb from '../../../assets/images/form/ico-checkbox_default_square.svg';
 import checkboxCheckedtIcon from '../../../assets/images/form/ico-checkbox_checked.svg';
+import checkboxCheckedtIconMb from '../../../assets/images/form/ico-checkbox_checked.svg';
 
 export const Form = styled(module.AccountForm)`
     fieldset {
@@ -63,17 +65,16 @@ export const Metas = styled.div`
 
         label {
             display: block;
-            padding-left: 20px;
-            line-height: 15px;
+            padding-left: 22px;
+            line-height: 13px;
             background: url(${checkboxDefaultIcon}) left center no-repeat;
-
-            .mobile & {
-                font-size: ${ ({theme}) => theme.fontSizes.s };
-                color: ${ ({theme}) => theme.colors.gray600 };
-            }
+            font-size: ${ ({theme}) => theme.fontSizes.s };
+            color: ${ ({theme}) => theme.colors.gray600 };
         }
 
-        input:checked + label { background: url(${checkboxCheckedtIcon}) left center no-repeat; }
+        input:checked + label { 
+            background: url(${checkboxCheckedtIcon}) left center no-repeat; 
+        }
     }
 
     .finds {
@@ -84,6 +85,7 @@ export const Metas = styled.div`
             position: relative;
             background-color: transparent;
             color: ${ ({theme}) => theme.colors.gray600 };
+            font-size: ${ ({theme}) => theme.fontSizes.s };
         }
         button:first-child::after {
             position: absolute;

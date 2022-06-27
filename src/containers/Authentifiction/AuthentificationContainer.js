@@ -9,6 +9,7 @@ const AuthenticationContainer = () => {
     const dispatch = useDispatch();
 
     const AUTH = useSelector(state => state.Auth);
+    const AUTH_ACTIVE = AUTH.active;
     const AUTH_DESCRIPTION = AUTH.description;
     const AUTH_SUCCESS = AUTH.success;
     const AUTH_NUMBER = AUTH.authNumber;
@@ -37,6 +38,7 @@ const AuthenticationContainer = () => {
     /* === 타이머 시작 === */
     const setIntervalTimer = () => {
         intervalTimer = window.setInterval(() => {
+            if(!AUTH_ACTIVE) firetimer();
             setTimer(timer => timer - 1);
             console.log(timer);
         }, 1000);
@@ -53,13 +55,15 @@ const AuthenticationContainer = () => {
     };
 
     /* === 입력시간 초과 처리 === */
-    const firetimer = () => {
-        dispatch(resetAuth());
+    const firetimer = (AUTH_SUCCESS = false) => {
         clearIntervalTimer();
-        alert("입력시간이 초과되었습니다. 휴대폰 인증을 다시 시도해 주세요");
         setTimer(TIME_LIMIT);
         setAuthNumberError("");
         setGetAuth (false);
+        if(!AUTH_SUCCESS) {
+            dispatch(resetAuth());
+            alert("입력시간이 초과되었습니다. 휴대폰 인증을 다시 시도해 주세요");
+        }
     };
 
     /* === 인증폼 PROPS === */
@@ -88,9 +92,12 @@ const AuthenticationContainer = () => {
 
     useEffect(() => {
         setGetAuth(AUTH_NUMBER.length > 0);
-        // 성공처리는 api 갖다 쓰는 컴포넌트에서
-        if(!AUTH_SUCCESS) setAuthNumberError(AUTH.error);
-    }, [AUTH])
+    }, [AUTH_NUMBER])
+
+    useEffect(() => {
+        if(AUTH_SUCCESS) firetimer(AUTH_SUCCESS);
+        else setAuthNumberError(AUTH.error);
+    }, [AUTH_SUCCESS])
 
     return (
         <Authentication {...authProps}/>

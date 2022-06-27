@@ -18,7 +18,7 @@ const LoginContainer = () => {
     const STORE_ID = ID.length > 0;
     const [ failMsg, setFailMsg ] = useState('');
 
-    const handleStoredId = (checked, userId) => {
+    const handleStoredId = (checked = false, userId = "") => {
         if(checked) USER_ID.store(userId);
         else USER_ID.remove();
     };
@@ -55,6 +55,7 @@ const LoginContainer = () => {
                     <Login
                         id={ ID }
                         storeId={ STORE_ID }
+                        onStoreIdChange={ handleStoredId }
                         onFormSubmit={ onFormSubmit }
                         message = { failMsg }
                     />
@@ -73,6 +74,7 @@ const LoginContainer = () => {
                 <Login
                     id={ ID }
                     storeId={ STORE_ID }
+                    onStoreIdChange={ handleStoredId }
                     onFormSubmit={ onFormSubmit }
                     message = { failMsg }
                 />
