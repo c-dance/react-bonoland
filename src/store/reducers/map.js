@@ -1,6 +1,5 @@
 import { MAP } from '../actions/map';
-import { getZoomLevel, removeInfoWindow, removeMarkers, renderedGroupMarker, renderItemMarkers, renderInfoWindow } from '../../utils/map';
-import { act } from 'react-dom/test-utils';
+import { removeInfoWindow, removeMarkers } from '../../utils/map';
 
 const initialState = {
     infos: {
@@ -21,16 +20,19 @@ const MapReducer = ( state = initialState, action ) => {
         case MAP.UPDATE_INFOS:
             return {...state, infos: {...state.infos,...action.payload}}
         case MAP.UPDATE_MARKERS:
+            if(state.infoWindow) removeInfoWindow(state.infoWindow);
+            if(state.markers.length > 0) removeMarkers(state.markers);
             const markers = action.payload;
             return { ...state, markers: markers };
         case MAP.UPDATE_INFOWINDOW:
+            if(state.infoWindow) removeInfoWindow(state.infoWindow);
             const infoWindow = action.payload;
             return { ...state, infoWindow: infoWindow };
-        case MAP.UPDATE_EVENT:
+        case MAP.CLEAR_MAP:
             removeInfoWindow(state.infoWindow);
             removeMarkers(state.markers);
             const eventTime = new Date();
-            return { ...state, eventTime: eventTime };
+            return { ...state, eventTime: eventTime, markers: [], infoWindow: null };
         case MAP.UPDATE_FILTER:
             const filterProps = action.payload;
             filterProps.filtered = !state.filtered;

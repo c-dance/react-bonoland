@@ -34,7 +34,7 @@ export const getRegionByLatlng = latlng => {
         }, (status, response) => {
             if(status === naver.maps.Service.Status.ERROR) reject("geocode오류");
             else if(response.v2.results.length <= 0) reject("지역 이탈");
-            else resolve(response.v2.results[1].region);
+            else resolve(response.v2.results[0].region);
         })
     })
 };
@@ -102,7 +102,6 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
       }
     });
 
-    console.log('그룹 마커 생성');
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(item.latlng),
       map: map, 
@@ -140,7 +139,6 @@ export const renderItemMarkers = (data, map, onMarkerClick) => {
     const bono = item["보노매물"];
     const latlng = item["latlng"];
 
-    console.log('add Items');
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(latlng),
       map: map, 
@@ -239,15 +237,13 @@ export const removeMarkers = markers => {
   for(const marker of markers) {
     marker.setMap(null);
   }
-  console.log('clean markers');
   return markers;
 };
 
-export const removeInfoWindow = async infoWindow => {
+export const removeInfoWindow = infoWindow => {
   if(infoWindow) {
     infoWindow.setMap(null);
   }
-  console.log('clean infowindow');
   return infoWindow;
 }
 

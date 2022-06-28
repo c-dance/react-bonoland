@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { 
     updateMapInfos,
-    updateMapEvent,
+    clearMapOverlay,
     updateMapMarkers, 
     updateMapInfoWindow, 
 } from '../../store/actions/map';
@@ -150,7 +150,7 @@ const MapContainer = () => {
         });
 
         naver.maps.Event.addListener(nvMap, 'zoom_changed', () => { 
-            dispatch(updateMapEvent());
+            dispatch(clearMapOverlay());
         });
 
         // 지적편집도 설정
@@ -260,10 +260,11 @@ const MapContainer = () => {
     const onGroupMarkerClick = latlng => {
         const level = getZoomLevel(MAP_INFOS.zoom);
         const nZoom = level <= 1 ? 14 : 16;
-        reDrawMap({
+        console.log('마커 클릭 ==================================');
+        dispatch(updateFilter({
             latlng: latlng,
-            zoom: nZoom,
-        });
+            zoom: nZoom
+        }));
     };
 
     /* === 아이템 마커 클릭 === */
@@ -282,6 +283,8 @@ const MapContainer = () => {
     /* === 네이버 마커 설정 === */
     const updateMarkers = async mapProps => {
         if(!map) return;
+
+        console.log(">>> 마커 바꾸기!");
 
         const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 3;
         // 맵 데이터 불러오기
@@ -320,39 +323,19 @@ const MapContainer = () => {
     }, [map])
 
     useEffect(() => {
+        updateMapInfos(FILTER);
         reDrawMap(FILTER); 
-        dispatch(updateMapInfos({ category: FILTER.category })); // 카테고리 업데이트
         // drawBoundary(FILTER.region); // (동일때) 경계 그리기
     }, [FILTER]);
     
     useEffect(() => {
-        console.log('map info 변경시', MAP_INFOS.zoom);
-        // 맵 데이터가 변경되었을 때, 새로운 마커 데이터 요청
+        console.log('===== 맵 이벤트 & 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);
         updateMarkers({
             latlng: MAP_INFOS.latlng,
             zoom: MAP_INFOS.zoom,
             category: MAP_INFOS.category,
         });
-        return () => {
-            removeInfoWindow(INFO_WINDOW);
-            removeMarkers(MARKERS);
-        }
     }, [MAP_INFOS]);
-
-    useEffect(()=> {
-        console.log('줌 모드');
-        return () => {
-            removeInfoWindow(INFO_WINDOW);
-            removeMarkers(MARKERS);
-        }
-    }, [MARKERS]);
-
-    useEffect(()=> {
-        // 값 변경전 인포윈도우 삭제
-        return () => {
-            removeInfoWindow(INFO_WINDOW);
-        }
-    }, [INFO_WINDOW]);
 
     useEffect(() => {
         toggleCadastralMode(CADASTRAL_MODE);

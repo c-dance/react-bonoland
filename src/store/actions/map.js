@@ -1,6 +1,6 @@
 export const MAP = {
     UPDATE_INFOS: 'map/infos', // 위경도, 줌, 지역명
-    UPDATE_EVENT: 'map/event', // 줌 바꿈
+    CLEAR_MAP: 'map/clear', // 줌 바꿈
     ACTIVATE_CADASTRAL: 'map/cadastralOn', // 지적도 ON
     DEACTIVATE_CADASTRAL: 'map/cadastralOff', // 지적도 OFF
     UPDATE_MARKERS: 'map/markers', 
@@ -12,8 +12,8 @@ export const updateMapInfos = data => ({
     type: MAP.UPDATE_INFOS,
     payload: data
 });
-export const updateMapEvent = () => ({
-    type: MAP.UPDATE_EVENT
+export const clearMapOverlay = () => ({
+    type: MAP.CLEAR_MAP
 });
 
 export const updateMapMarkers = data => ({
