@@ -1,7 +1,7 @@
 {
   "main.css": "./static/css/main.3170ca45.chunk.css",
-  "main.js": "./static/js/main.6b33b5d1.chunk.js",
-  "main.js.map": "./static/js/main.6b33b5d1.chunk.js.map",
+  "main.js": "./static/js/main.d617b13c.chunk.js",
+  "main.js.map": "./static/js/main.d617b13c.chunk.js.map",
   "static/css/1.d2020732.chunk.css": "./static/css/1.d2020732.chunk.css",
   "static/js/1.edcf2764.chunk.js": "./static/js/1.edcf2764.chunk.js",
   "static/js/1.edcf2764.chunk.js.map": "./static/js/1.edcf2764.chunk.js.map",
@@ -26,12 +26,12 @@
   "static/media/ico-traffic.svg": "./static/media/ico-traffic.3cfc5a74.svg",
   "static/media/ico-market.svg": "./static/media/ico-market.77e23a62.svg",
   "static/media/ico-road.svg": "./static/media/ico-road.c07708f2.svg",
+  "static/media/ico-star_brown.svg": "./static/media/ico-star_brown.da11883b.svg",
+  "static/media/card-thumbnail.png": "./static/media/card-thumbnail.dafa7ebf.png",
   "static/media/ico-search.svg": "./static/media/ico-search.7431d487.svg",
   "static/media/ico-symbol.svg": "./static/media/ico-symbol.fd7f5cd0.svg",
   "static/media/ico-reset.svg": "./static/media/ico-reset.4597b25c.svg",
   "static/media/ico-slider.svg": "./static/media/ico-slider.7e57c842.svg",
-  "static/media/ico-star_brown.svg": "./static/media/ico-star_brown.da11883b.svg",
-  "static/media/card-thumbnail.png": "./static/media/card-thumbnail.dafa7ebf.png",
   "static/media/ico-back.svg": "./static/media/ico-back.8f0c51ac.svg",
   "static/media/ico-accordion.svg": "./static/media/ico-accordion.f43fe8a5.svg",
   "static/media/ico-sync.svg": "./static/media/ico-sync.ae5b07f1.svg",
@@ -59,6 +59,6 @@
   "static/css/main.3170ca45.chunk.css.map": "./static/css/main.3170ca45.chunk.css.map",
   "static/css/1.d2020732.chunk.css.map": "./static/css/1.d2020732.chunk.css.map",
   "index.html": "./index.html",
-  "precache-manifest.e1890a28349b964a3f905a6d74b40a7d.js": "./precache-manifest.e1890a28349b964a3f905a6d74b40a7d.js",
+  "precache-manifest.cfab5eae4a931bf506a6192dce74ebf6.js": "./precache-manifest.cfab5eae4a931bf506a6192dce74ebf6.js",
   "service-worker.js": "./service-worker.js"
 }
