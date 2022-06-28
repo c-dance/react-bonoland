@@ -102,6 +102,7 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
       }
     });
 
+    console.log('그룹 마커 생성');
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(item.latlng),
       map: map, 
@@ -127,47 +128,44 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
     }
   )
   return markers;
-
 };
 
 export const renderItemMarkers = (data, map, onMarkerClick) => {
 
-  setTimeout(function(){
-    const markers = data.map(item => {
-  
-      const date = item["거래일"];
-      const price = item["거래가"];
-      const bono = item["보노매물"];
-      const latlng = item["latlng"];
-  
-      console.log('add Items');
-      const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(latlng),
-        map: map, 
-        icon: {
-          content: `
-            <div class="iMarker ${bono&&'bono'}">
-              <div class="iMarker-box">
-                  <em class="iMarker-date">${date} 거래</em>
-                  <span class="iMarker-price">실거래가 ${price}}</span>
-              </div>
-              <div class="iMarker-tail"></sdiv>
-            </div>
-          `,
-          // anchor: new naver.maps.Point(11, 35)
-          anchor: new naver.maps.Point(0, 0)
-        },
-        draggable: false
-      });
-    
-      naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
-  
-      return marker;
-    });
-    
-    return markers;
-  }, 500);
 
+  const markers = data.map(item => {
+
+    const date = item["거래일"];
+    const price = item["거래가"];
+    const bono = item["보노매물"];
+    const latlng = item["latlng"];
+
+    console.log('add Items');
+    const marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(latlng),
+      map: map, 
+      icon: {
+        content: `
+          <div class="iMarker ${bono&&'bono'}">
+            <div class="iMarker-box">
+                <em class="iMarker-date">${date} 거래</em>
+                <span class="iMarker-price">실거래가 ${price}}</span>
+            </div>
+            <div class="iMarker-tail"></sdiv>
+          </div>
+        `,
+        // anchor: new naver.maps.Point(11, 35)
+        anchor: new naver.maps.Point(0, 0)
+      },
+      draggable: false
+    });
+  
+    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
+
+    return marker;
+  });
+  
+  return markers;
 };
 
 export const renderInfoWindow = props => {

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { 
     updateMapInfos,
+    updateMapEvent,
     updateMapMarkers, 
     updateMapInfoWindow, 
 } from '../../store/actions/map';
@@ -24,6 +25,7 @@ import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/mode';
+import { clear } from '@testing-library/user-event/dist/clear';
 
 const guguns = [
     {
@@ -102,9 +104,6 @@ const MapContainer = () => {
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
     const [ mobileInfoWindow, setMobileInfoWindow ] = useState(false);
     const [ infoWindowData, setInfoWindowData ] = useState(null);
-
-    const [ mapMarkers, setMapMarkers ] = useState([]);
-    const [ removeMapMarkers, setRemoveMapMarkers ] = useState(() => {});
     
     /* === 지도 속성 === */
     const MAP_INFOS = useSelector(state => state.Map.infos);
@@ -150,6 +149,10 @@ const MapContainer = () => {
             alertZoomLevel(nvMap.getZoom()); 
         });
 
+        naver.maps.Event.addListener(nvMap, 'zoom_changed', () => { 
+            dispatch(updateMapEvent());
+        });
+
         // 지적편집도 설정
         const cadastralLayer = new naver.maps.CadastralLayer();
         naver.maps.Event.once(nvMap, 'init', () => { 
@@ -184,8 +187,6 @@ const MapContainer = () => {
         const zoom = map.getZoom(); // 줌 레벨(raw)
         const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
-
-        console.log('이벤트 발생');
 
         dispatch(updateMapInfos({
             latlng: latlng,
@@ -259,12 +260,10 @@ const MapContainer = () => {
     const onGroupMarkerClick = latlng => {
         const level = getZoomLevel(MAP_INFOS.zoom);
         const nZoom = level <= 1 ? 14 : 16;
-
-        // 새로운 필터 적용
-        dispatch(updateFilter({
+        reDrawMap({
             latlng: latlng,
             zoom: nZoom,
-        }));
+        });
     };
 
     /* === 아이템 마커 클릭 === */
@@ -280,25 +279,25 @@ const MapContainer = () => {
     };
 
     
-    
     /* === 네이버 마커 설정 === */
     const updateMarkers = async mapProps => {
         if(!map) return;
 
-        console.log('마커 데이터 불러오기', mapProps);
-
         const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 3;
         // 맵 데이터 불러오기
         const RESPONSE = ITEM_MARKER? dongs : guguns;
-
         setTimeout(function(){
-            if(RESPONSE) {
-                let mks = ITEM_MARKER? 
+
+            let mks;
+            if(RESPONSE) {   
+                mks = ITEM_MARKER? 
                     renderItemMarkers(RESPONSE, map, onItemMarkerClick) 
                     : renderedGroupMarker(RESPONSE, map, onGroupMarkerClick);
+    
                 dispatch(updateMapMarkers(mks));
+                // setMapMarkers(mks);
             }
-        },  1000);
+        }, 500)
     };
 
     // 검색했을 때 영역 그려주기
@@ -306,19 +305,6 @@ const MapContainer = () => {
         console.log(`${region} 영역 그려주기`);
         // const res = await getBoundary();
         // console.log(res);
-    };
-
-    const handleMarkers = (MAP_INFOS) => {
-        removeMarkers(MARKERS);
-        removeInfoWindow(INFO_WINDOW);
-
-        setTimeout(function(){
-            updateMarkers({
-                latlng: MAP_INFOS.latlng,
-                zoom: MAP_INFOS.zoom,
-                category: MAP_INFOS.category,
-            });
-        }, [500]);
     };
 
     useEffect(()=> {
@@ -341,22 +327,25 @@ const MapContainer = () => {
     
     useEffect(() => {
         console.log('map info 변경시', MAP_INFOS.zoom);
-
         // 맵 데이터가 변경되었을 때, 새로운 마커 데이터 요청
         updateMarkers({
             latlng: MAP_INFOS.latlng,
             zoom: MAP_INFOS.zoom,
             category: MAP_INFOS.category,
         });
+        return () => {
+            removeInfoWindow(INFO_WINDOW);
+            removeMarkers(MARKERS);
+        }
     }, [MAP_INFOS]);
 
-    useEffect(() => {
-        // 맵 데이터 변경전 마커, 인포윈도우 삭제
+    useEffect(()=> {
+        console.log('줌 모드');
         return () => {
-            removeMarkers(MARKERS);
             removeInfoWindow(INFO_WINDOW);
+            removeMarkers(MARKERS);
         }
-    }, [MARKERS])
+    }, [MARKERS]);
 
     useEffect(()=> {
         // 값 변경전 인포윈도우 삭제

@@ -1,43 +1,29 @@
 export const MAP = {
-    UPDATE_INFOS: 'map/infos',
-    UPDATE_LATLNG : 'map/latlng', // 필수 - 위도, 경도
-    UPDATE_ZOOM : 'map/zoom', // 필수 - 줌
-    UPDATE_REGION: 'map/region', // 필수 - 지역명(지역명박스)
-    ACTIVATE_CADASTRAL: 'map/cadastralOn', // 필수 - 지적도 ON
-    DEACTIVATE_CADASTRAL: 'map/cadastralOff', // 필수 - 지적도 OFF
+    UPDATE_INFOS: 'map/infos', // 위경도, 줌, 지역명
+    UPDATE_EVENT: 'map/event', // 줌 바꿈
+    ACTIVATE_CADASTRAL: 'map/cadastralOn', // 지적도 ON
+    DEACTIVATE_CADASTRAL: 'map/cadastralOff', // 지적도 OFF
     UPDATE_MARKERS: 'map/markers', 
     UPDATE_INFOWINDOW: 'map/infowindow',
     UPDATE_FILTER: 'map/filter'
 };
 
-export const updateMapInfos = value => ({
+export const updateMapInfos = data => ({
     type: MAP.UPDATE_INFOS,
-    payload: value
+    payload: data
+});
+export const updateMapEvent = () => ({
+    type: MAP.UPDATE_EVENT
 });
 
-export const updateMapLatlng = (value) => ({
-    type: MAP.UPDATE_LATLNG,
-    payload: value
-});
-
-export const updateMapZoom = (value) => ({
-    type: MAP.UPDATE_ZOOM,
-    payload: value
-});
-
-export const updateMapRegion = (value) => ({
-    type: MAP.UPDATE_REGION,
-    payload: value
-});
-
-export const updateMapMarkers = (value) => ({
+export const updateMapMarkers = data => ({
     type: MAP.UPDATE_MARKERS,
-    payload: value
+    payload: data
 });
 
-export const updateMapInfoWindow = (value) => ({
+export const updateMapInfoWindow = infoWindow => ({
     type: MAP.UPDATE_INFOWINDOW,
-    payload: value
+    payload: infoWindow
 });
 
 export const updateMapFilter = (value) => ({
