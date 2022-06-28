@@ -147,10 +147,44 @@
     flex-direction:column;
     gap:24px;
     width: 176px;
-    height: 220px;
-    padding:16px 12px 36px;
-    background:url('../assets/images/map/ico-infowindow.svg') 100% 100% no-repeat;
+    /* height: 220px; */
+    /* padding:16px 12px 36px; */
+    margin-bottom: 34px;
+    padding:16px 12px;
+    background-color: #fff;
+    border-style: inset;
+    border-radius: 10px 10px 10px 0;
+    border: 1px solid #000;
+    /* background:url('../assets/images/map/ico-infowindow.svg') 100% 100% no-repeat; */
     /* white-space:nowrap; */
+}
+.info-window__tail {
+    z-index: -1;
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    content: '';
+    width:0;
+    height:0;
+    background:transparent;
+    border-style: inset;
+    border-width:17px 18px 17px 18px;
+    border-color: transparent #000 transparent  transparent; 
+    transform: translate(-1px, -16px) rotate(180deg);
+}
+.info-window::after {
+    z-index: 10;
+    position: absolute;
+    top: 100%;
+    left: 2px;
+    content: '';
+    width:0;
+    height:0;
+    background:transparent;
+    border-style:inset;
+    border-width:16px 17px 16px 17px;
+    border-color: transparent #fff transparent transparent ; 
+    transform: translate(-1px, -16px) rotate(180deg);
 }
 
 .info-window__body {
@@ -173,7 +207,7 @@
 }
 .info-window__body .conts__badges .badge {
     height:20px;
-    line-height:20px;
+    line-height:18px;
     padding:0 8px;
     background:#B68B39;
     color:#fff;
@@ -214,25 +248,13 @@
 .info-window__actions .btn  {
     flex: 1;
     height:24px;
-    line-height:22px;
+    line-height:20px;
     border:1px solid #eee;
     font-size:13px;
     color:#424242;
     text-align:center;
     background:#fff;
-}
-
-.info-window__actions .btn {
-    height: 24px;
-    line-height: 24px;
     border-radius: 2px;
-}
-.info-window__actions .btn--details {
-    margin: 0;
-    border: 0;
-    width: calc(50% - 6px);
-    background-color: #BD9369;
-    color: #fff;
 }
 
 .mobile .info-window {
@@ -257,9 +279,17 @@
     width: 110px;
     height: 128px;
 } 
-.info-window__actions .btn {
+.mobile .info-window__actions .btn {
     height: 40px;
     line-height: 40px;
+}
+
+.mobile .info-window__actions .btn--details {
+    margin: 0;
+    border: 0;
+    width: calc(50% - 6px);
+    background-color: #BD9369;
+    color: #fff;
 }
 
 .mobile .info-radius {

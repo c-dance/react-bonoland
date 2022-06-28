@@ -55,7 +55,7 @@ export const modifyUserTel = async user => await api.post(USER_URL.modify.tel, {
 });
 
 /*  회원 비밀번호 변경  */
-export const modifyUserPwd = async user => await api.post(USER_URL.modify.pwd, { 
+export const modifyUserPwd = async user => await api.post(USER_URL.modify.password, { 
     userTel: user.userTel,
     userPwd: user.userPwd 
 });

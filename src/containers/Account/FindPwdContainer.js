@@ -36,7 +36,7 @@ const FindPwdContainer = () => {
             userPwd: data["newPwd01"]
         });
 
-        quitFindPwd();
+        // quitFindPwd();
 
         if(RESPONSE && RESPONSE.data.code === 1) {
             setNewPwdSuccess(true);

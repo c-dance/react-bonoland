@@ -6,10 +6,11 @@ const { naver } = window;
 export const getZoomLevel = zoom => {
     let level = 0;
 
-    if(zoom >= 16) level = 3; // 동, 상세
-    else if(zoom < 16 && zoom >= 14) level = 2; // 구, 군
-    else if(zoom < 14 && zoom >= 11) level = 1; // 시, 도
-    else if(zoom < 11) level = 0; // 시도 이상(3km 이상)
+    if(zoom >= 16) level = 4; // 읍면동 진입(상세 마커)
+    else if(zoom < 16 && zoom >= 13) level = 3; // 구군 진입(읍면동 마커)
+    else if(zoom < 13 && zoom >= 11) level = 2; // 시도 진입(구군 마커)
+    else if(zoom < 11 && zoom >= 8) level = 1; // 남한 진입(시도 마커)
+    else if(zoom < 8) level = 0; // 경계 이탈
     
     return level;
 };
@@ -17,11 +18,11 @@ export const getZoomLevel = zoom => {
 export const getZoomByAddress = address => {
   let validAddress = address.filter(item => item.longName.length > 0);
 
-  if(!validAddress) return 14;
+  if(!validAddress) return 13; // 디폴트값: 구군주소 레벨(읍면동 마커)
 
-  if(validAddress.length >= 3 ) return 16; // 동, 상세
-  else if (validAddress.length <= 1) return 11; // 시, 도
-  else return 14; // 구, 군
+  if(validAddress.length >= 3 ) return 16; // 읍면동 주소(상세 마커)
+  else if (validAddress.length <= 1) return 11; // 시도 주소(구군 마커)
+  else return 13; // 구군 주소(읍면동 마커)
 };
 
 export const getRegionByLatlng = latlng => {
@@ -41,11 +42,11 @@ export const getRegionByLatlng = latlng => {
 
 export const getRegionByZoom = (regions, zoom) => {
     const level = getZoomLevel(zoom);
-    let result = '';
+    let result;
 
-    if(level === 1) result = regions.area1.name; // 시도
-    if(level === 2) result = `${regions.area1.name} ${regions.area2.name}`; // 구군
-    if(level === 3) result = `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}`; //읍면동
+    if(level === 3) result = `${regions.area1.name} ${regions.area2.name}`; // 구군 진입시 > 구군 주소
+    else if(level === 4) result = `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}` //읍변동 진입시 > 읍면동 주소
+    else result = '';
 
     return result;
 };
@@ -192,6 +193,7 @@ export const renderInfoWindow = props => {
           <button class="btn btn--details">상세</>
           <button class="btn btn--contact">문의</button>
       </div>
+      <div class="info-window__tail"></div>
     </div>
   `;
   

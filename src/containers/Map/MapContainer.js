@@ -11,7 +11,6 @@ import { updateFilter } from '../../store/actions/filter';
 import { 
     getRegionByLatlng, 
     getRegionByZoom, 
-    removeMarkers, 
     renderedGroupMarker, 
     getZoomLevel, 
     renderItemMarkers, 
@@ -25,7 +24,6 @@ import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/mode';
-import { clear } from '@testing-library/user-event/dist/clear';
 
 const guguns = [
     {
@@ -120,8 +118,6 @@ const MapContainer = () => {
         const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(MAP_INFOS.latlng[0], MAP_INFOS.latlng[1]),
             zoom: MAP_INFOS.zoom,
-            minZoom: 9,
-            maxZoom: 16,
             mapTypeId: naver.maps.MapTypeId.NORMAL,
         });
 
@@ -197,7 +193,7 @@ const MapContainer = () => {
 
     /* === 최소 줌 레벨 경고 === */
     const alertZoomLevel = zoomLevel => {
-        if(zoomLevel < 11) {
+        if(zoomLevel < 8) {
             dispatch(activateAlert({
                 title:"",
                 contents: "지도를 확대해 주세요"
@@ -259,7 +255,14 @@ const MapContainer = () => {
     /* === 그룹 마커 클릭 === */
     const onGroupMarkerClick = latlng => {
         const level = getZoomLevel(MAP_INFOS.zoom);
-        const nZoom = level <= 1 ? 14 : 16;
+        let nZoom;
+        switch(level) {
+            case 3: nZoom = 16; break;
+            case 2: nZoom = 13; break;
+            case 1: nZoom = 11; break;
+            case 0: nZoom = 8; break;
+            default : nZoom = 13;
+        }
         console.log('마커 클릭 ==================================');
         dispatch(updateFilter({
             latlng: latlng,
@@ -286,7 +289,7 @@ const MapContainer = () => {
 
         console.log(">>> 마커 바꾸기!");
 
-        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 3;
+        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 4;
         // 맵 데이터 불러오기
         const RESPONSE = ITEM_MARKER? dongs : guguns;
         setTimeout(function(){
