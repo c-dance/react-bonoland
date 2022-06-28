@@ -9,32 +9,27 @@ import { useGet } from "../../hooks";
 const NewsItemContainer = () => {
 
     const [ news, setNews ] = useState({});
+    const [ newsUrl, setNewsUrl ] = useState("");
     const { id } = useParams();
 
     const navigate = useNavigate();
     const [ loading, error, noData, data, setGet ] = useGet({});
 
-    console.log(id);
-
-
+    
     useEffect(() => {
         setGet(getNewsPost(id));
     }, []);
 
     useEffect(() => {
-        // setNews(data);
-        if(Object.keys(data).length > 0) {
-            setNews(data[Object.keys(data)[0]]);
+        if(data.arrayResult) {
+            setNews(data.arrayResult[0]);
+            setNewsUrl(data.arrayResult[0].newsURL);
         }
     }, [data]);
 
     const onBackClick = () => { 
         navigate(-1); 
     };
-    const openPostSource = () => {
-        window.open(news.url);
-    };
-
 
     return(
         <Section
@@ -44,7 +39,7 @@ const NewsItemContainer = () => {
             onBackClick= { onBackClick }
             action={ true }
             actionText={ "출처 링크" }
-            onActionClick={ openPostSource }
+            onActionClick={ () => {window.open(newsUrl)} }
         >
             <NewsCard 
                 news={ news } 

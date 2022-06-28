@@ -71,7 +71,7 @@ const CategoryFilter = ({
                                 id={`cate${idx}`} 
                                 name="bnCategory" 
                                 value={CATEGORY[key].value} 
-                                onChange={ event => {event.preventDefault();} } 
+                                onChange={ event => { event.preventDefault(); } } 
                                 checked={ categories[key].selected }
                             />
                             <label htmlFor={`cate${idx}`}>{ isMobile? CATEGORY[key].mobileLabel : CATEGORY[key].label }</label>
@@ -81,6 +81,7 @@ const CategoryFilter = ({
             </CategoryForm>
             {
                 currentOptions &&
+                
                 <CapacityForm 
                     onReset={ event => resetCapacity(event) }
                 >
@@ -92,7 +93,7 @@ const CategoryFilter = ({
                             max={ currentOptions.maxRange }
                             marks = { currentOptions.marks }
                             step = { 1 }
-                            defaultValue={ currentOptions.minRange }
+                            defaultValue={ currentCapacity }
                             value={ currentCapacity }
                             dotStyle={{ display: 'none'}}
                             railStyle={{ backgroundColor: '#E0E0E0', height: 6 }}
@@ -106,7 +107,7 @@ const CategoryFilter = ({
                                 background: `url(${ sliderIcon }) center no-repeat #fff`
                             }}
                             allowCross= { true }
-                            onChange={ () => selectCapacity(currentCapacity) }
+                            onChange={ value => selectCapacity(value) }
                         />
                     </SliderWrap>
                     <RadioWrap>

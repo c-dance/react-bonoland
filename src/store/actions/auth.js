@@ -39,6 +39,7 @@ export const updatePhoneNumber = phoneNumber => async dispatch => {
 
     if(RESPONSE && RESPONSE.data.code === 1) {
         const authNumber = RESPONSE.data.message.substring(RESPONSE.data.message.length - 6);
+        console.log(RESPONSE);
         dispatch({
             type: AUTH.SET_AUTHNUMBER,
             payload: authNumber

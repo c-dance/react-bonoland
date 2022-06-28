@@ -16,7 +16,7 @@ const AuthenticationContainer = () => {
     const AUTH_PHONENUMBER = AUTH.phoneNumber;
     
     /* === 타이머 === */
-    const TIME_LIMIT = 10;
+    const TIME_LIMIT = 180;
     const [ timer, setTimer ] = useState(TIME_LIMIT);
     let intervalTimer;
     let timeout;

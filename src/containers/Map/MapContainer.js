@@ -172,7 +172,7 @@ const MapContainer = () => {
     };
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
-    const reDrawMap = mapProps => {
+    const resetMapByFilter = mapProps => {
         if(!map) return;
         
         // 줌 이동
@@ -270,7 +270,7 @@ const MapContainer = () => {
     /* === 아이템 마커 클릭 === */
     const onItemMarkerClick = (latlng, itemId) => {
         // if(isMobile) {
-        //     dispatch(updateMapFilter({
+        //     dispatch(updateFilter({
         //         latlng: latlng
         //     }));
         // }
@@ -311,25 +311,26 @@ const MapContainer = () => {
     };
 
     useEffect(()=> {
-        initMap();
+       initMap();
     }, []);
-    
-    useEffect(() => {
-        updateMarkers({
-            latlng: MAP_INFOS.latlng,
-            zoom: MAP_INFOS.zoom,
-            category: MAP_INFOS.category,
-        });
-    }, [map])
 
     useEffect(() => {
-        updateMapInfos(FILTER);
-        reDrawMap(FILTER); 
-        // drawBoundary(FILTER.region); // (동일때) 경계 그리기
-    }, [FILTER]);
+        if(map) updateMarkers(MAP_INFOS);
+    }, [map]);
     
     useEffect(() => {
-        console.log('===== 맵 이벤트 & 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);
+        // 지도만 그리면
+        resetMapByFilter(FILTER); 
+        // drawBoundary(FILTER.region); // (동일때) 경계 그리기
+    }, [FILTER]);
+
+    useEffect(() => {
+        // 카테고리만 변경되었을 때 처리
+        dispatch(updateMapInfos({category: FILTER.category}));
+    }, [FILTER.category])
+    
+    useEffect(() => {
+        console.log('===== 맵 이벤트 OR 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);
         updateMarkers({
             latlng: MAP_INFOS.latlng,
             zoom: MAP_INFOS.zoom,

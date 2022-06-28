@@ -4,7 +4,7 @@ const initialState = {
     region: "",
     latlng: [],
     zoom: 14,
-    category: ""
+    category: null
 };
 
 const FilterReducer = (state = initialState, action) => {

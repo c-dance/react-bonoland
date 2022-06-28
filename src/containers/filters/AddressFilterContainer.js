@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import { useDispatch } from 'react-redux';
 import { getSearchByAddress } from '../../utils/map';
-import { updateMapFilter, updateMapInfos } from '../../store/actions/map';
 import { activateAlert } from '../../store/actions/alert';
 import { updateFilter } from '../../store/actions/filter';
 
@@ -30,7 +29,6 @@ const AddressFilterContainer = ({ type }) => {
                 //     latlng: res.latlng
                 // }));
                 
-                // dispatch(updateMapFilter(res));
             } else {
                 dispatch(activateAlert({
                     title: "검색 결과",

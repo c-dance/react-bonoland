@@ -10,6 +10,7 @@ import { getCenter } from '../../api/center';
 import Modal from '../../components/Modal/Modal';
 import CalculatorResult from "../../components/Calculator/CalculatorResult/CalculatorResult";
 import { activateContact } from "../../store/actions/mode";
+import { updateFilter } from "../../store/actions/filter";
 
 
 const CenterItemContainer = () => {
@@ -52,6 +53,7 @@ const CenterItemContainer = () => {
             params: id
         });
         // 지도 검색 필터 재설정(latlng 설정)
+        dispatch(updateFilter({ latlng: ['126.7951166', '37.4816231'] }));
     }, []);
 
     useEffect(() => {

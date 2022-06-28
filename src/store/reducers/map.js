@@ -6,9 +6,8 @@ const initialState = {
         latlng: [37.5036875, 126.7869375],
         zoom: 14,
         region: '경기도 부천시', 
-        category: '',
+        category: null,
     },
-    eventTime: '',
     markers: [],
     infoWindow: null,
     filtered: false,
@@ -31,12 +30,7 @@ const MapReducer = ( state = initialState, action ) => {
         case MAP.CLEAR_MAP:
             removeInfoWindow(state.infoWindow);
             removeMarkers(state.markers);
-            const eventTime = new Date();
-            return { ...state, eventTime: eventTime, markers: [], infoWindow: null };
-        case MAP.UPDATE_FILTER:
-            const filterProps = action.payload;
-            filterProps.filtered = !state.filtered;
-            return Object.assign({}, state, filterProps);
+            return { ...state, markers: [], infoWindow: null };
         case MAP.ACTIVATE_CADASTRAL: 
             return {...state, cadastral: true };
         case MAP.DEACTIVATE_CADASTRAL: 

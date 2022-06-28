@@ -94,7 +94,8 @@ export const CapacityForm = styled.form`
         position: fixed;
         left: 0;
         top: auto;
-        bottom: -370px;
+        ${'' /* bottom: -370px; */}
+        bottom: 56px;
         display: flex;
         width: 100%;
         height: 308px;

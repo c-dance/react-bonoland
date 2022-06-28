@@ -4,12 +4,13 @@ import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
 import { QuickLink, QuickBtn } from './QuickMenuStyle';
 import { activateAlarm, activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/mode';
-import { activateCadastral, deactivateCadastral, updateMapFilter } from '../../../store/actions/map';
+import { activateCadastral, deactivateCadastral } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { GEOLOCATION } from '../../../utils/user';
 import { updateGeolocation } from '../../../store/actions/geolocation';
 import { activateAlert } from '../../../store/actions/alert';
 import { useNavigate } from 'react-router';
+import { updateFilter } from '../../../store/actions/filter';
 
 const QuickMenu = () => {
 
@@ -52,7 +53,7 @@ const QuickMenu = () => {
             .then(position => {
                 const LATLNG = [ (position.coords.longitude).toString(), (position.coords.latitude).toString() ];
                 dispatch(updateGeolocation(LATLNG));
-                dispatch(updateMapFilter({ latlng: LATLNG}));
+                dispatch(updateFilter({ latlng: LATLNG }));
             })
             .catch(err => {
                 console.error(err.message);

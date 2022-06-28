@@ -8,8 +8,6 @@ const NEWS_URL = {
 export const getNewsList = async () => await api.get(NEWS_URL.list);
 
 // export const getNewsPost = async newsNo => await api.get(NEWS_URL.post + `?newsNo=${newsNo}`);
-export const getNewsPost = async newsNo => await api.get(NEWS_URL.post, {
-    params: {
-        newsNo: newsNo
-    }
+export const getNewsPost = async newsNo => await api.post(NEWS_URL.post, {
+    newsNo: newsNo
 });

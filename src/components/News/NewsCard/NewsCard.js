@@ -1,4 +1,4 @@
-import { Card } from './NewsCardStyle';
+import { Card, Post } from './NewsCardStyle';
 import { Link } from 'react-router-dom';
 import React from "react";
 import { Loading, NoData, Error } from '../../ui/Inform/Inform';
@@ -12,11 +12,11 @@ const NewsCard = ({
 }) => {
 
     const CONTENTS = (news) => (
-        <div>
+        <Post>
             <h3>{ news.newsTitle }</h3>
-            { news.newsFileName && <img /> }
+            { news.newsFileName && <img src={ news.newsFile }/> }
             <p>{ news.newsContent }</p>
-        </div>
+        </Post>
     );
 
     return (

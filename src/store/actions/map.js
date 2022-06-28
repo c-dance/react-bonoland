@@ -4,8 +4,7 @@ export const MAP = {
     ACTIVATE_CADASTRAL: 'map/cadastralOn', // 지적도 ON
     DEACTIVATE_CADASTRAL: 'map/cadastralOff', // 지적도 OFF
     UPDATE_MARKERS: 'map/markers', 
-    UPDATE_INFOWINDOW: 'map/infowindow',
-    UPDATE_FILTER: 'map/filter'
+    UPDATE_INFOWINDOW: 'map/infowindow'
 };
 
 export const updateMapInfos = data => ({
@@ -24,11 +23,6 @@ export const updateMapMarkers = data => ({
 export const updateMapInfoWindow = infoWindow => ({
     type: MAP.UPDATE_INFOWINDOW,
     payload: infoWindow
-});
-
-export const updateMapFilter = (value) => ({
-    type: MAP.UPDATE_FILTER,
-    payload: value
 });
 
 export const activateCadastral = () => ({
