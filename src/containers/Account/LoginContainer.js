@@ -39,6 +39,7 @@ const LoginContainer = () => {
         open: true,
         close: true,
         width: 390,
+        center: true,
         onCloseClick: () => {dispatch(deactivateLogin())},
         title: "로그인"
     };

@@ -76,7 +76,7 @@ export const Button = styled.button`
     line-height: 46px;
 
     &.highlight {
-        background-color: #8B653E;
+        background-color: ${({ theme }) => theme.colors.primaryD };
         color: #fff;
     }
 `
@@ -84,8 +84,10 @@ export const Calculate = styled.button`
     width: 140px;
     height: 46px;
     line-height: 46px;
-    padding: 0 0 0 50px;
+    padding: 0 0 0 44px;
     background: url(${ calcIcon }) 20px center / 24px 24px no-repeat;
     border: 1px solid ${({ theme }) => theme.colors.gray300 };
-    color: ${({ theme }) => theme.colors.primary };
+    border-radius: 2px;
+    color: ${({ theme }) => theme.colors.primaryD };
+    font-size: ${({theme}) => theme.fontSizes.s}
 `;

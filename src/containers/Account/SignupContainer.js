@@ -32,6 +32,7 @@ const SignupContaienr = () => {
     const [ authSuccess, setAuthSuccess ] = useState(false);
 
     // 회원가입 성공
+    const [ invalidId, setInvalidId] = useState('');
     const [ signupSuccess, setSignupSuccess ] = useState(false);
     
     // type 폼 제출
@@ -62,6 +63,9 @@ const SignupContaienr = () => {
 
         if(RESPONSE && RESPONSE.data.code === 1) {
             setSignupSuccess(true);
+        } else if(RESPONSE && RESPONSE.data.code === 0) {
+            setInvalidId(data.userId);
+            setSignupSuccess(false);
         } else {
             dispatch(deactivateSignup());
             dispatch(activateAlert({
@@ -72,8 +76,12 @@ const SignupContaienr = () => {
     };
 
     const getSignUpForm = async phoneNumber => {
+        setPhoneNumber(phoneNumber);
+        
         const RESPONSE = await getSignUpAuth(phoneNumber);
+        
         dispatch(deactivateAuth());
+
         if(RESPONSE && RESPONSE.data.code === 1) {
             setAuthSuccess(true);
         } else {
@@ -137,6 +145,7 @@ const SignupContaienr = () => {
                         <Modal {...modalProps}>
                             <SignupForm
                                 onFormSubmit={ onFormSubmit }
+                                invalidId={ invalidId }
                             />
                         </Modal>
                     }

@@ -22,10 +22,8 @@ export const Form = styled(module.AccountForm)`
         }
 
         .wrap > input {
-            .mobile & {
-                border-width: 1px;
-                border-radius: 2px;
-            }
+            border: 1px solid ${({theme}) => theme.colors.gray300 };
+            border-radius: 2px;
         }
     }
 
@@ -66,14 +64,15 @@ export const Metas = styled.div`
         label {
             display: block;
             padding-left: 22px;
-            line-height: 15px;
-            background: url(${checkboxDefaultIcon}) left center / 15px 15px no-repeat;
+            height: 100%;
+            line-height: 14px;
+            background: url(${checkboxDefaultIcon}) left center / 14px 14px no-repeat;
             font-size: ${ ({theme}) => theme.fontSizes.s };
             color: ${ ({theme}) => theme.colors.gray600 };
         }
 
         input:checked + label { 
-            background: url(${checkboxCheckedtIcon}) left center / 15px 15px no-repeat; 
+            background: url(${checkboxCheckedtIcon}) left center / 14px 14px no-repeat; 
         }
     }
 
@@ -103,7 +102,6 @@ export const Signup = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
-    font-size: 13px;
 
     .mobile & {
         margin-top: 4px;
@@ -111,7 +109,7 @@ export const Signup = styled.div`
 
     span {
         color: ${ ({theme}) => theme.colors.gray600 };
-        font-weights: ${ ({theme}) => theme.fontWeights.medium };
+        font-weight: ${ ({theme}) => theme.fontWeights.medium };
         .mobile & {
             display: none;
         }
@@ -120,6 +118,8 @@ export const Signup = styled.div`
     button {
         text-decoration: underline;
         background-color: transparent;
+        font-size: 13px;
+        font-weight: ${ ({theme}) => theme.fontWeights.medium };
 
         .mobile & {
             text-decoration: none;

@@ -21,7 +21,8 @@ const modalStyle = {
         maxHeight: 'calc(100% - 160px)',
         padding: '0',
         transform: 'translate(-50%, -50%)',
-        overflow: 'hidden'
+        overflow: 'hidden', 
+        borderRadius: '10px'
     }
 };
 
@@ -34,6 +35,7 @@ const Modal  = ({
     description,
     width,
     height,
+    center = false,
     children 
 }) => {
 
@@ -55,7 +57,7 @@ const Modal  = ({
             <ModalWrap>
                 { 
                     title && 
-                    <Title className={ SIZE_LARGE && "a-c" }> { title }</Title> 
+                    <Title className={ (SIZE_LARGE || center === true) && "a-c" }> { title }</Title> 
                 }
                 { 
                     description && 

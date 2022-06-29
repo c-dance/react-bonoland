@@ -118,7 +118,7 @@ const MapContainer = () => {
         const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(MAP_INFOS.latlng[0], MAP_INFOS.latlng[1]),
             zoom: MAP_INFOS.zoom,
-            mapTypeId: naver.maps.MapTypeId.NORMAL,
+            // mapTypeId: naver.maps.MapTypeId.NORMAL,
         });
 
         // 줌버튼 생성

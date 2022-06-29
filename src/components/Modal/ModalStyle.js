@@ -17,7 +17,7 @@ export const Close = styled.div`
 `;
 
 export const Title = styled.h2`
-    font-size: 24px;
+    font-size: 28px;
     font-weight: ${({theme}) => theme.fontWeights.medium };
 
     &.a-c {

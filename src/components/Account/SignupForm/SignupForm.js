@@ -7,31 +7,54 @@ import { module } from '../../../themes/module';
 import { REGEXP } from '../../../scheme/form';
 
 const SignupForm = ({
-    onFormSubmit
+    onFormSubmit, 
+    invalidId
 }) => {
 
-    const { register, handleSubmit, formState: { errors }, getValues, replace, setValue } = useForm({ mode: 'onChange' });
+    const { register, handleSubmit, formState: { errors }, getValues, setValue, watch, clearErrors, setError } = useForm({ mode: 'onChange' });
+    const watching = watch();
 
-    /* === 이용약관 동의 처리 === */
-    const agreeChecked = new Array(3).fill(false);
+    const [ submitAble, setSubmitAble ] = useState(false);
+    const [ notAllowedId, setNotAllowdId ] = useState('bonoland@naver.com');
+    const SUBAGREE_LEN = 3;
     
     const toggleAgreeAll = (event) => {
-        const agree = event.currentTarget;
-        agreeChecked[agree.dataset.idx] = agree.checked;
-
-        const checkeds = agreeChecked.filter(item => item === true);
-
-        if(checkeds.length === agreeChecked.length) setValue("userAgree", true);
-        else setValue("userAgree", false);
+        const idx = event.currentTarget.dataset.idx;
+        const checked = event.currentTarget.checked;
+        setValue(`agree${idx}`, checked);
+        
+        const totalChecked = getValues(['agree0', 'agree1', 'agree2']).filter(item => item === true).length === SUBAGREE_LEN;
+        setValue('userAgree', totalChecked);
+        handleAgreeError(totalChecked);
     };
 
     const handleAgreeAll = (event) => {
         const checked = event.currentTarget.checked;
-        agreeChecked.forEach((item, idx) => {
-            setValue(`agree${idx}`, checked);
-            item = checked;
-        });
+        
+        setValue('userAgree', checked);
+        for(let i = 0; i < SUBAGREE_LEN; i++) setValue(`agree${i}`, checked);
+        handleAgreeError(checked);
     };
+
+    const handleAgreeError = checked => {
+        if(checked) clearErrors('userAgree');
+        else setError('userAgree');
+    };
+
+    useEffect(() => {
+        if(invalidId.length > 0) {
+            setError('userId', { type: 'invalidId', messgae: '이미 가입된 아이디 입니다.' });
+        }
+    }, [invalidId]);
+
+    useEffect(() => {
+        setSubmitAble(
+            Object.keys(errors).length <= 0
+            && Object.keys(watching).filter(key => 
+                typeof watching[key] === 'boolean'? watching[key] === false 
+                : watching[key].length <= 0).length <= 0
+        )
+    }, [watching])
 
     const RENDER_FORM = () => (
         <Form onSubmit={ handleSubmit(onFormSubmit) }>
@@ -40,20 +63,24 @@ const SignupForm = ({
             </div>
             <fieldset>
                 <div className="wrap">
-                    <label htmlFor="uId">아이디</label>
+                    <label htmlFor="userId">아이디</label>
                     <input 
                         type="text" 
-                        name="uId" 
-                        id="uId" 
+                        name="userId" 
+                        id="userId" 
                         placeholder="bonoland@naver.com" 
                         className={ `bd ${ errors.userId? "invalid" : "" }` }
-                        {...register("userId", { required: true, pattern: REGEXP.email })}
+                        {...register("userId", { 
+                            required:{ value: true, message: "아이디를 입력해 주세요."}, 
+                            pattern: { value: REGEXP.email, message: "사용하시는 이메일로 아이디를 입력해 주세요." }, 
+                        })}
                     />
-                    { errors.userId &&
-                        <span className="warn">
-                            { errors.userId.type === "required" && "아이디를 입력해 주세요." }
-                            { errors.userId.type === "pattern" && "사용하시는 이메일로 아이디를 입력해 주세요." }
-                        </span>
+                    { errors.userId && 
+                        <span className="warn">{
+                            (errors.userId.type === 'required' && '아이디를 입력해 주세요.')
+                            || (errors.userId.type === 'pattern' && '사용하시는 이메일로 아이디를 입력해 주세요.')
+                            || (errors.userId.type === 'invalidId' && '이미 가입된 아이디 입니다.')
+                        }</span> 
                     }
                 </div>
                 <div className="wrap">
@@ -64,14 +91,12 @@ const SignupForm = ({
                         id="uPwd01" 
                         placeholder="6 ~ 12자의 문자, 숫자 조합" 
                         className={ `bd ${ errors.userPwd01? "invalid" : "" }` }
-                        {...register("userPwd01", { required: true, pattern: REGEXP.password })}
+                        {...register("userPwd01", { 
+                            required: { value: true, message: "비밀번호를 입력해 주세요." },
+                            pattern: { value: REGEXP.password, message: "문자, 숫자를 포함한 6~12자리를 입력해주세요." }
+                        })}
                     />
-                    { errors.userPwd01 &&
-                        <span className="warn">
-                            { errors.userPwd01.type === "required" && "비밀번호를 입력해 주세요." }
-                            { errors.userPwd01.type === "pattern" && "문자, 숫자를 포함한 6~12자리를 입력해주세요." }
-                        </span>
-                    }
+                    { errors.userPwd01 && <span className="warn">{ errors.userPwd01.message}</span>}
                 </div>
                 <div className="wrap">
                     <label htmlFor="uPwd02">비밀번호 확인</label>
@@ -80,12 +105,17 @@ const SignupForm = ({
                         name="uPwd02" 
                         id="uPwd02" 
                         className={ `bd ${ errors.userPwd02? "invalid" : "" }` }
-                        {...register("userPwd02", { required: true, validate: { confirm: value => value === getValues().userPwd01 }})}
+                        {...register("userPwd02", { 
+                            required: true,
+                            validate: { confirm: value => value === getValues().userPwd01}
+                        })}
                     />
                     {   errors.userPwd02 &&
                         <span className="warn">
-                            { errors.userPwd02.type === "required" && "비밀번호를 확인해 주세요." }
-                            { errors.userPwd02.type === "confirm" && "비밀번호가 서로 일치하지 않습니다." }
+                            {
+                                errors.userPwd02.type === 'required' && "확인 비밀번호를 입력해 주세요." ||
+                                errors.userPwd02.type === 'confirm' && "비밀번호가 서로 일치하지 않습니다."
+                            }
                         </span>
                     }
                 </div>
@@ -96,25 +126,26 @@ const SignupForm = ({
                         name="uName" 
                         id="uName" 
                         className={ `bd ${ errors.userName? "invalid" : "" }` }
-                        {...register("userName", { required: true })}
+                        {...register("userName", { 
+                            required: { value: true, message: "이름을 입력해 주세요." } 
+                        })}
                     />
-                    {   errors.userName &&
-                        <span className="warn">
-                            { errors.userName.type === "required" && "이름을 입력해 주세요." }
-                        </span>
-                    }
+                    { errors.userName && <span className="warn">{ errors.userName.message }</span> }
                 </div>
             </fieldset>
             <hr />
             <Agreement> 
-                {errors.userAgree && <span className="warn">필수 약관에 전체 동의해 주세요.</span> }
+                { errors.userAgree && <span className="warn">보노랜드 필수 이용약관에 모두 동의해 주세요.</span> }
                 <div>
                     <div>
                         <input 
                             type="checkbox" 
                             id="userAgree" 
                             name="userAgree" 
-                            {...register("userAgree", { required: true })}
+                            {...register("userAgree", { 
+                                required: true,
+                                validate: { confirm: value => value === true }
+                            })}
                             onChange={ event => handleAgreeAll(event) }
                         />
                         <label htmlFor="userAgree"></label>
@@ -126,7 +157,6 @@ const SignupForm = ({
                         <input 
                             type="checkbox" 
                             id="agree0" 
-                            value={false} 
                             data-idx={ 0 }
                             {...register("agree0")}
                             onChange={ event => toggleAgreeAll(event) } 
@@ -140,7 +170,6 @@ const SignupForm = ({
                         <input 
                             type="checkbox" 
                             id="agree1" 
-                            value={false} 
                             data-idx={ 1 }
                             {...register("agree1")}
                             onChange={ event => toggleAgreeAll(event) }  
@@ -154,18 +183,17 @@ const SignupForm = ({
                         <input 
                             type="checkbox" 
                             id="agree2" 
-                            value={false} 
                             data-idx={ 2 }
                             {...register("agree2")}
                             onChange={ event => toggleAgreeAll(event) }
                         />
                         <label htmlFor="agree2"></label>
                     </div>
-                    <Link target="_blank" to="/terms/위치기반서비스이용동의">위치기반서비스 이용동의</Link>
+                    <Link target="_blank" to="/terms/위치기반서비스이용약관">위치기반서비스 이용동의</Link>
                 </div>
             </Agreement>
             <div className="action">
-                <button type="submit">회원가입</button>
+                <button type="submit" className={ submitAble? '' : 'disabled' }>회원가입</button>
             </div>
         </Form>
     )

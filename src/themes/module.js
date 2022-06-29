@@ -414,9 +414,10 @@ const ModalAction = styled.div`
     justify-content: center;
     align-items: center;
     gap: 16px;
+    ${'' /* margin-top: 56px; */}
 
     .btn {
-        margin-top: 56px;
+        ${'' /* margin-top: 56px; */}
         width: 100%;
         height: 56px;
         border-radius: 2px;

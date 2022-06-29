@@ -24,6 +24,8 @@ const FindPwdContainer = () => {
     const AUTH_PHONENUMBER = AUTH.phoneNumber;
     const AUTH_SUCCESS = AUTH.success;
 
+    const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
+
     const [ phoneNumber, setPhoneNumber ] = useState("");
     const [ authSuccess, setAuthSuccess ] = useState(null);
     const [ newPwdSuccess, setNewPwdSuccess ] = useState(null);
@@ -139,8 +141,8 @@ const FindPwdContainer = () => {
                         />
                     }
                     <module.ModalAction>
-                        { newPwdSuccess && <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button> }
-                        <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
+                        {  !IS_LOGGEDIN && newPwdSuccess && <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button> }
+                        { !IS_LOGGEDIN && <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>}
                     </module.ModalAction>
                 </Modal>
             }
@@ -166,7 +168,7 @@ const FindPwdContainer = () => {
                         <FindPwdSuccess />
                     }
                     <module.SectionLink className="btm">
-                        <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>
+                        { !IS_LOGGEDIN && <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>}
                     </module.SectionLink>
                 </Section>
             }

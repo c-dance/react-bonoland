@@ -34,7 +34,8 @@ export const getRegionByLatlng = latlng => {
             ].join(',')
         }, (status, response) => {
             if(status === naver.maps.Service.Status.ERROR) reject("geocode오류");
-            else if(response.v2.results.length <= 0) reject("지역 이탈");
+            // else if(response.v2.results.length <= 0) reject("지역 이탈");
+            else if(response.v2.results.length <= 0) resolve('');
             else resolve(response.v2.results[0].region);
         })
     })
