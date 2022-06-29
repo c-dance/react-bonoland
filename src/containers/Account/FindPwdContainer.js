@@ -141,7 +141,8 @@ const FindPwdContainer = () => {
                         />
                     }
                     <module.ModalAction>
-                        {  !IS_LOGGEDIN && newPwdSuccess && <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button> }
+                        {  IS_LOGGEDIN && newPwdSuccess && <button className="btn" onClick={() => dispatch(deactivateFindPwd())}>확인</button> }
+                        { !IS_LOGGEDIN && newPwdSuccess && <button className="btn" onClick={() => dispatch(activateLogin())}>로그인</button> }
                         { !IS_LOGGEDIN && <button className="link" onClick={() => dispatch(activateFindId())}>아이디 찾기</button>}
                     </module.ModalAction>
                 </Modal>

@@ -12,6 +12,7 @@ const AddressFilter = ({ type, adress, onAddressChange, onAddressSubmit }) => {
                 placeholder="지역구, 지역명으로 검색하세요."
                 value={ adress }
                 onChange={ event => onAddressChange(event) }
+                id="autocomplete"
             />
             <button type="submit">검색</button>
         </AddressForm>

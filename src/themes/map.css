@@ -265,6 +265,11 @@
     height: 100%;
     padding: 0;
     background: #fff;
+    border: 0;
+}
+.mobile .info-window::after,
+.mobile .info-window__tail {
+    display: none;
 }
 .mobile .info-window__body {
     padding: 0 60px 0 122px ;

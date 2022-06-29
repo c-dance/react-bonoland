@@ -65,7 +65,7 @@ const QuickMenu = () => {
     };
 
     useEffect(()=> {
-        if(getZoomLevel(ZOOM) === 2 && CHART_DATA) setChartReady(true);
+        if(getZoomLevel(ZOOM) === 'gugun' && CHART_DATA) setChartReady(true);
         else setChartReady(false);
     }, [ZOOM, CHART_DATA]);
 

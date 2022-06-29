@@ -15,7 +15,7 @@ const MapChartContainer = () => {
 
     const ZOOM = useSelector(state => state.Map.zoom );
     const REGION = useSelector(state => state.Map.region );
-    const IS_GUGUN = getZoomLevel(ZOOM) === 2;
+    const IS_GUGUN = getZoomLevel(ZOOM) === 'gugun';
 
     const IS_ACTIVE = useSelector(state => state.Chart.active);
     const CHART_DATA = useSelector(state => state.Chart.data);

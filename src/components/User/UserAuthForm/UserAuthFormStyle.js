@@ -19,5 +19,6 @@ export const Form = styled.form`
         color: ${ ({theme}) => theme.colors.gray600 };
         font-size: 13px;
         text-decoration: underline;
+        cursor: pointer;
     }
 `;

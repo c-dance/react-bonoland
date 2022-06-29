@@ -24,6 +24,7 @@ import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/mode';
+import { ZOOMS } from '../../scheme/map';
 
 const guguns = [
     {
@@ -254,19 +255,11 @@ const MapContainer = () => {
 
     /* === 그룹 마커 클릭 === */
     const onGroupMarkerClick = latlng => {
-        const level = getZoomLevel(MAP_INFOS.zoom);
-        let nZoom;
-        switch(level) {
-            case 3: nZoom = 16; break;
-            case 2: nZoom = 13; break;
-            case 1: nZoom = 11; break;
-            case 0: nZoom = 8; break;
-            default : nZoom = 13;
-        }
+        const newZoom = ZOOMS[getZoomLevel(MAP_INFOS.zoom)][1]+1 ;
         console.log('마커 클릭 ==================================');
         dispatch(updateFilter({
             latlng: latlng,
-            zoom: nZoom
+            zoom: newZoom
         }));
     };
 
@@ -289,7 +282,7 @@ const MapContainer = () => {
 
         console.log(">>> 마커 바꾸기!");
 
-        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 4;
+        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 'dong';
         // 맵 데이터 불러오기
         const RESPONSE = ITEM_MARKER? dongs : guguns;
         setTimeout(function(){

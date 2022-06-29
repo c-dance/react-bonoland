@@ -1,16 +1,15 @@
 import { isMobile } from 'react-device-detect';
 import axios from 'axios';
+import { ZOOMS } from '../scheme/map';
 
 const { naver } = window;
 
 export const getZoomLevel = zoom => {
-    let level = 0;
+    let level= 'gugun';
 
-    if(zoom >= 16) level = 4; // 읍면동 진입(상세 마커)
-    else if(zoom < 16 && zoom >= 13) level = 3; // 구군 진입(읍면동 마커)
-    else if(zoom < 13 && zoom >= 11) level = 2; // 시도 진입(구군 마커)
-    else if(zoom < 11 && zoom >= 8) level = 1; // 남한 진입(시도 마커)
-    else if(zoom < 8) level = 0; // 경계 이탈
+    for(const key in ZOOMS) {
+      if(zoom >= ZOOMS[key][0] && zoom < ZOOMS[key][1]) level = key;
+    }
     
     return level;
 };
@@ -18,68 +17,84 @@ export const getZoomLevel = zoom => {
 export const getZoomByAddress = address => {
   let validAddress = address.filter(item => item.longName.length > 0);
 
-  if(!validAddress) return 13; // 디폴트값: 구군주소 레벨(읍면동 마커)
+  if(!validAddress) return ZOOMS.gugun[0]; // 디폴트값: 구군주소 레벨(읍면동 마커)
 
-  if(validAddress.length >= 3 ) return 16; // 읍면동 주소(상세 마커)
-  else if (validAddress.length <= 1) return 11; // 시도 주소(구군 마커)
-  else return 13; // 구군 주소(읍면동 마커)
+  if(validAddress.length >= 3 ) return ZOOMS.dong[0]; // 읍면동 주소(상세 마커)
+  else if (validAddress.length <= 1) return ZOOMS.sido[0]; // 시도 주소(구군 마커)
+  else return ZOOMS.gugun[0]; // 구군 주소(읍면동 마커)
 };
 
 export const getRegionByLatlng = latlng => {
+    console.log('latlng', latlng);
     return new Promise((resolve, reject) => {
         naver.maps.Service.reverseGeocode({
             coords: new naver.maps.LatLng(latlng[0], latlng[1]),
             orders: [
-            //   naver.maps.Service.OrderType.ADDR,
+              // 법정동으로 통일
+              naver.maps.Service.OrderType.ADDR,
             ].join(',')
         }, (status, response) => {
+            console.log(status);
+            console.log(response);
             if(status === naver.maps.Service.Status.ERROR) reject("geocode오류");
             // else if(response.v2.results.length <= 0) reject("지역 이탈");
             else if(response.v2.results.length <= 0) resolve('');
-            else resolve(response.v2.results[0].region);
+            else resolve(response.v2.results[0].region); // 법정동
         })
     })
 };
 
 export const getRegionByZoom = (regions, zoom) => {
     const level = getZoomLevel(zoom);
-    let result;
 
-    if(level === 3) result = `${regions.area1.name} ${regions.area2.name}`; // 구군 진입시 > 구군 주소
-    else if(level === 4) result = `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}` //읍변동 진입시 > 읍면동 주소
-    else result = '';
-
-    return result;
+    if(level === 'gugun') return `${regions.area1.name} ${regions.area2.name}`; // 구군 진입시 > 구군 주소
+    else if(level === 'dong') return `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}` //읍변동 진입시 > 읍면동 주소
+    else return '';
 };
+
+// export const getSearchByAddress = address => {
+//   return new Promise((resolve, reject) => {
+//     naver.maps.Service.geocode({
+//         query: address
+//       }, (status, response) => {
+//         if (status === naver.maps.Service.Status.ERROR) {
+//             console.log(`검색 오류, address: ${ address? address : 'none' }`);
+//             reject(null);
+//         }
+    
+//         if (response.v2.meta.totalCount === 0) {
+//             console.log('검색 결과 없음');
+//             reject(null);
+//         }
+        
+//         const data = response.v2.addresses[0];
+//         let result = null;
+//         console.log(data);
+
+//         if(data) {
+//           result = {
+//             latlng: [data.x, data.y],
+//             region: data.roadAddress,
+//             zoom: getZoomByAddress(data.addressElements)
+//           };
+//         }
+
+//         resolve(result);
+//       });
+//   })
+// };
 
 export const getSearchByAddress = address => {
   return new Promise((resolve, reject) => {
     naver.maps.Service.geocode({
-        query: address
-      }, (status, response) => {
-        if (status === naver.maps.Service.Status.ERROR) {
-            console.log(`검색 오류, address: ${ address? address : 'none' }`);
-            reject(null);
-        }
-    
-        if (response.v2.meta.totalCount === 0) {
-            console.log('검색 결과 없음');
-            reject(null);
-        }
-        
-        const data = response.v2.addresses[0];
-        let result = null;
-
-        if(data) {
-          result = {
-            latlng: [data.x, data.y],
-            region: data.roadAddress,
-            zoom: getZoomByAddress(data.addressElements)
-          };
-        }
-
-        resolve(result);
-      });
+      query: address
+    }, (status, response) => {
+      if(status === 200 && response.v2.meta.totalCount > 0) {
+        resolve(response.v2.addresses[0])
+      } else {
+        reject(null);
+      }
+    });
   })
 };
 
@@ -219,9 +234,8 @@ export const renderInfoWindow = props => {
   };
 
   naver.maps.Event.addListener(infoWindow, "click", (e) => {
-    const outerClicked = e.pointerEvent.path.filter(p => p.id === "infoWindow").length < 1;
     const btnClicked = e.pointerEvent.path.filter(p => p.tagName === "BUTTON").length > 0;
-    if(outerClicked && !btnClicked) {
+    if(!btnClicked) {
       removeInfoWindow();
     } else {
       const mode =  e.pointerEvent.path.filter(p => p.tagName === "BUTTON")[0].className.split('btn--')[1];
@@ -247,6 +261,7 @@ export const removeInfoWindow = infoWindow => {
   if(infoWindow) {
     infoWindow.setMap(null);
   }
+  console.log('remove infowindow');
   return infoWindow;
 }
 
