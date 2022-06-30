@@ -4,11 +4,6 @@ export const FILTER = {
     ALL: '/filter/all'
 };
 
-export const updateFilterRegion = region => ({
-    type: FILTER.REGION,
-    payload: region
-});
-
 export const updateFilter = data => ({
     type: FILTER.ALL,
     payload: data

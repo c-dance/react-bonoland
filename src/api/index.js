@@ -46,8 +46,7 @@ api.interceptors.response.use(function(response){
     if(executingRequests[originalRequest.url]) {
         delete executingRequests[originalRequest.url];
     }
-
-    consoleErr(error);
+    
     return Promise.reject(error);
 });
 

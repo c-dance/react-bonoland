@@ -1,14 +1,14 @@
 import api from ".";
 
 const CENTER_URL = {
-    center: '/sisul/detailPage', 
+    center: '/bono/detailPage', 
     sales: ''
 };
 
 /*  일반 시설 상세페이지  */
 export const getCenter = async data => await api.post(CENTER_URL.center, {
-    longTermAdminSym : data.centerNo,
-    userNo : data.userNo
+    userNo : 25,
+    longTermAdminSym : 2,
 });
 
 /*  매물 상세페이지  */

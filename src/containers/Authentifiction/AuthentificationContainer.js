@@ -13,6 +13,7 @@ const AuthenticationContainer = () => {
     const AUTH_DESCRIPTION = AUTH.description;
     const AUTH_SUCCESS = AUTH.success;
     const AUTH_NUMBER = AUTH.authNumber;
+    const AUTH_ERROR = AUTH.error;
     const AUTH_PHONENUMBER = AUTH.phoneNumber;
     
     /* === 타이머 === */
@@ -74,7 +75,8 @@ const AuthenticationContainer = () => {
         timer: timer,
         onAuthSubmit: onAuthSubmit,
         description: AUTH_DESCRIPTION, 
-        authNumberError: authNumberError
+        authNumberError: authNumberError,
+        authError: AUTH_ERROR
     };
 
     /* === 타이머 시작 처리 === */
@@ -98,6 +100,10 @@ const AuthenticationContainer = () => {
         if(AUTH_SUCCESS) firetimer(AUTH_SUCCESS);
         else setAuthNumberError(AUTH.error);
     }, [AUTH_SUCCESS])
+
+    useEffect(() => {
+
+    }, [AUTH_ERROR])
 
     return (
         <Authentication {...authProps}/>

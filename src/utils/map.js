@@ -25,19 +25,14 @@ export const getZoomByAddress = address => {
 };
 
 export const getRegionByLatlng = latlng => {
-    console.log('latlng', latlng);
     return new Promise((resolve, reject) => {
         naver.maps.Service.reverseGeocode({
             coords: new naver.maps.LatLng(latlng[0], latlng[1]),
             orders: [
-              // 법정동으로 통일
-              naver.maps.Service.OrderType.ADDR,
+              naver.maps.Service.OrderType.ADDR, // 법정동 주소만 받음
             ].join(',')
         }, (status, response) => {
-            console.log(status);
-            console.log(response);
             if(status === naver.maps.Service.Status.ERROR) reject("geocode오류");
-            // else if(response.v2.results.length <= 0) reject("지역 이탈");
             else if(response.v2.results.length <= 0) resolve('');
             else resolve(response.v2.results[0].region); // 법정동
         })
@@ -52,49 +47,29 @@ export const getRegionByZoom = (regions, zoom) => {
     else return '';
 };
 
-// export const getSearchByAddress = address => {
-//   return new Promise((resolve, reject) => {
-//     naver.maps.Service.geocode({
-//         query: address
-//       }, (status, response) => {
-//         if (status === naver.maps.Service.Status.ERROR) {
-//             console.log(`검색 오류, address: ${ address? address : 'none' }`);
-//             reject(null);
-//         }
-    
-//         if (response.v2.meta.totalCount === 0) {
-//             console.log('검색 결과 없음');
-//             reject(null);
-//         }
-        
-//         const data = response.v2.addresses[0];
-//         let result = null;
-//         console.log(data);
-
-//         if(data) {
-//           result = {
-//             latlng: [data.x, data.y],
-//             region: data.roadAddress,
-//             zoom: getZoomByAddress(data.addressElements)
-//           };
-//         }
-
-//         resolve(result);
-//       });
-//   })
-// };
-
 export const getSearchByAddress = address => {
   return new Promise((resolve, reject) => {
     naver.maps.Service.geocode({
-      query: address
-    }, (status, response) => {
-      if(status === 200 && response.v2.meta.totalCount > 0) {
-        resolve(response.v2.addresses[0])
-      } else {
-        reject(null);
-      }
-    });
+        query: address
+      }, (status, response) => {
+        if (status === naver.maps.Service.Status.ERROR) {
+            console.log(`검색 오류, address: ${ address? address : 'none' }`);
+            reject(null);
+        }
+    
+        if (response.v2.meta.totalCount === 0) {
+            console.log('검색 결과 없음');
+            reject(null);
+        }
+        
+        const data = response.v2.addresses[0];
+        if(data) {
+          resolve({
+            latlng: [Number(data.y), Number(data.x)],
+            zoom: getZoomByAddress(data.addressElements)
+          });
+        }
+      });
   })
 };
 
@@ -147,8 +122,7 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
 };
 
 export const renderItemMarkers = (data, map, onMarkerClick) => {
-
-
+  
   const markers = data.map(item => {
 
     const date = item["거래일"];

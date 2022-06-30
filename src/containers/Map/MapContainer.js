@@ -174,7 +174,7 @@ const MapContainer = () => {
         
         // 줌 이동
         if(mapProps.latlng.length === 2 && mapProps.zoom !== null) {
-            const point = new naver.maps.Point(mapProps.latlng[0], mapProps.latlng[1]);
+            const point = new naver.maps.Point(mapProps.latlng[1], mapProps.latlng[0]);
             map.morph(point, mapProps.zoom, "easeOutCubic");
         }
     };
@@ -255,7 +255,7 @@ const MapContainer = () => {
 
     /* === 그룹 마커 클릭 === */
     const onGroupMarkerClick = latlng => {
-        const newZoom = ZOOMS[getZoomLevel(MAP_INFOS.zoom)][1]+1 ;
+        const newZoom = ZOOMS[getZoomLevel(MAP_INFOS.zoom)][1];
         console.log('마커 클릭 ==================================');
         dispatch(updateFilter({
             latlng: latlng,

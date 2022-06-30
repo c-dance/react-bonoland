@@ -8,7 +8,7 @@ import AddressFilterContainer from '../filters/AddressFilterContainer';
 import CategoryFilterContainer from "../filters/CategoryFilterContainer";
 import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { CATEGORY, TYPE_AND_CAPACITY } from "../../scheme/filter";
-import { getAllRecommendCenters, getFilteredCenters } from '../../api/centers';
+import { getBonoCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
 
 const categorySet = Object.keys(CATEGORY).reduce((acc, key) => {
@@ -28,36 +28,22 @@ const CenterListContainer = () => {
     const [ centers, setCenters ] = useState([]); // 목록 데이터
     const [ loading, error, noData, data, setGet ] = useGet([]); // 목록 로딩
 
-    // 리스트 가져오기
-    const getCenterList = () => {
-        // 필터 카테고리로 재구성 : data 변수에 새로운 값 던져 줌 (검색 카테고리가 같을 경우 던져주지 않음 - submit category에서 처리)
 
-        // if(Object.keys(categories).filter(key => categories[key].selected).length < 0) {
-        //     setGet({ get: getAllRecommendCenters });
-        // } else {
-        //     setGet({ 
-        //         get: getFilteredCenters, 
-        //         params: {
-        //             category: category,
-        //             capacity: capacityValues
-        //         }
-        //     });
-        // }
-
-        console.log(">>> 목록 가져오기!");
-    };
+    useEffect(() => {
+        setGet(getBonoCenters());
+    }, []);
 
     useEffect(() => {
         if(FILTER.latlng.length > 0 || FILTER.category !== null) {
             console.log('===== 검색어 입력 OR 필터값 변경 > 목록 재조회 =====', FILTER);
-            getCenterList();
+            // setGet
         }
-        
     }, [FILTER])
 
     useEffect(() => {
-        setCenters(data);
-        // setCenters(data[Object.keys(data)[0]]);
+        if(data.arrayResult) {
+            setCenters(data.arrayResult);
+        }
     }, [data]);
 
     return (

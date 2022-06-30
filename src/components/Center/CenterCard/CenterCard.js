@@ -19,24 +19,28 @@ import CenterAction from '../CenterAction/CenterAction';
 import ThumbImg from '../../../assets/test/card-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import React from "react";
+import { getLocalNumber } from '../../../utils/number';
 import { useLocation } from 'react-router';
 
 const LIST_PATH = ["/", "recommend", "sales"];
 
 const CenterCard = ({ list, type, center }) => {
 
-    const CENTER_PATH = centerId => {
-        if(list && list.length > 0) {
-            const parentPath = list === "main"? "" : "/" + list;
-            return parentPath + `/center/${centerId}`
-        } else {
-            const currentPath = useLocation().pathname.split('/')[1];
-            let parentPath = LIST_PATH.filter(pathName => pathName === currentPath)[0] || "";
-            if(parentPath.length > 0) parentPath = "/" + parentPath;
-            return parentPath + `/center/${centerId}` 
-        }
-    };
+    // const CENTER_PATH = (centerNo, isBono) => {
+    //     if(list && list.length > 0) {
+    //         const parentPath = list === "main"? "" : "/" + list;
+    //         return parentPath + `/center/${centerId}`
+    //     } else {
+    //         const currentPath = useLocation().pathname.split('/')[1];
+    //         let parentPath = LIST_PATH.filter(pathName => pathName === currentPath)[0] || "";
+    //         if(parentPath.length > 0) parentPath = "/" + parentPath;
+    //         return parentPath + `/center/${centerId}` 
+    //     }
+    // };
 
+    const CENTER_PATH = centerNo => {
+        return `center/${centerNo}`
+    };
 
     return (
         <>
@@ -45,9 +49,9 @@ const CenterCard = ({ list, type, center }) => {
                 <Card className={ type === "abstract" && 'abstract' }>
                     { 
                         type ==="sub" && 
-                        <Head>{`${center["기관"]} ${center["정원"]}인 시설 ${center["분류"]}`}</Head> 
+                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["정원"]}인 시설 ${center["sisulState"]}`}</Head> 
                     }
-                    <Wrap to={ CENTER_PATH(center.id) }>
+                    <Wrap to={ CENTER_PATH(center["longTermAdminSym"]) }>
                         {
                             type !== "abstract" &&
                             <Thumbnail>
@@ -55,38 +59,38 @@ const CenterCard = ({ list, type, center }) => {
                             </Thumbnail>
                         }
                         <Sales>
-                            <Num><span>매물번호:123456</span></Num>
+                            <Num><span>매물번호: {center["sisulCustomNo"]}</span></Num>
                             { 
                                 type !== "abstract" && 
                                 <>
-                                    <Cate>{center["분류"]}</Cate>
+                                    <Cate>{center["bonoForm"]}</Cate>
                                     <Corp><img src={ CorpImg } /></Corp>
                                 </>
                             } 
                             <Badges>
-                                {center["추천"] && <div className='recommend'>추천</div>}
-                                {center["프리미엄"] && <div className='premium'>프리미엄</div> }
+                                {center["bonoDivision"].includes('추천') && <div className='recommend'>추천</div>}
+                                {center["bonoDivision"].includes('프리미엄') && <div className='premium'>프리미엄</div> }
                             </Badges>
                             {
                                 type === "abstract" && 
-                                <Name>{`${center["기관"]} ${center["정원"]}인`}</Name>
+                                <Name>{`${center["sisul"]["adminPttnCd"]} ${center["정원"]}인`}</Name>
                             }
-                            <Region>{center["주소"]}</Region>
-                            <Price>{`매매 ${center["매매가"]}`}</Price>
+                            <Region>{`${center["sisul"]["siDoCd"]} ${center["sisul"]["siGunGuCd"]}`}</Region>
+                            <Price>{`매매 ${getLocalNumber(center["tradingPrice"])} 억`}</Price>
                             <Infos>
-                                <span>{`${center["기관"]} ${center["면적"]}`}</span>
-                                <span>{`[현원 ${center["현원"]}인/정원${center["면적"]}인]`}</span>
+                                <span>{`${center["sisul"]["adminPttnCd"]}, 연면적 ${getLocalNumber(center["sisul"]["totArea"])}m²`}</span>
+                                <span>{`[현원 ${center["sisul"]["toPer"]}인/정원${center["정원"]}인]`}</span>
                             </Infos>
                             {
                                 type !== "abstract" && 
                                 <Assets>
                                     <div>
                                         <em className='invest'>투자</em>
-                                        <span className='value'>{center["투자"]}</span>
+                                        <span className='value'>{center["investmentFee"]}억</span>
                                     </div>
                                     <div>
                                         <em className='loan'>대출</em>
-                                        <span className='value'>{center["대출"]}</span>
+                                        <span className='value'>{center["loans"]}억</span>
                                     </div>
                                 </Assets>
                             }

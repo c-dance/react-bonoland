@@ -23,7 +23,7 @@ import {
     ChartWrap
 } from './CenterItemStyle';
 import CenterAction from '../CenterAction/CenterAction';
-import { useNavigate } from 'react-router';
+import { useNavigate, useHistory } from 'react-router';
 import ItemImg from '../../../assets/test/item-thumbnail.png';
 import CorpImg from '../../../assets/test/card-corp.png';
 import DoughnutChart from '../../Chart/DoughnutChart/DoughnutChart';
@@ -51,7 +51,9 @@ const CenterItem = ({
     const toggleAccordion = (accordian) => { setAccordion(!accordian); };
 
     // 평수 계산
-    console.log(getPyeong("1,234"));
+    //console.log(getPyeong("1,234"));
+
+    console.log(center);
 
     return (
         <>
@@ -65,11 +67,11 @@ const CenterItem = ({
                 <Top>
                     <Accordion>
                         <AccordionSummary  onClick={ () => { isMobile && toggleAccordion(accordion); } }>
-                            <h2 className="name">{`${center["기관"]}(${center["기본정보"]["정원"]}인)`}</h2>
+                            <h2 className="name">{`${center["sisul"]["adminPttnCd"]}(${center["정원"]}인)`}</h2>
                         </AccordionSummary>
                         <AccordionDetails className={ accordion && "active" }>
-                            <div className="num">{`매물번호:${center["매물번호"]}`}</div>
-                            <div className="addr">{ center["주소"] }</div>
+                            <div className="num">{`매물번호:${center["sisulCustomNo"]}`}</div>
+                            <div className="addr">{`${center["sisul"]["siDoCd"]} ${center["sisul"]["siGunGuCd"]} ${center["sisul"]["detailAddr"]}`}</div>
                         </AccordionDetails>
                     </Accordion>
                     <Back onClick={ () => navigate(-1)} ></Back>
@@ -91,19 +93,20 @@ const CenterItem = ({
                             <Section>
                                 <h3>매매 정보</h3>
                                 <hr />
+                                <Corp><a href={center["loansURL"]} target="_blank"><img src={ CorpImg } /></a></Corp>
                                 <Table>
                                     <tbody>
                                         <tr>
                                             <th>실거래가</th>
-                                            <td>{ center["기본정보"]["실거래가"] }</td>
+                                            <td>{ `${center["tradingPrice"]}억` }</td>
                                         </tr>
                                         <tr>
                                             <th>투자</th>
-                                            <td>{ center["기본정보"]["투자"] }</td>
+                                            <td>{ `${center["investmentFee"]}억` }</td>
                                         </tr>
                                         <tr>
                                             <th>대출</th>
-                                            <td>{ center["기본정보"]["대출"]}</td>
+                                            <td>{ `${center["loans"]} 억` }</td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -115,54 +118,54 @@ const CenterItem = ({
                                 <Assets>
                                     <div>
                                         <em className="price">실거래가</em>
-                                        <span>{ center["기본정보"]["실거래가"] }</span>
+                                        <span>{ `${center["tradingPrice"]}억` }</span>
                                     </div>
                                     <div>
                                         <em className="invest">투자</em>
-                                        <span>{ center["기본정보"]["투자"] }</span>
+                                        <span>{ `${center["investmentFee"]}억` }</span>
                                     </div>
                                     <div>
                                         <em className="loan">대출</em>
-                                        <span>{ center["기본정보"]["대출"]}</span>
+                                        <span>{ `${center["loans"]} 억` }</span>
                                     </div>
                                 </Assets>
                                 <Table>
                                     <tbody>
                                         <tr>
                                             <th>기관</th>
-                                            <td>{ center["기본정보"]["기관"] }</td>
+                                            <td>{ center["sisul"]["adminPttnCd"] }</td>
                                         </tr>
                                         <tr>
                                             <th>정원</th>
-                                            <td>{ `${center["기본정보"]["정원"]}}인` }</td>
+                                            <td>{ `${center["sisul"]["정원"]}}인` }</td>
                                         </tr>
                                         <tr>
                                             <th>지정일</th>
-                                            <td>{center["기본정보"]["지정일"]}</td>
+                                            <td>{center["sisul"]["지정일"]}</td>
                                         </tr>
                                         <tr>
                                             <th>현원</th>
-                                            <td>{`${center["기본정보"]["현원"]}인 / ${center["기본정보"]["정원"]}인 (대기 : ${center["기본정보"]["대기"]}인)`}</td>
+                                            <td>{`${center["sisul"]["toPer"]}인 / ${center["sisul"]["정원"]}인 (대기 : ${center["sisul"]["대기"]}인)`}</td>
                                         </tr>
                                         <tr>
                                             <th>인력현황</th>
-                                            <td>{center["기본정보"]["인력현황"]}</td>
+                                            <td>{center["sisul"]["인력현황"]}</td>
                                         </tr>
                                         <tr>
                                             <th>교통편</th>
-                                            <td>{center["기본정보"]["교통편"]}</td>
+                                            <td>{center["sisul"]["tfMth"]}</td>
                                         </tr>
                                         <tr>
                                             <th>주차시설</th>
-                                            <td>{center["기본정보"]["주차시설"]}</td>
+                                            <td>{center["sisul"]["pkngEquip"]}</td>
                                         </tr>
                                         <tr>
                                             <th>평가</th>
-                                            <td>{center["기본정보"]["평가"]}</td>
+                                            <td>{center["sisul"]["평가"]}</td>
                                         </tr>
                                         <tr>
                                             <th>최근거래</th>
-                                            <td>{center["기본정보"]["최근거래"]}</td>
+                                            <td>{center["sisul"]["최근거래"]}</td>
                                         </tr>
                                     </tbody>
                                 </Table>
@@ -171,22 +174,22 @@ const CenterItem = ({
                                 <h3>환경정보</h3>
                                 <hr />
                                 <Envs>
-                                    { center["환경정보"]["병/의원 근접"] && <Env className="nursing">병/위원 근접</Env> }
-                                    { center["환경정보"]["주택밀집지역"]  && <Env className="cluster">주택 밀집 지역</Env> }
-                                    { center["환경정보"]["신도시"]  && <Env className="newTown">신도시</Env> }
-                                    { center["환경정보"]["지가상승거래지역"]  && <Env className="rising">지가 상승<br/>거래 지역</Env> }
-                                    { center["환경정보"]["역세권"]  && <Env className="traffic">역세권</Env> }
-                                    { center["환경정보"]["중심상권"]  && <Env className="market">중심상권</Env> }
-                                    { center["환경정보"]["대로변"]  && <Env className="road">대로변</Env> }
+                                    { center["sisul"]["병/의원 근접"] && <Env className="nursing">병/위원 근접</Env> }
+                                    { center["sisul"]["주택밀집지역"]  && <Env className="cluster">주택 밀집 지역</Env> }
+                                    { center["sisul"]["신도시"]  && <Env className="newTown">신도시</Env> }
+                                    { center["sisul"]["지가상승거래지역"]  && <Env className="rising">지가 상승<br/>거래 지역</Env> }
+                                    { center["sisul"]["역세권"]  && <Env className="traffic">역세권</Env> }
+                                    { center["sisul"]["중심상권"]  && <Env className="market">중심상권</Env> }
+                                    { center["sisul"]["대로변"]  && <Env className="road">대로변</Env> }
                                 </Envs>
                             </Section>
                             <Section>
                                 <h3>상세 설명</h3>
                                 <hr />
-                                <Description>{ center["상세 설명"]}</Description>
+                                <Description>{ center["detailedDescription"]}</Description>
                             </Section>
                             <Section>
-                                <h3>시장현황</h3>
+                                {/* <h3>시장현황</h3>
                                 <ChartWrap>
                                     { 
                                         center["시장 현황"] && 
@@ -198,24 +201,24 @@ const CenterItem = ({
                                             />
                                         ))
                                     }
-                                </ChartWrap>
+                                </ChartWrap> */}
                             </Section>
                             <Section>
                                 <h3>보노지수</h3>
-                                <hr />
+                                {/* <hr />
                                 {
                                     center["보노지수"] &&
                                     <RadarChart 
                                         data={ center["보노지수"] } 
                                     />
-                                }
+                                } */}
                             </Section>
                         </TabCont>
                         <TabCont active={tabIdx === 1}>
                             <Section>
                                 <h3>◈ 토지 정보</h3>
                                 <div>
-                                    <Table>
+                                    {/* <Table>
                                         <tbody>
                                             <tr>
                                                 <th>면적</th>
@@ -245,13 +248,13 @@ const CenterItem = ({
                                                 <td>{ getLocalNumber(center["토지정보"]["공시지가(m²)"]) }</td>
                                             </tr>
                                         </tbody>
-                                    </Table>
+                                    </Table> */}
                                 </div>
                             </Section>
                             <Section>
                                 <h3>◈ 건물 정보</h3>
                                 <div>
-                                    <Table>
+                                    {/* <Table>
                                         <tbody>
                                             <tr>
                                                 <th>주용도</th>
@@ -296,7 +299,7 @@ const CenterItem = ({
                                                 <td>{center["건물정보"]["승강기"]}</td>
                                             </tr>
                                         </tbody>
-                                    </Table>
+                                    </Table> */}
                                 </div>
                             </Section>
                         </TabCont>

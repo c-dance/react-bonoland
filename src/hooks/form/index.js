@@ -24,7 +24,7 @@ export const useOnlyNum = initialValue => {
     };
 
     const setClear = (defaultValue="") => {
-        setValue("");
+        setValue(defaultValue);
     };
 
     return [ value, setOnlyNumber, setClear ];

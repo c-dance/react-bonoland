@@ -1,122 +1,114 @@
 /* === ACTION TYPE === */
 export const SIGNUP  = {
-    ACTIVATE: '/signup',
-    DEACTIVATE: '/'
+    ACTIVATE: '/signup/on',
+    DEACTIVATE: '/signup/off'
 };
 
 export const LOGIN = {
-    ACTIVATE: '/login',
-    DEACTIVATE: '/'
+    ACTIVATE: '/login/on',
+    DEACTIVATE: '/login/off'
 };
 
 export const FIND_ID = {
-    ACTIVATE: '/findId',
-    DEACTIVATE: '/'
+    ACTIVATE: '/findId/on',
+    DEACTIVATE: '/findId/off'
 };
 
 export const FIND_PWD = {
-    ACTIVATE: '/findPwd',
-    DEACTIVATE: '/'
+    ACTIVATE: '/findPwd/on',
+    DEACTIVATE: '/findPwd/off'
 };
 
 export const CALCULATOR = {
-    ACTIVATE: '/calculator',
-    DEACTIVATE: '/'
+    ACTIVATE: '/calculator/on',
+    DEACTIVATE: '/calculator/off',
+    RESET: '/calculator/reset'
 };
 
 export const CONTACT = {
-    ACTIVATE: '/contact',
-    DEACTIVATE: '/', 
+    ACTIVATE: '/contact/on',
+    DEACTIVATE: '/contact/off', 
 };
 
 export const ALARM = {
-    ACTIVATE: '/alarm',
-    DEACTIVATE: '/', 
+    ACTIVATE: '/alarm/on',
+    DEACTIVATE: '/alarm/off', 
 };
 
 export const LOGIN_REQUIRED = {
-    ACTIVATE: '/loginRequired',
-    DEACTIVATE: '/'
+    ACTIVATE: '/loginRequired/on',
+    DEACTIVATE: '/loginRequired/off'
 }
 
 /* === ACTOIN CREATOR === */
 export const activateSignup = () => ({
     type: SIGNUP.ACTIVATE,
-    payload: true
 });
 
 export const activateLogin = () => ({
     type: LOGIN.ACTIVATE,
-    payload: true
 });
 
 export const activateFindId = () => ({
     type: FIND_ID.ACTIVATE,
-    payload: true
 });
 
 export const activateFindPwd = () => ({
     type: FIND_PWD.ACTIVATE,
-    payload: true
 });
 
-export const activateCalculator = () => ({
+export const activateCalculator = (data = null) => ({
     type: CALCULATOR.ACTIVATE,
-    payload: true
+    payload: data
 });
 
-export const activateContact = () => ({
+export const activateContact = (data = null) => ({
     type: CONTACT.ACTIVATE,
-    payload: true
+    payload: data
 });
 
 export const activateAlarm = () => ({
     type: ALARM.ACTIVATE,
-    payload: true
 });
 
 export const activateLoginRequired = () => ({
     type: LOGIN_REQUIRED.ACTIVATE,
-    payload: true
 });
 
 export const deactivateSignup = () => ({
     type: SIGNUP.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateLogin = () => ({
     type: LOGIN.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateFindId = () => ({
     type: FIND_ID.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateFindPwd = () => ({
     type: FIND_PWD.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateCalculator = () => ({
     type: CALCULATOR.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateContact = () => ({
     type: CONTACT.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateAlarm = () => ({
     type: ALARM.DEACTIVATE,
-    payload: false
 });
 
 export const deactivateLoginRequired = () => ({
     type: LOGIN_REQUIRED.DEACTIVATE,
-    payload: false
+});
+
+export const resetCalculator = (data = null) => ({
+    type: CALCULATOR.RESET,
+    payload: data
 });
 

@@ -46,11 +46,11 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
         setRent(DEFAULT_RENT);
         setWarning(false);
         setWarningText("");
-        clearCommons();
-        clearPremiums();
-        clearPremiumPrice();
-        clearHelpers();
-        clearPenalty();
+        clearCommons(data.commons);
+        clearPremiums(data.premiums);
+        clearPremiumPrice(data.premiumPrice);
+        clearHelpers(data.helpers);
+        clearPenalty(data.penalty);
     };
 
     /* === 정원수 옵션 세팅 === */
@@ -99,7 +99,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
     };
 
     const handleCapacity = capacity => {
-        const CAPACITY_EXCESS = getNumber(capacity) - (getNumber(commons) + getNumber(premiums));
+        const CAPACITY_EXCESS = getNumber(capacity) - (getNumber(commons) + getNumber(premiums)) < 0;
         if(CAPACITY_EXCESS) {
             clearCommons();
             clearPremiums();
@@ -131,7 +131,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
 
 
     useEffect(() => {
-        initForm(initialData);
+        if(initialData) initForm(initialData);
     }, [initialData]);
 
     useEffect(() => {

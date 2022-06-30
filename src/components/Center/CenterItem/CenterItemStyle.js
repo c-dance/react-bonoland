@@ -145,6 +145,7 @@ export const Corp = styled.div`
     position: absolute;
     top: -4px;
     right: 0;
+    &.link { cursor: pointer; }
 `;
 
 export const Contents = styled.div`

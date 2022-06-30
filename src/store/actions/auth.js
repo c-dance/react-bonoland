@@ -35,11 +35,35 @@ export const updatePhoneNumber = phoneNumber => async dispatch => {
         payload: phoneNumber
     });
 
+    // await getAuthNumber(phoneNumber)
+    //     .then(res => {
+    //         if(res.data.code === 1) {
+    //             const authNumber = res.data.data;
+    //             dispatch({
+    //                 type: AUTH.SET_AUTHNUMBER,
+    //                 payload: authNumber
+    //             });
+    //             alert(authNumber);
+    //         } else {
+    //             dispatch({
+    //                 type: AUTH.SET_ERROR,
+    //                 payload: '전화번호 인증에 실패했습니다. 다시 시도해 주세요.'
+    //             });
+    //         }
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+            
+    //         dispatch({
+    //             type: AUTH.SET_ERROR,
+    //             payload: '전화번호 전송에 실패했습니다. 다시 시도해 주세요.'
+    //         });
+    //     })
+
     const RESPONSE = await getAuthNumber(phoneNumber);
 
     if(RESPONSE && RESPONSE.data.code === 1) {
         const authNumber = RESPONSE.data.data;
-
         dispatch({
             type: AUTH.SET_AUTHNUMBER,
             payload: authNumber

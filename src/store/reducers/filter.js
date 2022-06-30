@@ -1,7 +1,7 @@
 import { FILTER } from '../actions/filter';
 
 const initialState = {
-    region: "",
+ 
     latlng: [],
     zoom: 14,
     category: null
@@ -9,8 +9,6 @@ const initialState = {
 
 const FilterReducer = (state = initialState, action) => {
     switch(action.type) {
-        case FILTER.REGION:
-            return {...state, region: action.payload};
         case FILTER.CATEGORY: 
             return {...state, category: action.payload};
         case FILTER.ALL: 

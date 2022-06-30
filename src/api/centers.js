@@ -2,6 +2,7 @@ import api, { consoleErr } from ".";
 import axios from "axios";
 
 const CENTERS_URL = {
+    bono: '/rcmndBono',
     recommend: {
         business: '/', 
         remodeling: '/'
@@ -11,6 +12,9 @@ const CENTERS_URL = {
         daycare: '/'
     }
 };
+
+/*  메인페이지 보노추천 목록  */
+export const getBonoCenters = async () => await api.get(CENTERS_URL.bono); 
 
 /*  신규 사업지 목록  */
 export const getBusinessCenters = async data => await api.post(CENTERS_URL.recommend.business, {
@@ -33,21 +37,23 @@ export const getDaycareCenters = async data => await api.post(CENTERS_URL.recomm
 });
 
 
-export const getFilteredCenters = async (filter = { category: "", capacity: [] }) => {
-    console.log('필터링 목록');
 
-    const source = axios.CancelToken.source();
-    const url = `/centers?category=${filter.category}?capacity=${filter.capacity}`;
 
-    try {
-        const response = await api.get("http://localhost:3500/centers" , { cancelToken: source.token });
-        return response;
-    } catch (err) {
-        consoleErr(err);
-    } finally {
-        source.cancel();
-    }
-};
+// export const getFilteredCenters = async (filter = { category: "", capacity: [] }) => {
+//     console.log('필터링 목록');
+
+//     const source = axios.CancelToken.source();
+//     const url = `/centers?category=${filter.category}?capacity=${filter.capacity}`;
+
+//     try {
+//         const response = await api.get("http://localhost:3500/centers" , { cancelToken: source.token });
+//         return response;
+//     } catch (err) {
+//         consoleErr(err);
+//     } finally {
+//         source.cancel();
+//     }
+// };
 
 export const getAllRecommendCenters = async (region=null) => {
     console.log('메인 추천 목록');

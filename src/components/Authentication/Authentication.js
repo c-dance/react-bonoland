@@ -17,10 +17,11 @@ const Authentication = ({
     timer,
     onAuthSubmit, 
     description,
-    authNumberError
+    authNumberError, 
+    authError
 }) => {
 
-    const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({ 
+    const { register, handleSubmit, formState: { errors }, setValue, watch, setError } = useForm({ 
         mode: "onChange", 
         reValidateMode: "onChange", 
         defaultValues: { 
@@ -45,6 +46,7 @@ const Authentication = ({
                         {...register("phoneNumber", { required: true, pattern: REGEXP.phone })}
                     />
                     { errors.phoneNumber && <span className="warn">휴대폰 번호를 다시 확인해 주세요.</span> }
+                    { authError.length > 0 && <span className="warn">{authError}</span> }
                 </div>
                 {
                     onAuth &&
