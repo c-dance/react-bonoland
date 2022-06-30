@@ -17,10 +17,11 @@ const CenterItemContainer = () => {
     const dispatch = useDispatch();
 
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
+    const USER_NO = useSelector(state => state.User.userInfo.no);
 
     const { id } = useParams();
     const [ center, setCenter ] = useState(null);
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
     const [ calcMode, setCalcMode ] = useState(false);
 
     const onContactClick = () => {
@@ -240,10 +241,9 @@ const CenterItemContainer = () => {
     };
 
     useEffect(() => {
-        setGet(getCenter({
-            centerNo: id,
-            userNo: null // login no
-        }))
+        const option = { longTermAdminSym: id };
+        if(IS_LOGGEDIN) option["userNo"] = USER_NO;
+        setGet(getCenter(option));
     }, []);
     
     useEffect(() => {
@@ -264,7 +264,6 @@ const CenterItemContainer = () => {
                 center = { center } 
                 loaging={ loading }
                 error={error}
-                noData={noData}
                 onContactClick = { onContactClick }
                 onCalcClick={ onCalcClick }
             />

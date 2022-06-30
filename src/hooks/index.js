@@ -13,20 +13,14 @@ export const useGet = (initialValue) => {
     const [ api, setApi ] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [noData, setNoData] = useState(false);
-    const [data, setData] = useState(initialValue);
+    const [result, setResult] = useState(initialValue);
     
     const getResponse = async api => {
         const response = await api;
         console.log(response);
 
         if(response) {
-            const data = response.data;
-            if(Array.isArray(data) && response.data.length <= 0) setNoData(true);
-            else if(typeof data === 'object' && Object.keys(data).length <= 0) setNoData(true);
-            else setNoData(false);
-
-            setData(data);
+            setResult(response.data);
             setLoading(false);
         } else {
             setError(true);
@@ -37,7 +31,6 @@ export const useGet = (initialValue) => {
     const initProps = () => {
         setLoading(true);
         setError(false);
-        setNoData(false);
     }
 
     useEffect(() => {
@@ -47,7 +40,7 @@ export const useGet = (initialValue) => {
         }
     }, [api]);
 
-    return [loading, error, noData, data, setApi];
+    return [loading, error, result, setApi];
 };
 
 

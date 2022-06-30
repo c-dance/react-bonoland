@@ -12,7 +12,7 @@ const NewsListContainer = () => {
     const onCloseClick = () => { navigate('/'); }
 
     const [ newsList, setNewsList ] = useState([]);
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
 
     useEffect(() => {
         setGet(getNewsList);
@@ -33,8 +33,7 @@ const NewsListContainer = () => {
             <NewsList 
                 news = { newsList } 
                 loading={ loading }
-                error={ error }  
-                noData={ noData }  
+                error={ error }   
             />
         </Section>
     )

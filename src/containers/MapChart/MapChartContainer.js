@@ -20,7 +20,7 @@ const MapChartContainer = () => {
     const IS_ACTIVE = useSelector(state => state.Chart.active);
     const CHART_DATA = useSelector(state => state.Chart.data);
     
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
 
     /* === 렌더링 이후 차트 데이터 받아오기(모바일 일 때) === */
     useEffect(() => {

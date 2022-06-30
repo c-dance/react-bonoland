@@ -37,8 +37,7 @@ const CenterItem = ({
     onContactClick,
     onCalcClick,
     loading, 
-    error,
-    noData
+    error
 }) => {
 
     const navigate = useNavigate();
@@ -59,7 +58,6 @@ const CenterItem = ({
         <>
         { loading && Loading() }
         { error && Error("다시 시도해 주세요.") }
-        { noData && NoData("기관을 찾을 수 없습니다.") }
         {
             center && Object.keys(center).length > 0 &&
             <Center>
@@ -87,7 +85,7 @@ const CenterItem = ({
                             <div style={{ marginBottom: "30px" }}>
                                 <CenterAction
                                     scrapped={false}
-                                    centerId={"0"}
+                                    centerId={center["longTermAdminSym"]}
                                 />
                             </div>
                             <Section>

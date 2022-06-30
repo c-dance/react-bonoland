@@ -13,7 +13,7 @@ const NewsItemContainer = () => {
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
 
     
     useEffect(() => {
@@ -45,7 +45,6 @@ const NewsItemContainer = () => {
                 news={ news } 
                 loading={ loading }
                 error={ error }  
-                noData={ noData }
             />
         </Section>
     )

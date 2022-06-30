@@ -16,7 +16,7 @@ const UserAlarmContainer = () => {
     const [ total, setTotal ] = useState(0);
     const [ sales, setSales ] = useState([]);
     const [ centers, setCenters ] = useState([]);
-    const [ loading, error, noData, data, setGet ] = useGet([]);
+    const [ loading, error, data, setGet ] = useGet([]);
 
     useEffect(() => {
         if(!Array.isArray(USER_ALARMS) || USER_ALARMS.length <= 0) {
@@ -56,7 +56,6 @@ const UserAlarmContainer = () => {
                 centers={ alarms }
                 loading={ loading }
                 error={ error }  
-                noData={ noData }
             />
         </Section>
     )

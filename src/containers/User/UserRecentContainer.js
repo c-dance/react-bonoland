@@ -9,7 +9,7 @@ const UserRecentContainer = () => {
 
     const [ recent, setRecent ] = useState([]);
     const [id, setId] = useState('123456');
-    const [ loading, error, noData, data, setGet ] = useGet([]);
+    const [ loading, error, data, setGet ] = useGet([]);
 
     useEffect(() => {
         setGet(getUserRecentCenters(id));
@@ -35,7 +35,6 @@ const UserRecentContainer = () => {
                 centers={ recent }
                 loading={ loading }
                 error={ error }  
-                noData={ noData }
             />
         </Section>
     )

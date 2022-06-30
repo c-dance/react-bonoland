@@ -7,8 +7,7 @@ const NewsCard = ({
     news, 
     type,
     loading,
-    error,
-    noData
+    error
 }) => {
 
     const CONTENTS = (news) => (
@@ -23,7 +22,6 @@ const NewsCard = ({
         <>
             { loading && Loading() }
             { error && Error() }
-            { noData && NoData() }
             {
                 type === "list" && news &&
                 <Card>

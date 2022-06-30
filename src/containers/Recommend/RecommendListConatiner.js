@@ -15,7 +15,7 @@ const RecommendListContainer = () => {
     const [ bizs, setBizs ] = useState([]);
     const [ remodelings, setremodelings ] = useState([]);
 
-    const [ loading, error, noData, data, setGet ] = useGet([]);
+    const [ loading, error, data, setGet ] = useGet([]);
 
 
     useEffect(() => {
@@ -46,7 +46,6 @@ const RecommendListContainer = () => {
                         list="recommend"
                         loading={ loading }
                         error={ error }  
-                        noData={ noData }
                         centers={ bizs } 
                         cardUrl="sales"
                     />,
@@ -54,7 +53,6 @@ const RecommendListContainer = () => {
                         list="recommend"
                         loading={ loading }
                         error={ error }  
-                        noData={ noData }
                         centers={ remodelings } 
                         cardUrl="sales"
                     />,

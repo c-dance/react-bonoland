@@ -4,42 +4,38 @@ import { isBrowser, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
 import React, { useState, useEffect } from "react";
 import { useGet } from '../../hooks';
-import { getUserScrapCenters } from '../../api/user';
+import { getUserScrapCenters, getUserScrapSales } from '../../api/user';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 
 const UserScrapContainer = () => {
 
-    const [ centers, setCenters ] = useState([]);
-    const [ sales, setSales ] = useState([]);
-    const [ total, setTotal ] = useState(0);
+    const category = useParams().category || 'bono';
 
-    const [id, setId] = useState('123456');
-    const [ loading, error, noData, data, setGet ] = useGet([]);
-    const [ salesLoading, salesError, salesNoData, setSalesGet ] = useGet([]);
+    const USER_NO = useSelector(state => state.User.userInfo.no);
+    
+    const [ scraps, setScraps ] = useState('');
+    const [ total, setTotal ] = useState('');
+    const [ loading, error, result, setGet ] = useGet(null);
 
-    const loadData = (category = "매물") => {
-        const selected = category === "시설"? sales : centers;
-    };  
+    const changeCategory = () => {
 
+    };
 
     useEffect(() => {
-        // setCenters(data["시설"]);
-        // setSales(data["매물"]);
-        // if(data["시설"] && data["매물"]) {
-        //     const totalLen = data["시설"].length + data["매물"].length
-        //     setTotal(totalLen);
-        // }
-        
-        if(Object.keys(data).length > 0) {
-            setCenters(data[Object.keys(data)[0]]["시설"]);
-            setSales(data[Object.keys(data)[0]]["매물"]);
-            if(data[Object.keys(data)[0]]["시설"] && data[Object.keys(data)[0]]["매물"]) {
-                const totalLen = data[Object.keys(data)[0]]["시설"].length + data[Object.keys(data)[0]]["매물"].length
-                setTotal(totalLen);
-            } 
+        if(category === 'bono') setGet(getUserScrapSales(USER_NO));
+        if(category === 'sisul') setGet(getUserScrapCenters(USER_NO));
+    }, [category]);
+
+    useEffect(() => {
+        if(result) {
+            console.log(result);
         }
-    }, [data]);
+    }, [result]);
+
+
 
     return (
         
@@ -53,21 +49,13 @@ const UserScrapContainer = () => {
             <ListTab 
                 type={ "full" }
                 navs={["매물", "시설"]} 
-                onNavClick={ loadData }
+                onNavClick={ changeCategory }
                 contents={[
                     <CenterList 
                         type={ "sub" } 
-                        centers={ sales } 
+                        centers={ scraps } 
                         loading={ loading }
                         error={ error }  
-                        noData={ noData }
-                    />,
-                    <CenterList 
-                        type={ "sub" } 
-                        centers={ centers } 
-                        loading={ loading }
-                        error={ error }  
-                        noData={ noData }
                     />,
                 ]}
             />

@@ -4,6 +4,7 @@ const initialState = {
     loggedIn: false,
     userInfo: {
         type: '',
+        no: -1,
         id: '',
         name: '',
         tel: '',

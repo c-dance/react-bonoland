@@ -9,8 +9,7 @@ const Terms = ({
     terms, 
     category, 
     loading, 
-    error, 
-    noData, 
+    error,  
     children 
 }) => {
 
@@ -63,7 +62,6 @@ const Terms = ({
             <main>
             { loading && Loading() }
             { error && Error() }
-            { noData && NoData() }
             {
                 terms && terms.length > 0 &&
                 <TabConts>

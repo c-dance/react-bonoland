@@ -7,8 +7,7 @@ import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 const NewsList = ({ 
     news, 
     loading, 
-    error,
-    noData,
+    error
  }) => {
     console.log(news);
     return (
@@ -16,7 +15,6 @@ const NewsList = ({
             <div>
                 { loading && Loading() }
                 { error && Error() }
-                { noData && NoData() }
                 {   news && news.length > 0 &&
                     news.map((data, idx) => (
                         <div key={ idx }>

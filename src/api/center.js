@@ -6,10 +6,7 @@ const CENTER_URL = {
 };
 
 /*  일반 시설 상세페이지  */
-export const getCenter = async data => await api.post(CENTER_URL.center, {
-    userNo : 25,
-    longTermAdminSym : 2,
-});
+export const getCenter = async data => await api.post(CENTER_URL.center, data);
 
 /*  매물 상세페이지  */
 export const getSalesItem = async data => await api.post(CENTER_URL.sales, {

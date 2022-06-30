@@ -100,7 +100,7 @@ const CenterCard = ({ list, type, center }) => {
                         type !== "abstract" && 
                         <CenterAction 
                             scrapped={ false }
-                            centerId={"0"}     
+                            centerId={center["longTermAdminSym"]}     
                         />
                     }
                 </Card>

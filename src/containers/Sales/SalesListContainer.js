@@ -15,7 +15,7 @@ const SalesListContainer = () => {
     const [ nursings, setNursings ] = useState([]);
     const [ daycares, setDayCares ] = useState([]);
 
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
 
     useEffect(() => {
         // setGet(getSalesCenters);
@@ -46,7 +46,6 @@ const SalesListContainer = () => {
                         list="sales"
                         loading={ loading }
                         error={ error }  
-                        noData={ noData }
                         centers={ nursings } 
                         cardUrl="sales"
                     />,
@@ -54,7 +53,6 @@ const SalesListContainer = () => {
                         list="sales"
                         loading={ loading }
                         error={ error }  
-                        noData={ noData }
                         centers={ daycares } 
                         cardUrl="sales"
                     />,

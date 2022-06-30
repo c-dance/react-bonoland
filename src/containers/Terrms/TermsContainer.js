@@ -14,7 +14,7 @@ const TermsContainer = () => {
 
     const [ terms, setTerms ] = useState([]);
     const [ activeCtg, setActiveCtg ] = useState(category || "");
-    const [ loading, error, noData, data, setGet ] = useGet({});
+    const [ loading, error, data, setGet ] = useGet({});
 
     useEffect(() => {
         setGet(getAllTerms);
@@ -35,7 +35,6 @@ const TermsContainer = () => {
                         terms={ terms }
                         loading={ loading }
                         error={ error }
-                        noData={ noData }
                         category={ activeCtg }
                     />
                     <GlobalFooter />
@@ -54,7 +53,6 @@ const TermsContainer = () => {
                             terms={ terms }
                             loading={ loading }
                             error={ error }
-                            noData={ noData }
                             category={ activeCtg }
                         >
                             <GlobalFooter />

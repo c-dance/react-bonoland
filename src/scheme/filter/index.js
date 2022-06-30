@@ -130,4 +130,14 @@ export const TYPE_AND_CAPACITY = {
         label: "39 ~ 49",
         value: [39, 49]
     }], 
+};
+
+export const CATEGORIES = (data) => {
+    return Object.keys(TYPE_AND_CAPACITY).map(key => {
+        return {
+            category: key === "주간보호"? "주간보호센터" : key,
+            min: data && data[key].selected? data[key].capacity[0] : TYPE_AND_CAPACITY[key][0].value[0],
+            max: data && data[key].selected? data[key].capacity[1] : TYPE_AND_CAPACITY[key][0].value[1]
+        }
+    });
 }

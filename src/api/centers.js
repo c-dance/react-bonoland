@@ -3,6 +3,7 @@ import axios from "axios";
 
 const CENTERS_URL = {
     bono: '/rcmndBono',
+    filter: '/searchAreaProc',
     recommend: {
         business: '/', 
         remodeling: '/'
@@ -15,6 +16,9 @@ const CENTERS_URL = {
 
 /*  메인페이지 보노추천 목록  */
 export const getBonoCenters = async () => await api.get(CENTERS_URL.bono); 
+
+/*  메인페이지 필터링 목록  */
+export const getFilteredCenters = async filters => await api.post(CENTERS_URL.filter, filters);
 
 /*  신규 사업지 목록  */
 export const getBusinessCenters = async data => await api.post(CENTERS_URL.recommend.business, {
