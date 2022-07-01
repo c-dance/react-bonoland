@@ -6,7 +6,7 @@ import AuthenticationContainer from '../Authentifiction/AuthentificationContaine
 import NewPassword from '../../components/Account/NewPassword/NewPassword';
 import { module } from '../../themes/module';
 import { FIND_PWD } from '../../scheme/modal';
-import { activateLogin, activateFindId, deactivateFindPwd, activateSignup } from '../../store/actions/mode';
+import { activateLogin, activateFindId, deactivateFindPwd, activateSignup } from '../../store/actions/service';
 import Section from '../../components/ui/Section/Section';
 import FindPwdSuccess from '../../components/Account/FindPwdSuccess/FindPwdSuccess';
 import { getFindPwdAuth } from '../../api/auth';

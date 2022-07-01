@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activateAlert } from '../../store/actions/alert';
 import { contactCenter } from '../../api/service';
 import { USER_AUTH } from '../../utils/user';
-import { deactivateContact } from '../../store/actions/mode'
+import { deactivateContact } from '../../store/actions/service'
 
 
 const ContactContainer = ({ centerInfo }) => {

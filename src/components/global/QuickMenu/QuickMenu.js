@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getZoomLevel } from '../../../utils/map';
 import { activateChart, deactivateChart } from '../../../store/actions/chart';
 import { QuickLink, QuickBtn } from './QuickMenuStyle';
-import { activateAlarm, activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/mode';
+import { activateCalculator, activateLogin, activateLoginRequired } from '../../../store/actions/service';
 import { activateCadastral, deactivateCadastral } from '../../../store/actions/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { GEOLOCATION } from '../../../utils/user';
@@ -11,6 +11,7 @@ import { updateGeolocation } from '../../../store/actions/geolocation';
 import { activateAlert } from '../../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import { updateFilter } from '../../../store/actions/filter';
+import { activateMyAlarm, activateMyMenu, activateNews, activateMyAlarmForm } from '../../../store/actions/page';
 
 const QuickMenu = () => {
 
@@ -76,7 +77,7 @@ const QuickMenu = () => {
                 <QuickBtn 
                     className={`user ${LOCAL_ALARMS? "on" : ""}` } 
                     onClick={() => {
-                        if(USER_LOGGEDIN) navigate("/user");
+                        if(USER_LOGGEDIN) dispatch(activateMyMenu())
                         else dispatch(activateLogin())
                     }}
                 >마이페이지</QuickBtn>
@@ -87,8 +88,8 @@ const QuickMenu = () => {
                     className={`alarm ${LOCAL_ALARMS? "on" : ""}` }
                     onClick={() => {
                         if(USER_LOGGEDIN){ 
-                            if(LOCAL_ALARMS) navigate("/user/alarm");
-                            else dispatch(activateAlarm());
+                            if(LOCAL_ALARMS) dispatch(activateMyAlarm());
+                            else dispatch(activateMyAlarmForm());
                         } else { 
                             dispatch(activateLoginRequired())
                         }
@@ -97,7 +98,7 @@ const QuickMenu = () => {
             }
             <QuickBtn className={`location ${ (USER_GEO && USER_GEO.length > 0)? 'active' : '' }`} onClick={ () => onLocationClick() }>내위치</QuickBtn>
             <QuickBtn className={ `chart ${chartReady? 'on' : ''}` } onClick={ () => onChartClick() }>인구</QuickBtn>
-            <QuickLink className="news" to="/news">뉴스</QuickLink>
+            <QuickBtn className="news" onClick={() => dispatch(activateNews())}>뉴스</QuickBtn>
             <QuickBtn className={`cad ${CADASTRAL? 'on' : '' }`} onClick={ () => onCadastralClick() }>지적도</QuickBtn>
             { isMobile && <QuickBtn className="calc mobile" onClick={ () => dispatch(activateCalculator()) }>수익계산기</QuickBtn> }
         </>

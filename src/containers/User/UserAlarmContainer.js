@@ -5,7 +5,7 @@ import CenterList from '../../components/Center/CenterList/CenterList';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useGet } from '../../hooks';
 import { getUserAlarmCenters } from '../../api/user';
-import { activateAlarm } from '../../store/actions/mode';
+import { deactivateMyAlarm, activateMyAlarmForm } from '../../store/actions/page';
 
 const UserAlarmContainer = () => {
 
@@ -18,9 +18,11 @@ const UserAlarmContainer = () => {
     const [ centers, setCenters ] = useState([]);
     const [ loading, error, data, setGet ] = useGet([]);
 
+    const onCloseClick = () => { dispatch(deactivateMyAlarm()) }
+
     useEffect(() => {
         if(!Array.isArray(USER_ALARMS) || USER_ALARMS.length <= 0) {
-            dispatch(activateAlarm());
+            dispatch(activateMyAlarmForm());
         } else {
             // 매물 목록 가져오기
 
@@ -47,9 +49,11 @@ const UserAlarmContainer = () => {
             themeColor={ isBrowser? "primary" : "secondary" }
             close={ isBrowser && true }
             back={ isMobile &&  true }
+            onCloseClick={ onCloseClick }
+            onBackClick={ onCloseClick }
             option={ true }
             optionText = { "지역설정" }
-            onOptionClick={ () => { dispatch(activateAlarm()); } }
+            onOptionClick={ () => { dispatch(activateMyAlarmForm()); } }
         >
             <CenterList 
                 type={ "sub" } 

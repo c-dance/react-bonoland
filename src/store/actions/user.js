@@ -1,7 +1,5 @@
 import { userLogin } from '../../api/user';
-import { ALERT } from './alert';
 import { USER_AUTH, USER_ID } from '../../utils/user';
-import { LOGIN } from './mode';
 
 export const USER = {
     LOGIN: '/user/login',

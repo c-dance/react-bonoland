@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Form, Metas, Signup } from './LoginStyle';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/mode';
+import { activateFindId, activateFindPwd, activateSignup } from '../../../store/actions/service';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { REGEXP } from '../../../scheme/form';
 

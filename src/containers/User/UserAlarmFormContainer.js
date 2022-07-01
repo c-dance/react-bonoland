@@ -2,7 +2,7 @@ import UserAlarmForm from '../../components/User/UserAlarmForm/UserAlarmForm';
 import Section from '../../components/ui/Section/Section';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deactivateAlarm } from '../../store/actions/mode';
+import { deactivateMyAlarmForm } from '../../store/actions/page';
 import { REGIONS } from '../../scheme/alarm';
 import { setUserLocalAlarm } from '../../api/user';
 import { updateUserInfo } from '../../store/actions/user';
@@ -60,8 +60,8 @@ const UserAlarmFormContainer = () => {
             themeColor="primary"
             close={  isBrowser && true }
             back={ isMobile && true }
-            onCloseClick={ () => dispatch(deactivateAlarm()) }
-            onBackClick={ () => dispatch(deactivateAlarm()) }
+            onCloseClick={ () => dispatch(deactivateMyAlarmForm()) }
+            onBackClick={ () => dispatch(deactivateMyAlarmForm()) }
             action={ true }
             actionText={ "확인" }
             onActionClick={ () => onFormSubtmit() }

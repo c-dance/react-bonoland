@@ -7,7 +7,7 @@ import { activateAlert } from '../../store/actions/alert';
 import { isBrowser } from "react-device-detect";
 import { useGet } from "../../hooks";
 import { getCenter } from '../../api/center';
-import { activateContact, activateCalculator } from "../../store/actions/mode";
+import { activateContact, activateCalculator } from "../../store/actions/service";
 import { updateFilter } from "../../store/actions/filter";
 import { ZOOMS } from '../../scheme/map/index';
 

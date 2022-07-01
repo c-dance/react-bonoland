@@ -9,6 +9,7 @@ import { activateAlert } from '../../store/actions/alert';
 import { registerCenter } from '../../api/service';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { USER_AUTH } from '../../utils/user';
+import { deactivateRegister } from '../../store/actions/service';
 
 const RegisterContainer = () => {
 
@@ -28,9 +29,7 @@ const RegisterContainer = () => {
     
     // 매물접수 닫기
     const navigate = useNavigate();
-    const deactivateRegister = () => {
-        navigate('/');
-    };
+    const onCloseClick = () => { dispatch(deactivateRegister()) };
     
     const onAgreeSubmit = data => setAgreeSubmitted(data.agree);
 
@@ -91,7 +90,7 @@ const RegisterContainer = () => {
                 <Modal
                         open={ true }
                         close={ true }
-                        onCloseClick={ deactivateRegister }
+                        onCloseClick={ onCloseClick }
                         width="890"
                         title="매물 접수"
                     >
@@ -102,7 +101,7 @@ const RegisterContainer = () => {
                 isMobile &&
                 <MobileSection 
                         title="매물접수"
-                        onBackClick={ deactivateRegister }
+                        onBackClick={ onCloseClick }
                     >
                     { RENDER_REGISTER() }
                 </MobileSection>

@@ -13,11 +13,11 @@ import LoginContainer from '../Account/LoginContainer';
 
 const LayoutContainer = ({ children }) => {
 
-    let SIGNUP_MODE  = useSelector(state => state.Mode.signup);
-    let LOGIN_MODE  = useSelector(state => state.Mode.login);
-    let FIND_ID_MODE  = useSelector(state => state.Mode.findId);
-    let FIND_PWD_MODE  = useSelector(state => state.Mode.findPwd);
-    let CALCULATOR_MODE = useSelector(state => state.Mode.Calculator);
+    let SIGNUP_MODE  = useSelector(state => state.Service.signup);
+    let LOGIN_MODE  = useSelector(state => state.Service.login);
+    let FIND_ID_MODE  = useSelector(state => state.Service.findId);
+    let FIND_PWD_MODE  = useSelector(state => state.Service.findPwd);
+    let CALCULATOR_MODE = useSelector(state => state.ServiceCalculator);
 
     return(
         <>

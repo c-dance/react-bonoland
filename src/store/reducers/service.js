@@ -1,13 +1,4 @@
-import {
-    SIGNUP,
-    LOGIN,
-    FIND_ID,
-    FIND_PWD,
-    CALCULATOR,
-    CONTACT,
-    ALARM,
-    LOGIN_REQUIRED
-} from '../actions/mode';
+import { SERVICE } from '../actions/service';
 
 const initialState = {
     signup: false,
@@ -18,49 +9,54 @@ const initialState = {
     contact: false,
     alarm: false,
     loginRequired: false,
+    registser: false,
     calculatorData: null,
     contactData: null
 };
 
-const ModeReducer = (state = initialState, action ) => {
+const ServiceReducer = (state = initialState, action ) => {
     switch(action.type) {
-        case SIGNUP.ACTIVATE: 
+        case SERVICE.SIGNUP_ON: 
             return {...initialState, signup: true };
-        case SIGNUP.DEACTIVATE:
+        case SERVICE.SIGNUP_OFF:
             return {...initialState, signup: false };
-        case LOGIN.ACTIVATE: 
+        case SERVICE.LOGIN_ON: 
             return {...initialState, login: true };
-        case LOGIN.DEACTIVATE:
+        case SERVICE.LOGIN_OFF:
             return {...initialState, login: false };
-        case FIND_ID.ACTIVATE: 
+        case SERVICE.FIND_ID_ON: 
             return {...initialState, findId: true };
-        case FIND_ID.DEACTIVATE:
+        case SERVICE.FIND_ID_OFF:
             return {...initialState, findId: false };
-        case FIND_PWD.ACTIVATE: 
+        case SERVICE.FIND_PWD_ON: 
             return {...initialState, findPwd: true };
-        case FIND_PWD.DEACTIVATE:
+        case SERVICE.FIND_PWD_OFF:
             return {...initialState, findPwd: false };
-        case CALCULATOR.ACTIVATE: 
+        case SERVICE.CALCULATOR_ON: 
             return {...initialState, calculator: true, calculatorData: action.payload };
-        case CALCULATOR.DEACTIVATE:
+        case SERVICE.CALCULATOR_OFF:
             return {...initialState, calculator: false, calculatorData: null };
-        case CALCULATOR.RESET:
+        case SERVICE.CALCULATOR_RESET:
             return {...state, calculatorData: action.payload };
-        case CONTACT.ACTIVATE: 
+        case SERVICE.CONTACT_ON: 
             return {...initialState, contact: true, contactData: action.payload };
-        case CONTACT.DEACTIVATE:
+        case SERVICE.CONTACT_OFF:
             return {...initialState, contact: false, contactData: null };
-        case ALARM.ACTIVATE: 
+        case SERVICE.ALARM_ON: 
             return {...initialState, alarm: true };
-        case ALARM.DEACTIVATE:
+        case SERVICE.ALARM_OFF:
             return {...initialState, alarm: false };
-        case LOGIN_REQUIRED.ACTIVATE: 
+        case SERVICE.REGISTER_ON: 
+            return {...initialState, register: true };
+        case SERVICE.REGISTER_OFF:
+            return {...initialState, register: false };
+        case SERVICE.LOGIN_REQUIRED_ON: 
             return {...initialState, loginRequired: true };
-        case LOGIN_REQUIRED.DEACTIVATE:
+        case SERVICE.LOGIN_REQUIRED_OFF:
             return {...initialState, loginRequired: false };
         default:
             return state;
     }
 };
 
-export default ModeReducer;
+export default ServiceReducer;

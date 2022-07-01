@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deactivateLogin } from '../../store/actions/mode';
+import { deactivateLogin } from '../../store/actions/service';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Modal from "../../components/Modal/Modal";
 import Login from '../../components/Account/Login/Login';

@@ -6,7 +6,7 @@ import AuthenticationContainer from '../Authentifiction/AuthentificationContaine
 import SignupForm from "../../components/Account/SignupForm/SignupForm";
 import SignupSuccess from '../../components/Account/SignupSuccess/SignupSuccess';
 import Modal from "../../components/Modal/Modal";
-import { deactivateSignup } from '../../store/actions/mode';
+import { deactivateSignup } from '../../store/actions/service';
 import Section from '../../components/ui/Section/Section';
 import { userSignup } from '../../api/user';
 import { activateAlert } from '../../store/actions/alert';

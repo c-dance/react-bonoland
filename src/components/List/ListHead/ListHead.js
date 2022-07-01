@@ -1,7 +1,8 @@
 import { Head, Wrap, Title, Back, Alarm } from './ListHeadStyle';
 import React from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { activateAlarm, activateLoginRequired } from '../../../store/actions/mode';
+import { activateLoginRequired } from '../../../store/actions/service';
+import { activateMyAlarmForm } from '../../../store/actions/page';
 
 const ListHeader = ({ title, children }) => {
 
@@ -9,7 +10,7 @@ const ListHeader = ({ title, children }) => {
     const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const onAlarmClick = () => {
-        if(USER_LOGGEDIN) dispatch(activateAlarm()); 
+        if(USER_LOGGEDIN) dispatch(activateMyAlarmForm()); 
         else dispatch(activateLoginRequired());
     }
 

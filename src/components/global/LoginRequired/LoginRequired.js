@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import Modal from '../../../components/Modal/Modal';
 import { useNavigate } from 'react-router';
-import { activateLogin } from '../../../store/actions/mode';
-import { deactivateLoginRequired } from '../../../store/actions/mode';
+import { activateLogin } from '../../../store/actions/service';
+import { deactivateLoginRequired } from '../../../store/actions/service';
 import { module } from '../../../themes/module';
 
 const LoginRequired = () => {

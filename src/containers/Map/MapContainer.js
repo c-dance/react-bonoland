@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { 
     updateMapInfos,
+    updateMapFilter,
     clearMapOverlay,
     updateMapMarkers, 
     updateMapInfoWindow, 
@@ -23,7 +24,7 @@ import Map from '../../components/Map/Map';
 import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
-import { activateContact } from '../../store/actions/mode';
+import { activateContact } from '../../store/actions/service';
 import { ZOOMS } from '../../scheme/map';
 
 const guguns = [
@@ -106,11 +107,11 @@ const MapContainer = () => {
     
     /* === 지도 속성 === */
     const MAP_INFOS = useSelector(state => state.Map.infos);
+    const MAP_FILTER = useSelector(state => state.Map.filter); // 맵 필터링
     const MARKERS = useSelector(state => state.Map.markers); // 마커 목록
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
 
-    const FILTER = useSelector(state => state.Filter);
 
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
@@ -257,7 +258,7 @@ const MapContainer = () => {
     const onGroupMarkerClick = latlng => {
         const newZoom = ZOOMS[getZoomLevel(MAP_INFOS.zoom)][1];
         console.log('마커 클릭 ==================================');
-        dispatch(updateFilter({
+        dispatch(updateMapFilter({
             latlng: latlng,
             zoom: newZoom
         }));
@@ -266,7 +267,7 @@ const MapContainer = () => {
     /* === 아이템 마커 클릭 === */
     const onItemMarkerClick = (latlng, itemId) => {
         // if(isMobile) {
-        //     dispatch(updateFilter({
+        //     dispatch(updateMapFilter({
         //         latlng: latlng
         //     }));
         // }
@@ -316,14 +317,14 @@ const MapContainer = () => {
     
     useEffect(() => {
         // 지도만 그리면
-        resetMapByFilter(FILTER); 
-        // drawBoundary(FILTER.region); // (동일때) 경계 그리기
-    }, [FILTER]);
+        resetMapByFilter(MAP_FILTER); 
+        // drawBoundary(MAP_FILTER.region); // (동일때) 경계 그리기
+    }, [MAP_FILTER]);
 
     useEffect(() => {
         // 카테고리만 변경되었을 때 처리
-        dispatch(updateMapInfos({category: FILTER.category}));
-    }, [FILTER.category])
+        dispatch(updateMapInfos({category: MAP_FILTER.category}));
+    }, [MAP_FILTER.category])
     
     useEffect(() => {
         console.log('===== 맵 이벤트 OR 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);

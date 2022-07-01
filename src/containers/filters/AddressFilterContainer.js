@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getSearchByAddress } from '../../utils/map';
 import { activateAlert } from '../../store/actions/alert';
 import { updateFilter } from '../../store/actions/filter';
+import { updateMapFilter } from '../../store/actions/map';
 
 const AddressFilterContainer = ({ type }) => {
 
@@ -22,6 +23,7 @@ const AddressFilterContainer = ({ type }) => {
             .then(res => {
                 console.log(res);
                 dispatch(updateFilter(res));
+                dispatch(updateMapFilter(res));
             })
             .catch(err => {
                 dispatch(activateAlert({

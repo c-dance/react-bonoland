@@ -5,14 +5,14 @@ import Modal from '../../components/Modal/Modal';
 import Section from '../../components/ui/Section/Section';
 import CalculatorForm from '../../components/Calculator/CalculatorForm/CalculatorForm';
 import CalculatorResult from '../../components/Calculator/CalculatorResult/CalculatorResult';
-import { deactivateCalculator, resetCalculator } from '../../store/actions/mode';
+import { deactivateCalculator, resetCalculator } from '../../store/actions/service';
 import { INCOME_DATASET, GET_INCOME_RESULT } from '../../scheme/calculator';
 
 const CalculatorContainer = () => {
 
     const dispatch = useDispatch();
 
-    const calcData = useSelector(state => state.Mode.calculatorData);
+    const calcData = useSelector(state => state.Service.calculatorData);
 
     const initialForm = Object.assign({}, INCOME_DATASET);
     const [ formData, setFormData ] = useState(initialForm); // 수익계산기 입력폼(기본 데이터)

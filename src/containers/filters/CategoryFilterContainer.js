@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import CategoryFilter from "../../components/filters/CategoryFilter/CategoryFilter";
 import { CATEGORY, TYPE_AND_CAPACITY } from "../../scheme/filter";
 import { updateFilterCategory } from "../../store/actions/filter";
+import { updateMapFilter } from "../../store/actions/map";
 
 const categorySet = Object.keys(CATEGORY).reduce((acc, key) => {
     return Object.assign({}, acc, {
@@ -29,6 +30,7 @@ const CategoryFilterContainer = () => {
         const newCtg = Object.assign({}, categories, value);
         setCategories(newCtg);
         dispatch(updateFilterCategory(newCtg));
+        dispatch(updateMapFilter(newCtg));
     };
 
     return (

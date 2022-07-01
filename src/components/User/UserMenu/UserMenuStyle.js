@@ -10,8 +10,12 @@ export const Menus = styled.div`
     height: 100%;
     padding: 60px 24px;
 
-    a {
+    a, button {
+        padding: 0;
+        background-color: #fff;
+        text-align: left;
         font-weight: ${({ theme }) => theme.fontWeights.medium };
+        cursor: pointer;
     }
 `;
 

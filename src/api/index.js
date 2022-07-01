@@ -11,7 +11,6 @@ const executingRequests = {};
 api.interceptors.request.use(function(config){
     config.headers["Content-type"] ="application/json";
     config.headers["cache-control"] = "no-cache";
-
     return config;
 }, function(request) {
     const currentRequest = request;
@@ -33,12 +32,10 @@ api.interceptors.response.use(function(response){
     if(executingRequests[response.request.responseURL]) {
         delete executingRequests[response.request.responseURL];
     }
-
     return response;
 }, function(error){ 
     const { config } = error;
     const originalRequest = config;
-
     // if(axios.isCancel(error)) {
     //     return new Promise(() => {});
     // }

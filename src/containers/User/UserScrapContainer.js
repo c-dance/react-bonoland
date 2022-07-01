@@ -6,11 +6,14 @@ import React, { useState, useEffect } from "react";
 import { useGet } from '../../hooks';
 import { getUserScrapCenters, getUserScrapSales } from '../../api/user';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { deactivateMyScrap } from '../../store/actions/page';
 
 
 
 const UserScrapContainer = () => {
+
+    const dispatch = useDispatch();
 
     const category = useParams().category || 'bono';
 
@@ -19,6 +22,8 @@ const UserScrapContainer = () => {
     const [ scraps, setScraps ] = useState('');
     const [ total, setTotal ] = useState('');
     const [ loading, error, result, setGet ] = useGet(null);
+
+    const onCloseClick = () => { dispatch(deactivateMyScrap()) };
 
     const changeCategory = () => {
 
@@ -44,6 +49,8 @@ const UserScrapContainer = () => {
             themeColor={ isBrowser? "primary" : "secondary" }
             close={ isBrowser && true }
             back={ isMobile && true }
+            onCloseClick={ onCloseClick }
+            onBackClick={ onCloseClick }
             action={ false }
         >
             <ListTab 

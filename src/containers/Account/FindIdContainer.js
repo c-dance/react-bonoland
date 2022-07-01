@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useDispatch, useSelector } from 'react-redux';
-import { activateFindPwd, deactivateFindId, activateSignup } from '../../store/actions/mode';
+import { activateFindPwd, deactivateFindId, activateSignup } from '../../store/actions/service';
 import Modal from "../../components/Modal/Modal";
 import AuthenticationContainer from '../Authentifiction/AuthentificationContainer';
 import { module } from '../../themes/module';

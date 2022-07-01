@@ -1,7 +1,7 @@
 import React from "react";
 import { Success } from "./FindPwdSuccessStyle";
 import { useDispatch } from "react-redux";
-import { activateLogin } from "../../../store/actions/mode";
+import { activateLogin } from "../../../store/actions/service";
 
 const FindPwdSuccess = () => {
     

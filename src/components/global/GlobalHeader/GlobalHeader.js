@@ -6,8 +6,12 @@ import {
     activateSignup,
     activateLogin,
     activateCalculator,
-    activateContact
-} from '../../../store/actions/mode';
+    activateContact,
+    activateRegister
+} from '../../../store/actions/service';
+import {
+    activateNews
+} from '../../../store/actions/page'
 import { useSelector } from "react-redux";
 
 const GlobalHeader = () => {
@@ -29,13 +33,13 @@ const GlobalHeader = () => {
             <Menu>
                 <NavMenu>
                     <Nav>
-                        <Link to="/register">매물접수</Link>
+                        <button onClick={() => dispatch(activateRegister())}>매물접수</button>
                     </Nav>
                     <Nav>
                         <button onClick={() => dispatch(activateContact())}>매수문의</button>
                     </Nav>
                     <Nav>
-                        <Link to="/news">뉴스</Link>
+                        <button onClick={() => dispatch(activateNews())}>뉴스</button>
                     </Nav>
                 </NavMenu>
                 <UtilMenu>

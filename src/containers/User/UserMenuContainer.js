@@ -1,13 +1,16 @@
 import Section from "../../components/ui/Section/Section";
 import UserMenu from "../../components/User/UserMenu/UserMenu";
-import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
 import { isBrowser, isMobile } from "react-device-detect";
 import React from "react";
+import { deactivateMyMenu } from "../../store/actions/page";
 
 const UserMenuContainer = () => {
 
-    const navigate = useNavigate();
-    const onCloseClick = () => { navigate('/'); };
+    const dispatch = useDispatch();
+    const onCloseClick = () => {
+        dispatch(deactivateMyMenu())
+    } 
 
     return (
         <Section
@@ -15,6 +18,8 @@ const UserMenuContainer = () => {
             themeColor="primary"
             close={ isBrowser && true }
             back={ isMobile && true }
+            onCloseClick={ onCloseClick }
+            onBackClick={ onCloseClick }
         >
             <UserMenu />
         </Section>

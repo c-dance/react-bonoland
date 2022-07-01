@@ -1,4 +1,4 @@
-import { List } from './NewsListStyle';
+import { List, Card, Post } from './NewsListStyle';
 import NewsCard from '../NewsCard/NewsCard';
 import React from "react";
 import { Loading, NoData, Error } from '../../ui/Inform/Inform';
@@ -7,22 +7,25 @@ import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 const NewsList = ({ 
     news, 
     loading, 
-    error
+    error,
+    onCardClick
  }) => {
-    console.log(news);
     return (
         <List>
             <div>
                 { loading && Loading() }
                 { error && Error() }
                 {   news && news.length > 0 &&
-                    news.map((data, idx) => (
+                    news.map((post, idx) => (
                         <div key={ idx }>
-                            <NewsCard 
-                                news={ data } 
-                                type="list" 
-                            />
-                            { idx < (news.length) && <hr />}
+                            <Card onClick={ () => onCardClick(post["newsNo"]) }>
+                                <Post>
+                                    <h3>{ post.newsTitle }</h3>
+                                    { post.newsFile && <img src={ post.newsFile }/> }
+                                    <p>{ post.newsContent }</p>
+                                </Post>
+                            </Card>
+                            { idx < (post.length) && <hr />}
                         </div>
                     ))
                 }

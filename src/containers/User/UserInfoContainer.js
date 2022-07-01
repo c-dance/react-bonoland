@@ -11,8 +11,9 @@ import UserUnsubecribe from '../../components/User/UserUnsubscribe/UserUnsubscri
 import { getPasswordMatch, modifyUserTel, modifyUserInfo, userUnsubscribe } from '../../api/user';
 import { updateUserInfo, logout } from '../../store/actions/user';
 import { activateAuth, deactivateAuth } from '../../store/actions/auth';
-import { activateFindPwd } from '../../store/actions/mode';
+import { activateFindPwd } from '../../store/actions/service';
 import { isBrowser, isMobile } from 'react-device-detect';
+import { deactivateMyInfo } from '../../store/actions/page';
 
 
 const UserInfoContainer = () => {
@@ -40,6 +41,8 @@ const UserInfoContainer = () => {
     const USER_TEL = USER_INFO.tel;
     const [ user, setUser ] = useState(USER);
     const [ newPhoneNumber, setNewPhoneNumber ] = useState();
+
+    const onCloseClick = () => { dispatch(deactivateMyInfo()); };
 
     // 비밀번호 체크 SUBMIT
     const onPwdMatchSubmit = async user => {
@@ -191,6 +194,8 @@ const UserInfoContainer = () => {
                     close={ isBrowser && true }
                     back={ isMobile && true }
                     themeColor={ "primary" }
+                    onCloseClick={ onCloseClick }
+                    onBackClick={ onCloseClick }
                 >
                     <UserAuthForm
                         id={ USER_ID }
@@ -206,6 +211,8 @@ const UserInfoContainer = () => {
                     close={ isBrowser && true }
                     back={ isMobile && true }
                     themeColor={ "primary" }
+                    onCloseClick={ onCloseClick }
+                    onBackClick={ onCloseClick }
                 >
                     <UserInfoForm
                         user={ user }
@@ -232,6 +239,8 @@ const UserInfoContainer = () => {
                             close={ isBrowser && true }
                             back={ isMobile && true }
                             themeColor={ "primary" }
+                            onCloseClick={ onCloseClick }
+                            onBackClick={ onCloseClick }
                         >
                             <AuthenticationContainer /> 
                         </Section>

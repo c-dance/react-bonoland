@@ -1,7 +1,7 @@
 import { Form, FindId } from './FindIdSuccessStyle';
 import React from "react";
 import { useDispatch } from 'react-redux';
-import { activateLogin } from '../../../store/actions/mode';
+import { activateLogin } from '../../../store/actions/service';
 import { USER_ID } from '../../../utils/user';
 
 const FindIdSuccess = ({ data, onLoginClick }) => { 

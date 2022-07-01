@@ -21,8 +21,6 @@ const Section = ({
     const navigate = useNavigate();
     const goBack = () => { navigate(-1); };
 
-    console.log(option);
-
     return(
         <SectionBlock>
             <Title themeColor={ themeColor }>{ title }</Title>

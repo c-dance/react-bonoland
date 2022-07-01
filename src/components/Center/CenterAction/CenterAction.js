@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Actions, Action } from './CenterActionStyle';
 import { useSelector, useDispatch } from 'react-redux';
-import { activateLoginRequired } from '../../../store/actions/mode';
+import { activateLoginRequired } from '../../../store/actions/service';
 import { activateAlert } from '../../../store/actions/alert';
 import { setUserScrap } from '../../../api/user';
 

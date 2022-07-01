@@ -19,7 +19,6 @@ const CenterListContainer = () => {
     const [ centers, setCenters ] = useState(null); // 목록 데이터
     const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
 
-
     useEffect(() => {
         setGet(getBonoCenters());
     }, []);
@@ -27,7 +26,7 @@ const CenterListContainer = () => {
     useEffect(() => {
         if(FILTER.latlng.length > 0 || FILTER.category !== null) {
             console.log('===== 검색어 입력 OR 필터값 변경 > 목록 재조회 =====', FILTER);
-            console.log(FILTER);
+            setCenters(null);
             setGet(getFilteredCenters({
                 x: FILTER.latlng[0],
                 y: FILTER.latlng[1],
