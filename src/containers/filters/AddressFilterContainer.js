@@ -20,6 +20,7 @@ const AddressFilterContainer = ({ type }) => {
 
         await getSearchByAddress(address)
             .then(res => {
+                console.log(res);
                 dispatch(updateFilter(res));
             })
             .catch(err => {

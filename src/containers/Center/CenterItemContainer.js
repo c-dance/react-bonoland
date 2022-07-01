@@ -249,7 +249,7 @@ const CenterItemContainer = () => {
     useEffect(() => {
         if(data.result) {
             setCenter(data.result); // 데이터 저장
-            dispatch(updateFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동
+            // dispatch(updateFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동
         }
     }, [data]);
 

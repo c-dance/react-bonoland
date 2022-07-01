@@ -19,7 +19,7 @@ export const Header = styled.header`
     box-shadow: 0 3px 3px rgba(0,0,0,.06);
 `;
 
-export const HomeLink = styled(Link)`
+export const HomeLink = styled.button`
     z-index: 40;
     width: 195px;
     height: 38px;

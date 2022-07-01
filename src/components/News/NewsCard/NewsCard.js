@@ -9,11 +9,10 @@ const NewsCard = ({
     loading,
     error
 }) => {
-
     const CONTENTS = (news) => (
         <Post>
             <h3>{ news.newsTitle }</h3>
-            { news.newsFileName && <img src={ news.newsFile }/> }
+            { news.newsFile && <img src={ news.newsFile }/> }
             <p>{ news.newsContent }</p>
         </Post>
     );

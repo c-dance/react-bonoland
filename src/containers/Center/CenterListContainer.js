@@ -27,6 +27,7 @@ const CenterListContainer = () => {
     useEffect(() => {
         if(FILTER.latlng.length > 0 || FILTER.category !== null) {
             console.log('===== 검색어 입력 OR 필터값 변경 > 목록 재조회 =====', FILTER);
+            console.log(FILTER);
             setGet(getFilteredCenters({
                 x: FILTER.latlng[0],
                 y: FILTER.latlng[1],

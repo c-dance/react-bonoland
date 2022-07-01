@@ -6,4 +6,5 @@ export const InformBox = styled.div`
     align-items: center;
     width: 100%;
     height: 100%;
+    color: ${({theme}) => theme.colors.gray500 }
 `;

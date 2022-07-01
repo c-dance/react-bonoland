@@ -1,6 +1,6 @@
 import React from "react";
 import { Header, HomeLink, Menu, NavMenu, Nav, UtilMenu, Calculate, Hello, Button } from './GlobalHeaderStyle';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { 
     activateSignup,
@@ -15,10 +15,17 @@ const GlobalHeader = () => {
     const dispatch = useDispatch();
     const LOGGEDIN = useSelector(state => state.User.loggedIn);
     const USER_NAME = useSelector(state => state.User.userInfo.name);
+
+    const currentPath = useLocation().pathname;
+    const navigate = useNavigate();
+
+    const onHomeClick = () => {
+        currentPath === '/'? window.location.reload() : navigate('/');
+    };
     
     return (
         <Header>
-            <HomeLink to="/" />
+            <HomeLink onClick={ () => onHomeClick() } />
             <Menu>
                 <NavMenu>
                     <Nav>

@@ -65,7 +65,7 @@ export const getSearchByAddress = address => {
         const data = response.v2.addresses[0];
         if(data) {
           resolve({
-            latlng: [Number(data.y), Number(data.x)],
+            latlng: [parseFloat(data.y), parseFloat(data.x)],
             zoom: getZoomByAddress(data.addressElements)
           });
         }
