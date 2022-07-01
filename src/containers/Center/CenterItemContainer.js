@@ -8,7 +8,7 @@ import { isBrowser } from "react-device-detect";
 import { useGet } from "../../hooks";
 import { getCenter } from '../../api/center';
 import { activateContact, activateCalculator } from "../../store/actions/service";
-import { updateFilter } from "../../store/actions/filter";
+import { updateMapFilter } from "../../store/actions/map";
 import { ZOOMS } from '../../scheme/map/index';
 
 
@@ -249,7 +249,7 @@ const CenterItemContainer = () => {
     useEffect(() => {
         if(data.result) {
             setCenter(data.result); // 데이터 저장
-            // dispatch(updateFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동
+            dispatch(updateMapFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동
         }
     }, [data]);
 

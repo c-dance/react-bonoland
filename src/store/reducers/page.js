@@ -16,21 +16,21 @@ const PageReducer = (state = initialState, action) => {
         case PAGES.CENTER: 
             return {...state, center: action.payload? action.payload : null};
         case PAGES.NEWS: 
-            return {...state, news: action.payload};
+            return {...initialState, news: action.payload};
         case PAGES.MYPAGE_MENU: 
-            return {...state, myMenu: action.payload};
+            return {...state, myMenu: action.payload, news: false};
         case PAGES.MYPAGE_RECENT: 
-            return {...state, myRecent: action.payload};
+            return {...state, myRecent: action.payload, news: false};
         case PAGES.MYPAGE_INFO: 
-            return {...state, myInfo: action.payload};
+            return {...state, myInfo: action.payload, news: false};
         case PAGES.MYPAGE_ALARM: 
-            return {...state, myAlarm: action.payload};
+            return {...state, myAlarm: action.payload, news: false};
         case PAGES.MYPAGE_ALARM_FORM: 
-            return {...state, myAlarmForm: action.payload};
+            return {...state, myAlarmForm: action.payload, news: false};
         case PAGES.MYPAGE_RECENT: 
-            return {...state, myRecent: action.payload};
+            return {...state, myRecent: action.payload, news: false};
         case PAGES.MYPAGE_SCRAP: 
-            return {...state, myScrap: action.payload};
+            return {...state, myScrap: action.payload, news: false};
         default: 
             return {...state};
     }
