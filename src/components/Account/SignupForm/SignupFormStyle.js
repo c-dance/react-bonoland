@@ -10,6 +10,10 @@ export const Form = styled(module.AccountForm)`
         margin-top: 40px;
     }
 
+    .mobile & {
+        height: auto;
+    }
+
 `;
 
 export const Agreement = styled.fieldset`

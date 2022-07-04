@@ -239,14 +239,12 @@ const CenterItemContainer = () => {
             }
         }));
     };
-
     useEffect(() => {
-        const option = { longTermAdminSym: id };
-        if(IS_LOGGEDIN) option["userNo"] = USER_NO;
-        setGet(getCenter(option));
-    }, []);
+        setGet(getCenter({ userNo: USER_NO, longTermAdminSym: id }));
+    }, [USER_NO]);
     
     useEffect(() => {
+        console.log(data);
         if(data.result) {
             setCenter(data.result); // 데이터 저장
             dispatch(updateMapFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동

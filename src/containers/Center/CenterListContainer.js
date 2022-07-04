@@ -15,12 +15,13 @@ const CenterListContainer = () => {
 
     // redux에서 가져오도록
     const FILTER = useSelector(state => state.Filter);
+    const USER_NO = useSelector(state => state.User.userInfo.no);
     
     const [ centers, setCenters ] = useState(null); // 목록 데이터
     const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
 
     useEffect(() => {
-        setGet(getBonoCenters());
+        setGet(getBonoCenters(USER_NO));
     }, []);
 
     useEffect(() => {
@@ -31,14 +32,9 @@ const CenterListContainer = () => {
                 x: FILTER.latlng[0],
                 y: FILTER.latlng[1],
                 zoom: FILTER.zoom,
+                userNo: USER_NO,
                 categories: CATEGORIES(FILTER.category)
             }))
-            // setGet(getFilteredCenters({
-            //     x:  37.49994330281196,
-            //     y: 126.78276079213884,
-            //     zoom: 8,
-            //     categories: CATEGORIES(FILTER.category)
-            // }))
         }
     }, [FILTER])
 

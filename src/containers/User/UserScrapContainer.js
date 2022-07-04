@@ -1,6 +1,6 @@
 import CenterList from '../../components/Center/CenterList/CenterList';
 import Section from "../../components/ui/Section/Section";
-import { isBrowser, isMobile } from 'react-device-detect';
+import { isBrowser, isEdgeChromium, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
 import React, { useState, useEffect } from "react";
 import { useGet } from '../../hooks';
@@ -15,37 +15,37 @@ const UserScrapContainer = () => {
 
     const dispatch = useDispatch();
 
-    const category = useParams().category || 'bono';
-
-    const USER_NO = useSelector(state => state.User.userInfo.no);
+    const USER_NO = useSelector(state => state.User.userInfo).no;
     
-    const [ scraps, setScraps ] = useState('');
-    const [ total, setTotal ] = useState('');
-    const [ loading, error, result, setGet ] = useGet(null);
+    const [ category, setCategory ] = useState('sales');
+    const [ total, setTotal ] = useState(0);
+    const [ scraps, setScraps ] = useState([]);
+    const [ loading, error, result, setGet ] = useGet([]);
 
     const onCloseClick = () => { dispatch(deactivateMyScrap()) };
 
-    const changeCategory = () => {
-
+    const changeCategory = (name) => {
+        setCategory(name==="매물"? 'sales' : 'sisul')
     };
 
     useEffect(() => {
-        if(category === 'bono') setGet(getUserScrapSales(USER_NO));
+        if(category === 'sales') setGet(getUserScrapSales(USER_NO));
         if(category === 'sisul') setGet(getUserScrapCenters(USER_NO));
     }, [category]);
 
     useEffect(() => {
-        if(result) {
-            console.log(result);
+        if(result && result.arrayResult) {
+            setScraps(result.arrayResult.map(item => ({...item, zzimResult: 1})));
+            setTotal(result.arrayResult[0].totalCount)
+        } else {
+            setScraps([]);
         }
     }, [result]);
-
-
 
     return (
         
         <Section
-            title={ `찜 매물(${ total })` }
+            title={ `찜 매물(${ total? total : '' })` }
             themeColor={ isBrowser? "primary" : "secondary" }
             close={ isBrowser && true }
             back={ isMobile && true }
@@ -64,6 +64,12 @@ const UserScrapContainer = () => {
                         loading={ loading }
                         error={ error }  
                     />,
+                    <CenterList 
+                        type={ "sub" } 
+                        centers={ scraps } 
+                        loading={ loading }
+                        error={ error }  
+                    />
                 ]}
             />
         </Section>

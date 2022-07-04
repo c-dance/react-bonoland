@@ -17,7 +17,7 @@ const CENTERS_URL = {
 /*  메인페이지 보노추천 목록  */
 export const getBonoCenters = async (userNo = -1) => await api.get(CENTERS_URL.bono, {
     params: {
-        userNo: -1
+        userNo: userNo
     }
 }); 
 

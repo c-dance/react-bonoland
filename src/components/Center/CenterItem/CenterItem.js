@@ -30,7 +30,7 @@ import DoughnutChart from '../../Chart/DoughnutChart/DoughnutChart';
 import RadarChart from '../../Chart/RadarChart/RadarChart';
 import { isMobile } from 'react-device-detect';
 import { Loading, Error, NoData } from '../../ui/Inform/Inform';
-import { getLocalNumber, getPyeong } from '../../../utils/number';
+import { getLocalNumber, getNumber, getPyeong } from '../../../utils/number';
 
 const CenterItem = ({ 
     center, 
@@ -51,21 +51,18 @@ const CenterItem = ({
 
     // 평수 계산
     //console.log(getPyeong("1,234"));
-
-    console.log(center);
-
     return (
         <>
         { loading && Loading() }
         { error && Error("다시 시도해 주세요.") }
         {
-            center && Object.keys(center).length > 0 &&
+            center &&
             <Center>
                 <Calculator onClick={ () => onCalcClick() } />
                 <Top>
                     <Accordion>
                         <AccordionSummary  onClick={ () => { isMobile && toggleAccordion(accordion); } }>
-                            <h2 className="name">{`${center["sisul"]["adminPttnCd"]}(${center["정원"]}인)`}</h2>
+                            <h2 className="name">{`${center["sisul"]["adminPttnCd"]}(${center["sisul"]["toPer"]}인)`}</h2>
                         </AccordionSummary>
                         <AccordionDetails className={ accordion && "active" }>
                             <div className="num">{`매물번호:${center["sisulCustomNo"]}`}</div>
@@ -80,11 +77,11 @@ const CenterItem = ({
                 </Top>
                 <Contents>
                     <div>
-                        <Thumbnail><img src={ ItemImg } /></Thumbnail>
+                        <Thumbnail><img src={ center["sisulImage"]["sisulFilePath"] + center["sisulImage"]["sisulFileName"] } /></Thumbnail>
                         <TabCont active={tabIdx === 0}>
                             <div style={{ marginBottom: "30px" }}>
                                 <CenterAction
-                                    scrapped={false}
+                                    scrapped={center["zzimResult"] === 1}
                                     centerId={center["longTermAdminSym"]}
                                 />
                             </div>
@@ -112,7 +109,12 @@ const CenterItem = ({
                             <Section>
                                 <h3>기본 정보</h3>
                                 <hr />
-                                <Corp><img src={ CorpImg } /></Corp>
+                                <Corp>{
+                                    center["company"].map(item => 
+                                    <a href={item.companyURL.length > 0 ? item.companyURL : "#none"} target="_blank">
+                                        <img src={item.companyLogo}/>
+                                    </a> 
+                                )}</Corp>
                                 <Assets>
                                     <div>
                                         <em className="price">실거래가</em>
@@ -135,7 +137,7 @@ const CenterItem = ({
                                         </tr>
                                         <tr>
                                             <th>정원</th>
-                                            <td>{ `${center["sisul"]["정원"]}}인` }</td>
+                                            <td>{ `${center["sisul"]["toPer"]}인` }</td>
                                         </tr>
                                         <tr>
                                             <th>지정일</th>
@@ -143,11 +145,29 @@ const CenterItem = ({
                                         </tr>
                                         <tr>
                                             <th>현원</th>
-                                            <td>{`${center["sisul"]["toPer"]}인 / ${center["sisul"]["정원"]}인 (대기 : ${center["sisul"]["대기"]}인)`}</td>
+                                            <td>{`${center["sisul"]["toPer"]}인 / ${(center["sisul"]["maPer"] + center["sisul"]["fmPer"])}인 (대기 : ${center["sisul"]["rsvPer"]}인)`}</td>
                                         </tr>
                                         <tr>
                                             <th>인력현황</th>
-                                            <td>{center["sisul"]["인력현황"]}</td>
+                                            <td>{ 
+                                                getLocalNumber(center["sisul"]["equipLong"] 
+                                                    + center["sisul"]["hdOfce"] 
+                                                    + center["sisul"]["socWel"]
+                                                    + center["sisul"]["nur"]
+                                                    + center["sisul"]["nurArticle"]
+                                                    + center["sisul"]["recuProt1"]
+                                                    + center["sisul"]["recuProt2"]
+                                                    + center["sisul"]["recuProtDelay"]
+                                                    + center["sisul"]["physicalMTret"]
+                                                    + center["sisul"]["chargeDoc"]
+                                                    + center["sisul"]["nut"]
+                                                    + center["sisul"]["cook"]
+                                                    + center["sisul"]["hygiPrsn"]
+                                                    + center["sisul"]["ofceEmp"]
+                                                    + center["sisul"]["mgmtPrsn"]
+                                                    + center["sisul"]["suppPrsn"]
+                                                )
+                                            }</td>
                                         </tr>
                                         <tr>
                                             <th>교통편</th>
@@ -159,7 +179,7 @@ const CenterItem = ({
                                         </tr>
                                         <tr>
                                             <th>평가</th>
-                                            <td>{center["sisul"]["평가"]}</td>
+                                            <td>{center["totalRtg"]}</td>
                                         </tr>
                                         <tr>
                                             <th>최근거래</th>
@@ -172,13 +192,13 @@ const CenterItem = ({
                                 <h3>환경정보</h3>
                                 <hr />
                                 <Envs>
-                                    { center["sisul"]["병/의원 근접"] && <Env className="nursing">병/위원 근접</Env> }
-                                    { center["sisul"]["주택밀집지역"]  && <Env className="cluster">주택 밀집 지역</Env> }
-                                    { center["sisul"]["신도시"]  && <Env className="newTown">신도시</Env> }
-                                    { center["sisul"]["지가상승거래지역"]  && <Env className="rising">지가 상승<br/>거래 지역</Env> }
-                                    { center["sisul"]["역세권"]  && <Env className="traffic">역세권</Env> }
-                                    { center["sisul"]["중심상권"]  && <Env className="market">중심상권</Env> }
-                                    { center["sisul"]["대로변"]  && <Env className="road">대로변</Env> }
+                                    { center["sisulCategory"].includes("병/의원 근접") && <Env className="nursing">병/위원 근접</Env> }
+                                    { center["sisulCategory"].includes("주택 밀집 지역") && <Env className="cluster">주택 밀집 지역</Env> }
+                                    { center["sisulCategory"].includes("신도시") && <Env className="newTown">신도시</Env> }
+                                    { center["sisulCategory"].includes("지가 상승 거래지역") && <Env className="rising">지가 상승<br/>거래 지역</Env> }
+                                    { center["sisulCategory"].includes("역세권") && <Env className="traffic">역세권</Env> }
+                                    { center["sisulCategory"].includes("중심상권") && <Env className="market">중심상권</Env> }
+                                    { center["sisulCategory"].includes("대로변") && <Env className="road">대로변</Env> }
                                 </Envs>
                             </Section>
                             <Section>
@@ -203,101 +223,112 @@ const CenterItem = ({
                             </Section>
                             <Section>
                                 <h3>보노지수</h3>
-                                {/* <hr />
-                                {
-                                    center["보노지수"] &&
-                                    <RadarChart 
-                                        data={ center["보노지수"] } 
-                                    />
-                                } */}
+                                <hr />
+                                <RadarChart 
+                                    data={{
+                                        total: getNumber(center["totalScore"]),
+                                        scores: [{
+                                                label: "시설평가 등급",
+                                                value: getNumber(center["bonoFacEval"])
+                                            },
+                                            {
+                                                label: "가산현황",
+                                                value: getNumber(center["bonoCntrlCndtn"])
+                                            },
+                                            {
+                                                label: "관리상태",
+                                                value: getNumber(center["boboAddnStus"])
+                                            }]
+                                    }} 
+                                />
                             </Section>
                         </TabCont>
                         <TabCont active={tabIdx === 1}>
                             <Section>
                                 <h3>◈ 토지 정보</h3>
                                 <div>
-                                    {/* <Table>
+                                    <Table>
                                         <tbody>
                                             <tr>
                                                 <th>면적</th>
                                                 <td>
-                                                    {center["토지정보"]["면적"]}
+                                                    {center["sisul"]["lndpclAr"]}
                                                     <button className="sync"></button>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>지목</th>
-                                                <td>{center["토지정보"]["지목"]}</td>
+                                                <td>{center["sisul"]["lndcgrCodeNm"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>용도지역</th>
-                                                <td>{center["토지정보"]["용도지역"]}</td>
+                                                <td>{center["sisul"]["prposArea"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>이용상황</th>
-                                                <td>{center["토지정보"]["이용상황"]}</td>
+                                                <td>{center["sisul"]["ladUseSittn"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>소유구분</th>
-                                                <td>{center["토지정보"]["소유구분"]}</td>
+                                                <td>{center["sisul"]["posesnSeCodeNm"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>공시지가(m²)</th>
-                                                <td>{ getLocalNumber(center["토지정보"]["공시지가(m²)"]) }</td>
+                                                <td>{ `${getLocalNumber(center["sisul"]["pblntfPclnd"])} m²` }</td>
                                             </tr>
                                         </tbody>
-                                    </Table> */}
+                                    </Table>
                                 </div>
                             </Section>
                             <Section>
                                 <h3>◈ 건물 정보</h3>
                                 <div>
-                                    {/* <Table>
+                                    <Table>
                                         <tbody>
                                             <tr>
                                                 <th>주용도</th>
-                                                <td>{center["건물정보"]["주용도"]}</td>
+                                                <td>{center["sisul"]["mainPurpsCdNm"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>신축년도</th>
-                                                <td>{center["건물정보"]["신축년도"]}</td>
+                                                <td>{center["sisul"]["a"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>건폐율</th>
-                                                <td>{center["건물정보"]["건폐율"]}</td>
+                                                <td>{center["sisul"]["bcRat"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>용적률</th>
-                                                <td>{center["건물정보"]["용적률"]}</td>
+                                                <td>{center["sisul"]["vlRat"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>건축물 연면적</th>
                                                 <td>
-                                                    {center["건물정보"]["건축물 연면적"]}
+                                                    {center["sisul"]["totArea"]}
                                                     <button className="sync"></button>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>3층 면적</th>
                                                 <td>
-                                                    {center["건물정보"]["3층 면적"]}
+                                                    {center["sisul"]["b"]}
                                                     <button className="sync"></button>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>규모</th>
-                                                <td>{center["건물정보"]["규모"]}</td>
+                                                <td>{center["sisul"]["c"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>주차대수</th>
-                                                <td>{center["건물정보"]["주차대수"]}</td>
+                                                <td>{center["sisul"]["d"]}</td>
                                             </tr>
                                             <tr>
                                                 <th>승강기</th>
-                                                <td>{center["건물정보"]["승강기"]}</td>
+                                                <td>{center["sisul"]["e"]}</td>
                                             </tr>
                                         </tbody>
-                                    </Table> */}
+                                    </Table>
                                 </div>
                             </Section>
                         </TabCont>

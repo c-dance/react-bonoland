@@ -97,7 +97,9 @@ const CalculatorResult = ({ result }) => {
                 <Caption>수입</Caption>
                 <table>
                     { mobileColGroup() }
-                    { tableHead() }
+                    <thead>
+                        { tableHead() }
+                    </thead>
                     <tbody>
                     {
                         Object.keys(result["수입"]).map((key, idx) => {
@@ -117,7 +119,9 @@ const CalculatorResult = ({ result }) => {
                 <Caption>지출</Caption>
                 <table>
                     { mobileColGroup() }
-                    { tableHead() }
+                    <thead>
+                        { tableHead() }
+                    </thead>
                     <tbody>
                     {
                         Object.keys(result["지출"]).map((key, idx) => {

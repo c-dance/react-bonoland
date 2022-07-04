@@ -12,7 +12,7 @@ const CenterList = ({
 }) => {
     return (
         <CardList type={ type }>
-            { centers && centers.length <= 0 && NoData("현재 조건에 맞는 매물이 없습니다.") }
+            { centers && centers.length < 1 && NoData("현재 조건에 맞는 매물이 없습니다.") }
             { loading && Loading("목록을 조회하고 있습니다.") }
             { error && Error("목록을 조회하는 데 실패했습니다. 다시 시도해 주세요.") }
             <ListWrap>

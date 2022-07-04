@@ -16,7 +16,7 @@ const CalculatorContainer = () => {
 
     const initialForm = Object.assign({}, INCOME_DATASET);
     const [ formData, setFormData ] = useState(initialForm); // 수익계산기 입력폼(기본 데이터)
-    const [ result, setResult ] = useState({}); // 수익계산기 결과
+    const [ result, setResult ] = useState(null); // 수익계산기 결과
     const [ resetAble, setResetAble ] = useState(false);
 
     // 수익계산기 submit
@@ -42,7 +42,7 @@ const CalculatorContainer = () => {
             setResetAble(true);
         } else {
             setFormData(initialForm);
-            setResult({});
+            setResult(null);
             setResetAble(false);
         }
     }, [calcData]);
@@ -55,7 +55,7 @@ const CalculatorContainer = () => {
             onFormReset={ resetForm }
             resetAble={ resetAble }
         >
-            { Object.keys(result).length > 0 && <CalculatorResult result={ result } />}
+            { result && <CalculatorResult result={ result } />}
         </CalculatorForm>
     );
 

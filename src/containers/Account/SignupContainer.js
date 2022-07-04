@@ -79,7 +79,7 @@ const SignupContaienr = () => {
         setPhoneNumber(phoneNumber);
         
         const RESPONSE = await getSignUpAuth(phoneNumber);
-        
+                
         dispatch(deactivateAuth());
 
         if(RESPONSE && RESPONSE.data.code === 1) {
@@ -172,6 +172,7 @@ const SignupContaienr = () => {
                         authSuccess && !signupSuccess &&
                         <SignupForm
                             onFormSubmit={ onFormSubmit }
+                            invalidId={ invalidId }
                         />
                     }
                     {

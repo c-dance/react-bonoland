@@ -143,8 +143,18 @@ export const Assets = styled.div`
 
 export const Corp = styled.div`
     position: absolute;
-    top: -4px;
+    top: 0px;
     right: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: 4px;
+    width: calc(100% - 30px);
+    height: 18px;
+    overflow: hidden;
+    img {
+        height: 100%;
+    }
     &.link { cursor: pointer; }
 `;
 

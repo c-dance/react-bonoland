@@ -26,6 +26,7 @@ import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/service';
 import { ZOOMS } from '../../scheme/map';
+import { getMapMarkers } from '../../api/map';
 
 const guguns = [
     {
@@ -285,19 +286,42 @@ const MapContainer = () => {
 
         const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 'dong';
         // 맵 데이터 불러오기
-        const RESPONSE = ITEM_MARKER? dongs : guguns;
-        setTimeout(function(){
 
-            let mks;
-            if(RESPONSE) {   
-                mks = ITEM_MARKER? 
-                    renderItemMarkers(RESPONSE, map, onItemMarkerClick) 
-                    : renderedGroupMarker(RESPONSE, map, onGroupMarkerClick);
+        const RESPONSE = await getMapMarkers({
+            // latlng: mapProps.latlng,
+            // zoom: mapProps.zoom
+            latlng: [37.5652352, 126.8350976],
+            zoom: 10
+        });
+
+        if(RESPONSE && RESPONSE.data.code === 1) {
+            console.log(RESPONSE.data.arrayResult);
+            setTimeout(function(){
+                const mks = ITEM_MARKER? 
+                    renderItemMarkers(RESPONSE.data.arrayResult, map, onItemMarkerClick) 
+                    : renderedGroupMarker(RESPONSE.data.arrayResult, map, onGroupMarkerClick);
     
                 dispatch(updateMapMarkers(mks));
                 // setMapMarkers(mks);
-            }
-        }, 500)
+            }, 500)
+        } else {
+            console.log(RESPONSE);
+        }
+
+        
+
+        // const RESPONSE = ITEM_MARKER? dongs : guguns;
+        // setTimeout(function(){
+        //     let mks;
+        //     if(RESPONSE) {   
+        //         mks = ITEM_MARKER? 
+        //             renderItemMarkers(RESPONSE, map, onItemMarkerClick) 
+        //             : renderedGroupMarker(RESPONSE, map, onGroupMarkerClick);
+    
+        //         dispatch(updateMapMarkers(mks));
+        //         // setMapMarkers(mks);
+        //     }
+        // }, 500)
     };
 
     // 검색했을 때 영역 그려주기

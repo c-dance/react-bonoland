@@ -404,6 +404,7 @@ export const AccountForm = styled.form`
         span, a {
             text-decoration: underline;
             font-size: ${ theme.fontSizes.s };
+
         }
     }
 `;

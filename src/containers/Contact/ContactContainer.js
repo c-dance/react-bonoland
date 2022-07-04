@@ -9,7 +9,8 @@ import { activateAlert } from '../../store/actions/alert';
 import { contactCenter } from '../../api/service';
 import { USER_AUTH } from '../../utils/user';
 import { deactivateContact } from '../../store/actions/service'
-
+import { useGet } from '../../hooks/index';
+import { getPrivacyTerm } from '../../api/terms';
 
 const ContactContainer = ({ centerInfo }) => {
 
@@ -18,6 +19,7 @@ const ContactContainer = ({ centerInfo }) => {
 
     // 개인정보 활용동의 (1) 약관 받아오기
     const [ term, setTerm ] = useState('');
+    const [ loading, error, data, setGet ] = useGet('');
 
     // 개인정보 활용동의 (1) 활용동의 체크 (2) 활용동의 저장
     const [ agreeSubmitted, setAgreeSubmitted ] = useState(false);
@@ -55,7 +57,12 @@ const ContactContainer = ({ centerInfo }) => {
                 uTel: USER.tel
             });
         }
+        setGet(getPrivacyTerm());
     }, [])
+
+    useEffect(() => {
+        if(data) setTerm(data.result.siteContents);
+    }, [data]);
 
 
     const RENDER_CONTACT = () => (

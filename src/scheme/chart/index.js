@@ -14,5 +14,5 @@ export const MARKETS = {
 };
 
 export const BONOSCORE = {
-    labels: ["시설평가등급", "가산현황", "관리상태"]
+    labels: ["시설평가 등급", "가산현황", "관리상태"]
 }

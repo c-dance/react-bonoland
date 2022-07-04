@@ -129,6 +129,7 @@ export const Signup = styled.div`
             border-radius: 2px;
             border: 1px solid ${ ({theme}) => theme.colors.primary };
             color: ${ ({theme}) => theme.colors.primary };
+            font-size: ${ ({theme}) => theme.fontSizes.base };
         }
     }
 `;

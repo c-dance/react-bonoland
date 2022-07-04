@@ -20,6 +20,18 @@ const NewsContainer = () => {
 
     const [ sectionProps, setSectionProps ] = useState({});
 
+    /* === infinite loading === */
+    const [ hasNextPage, setHasNextPage ] = useState(true);
+    const [ isNextPageLoading, setIsNextPageLoading ] = useState(false);
+    const [ items, setItems ] = useState([]);
+    const loadNextPage = () => {
+        // setListGet(); // page 숫자와 함께 데이터 가져옴
+        // setIsNextPageLoading(true); // 로딩 아이콘 그려줌
+        // setItems(); // item 들을 서로 붙임 : concat
+    };
+
+
+
     const onCardClick = postNo => { 
         setPostGet(getNewsPost(postNo));
     };
@@ -49,7 +61,8 @@ const NewsContainer = () => {
         themeColor: "secondary",
         close: isBrowser? true : false,
         back: isMobile? true: false,
-        onCloseClick: () => dispatch(deactivateNews())
+        onCloseClick: () => dispatch(deactivateNews()),
+        onBackClick: () => dispatch(deactivateNews())
     };
 
     const postSectionProps = (url) => ({
@@ -72,6 +85,9 @@ const NewsContainer = () => {
                         loading={ listLoading }
                         error={ listError } 
                         onCardClick={ onCardClick } 
+                        hasNextPage={ hasNextPage }
+                        isNextPageLoading={ isNextPageLoading }
+                        loadNextPage={ loadNextPage }
                     />
                 }
                 {

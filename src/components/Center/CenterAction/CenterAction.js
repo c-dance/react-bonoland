@@ -9,7 +9,6 @@ const CenterAction = ({
     scrapped,
     centerId
 }) => {
-
     const dispatch = useDispatch();
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
     const USER_NO = useSelector(state => state.User.userInfo.no);
@@ -24,6 +23,7 @@ const CenterAction = ({
                 userNo: USER_NO, 
                 longTermAdminSym: centerId
             });
+            console.log(RESPONSE);
             if(RESPONSE) {
                 RESPONSE.data.code >=2 ? alert('찜 등록') : alert('찜 해제');
                 setIsScrapped(RESPONSE.data.code >= 2);

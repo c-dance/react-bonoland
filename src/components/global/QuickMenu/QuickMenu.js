@@ -12,6 +12,7 @@ import { activateAlert } from '../../../store/actions/alert';
 import { useNavigate } from 'react-router';
 import { updateFilter } from '../../../store/actions/filter';
 import { activateMyAlarm, activateMyMenu, activateNews, activateMyAlarmForm } from '../../../store/actions/page';
+import { updateMapFilter } from '../../../store/actions/map';
 
 const QuickMenu = () => {
 
@@ -52,9 +53,10 @@ const QuickMenu = () => {
     const onLocationClick = async () => {
         GEOLOCATION.get()
             .then(position => {
-                const LATLNG = [ (position.coords.longitude).toString(), (position.coords.latitude).toString() ];
+                const LATLNG = [ (position.coords.latitude).toString(), (position.coords.longitude).toString() ];
                 dispatch(updateGeolocation(LATLNG));
                 dispatch(updateFilter({ latlng: LATLNG }));
+                dispatch(updateMapFilter({ latlng: LATLNG }));
             })
             .catch(err => {
                 console.error(err.message);

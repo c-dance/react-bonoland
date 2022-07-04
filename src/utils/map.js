@@ -41,10 +41,13 @@ export const getRegionByLatlng = latlng => {
 
 export const getRegionByZoom = (regions, zoom) => {
     const level = getZoomLevel(zoom);
-
-    if(level === 'gugun') return `${regions.area1.name} ${regions.area2.name}`; // 구군 진입시 > 구군 주소
-    else if(level === 'dong') return `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}` //읍변동 진입시 > 읍면동 주소
-    else return '';
+    let result = ``;
+    console.log(regions);
+    if(regions && Object.keys(regions).length > 0) {
+      if(level === 'gugun') result = `${regions.area1.name} ${regions.area2.name}`; // 구군 진입시 > 구군 주소
+      if(level === 'dong') result = `${regions.area1.name} ${regions.area2.name} ${regions.area3.name}` //읍변동 진입시 > 읍면동 주소
+    }
+    return result;
 };
 
 export const getSearchByAddress = address => {
@@ -76,26 +79,33 @@ export const getSearchByAddress = address => {
 export const renderedGroupMarker = (data, map, onMarkerClick) => {
 
   const markers = data.map(item => {
-    let address = '';
-    let contents = [];
-    let total = 0;
+    const latlng = [item.x, item.y];
+    const total = item.totalCount;
+    const address = item.area;
+    let contents = '';
+
+    if(item['mallTotal'] && item['onlyTotal']) contents += `<li>요양원 ${item['mallTotal'] + item['onlyTotal']}</li>`;
+    if(item['centerTotal']) contents += `<li>주간보호 ${item['centerTotal']}</li>`;
   
-    Object.keys(item).forEach(key => {
-      switch(key) {
-        case "주소" : 
-          address = item[key];
-          break;
-        case "latlng": 
-          break;
-        default: 
-          contents.push(`<li>${key} ${item[key]}</li>`);
-          total += Number(item[key]);
-          break;
-      }
-    });
+    // Object.keys(item).forEach(key => {
+    //   switch(key) {
+    //     case "area" : 
+    //       address = item[key];
+    //       break;
+    //     case "x": 
+    //       break;
+    //     case "y": 
+    //       break;
+    //     default: 
+    //       contents.push(`<li>${key} ${item[key]}</li>`);
+    //       total += Number(item[key]);
+    //       break;
+    //   }
+    // });
 
     const marker = new naver.maps.Marker({
-      position: new naver.maps.LatLng(item.latlng),
+      // position: new naver.maps.LatLng(item.latlng),
+      position: new naver.maps.LatLng([item.y, item.x]),
       map: map, 
       icon: {
         content: `
@@ -113,7 +123,7 @@ export const renderedGroupMarker = (data, map, onMarkerClick) => {
       draggable: false
     });
 
-    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(item.latlng) });
+    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng) });
 
     return marker;
     }

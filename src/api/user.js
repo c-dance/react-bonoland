@@ -76,18 +76,24 @@ export const getUserLocalAlarm = async userNo => await api.post(USER_URL.scrap.l
 
 /*  최근 본 매물 목록 가져오기  */
 export const getUserRecentCenters = async userNo => await api.get(USER_URL.recentList, {
-    userNo: userNo
+    params: {
+        userNo: userNo
+    }
 });
 
 /*  스크랩 등록/해제  */
 export const setUserScrap = async data => await api.post(USER_URL.scrap.save, data);
 
 /*  스크랩 시설 목록 가져오기  */
-export const getUserScrapCenters = async userNo => await api.post(USER_URL.scrap.centersList, {
-    userNo: 25
+export const getUserScrapCenters = async userNo => await api.get(USER_URL.scrap.centersList, {
+    params: {
+        userNo: userNo
+    }
 })
 
 /*  스크랩 메물 목록 가져오기  */
-export const getUserScrapSales = async userNo => await api.post(USER_URL.scrap.salesList, {
-    userNo: userNo
+export const getUserScrapSales = async userNo => await api.get(USER_URL.scrap.salesList, {
+    params: {
+        userNo: userNo
+    }
 })

@@ -49,13 +49,13 @@ const CenterCard = ({ list, type, center }) => {
                 <Card className={ type === "abstract" && 'abstract' }>
                     { 
                         type ==="sub" && 
-                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["정원"]}인 시설 ${center["sisulState"]}`}</Head> 
+                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인 시설 ${center["sisulCustom"]["sisulState"]}`}</Head> 
                     }
                     <Wrap to={ CENTER_PATH(center["longTermAdminSym"]) }>
                         {
                             type !== "abstract" &&
                             <Thumbnail>
-                                <img src={ ThumbImg } alt="보노매물" />
+                                <img src={ center["sisulImage"]["sisulFilePath"] + center["sisulImage"]["sisulFileName"] } alt="보노매물" />
                             </Thumbnail>
                         }
                         <Sales>
@@ -64,22 +64,29 @@ const CenterCard = ({ list, type, center }) => {
                                 type !== "abstract" && 
                                 <>
                                     <Cate>{center["bonoForm"]}</Cate>
-                                    <Corp><img src={ CorpImg } /></Corp>
+                                    <Corp>{
+                                        Array.isArray(center["company"])? 
+                                        center["company"].map(item => <img src={item.companyLogo}/>)
+                                        : <img src={center["company"].companyLogo}/>
+                                    }</Corp>
                                 </>
                             } 
-                            <Badges>
-                                {center["bonoDivision"].includes('추천') && <div className='recommend'>추천</div>}
-                                {center["bonoDivision"].includes('프리미엄') && <div className='premium'>프리미엄</div> }
-                            </Badges>
+                            {
+                                center["bonoDivision"] &&
+                                <Badges>
+                                    {center["bonoDivision"].includes('추천') && <div className='recommend'>추천</div>}
+                                    {center["bonoDivision"].includes('프리미엄') && <div className='premium'>프리미엄</div> }
+                                </Badges>
+                            }
                             {
                                 type === "abstract" && 
-                                <Name>{`${center["sisul"]["adminPttnCd"]} ${center["정원"]}인`}</Name>
+                                <Name>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인`}</Name>
                             }
                             <Region>{`${center["sisul"]["siDoCd"]} ${center["sisul"]["siGunGuCd"]}`}</Region>
                             <Price>{`매매 ${getLocalNumber(center["tradingPrice"])} 억`}</Price>
                             <Infos>
                                 <span>{`${center["sisul"]["adminPttnCd"]}, 연면적 ${getLocalNumber(center["sisul"]["totArea"])}m²`}</span>
-                                <span>{`[현원 ${center["sisul"]["toPer"]}인/정원${center["정원"]}인]`}</span>
+                                <span>{`[현원 ${center["sisul"]["maPer"] + center["sisul"]["fmPer"]}인/정원${center["sisul"]["toPer"]}인]`}</span>
                             </Infos>
                             {
                                 type !== "abstract" && 
@@ -99,7 +106,7 @@ const CenterCard = ({ list, type, center }) => {
                     {
                         type !== "abstract" && 
                         <CenterAction 
-                            scrapped={ false }
+                            scrapped={center["zzimResult"] === 1}
                             centerId={center["longTermAdminSym"]}     
                         />
                     }

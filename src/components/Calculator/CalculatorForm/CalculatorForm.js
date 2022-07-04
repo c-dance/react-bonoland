@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Wrapper, Form, ResetIcon } from './CalculatorFormStyle';
 import { module } from '../../../themes/module';
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -31,6 +31,8 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
 
     const [warning, setWarning] = useState(false); // 경고 문구
     const [warningText, setWarningText] = useState("");
+
+    const focusRef = useRef();
 
     const initForm = data => {
         const DEFAULT_TYPE = data.type || TYPE_AND_CAPACITY[Object.keys(TYPE_AND_CAPACITY)[0]];
@@ -145,6 +147,11 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
         }
     }, [type, capacity]);
 
+    useEffect(() => {
+        if(children && isMobile) {
+            focusRef.current.focus();
+        }
+    }, [children]);
 
     return (
         <Wrapper className={ children? "calced" : "" }>
@@ -293,7 +300,7 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
                         </div>
                         <div className="wrap">
                             <label htmlFor="cf05">10. 월차임(주간보호)</label>
-                            <input type="text" id="cf10" name="cf10" readOnly={true} value={rent}/>
+                            <input type="text" id="cf10" name="cf10" readOnly={true} value={rent} ref={ focusRef }/>
                         </div>
                     </fieldset>
                     <div className="actions">
@@ -302,7 +309,6 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
                     </div>
                 </module.MobileForm>
             }
-
             { children }
             </div>
             { 

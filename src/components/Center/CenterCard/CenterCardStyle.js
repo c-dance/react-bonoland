@@ -23,8 +23,11 @@ export const Wrap = styled(Link)`
     position: relative;
     display: flex;
     gap: 16px;
+    ${'' /* height: 184px; */}
     height: 184px;
+    overflow: hidden;
     .abstract & { height: auto; }
+    .sub & { height: 156px; }
 `;
 
 export const Thumbnail = styled.div`
@@ -33,6 +36,7 @@ export const Thumbnail = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
+    overflow: hidden;
 `;
 
 export const Sales = styled.div`
@@ -60,7 +64,12 @@ export const Corp = styled.div`
     align-items: center;
     width: 100%;
     max-width: 64px;
-    height: 30px;
+    height: 26px;
+    gap: 4px;
+    overflow: hidden;
+    img {
+        height: 100%;
+    }
 `;
 
 export const Num = styled.div`

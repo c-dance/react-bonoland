@@ -4,33 +4,35 @@ import Section from "../../components/ui/Section/Section";
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useGet } from "../../hooks";
 import { getUserRecentCenters } from '../../api/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deactivateMyRecent } from '../../store/actions/page';
 
 const UserRecentContainer = () => {
 
     const dispatch = useDispatch();
 
+    const USER_ID = useSelector(state => state.User.userInfo.no);
+    const [ total, setTotal ] = useState(0);
     const [ recent, setRecent ] = useState([]);
-    const [id, setId] = useState('123456');
     const [ loading, error, data, setGet ] = useGet([]);
 
     const onCloseClick = () => { dispatch(deactivateMyRecent()); };
 
     useEffect(() => {
-        setGet(getUserRecentCenters(id));
+        setGet(getUserRecentCenters(USER_ID));
     }, []);
 
     useEffect(() => {
-        // setRecent(data);
-        if(Object.keys(data).length > 0) {
-            setRecent(data[Object.keys(data)[0]]);
+        if(data && data.arrayResult) {
+            console.log(data)
+            setRecent(data.arrayResult);
+            setTotal(data.arrayResult.length);
         }
     }, [data]);
 
     return (
         <Section
-            title={ `최근 본 매물(${recent.length})` }
+            title={ `최근 본 매물(${total})` }
             themeColor={  isBrowser? "primary" : "secondary" }
             close={ isBrowser && true }
             back={ isMobile && true }
