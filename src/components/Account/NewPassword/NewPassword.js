@@ -9,6 +9,8 @@ const NewPassword = ({
 
     const { register, handleSubmit, formState: { errors }, getValues } = useForm({ mode: 'onSubmit' });
 
+    const submitFn = data => console.log(data);
+
     return (
         <Form onSubmit={ handleSubmit(onFormSubmit) }>
             <fieldset>
@@ -31,7 +33,10 @@ const NewPassword = ({
                         type="password" 
                         name="newPwd02" 
                         placeholder="새 비밀번호 확인" 
-                        {...register("newPwd02", { required: true, validate: { confirm: value => value === getValues().newPwd01 }})}
+                        {...register("newPwd02", { 
+                            required: true,
+                            validate: { confirm: value => value === getValues().newPwd01 }}
+                        )}
                     />
                     {   errors.newPwd02 &&
                         <span className="warn">

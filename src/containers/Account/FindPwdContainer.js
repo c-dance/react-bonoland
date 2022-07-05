@@ -113,10 +113,10 @@ const FindPwdContainer = () => {
         themeColor: "primary",
         close: false,
         back: true,
+        onCloseClick: () => { quitFindPwd() },
         onBackClick: () => { quitFindPwd() },
         action: false
     };
-
 
     return (
         <>
@@ -161,11 +161,11 @@ const FindPwdContainer = () => {
                     {
                         authSuccess === true && !newPwdSuccess &&
                         <NewPassword 
-                            setNewPwd={ setNewPwd } 
+                            onFormSubmit={ setNewPwd } 
                         />
                     }
                     {
-                        authSuccess && newPwdSuccess &&
+                        authSuccess === true && newPwdSuccess &&
                         <FindPwdSuccess />
                     }
                     <module.SectionLink className="btm">

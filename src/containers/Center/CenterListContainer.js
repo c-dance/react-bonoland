@@ -10,6 +10,7 @@ import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { CATEGORIES } from "../../scheme/filter";
 import { getBonoCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
+import { AutoResizer, InfiniteLoader, List, WindowScroller } from 'react-virtualized';
 
 const CenterListContainer = () => {
 
@@ -17,11 +18,41 @@ const CenterListContainer = () => {
     const FILTER = useSelector(state => state.Filter);
     const USER_NO = useSelector(state => state.User.userInfo.no);
     
+    const [ pageIndex, setPageIndex ] = useState(1);
+    const [ hasNextPage, setHasNextPage ] = useState(false);
+    const [ isNextPageLoading, setIsNextPageLoading ] = useState(false);
+
     const [ centers, setCenters ] = useState(null); // 목록 데이터
     const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
 
+    const loadNextPage = async () => {
+        if(!isNextPageLoading && hasNextPage) {
+            console.log('load more page')
+            setIsNextPageLoading(true);
+            const RESPONSE = await getBonoCenters({userNo: USER_NO, page: pageIndex});
+            if(RESPONSE && RESPONSE.data.code === 1) {
+                setTimeout(function(){
+                    setCenters(centers => [...centers, ...RESPONSE.data.arrayResult]);
+                    setIsNextPageLoading(false);
+                    setPageIndex(pageIndex => pageIndex + 1);
+                    setHasNextPage(RESPONSE.data.pageCode === 1);
+                    // setHasNextPage(true);
+                }, 2000);
+            }
+        }
+    };
+
     useEffect(() => {
-        setGet(getBonoCenters(USER_NO));
+        // setGet(getBonoCenters({ userNo: USER_NO, page: pageIdx }));
+        (async () => {
+            const RESPONSE = await getBonoCenters({userNo: USER_NO, page: pageIndex});
+            console.log(RESPONSE);
+            setCenters(RESPONSE.data.arrayResult);
+            // setHasNextPage(true);
+            setHasNextPage(RESPONSE.data.pageCode === 1);
+            setPageIndex(pageIndex => pageIndex + 1);
+            // setIsNextPageLoading(false);
+        })();
     }, []);
 
     useEffect(() => {
@@ -65,6 +96,9 @@ const CenterListContainer = () => {
                     centers={ centers }   
                     loading={ loading }
                     error={ error }  
+                    hasNextPage={ hasNextPage }
+                    isNextPageLoading={ isNextPageLoading }
+                    loadNextPage={ loadNextPage }
                 />
             </Panel>
         }

@@ -16,6 +16,8 @@ import RecommendListContainer from './containers/Recommend/RecommendListConatine
 import TermsContainer from './containers/Terrms/TermsContainer';
 import MainView from './view/MainView';
 
+import TestContainer from './containers/TestContainer'
+
 
 const App = () => {
 
@@ -44,6 +46,7 @@ const App = () => {
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
       <Route exact path="/terms/:category" element={ <TermsContainer /> } />
+      <Route exact path="/test" element={ <TestContainer /> } />
     </Routes>
 )};
 

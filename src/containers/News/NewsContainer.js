@@ -8,6 +8,119 @@ import { useDispatch } from 'react-redux/es/exports';
 import { deactivateNews } from '../../store/actions/page';
 import NewsCard from '../../components/News/NewsCard/NewsCard';
 
+const newsSet = [
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+    {
+        newsNo: 1, 
+        newsTitle: '뉴스 타이틀 테스트',
+        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
+    },
+]
+
 const NewsContainer = () => {
 
     const dispatch = useDispatch();
@@ -15,6 +128,7 @@ const NewsContainer = () => {
     const [ newsList, setNewsList ] = useState([]);
     const [ post, setPost ] = useState(null);
 
+    const [ listPage, setListPage ] = useState(0);
     const [ listLoading, listError, listData, setListGet ] = useGet([]);
     const [ postLoading, postError, postData, setPostGet ] = useGet({});
 
@@ -23,14 +137,15 @@ const NewsContainer = () => {
     /* === infinite loading === */
     const [ hasNextPage, setHasNextPage ] = useState(true);
     const [ isNextPageLoading, setIsNextPageLoading ] = useState(false);
-    const [ items, setItems ] = useState([]);
     const loadNextPage = () => {
-        // setListGet(); // page 숫자와 함께 데이터 가져옴
-        // setIsNextPageLoading(true); // 로딩 아이콘 그려줌
-        // setItems(); // item 들을 서로 붙임 : concat
+        console.log('load more please');
+        setIsNextPageLoading(true);
+        setTimeout(function(){
+            setIsNextPageLoading(false);
+            setNewsList(newsList => newsList.concat(newsSet.slice(0, 5)));
+            setHasNextPage(true);
+        }, 2000);
     };
-
-
 
     const onCardClick = postNo => { 
         setPostGet(getNewsPost(postNo));
@@ -42,11 +157,16 @@ const NewsContainer = () => {
 
     useEffect(() => {
         setSectionProps(listSectionProps);
-        setListGet(getNewsList);
+        // setListGet(getNewsList);
     }, []);
-
+    
     useEffect(() => {
-        if(listData && listData.arrayResult) setNewsList(listData.arrayResult);
+        if(listData && listData.arrayResult) {
+            // setNewsList(listData.arrayResult);
+            // setNewsList(listData => listData.concat(listData.arrayResult));
+            // setNewsList(newsList => newsList.concat(newsSet.slice(0, 5)));
+            // setListPage(listPage => listPage + 1);
+        }
     }, [listData]);
 
     useEffect(() => {
@@ -81,7 +201,7 @@ const NewsContainer = () => {
                 {
                     !post &&
                     <NewsList 
-                        news = { newsList } 
+                        items = { newsList } 
                         loading={ listLoading }
                         error={ listError } 
                         onCardClick={ onCardClick } 

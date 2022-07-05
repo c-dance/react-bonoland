@@ -36,9 +36,9 @@ api.interceptors.response.use(function(response){
 }, function(error){ 
     const { config } = error;
     const originalRequest = config;
-    if(axios.isCancel(error)) {
-        return new Promise(() => {});
-    }
+    // if(axios.isCancel(error)) {
+    //     return new Promise(() => {});
+    // }
 
     if(executingRequests[originalRequest.url]) {
         delete executingRequests[originalRequest.url];

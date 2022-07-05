@@ -6,155 +6,65 @@ import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 
-const newsSet = [
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-]
-
 const NewsList = ({ 
-    news, 
+    items, 
     loading, 
     error,
     onCardClick,
     hasNextPage,
     isNextPageLoading, 
-    loadNextpage,
+    loadNextPage,
  }) => {    
 
-    // const ITEM_COUNT = hasNextPage? items.length + 1 : items.length;
-    // const loadMoreItems = isNextPageLoading? () => {} : loadNextPage;
-    // const isItemLoaded = index => !hasNextPage || index < items.length;
+    console.log('items', items);
+    const itemCount = hasNextPage ? items.length + 1 : items.length; // loading 할 칸을 만들기 위해서 정해 줌
+    const loadMoreItems = isNextPageLoading ? () => {} : loadNextPage // nextPageLoading 중이면 load하지 않고, 로딩 중이지 않으면 load 함
+    const isItemLoaded = index => !hasNextPage || index < items.length;
+
+    const RENDER_ITEMS = ({ index, style }) => {
+        let content;
+        console.log(index);
+        if (!isItemLoaded(index)) {
+            console.log('loading');
+            content = "Loading...";
+        } else {
+            // content = <Post>
+            //     <h3>{ items[index].newsTitle }</h3>
+            //     <p>{ items[index].newsContent }</p>
+            // </Post>
+            content="content";
+        }
+
+        return (
+            <div style={style}>
+                <Card>
+                    {content}
+                </Card>
+                <hr />
+            </div>
+        );
+    };
 
     return (
-        <List>
-            <div>
-                { loading && Loading() }
-                { error && Error() }
-                { news && news.length < 1 && NoData('준비 중입니다.') }
-                { news && news.length > 0 &&
-                    newsSet.map((post, idx) => (
-                        <div key={ idx }>
-                            <Card onClick={ () => onCardClick(post["newsNo"]) }>
-                                <Post>
-                                    <h3>{ post.newsTitle }</h3>
-                                    <p>{ post.newsContent }</p>
-                                </Post>
-                            </Card>
-                            { idx < (newsSet.length) && <hr />}
-                        </div>
-                    ))
-                }
-            </div>
-        </List>
-    )
-};
+            <InfiniteLoader
+                isItemLoaded={isItemLoaded}
+                itemCount={itemCount}
+                loadMoreItems={loadMoreItems}
+        >
+            {({ onItemsRendered, ref }) => (
+            <FixedSizeList
+                itemCount={itemCount}
+                onItemsRendered={onItemsRendered}
+                ref={ref}
+                height={100}
+                width={'100%'}
+                itemSize={100}
+            >
+            { RENDER_ITEMS }
+            </FixedSizeList>
+            )}
+        </InfiniteLoader>
+    );
+    }
 
 export default NewsList;
