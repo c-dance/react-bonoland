@@ -16,31 +16,12 @@ import {
 } from './CenterCardStyle';
 import CenterAction from '../CenterAction/CenterAction';
 //테스트 사진
-import ThumbImg from '../../../assets/test/card-thumbnail.png';
-import CorpImg from '../../../assets/test/card-corp.png';
 import React from "react";
 import { getLocalNumber } from '../../../utils/number';
-import { useLocation } from 'react-router';
-
-const LIST_PATH = ["/", "recommend", "sales"];
 
 const CenterCard = ({ list, type, center }) => {
 
-    // const CENTER_PATH = (centerNo, isBono) => {
-    //     if(list && list.length > 0) {
-    //         const parentPath = list === "main"? "" : "/" + list;
-    //         return parentPath + `/center/${centerId}`
-    //     } else {
-    //         const currentPath = useLocation().pathname.split('/')[1];
-    //         let parentPath = LIST_PATH.filter(pathName => pathName === currentPath)[0] || "";
-    //         if(parentPath.length > 0) parentPath = "/" + parentPath;
-    //         return parentPath + `/center/${centerId}` 
-    //     }
-    // };
-
-    const CENTER_PATH = centerNo => {
-        return `center/${centerNo}`
-    };
+    if(!center["sisul"]) center = { ...center["sisulCustom"], ...center, sisul: center, sisulCustom: center["sisulCustom"] }
 
     return (
         <>
@@ -49,9 +30,9 @@ const CenterCard = ({ list, type, center }) => {
                 <Card className={ type === "abstract" && 'abstract' }>
                     { 
                         type ==="sub" && 
-                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인 시설 ${center["sisulCustom"]["sisulState"]}`}</Head> 
+                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인 ${center["sisulCustom"]["sisulState"]}`}</Head> 
                     }
-                    <Wrap to={ CENTER_PATH(center["longTermAdminSym"]) }>
+                    <Wrap to={ `/center/${center["longTermAdminSym"]}` }>
                         {
                             type !== "abstract" &&
                             <Thumbnail>

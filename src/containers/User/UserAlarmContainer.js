@@ -4,44 +4,56 @@ import Section from "../../components/ui/Section/Section";
 import CenterList from '../../components/Center/CenterList/CenterList';
 import { isBrowser, isMobile } from 'react-device-detect';
 import { useGet } from '../../hooks';
-import { getUserAlarmCenters } from '../../api/user';
+import { getUserLocalAlarm } from '../../api/user';
 import { deactivateMyAlarm, activateMyAlarmForm } from '../../store/actions/page';
 
 const UserAlarmContainer = () => {
 
     const dispatch = useDispatch();
 
-    const USER_ALARMS = useSelector(state => state.User.userInfo.alarms);
-    const [ alarms, setAlarms ] = useState([]);
-    const [ total, setTotal ] = useState(0);
-    const [ sales, setSales ] = useState([]);
-    const [ centers, setCenters ] = useState([]);
-    const [ loading, error, data, setGet ] = useGet([]);
+    const USER_NO = useSelector(state => state.User.userInfo.no);
 
-    const onCloseClick = () => { dispatch(deactivateMyAlarm()) }
+    const [ nextIndex, setNextIndex ] = useState(1);
+    const [ hasNext, setHasNext ] = useState(false);
+    const [ isNextLoading, setIsNextLoading ] = useState(false);
+    
+    const [ centers, setCenters ] = useState(null);
+    const [ total, setTotal ] = useState(0);
+
+    
+    const loadNext = async () => {
+        setIsNextLoading(true);
+        const RESPONSE = await getUserLocalAlarm({ userNo: USER_NO, page: nextIndex });
+        setTimeout(function(){
+            if(RESPONSE && RESPONSE.data.code === 1) { 
+                setCenters(RESPONSE.data.arrayResult);
+                setHasNext(RESPONSE.data.pageCode == 1);
+                setTotal(RESPONSE.data.totalCount);
+            }
+            setIsNextLoading(false);
+            setNextIndex(nextIndex => nextIndex + 1);
+        }, 2000);
+    };
+    
+    const loadInitial = async() => {
+        setIsNextLoading(true);
+        const RESPONSE = await getUserLocalAlarm({ userNo: USER_NO, page: 1 });
+        console.log(RESPONSE);
+        console.log(RESPONSE);
+        if(RESPONSE && RESPONSE.data.code === 1) { 
+            setCenters(RESPONSE.data.arrayResult);
+            setHasNext(RESPONSE.data.pageCode == 1);
+            setTotal(RESPONSE.data.totalCount);
+        }
+        setIsNextLoading(false);
+    };
 
     useEffect(() => {
-        if(!Array.isArray(USER_ALARMS) || USER_ALARMS.length <= 0) {
-            dispatch(activateMyAlarmForm());
-        } else {
-            // 매물 목록 가져오기
-
-            // 매물목록이 없으면, 시설목록 가져오기 > 시설목록 on
-
-            
-        }
+        loadInitial();
     }, []);
 
+    const onCloseClick = () => { dispatch(deactivateMyAlarm()); };
 
-
-    useEffect(() => {
-        // setAlarms(data);
-        // if(data) setTotal(data.length);
-        // if(Object.keys(data).length > 0) {
-        //     setAlarms(data[Object.keys(data)[0]]);
-        //     setTotal(data[Object.keys(data)[0]].length);
-        // }
-    }, [data]);
 
     return (
         <Section
@@ -57,9 +69,12 @@ const UserAlarmContainer = () => {
         >
             <CenterList 
                 type={ "sub" } 
-                centers={ alarms }
-                loading={ loading }
-                error={ error }  
+                centers={ centers }
+                // loading={ loading }
+                // error={ error } 
+                hasNext={ hasNext }
+                isNextLoading={ isNextLoading }
+                loadNext={ loadNext } 
             />
         </Section>
     )

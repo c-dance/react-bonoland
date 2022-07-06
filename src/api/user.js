@@ -64,36 +64,19 @@ export const modifyUserPwd = async user => await api.post(USER_URL.modify.passwo
 export const modifyUserInfo = async user => await api.post(USER_URL.modify.info, user);
 
 /*  지역 알람 설정  */
-export const setUserLocalAlarm = async data => await api.post(USER_URL.localAlam.save, {
-    userEmail : data.userEamil,
-    localAlertsDepth1 : data.localAlertsDepth1
-});
+export const setUserLocalAlarm = async option => await api.post(USER_URL.localAlam.save, option);
 
 /*  지역 알람 목록 가져오기  */
-export const getUserLocalAlarm = async userNo => await api.post(USER_URL.scrap.list, {
-    userNo: userNo
-});
+export const getUserLocalAlarm = async option => await api.post(USER_URL.localAlam.list, option);
 
 /*  최근 본 매물 목록 가져오기  */
-export const getUserRecentCenters = async userNo => await api.get(USER_URL.recentList, {
-    params: {
-        userNo: userNo
-    }
-});
+export const getUserRecentCenters = async option => await api.get(USER_URL.recentList, { params: option });
 
 /*  스크랩 등록/해제  */
 export const setUserScrap = async data => await api.post(USER_URL.scrap.save, data);
 
 /*  스크랩 시설 목록 가져오기  */
-export const getUserScrapCenters = async userNo => await api.get(USER_URL.scrap.centersList, {
-    params: {
-        userNo: userNo
-    }
-})
+export const getUserScrapCenters = async option => await api.get(USER_URL.scrap.centersList, { params: option });
 
 /*  스크랩 메물 목록 가져오기  */
-export const getUserScrapSales = async userNo => await api.get(USER_URL.scrap.salesList, {
-    params: {
-        userNo: userNo
-    }
-})
+export const getUserScrapSales = async option => await api.get(USER_URL.scrap.salesList, { params: option });

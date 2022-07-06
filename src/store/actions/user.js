@@ -11,14 +11,13 @@ export const login = data => async dispatch => {
     const RESPONSE = await userLogin(data);
 
     if(RESPONSE && RESPONSE.data.code === 1) {
-        console.log(RESPONSE);
         const USER_INFO = { 
             no: RESPONSE.data.result.userNo,
             type: RESPONSE.data.result.userCtg,
             id: RESPONSE.data.result.userEmail,
             name: RESPONSE.data.result.userName, 
             tel: RESPONSE.data.result.userTel,
-            alarms: RESPONSE.data.result["localAlertsDepth1"],
+            alarms: RESPONSE.data.result.localAlert,
             memo: RESPONSE.data.result.userRemarks
         };
 

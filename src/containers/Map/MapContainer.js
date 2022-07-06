@@ -28,33 +28,6 @@ import { activateContact } from '../../store/actions/service';
 import { ZOOMS } from '../../scheme/map';
 import { getMapMarkers } from '../../api/map';
 
-const guguns = [
-    {
-        "주소": "범안동",
-        "요양원": 7,
-        "주간보호": 9, 
-        "latlng": ['126.8068977', '37.4784166']
-    },
-    {
-        "주소": "향동",
-        "요양원": 10,
-        "주간보호": 11,
-        "latlng":  ['126.8925', '37.6005']
-    }, 
-    {
-        "주소": "대산동",
-        "요양원": 14,
-        "주간보호": 8,
-        "latlng":  ['126.7789446', '37.4824389']
-    }, 
-    {
-        "주소": "신월 7동",
-        "요양원": 8,
-        "주간보호": 4,
-        "latlng":  ['126.8346571', '37.5219343']
-    }
-];
-
 const dongs = [
     {
         "ID" : 0,
@@ -288,9 +261,10 @@ const MapContainer = () => {
         // 맵 데이터 불러오기
 
         const RESPONSE = await getMapMarkers({
-            // latlng: mapProps.latlng,
-            // zoom: mapProps.zoom
-            latlng: [37.5652352, 126.8350976],
+            // x: mapProps.latlng[0],
+            // y: mapProps.latlng[1],
+            x: 37.5652352,
+            y: 126.8350976,
             zoom: 10
         });
 
@@ -340,7 +314,7 @@ const MapContainer = () => {
     }, [map]);
     
     useEffect(() => {
-        // 지도만 그리면
+        // 필터 조건에 따라 지도 이동
         resetMapByFilter(MAP_FILTER); 
         // drawBoundary(MAP_FILTER.region); // (동일때) 경계 그리기
     }, [MAP_FILTER]);
@@ -351,6 +325,7 @@ const MapContainer = () => {
     }, [MAP_FILTER.category])
     
     useEffect(() => {
+        // 지도 이동시 마커 업데이트
         console.log('===== 맵 이벤트 OR 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);
         updateMarkers({
             latlng: MAP_INFOS.latlng,

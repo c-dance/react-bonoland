@@ -1,10 +1,10 @@
 import { FILTER } from '../actions/filter';
 
 const initialState = {
- 
     latlng: [],
     zoom: 14,
-    category: null
+    category: null, 
+    category2: null
 };
 
 const FilterReducer = (state = initialState, action) => {

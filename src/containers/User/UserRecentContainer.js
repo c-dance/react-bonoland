@@ -11,24 +11,48 @@ const UserRecentContainer = () => {
 
     const dispatch = useDispatch();
 
-    const USER_ID = useSelector(state => state.User.userInfo.no);
+    const USER_NO = useSelector(state => state.User.userInfo.no);
+
+    const [ nextIndex, setNextIndex ] = useState(1);
+    const [ hasNext, setHasNext ] = useState(false);
+    const [ isNextLoading, setIsNextLoading ] = useState(false);
+    
+    const [ centers, setCenters ] = useState(null);
     const [ total, setTotal ] = useState(0);
-    const [ recent, setRecent ] = useState([]);
-    const [ loading, error, data, setGet ] = useGet([]);
+
+    
+    const loadNext = async () => {
+        setIsNextLoading(true);
+        const RESPONSE = await getUserRecentCenters({ userNo: USER_NO, page: nextIndex });
+        setTimeout(function(){
+            if(RESPONSE && RESPONSE.data.code === 1) { 
+                setCenters(RESPONSE.data.arrayResult);
+                setHasNext(RESPONSE.data.pageCode == 1);
+                setTotal(RESPONSE.data.totalCount);
+            }
+            setIsNextLoading(false);
+            setNextIndex(nextIndex => nextIndex + 1);
+        }, 2000);
+    };
+    
+    const loadInitial = async() => {
+        setIsNextLoading(true);
+        const RESPONSE = await getUserRecentCenters({ userNo: USER_NO, page: 1 });
+        console.log(RESPONSE);
+        if(RESPONSE && RESPONSE.data.code === 1) { 
+            setCenters(RESPONSE.data.arrayResult);
+            setHasNext(RESPONSE.data.pageCode == 1);
+            setTotal(RESPONSE.data.totalCount);
+        }
+        setIsNextLoading(false);
+    };
+
+    useEffect(() => {
+        loadInitial();
+    }, []);
 
     const onCloseClick = () => { dispatch(deactivateMyRecent()); };
 
-    useEffect(() => {
-        setGet(getUserRecentCenters(USER_ID));
-    }, []);
-
-    useEffect(() => {
-        if(data && data.arrayResult) {
-            console.log(data)
-            setRecent(data.arrayResult);
-            setTotal(data.arrayResult.length);
-        }
-    }, [data]);
 
     return (
         <Section
@@ -42,9 +66,12 @@ const UserRecentContainer = () => {
         >
             <CenterList 
                 type={ "sub" } 
-                centers={ recent }
-                loading={ loading }
-                error={ error }  
+                centers={ centers }
+                // loading={ loading }
+                // error={ error } 
+                hasNext={ hasNext }
+                isNextLoading={ isNextLoading }
+                loadNext={ loadNext } 
             />
         </Section>
     )

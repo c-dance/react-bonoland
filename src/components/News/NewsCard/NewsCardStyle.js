@@ -22,6 +22,7 @@ export const Post = styled.article`
         font-size: ${({ theme }) => theme.fontSizes.l };
         line-height: 1.5;
     }
+
     p{
         width: 100%;
         color: ${({ theme }) => theme.colors.gray600 };
@@ -30,6 +31,7 @@ export const Post = styled.article`
         ${'' /* height: 104px; */}
         text-overflow: ellipsis;
     }
+
     img {
         max-width: 100%;
     }

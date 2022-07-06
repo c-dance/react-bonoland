@@ -15,7 +15,7 @@ const UserAlarmFormContainer = () => {
 
     const USER_EMAIL = useSelector(state => state.User.userInfo.id);
     const ALARMS = useSelector(state => state.User.userInfo.alarms);
-    const [ dataset, setDataset ] = useState(REGIONS.arrayToObject(ALARMS));
+    const [ dataset, setDataset ] = useState(REGIONS.stringToObject(ALARMS));
 
     const onFormSubtmit = async () => {
         const alarmSet = REGIONS.objectToArray(dataset);
@@ -26,7 +26,7 @@ const UserAlarmFormContainer = () => {
 
         if(RESPONSE && RESPONSE.data.code === 0) {
             dispatch(updateUserInfo({
-                alarms: alarmSet
+                alarms: alarmSet.join('/')
             }));
             dispatch(activateAlert({
                 title: "지역 알림 설정",
@@ -51,7 +51,7 @@ const UserAlarmFormContainer = () => {
     };
 
     useEffect(() => {
-        setDataset(REGIONS.arrayToObject(ALARMS));
+        setDataset(REGIONS.stringToObject(ALARMS));
     }, [ALARMS]);
 
     return (

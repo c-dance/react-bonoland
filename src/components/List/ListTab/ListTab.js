@@ -3,12 +3,13 @@ import { Tab, TabNavs, TabConts } from './ListTabStyle';
 
 const ListTab = ({ 
     navs, 
+    active=0,
     onNavClick = () => {},
     contents, 
     type 
 }) => {
 
-    const [ activeIdx, setActiveIdx ] = useState(0);
+    const [ activeIdx, setActiveIdx ] = useState(active);
     const toggleActive = idx => setActiveIdx(idx);
 
     const tabNavs = navs.map((nav, idx) => (
@@ -24,7 +25,7 @@ const ListTab = ({
 
     const tabConts = contents.map((content, idx) => (
         <div 
-            className={ idx === activeIdx? 'tabCont on' : 'tabCont' } 
+            className={ contents.length < 2? 'tabCont on' : idx === activeIdx? 'tabCont on' : 'tabCont' } 
             key={ idx }
         >{ content }</div>
     ));

@@ -40,9 +40,10 @@ const App = () => {
     <Routes>
       <Route element={ <MainView list={ false }/> }>
           <Route exact path="/" element={ <CenterListContainer /> }/>
+          <Route exact path="/:x/:y/:zoom/:min01/:max01/:min02/:max02/:min03/:max03" element={ <CenterListContainer /> }/>
           <Route exact path="/center/:id" element={ <CenterItemContainer /> } />
-          <Route exact path="/sales" element={ <SalesListContainer /> } />
-          <Route exact path="/recommend" element={ <RecommendListContainer /> } />
+          <Route exact path="/sales/:category" element={ <RecommendListContainer /> } />
+          <Route exact path="/recommend/:category" element={ <RecommendListContainer /> } />
       </Route>
       <Route exact path="/terms" element={ <TermsContainer /> } />
       <Route exact path="/terms/:category" element={ <TermsContainer /> } />

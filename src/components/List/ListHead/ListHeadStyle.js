@@ -23,7 +23,7 @@ export const Title = styled.h2`
     text-align: center;
 `;
 
-export const Back = styled(Link)`
+export const Back = styled.button`
     position: absolute;
     top: 20px;
     left: 24px;

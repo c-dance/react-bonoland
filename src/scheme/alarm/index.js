@@ -125,12 +125,13 @@ export const REGIONS = {
 
         return data;
     },
-    arrayToObject(data) {
+    stringToObject(data) {
         const initialRegion = JSON.parse(JSON.stringify(this.dataset));
         let regions = initialRegion;
-
-        if(Array.isArray(data)) {
-            regions = data.reduce((acc, region) => {
+        console.log(data);
+        if(data.length > 0) {
+            const arrayData = data.split('/');
+            regions = arrayData.filter(item => item.length > 0).reduce((acc, region) => {
                 if(region.substring(0, 3) === "경기도") {
                     const regionKey = region.substring(4).trim().replaceAll(",", "");
                     const regionLabel = region.substring(4).trim().replaceAll(",", ", ");

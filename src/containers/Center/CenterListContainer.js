@@ -10,68 +10,104 @@ import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { CATEGORIES } from "../../scheme/filter";
 import { getBonoCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
-import { AutoResizer, InfiniteLoader, List, WindowScroller } from 'react-virtualized';
+import { useNavigate, useParams } from "react-router-dom";
 
 const CenterListContainer = () => {
+
+    const navigate = useNavigate();
+    const searchParams = useParams();
 
     // redux에서 가져오도록
     const FILTER = useSelector(state => state.Filter);
     const USER_NO = useSelector(state => state.User.userInfo.no);
+    const MAP_INFO = useSelector(state => state.Map.infos);
+
+    const [ options, setOptions ] = useState(null);
     
-    const [ pageIndex, setPageIndex ] = useState(1);
-    const [ hasNextPage, setHasNextPage ] = useState(false);
-    const [ isNextPageLoading, setIsNextPageLoading ] = useState(false);
+    const [ nextIndex, setNextIndex ] = useState(1);
+    const [ hasNext, setHasNext ] = useState(false);
+    const [ isNextLoading, setIsNextLoading ] = useState(false);
 
     const [ centers, setCenters ] = useState(null); // 목록 데이터
     const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
 
-    const loadNextPage = async () => {
-        if(!isNextPageLoading && hasNextPage) {
-            console.log('load more page')
-            setIsNextPageLoading(true);
-            const RESPONSE = await getBonoCenters({userNo: USER_NO, page: pageIndex});
+    const loadNext = async options => {
+        setIsNextLoading(true);
+        console.log(`==== 메인 목록 페이지 로드 (${options.latlng.length > 0 ? '필터링 목록' : '보노추천목록'}) ====`);
+        const RESPONSE = options? 
+            await getFilteredCenters({
+                userNo: USER_NO,
+                x: options.latlng.length > 1 ? options.latlng[0] : MAP_INFO.latlng[0],
+                y: options.latlng.length > 1 ? options.latlng[1] : MAP_INFO.latlng[1],
+                zoom: options.zoom,
+                category: CATEGORIES(options.category), 
+                page: nextIndex
+            })
+            : await getBonoCenters({ userNo: USER_NO, page: nextIndex });
+
+        console.log(RESPONSE);
+        setTimeout(function(){
             if(RESPONSE && RESPONSE.data.code === 1) {
-                setTimeout(function(){
-                    setCenters(centers => [...centers, ...RESPONSE.data.arrayResult]);
-                    setIsNextPageLoading(false);
-                    setPageIndex(pageIndex => pageIndex + 1);
-                    setHasNextPage(RESPONSE.data.pageCode === 1);
-                    // setHasNextPage(true);
-                }, 2000);
+                setCenters([...centers, ...RESPONSE.data.arrayResult]);
+                setHasNext(RESPONSE.data.pageCode === 1)
             }
+            setNextIndex(nextIndex => nextIndex + 1);
+            setIsNextLoading(false);
+        }, 2000);
+    };
+
+    const loadInitial = async (options) => {
+        setIsNextLoading(true);
+        // console.log(`==== 메인 목록 첫 로드 (${options.latlng.length > 0 ? '필터링 목록' : '보노추천목록'}) ====`);
+        const RESPONSE = options? 
+            await getFilteredCenters({
+                userNo: USER_NO,
+                x: options.latlng.length > 1 ? options.latlng[0] : MAP_INFO.latlng[0],
+                y: options.latlng.length > 1 ? options.latlng[1] : MAP_INFO.latlng[1],
+                zoom: options.zoom,
+                category: options.category || CATEGORIES(options.category), 
+                page: 1
+            })
+            : await getBonoCenters({ userNo: USER_NO, page: 1 });
+        console.log('메인페이지 응답', RESPONSE);
+        if(RESPONSE && RESPONSE.data.code === 1) {
+            setCenters(RESPONSE.data.arrayResult);
+            setHasNext(RESPONSE.data.pageCode === 1)
+        } else {
+            setCenters(null);
+            setHasNext(false);
         }
+        setIsNextLoading(false);
+        setNextIndex(2);
     };
 
     useEffect(() => {
-        // setGet(getBonoCenters({ userNo: USER_NO, page: pageIdx }));
-        (async () => {
-            const RESPONSE = await getBonoCenters({userNo: USER_NO, page: pageIndex});
-            console.log(RESPONSE);
-            setCenters(RESPONSE.data.arrayResult);
-            // setHasNextPage(true);
-            setHasNextPage(RESPONSE.data.pageCode === 1);
-            setPageIndex(pageIndex => pageIndex + 1);
-            // setIsNextPageLoading(false);
-        })();
-    }, []);
-
-    useEffect(() => {
-        if(FILTER.latlng.length > 0 || FILTER.category !== null) {
-            console.log('===== 검색어 입력 OR 필터값 변경 > 목록 재조회 =====', FILTER);
-            setCenters(null);
-            setGet(getFilteredCenters({
-                x: FILTER.latlng[0],
-                y: FILTER.latlng[1],
-                zoom: FILTER.zoom,
-                userNo: USER_NO,
-                categories: CATEGORIES(FILTER.category)
-            }))
-        }
+        loadInitial(FILTER);
     }, [FILTER])
 
     useEffect(() => {
-        if(result) setCenters(result.arrayResult || []);
-    }, [result]);
+        loadInitial(options);
+    }, [options])
+
+    useEffect(() => {
+        if(Object.keys(searchParams).length > 0) {
+            setOptions({
+                usreNo: USER_NO,
+                latlng: [searchParams.x, searchParams.y],
+                // x: searchParams.x,
+                // y: searchParams.y,
+                zoom: searchParams.zoom,
+                category: [
+                    { category: "단독요양원", min: searchParams.min01, max: searchParams.max01 },
+                    { category: "상가요양원", min: searchParams.min02, max: searchParams.max02 },
+                    { category: "주야간보호센터", min: searchParams.min03, max: searchParams.max03 }
+                ]
+            })
+        } else {
+            setOptions(null);
+        }
+    }, [searchParams]);
+
 
     return (
         <>
@@ -86,8 +122,8 @@ const CenterListContainer = () => {
                 <CategoryFilterContainer />
                 <ListMore
                     links={[
-                        { path: '/sales', title: '시설매물' },
-                        { path: '/recommend', title: '추천매물' }
+                        { path: '/sales/nursing', title: '시설매물' },
+                        { path: '/recommend/biz', title: '추천매물' }
                     ]}
                 />
                 <CenterList 
@@ -96,9 +132,9 @@ const CenterListContainer = () => {
                     centers={ centers }   
                     loading={ loading }
                     error={ error }  
-                    hasNextPage={ hasNextPage }
-                    isNextPageLoading={ isNextPageLoading }
-                    loadNextPage={ loadNextPage }
+                    hasNext={ hasNext }
+                    isNextLoading={ isNextLoading }
+                    loadNext={ loadNext }
                 />
             </Panel>
         }
@@ -114,6 +150,9 @@ const CenterListContainer = () => {
                     centers={ centers }   
                     loading={ loading }
                     error={ error }  
+                    hasNext={ hasNext }
+                    isNextLoading={ isNextLoading }
+                    loadNext={ loadNext }
                 />
                 </SwipePanel>
             </>

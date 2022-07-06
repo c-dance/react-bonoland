@@ -128,28 +128,45 @@ const NewsContainer = () => {
     const [ newsList, setNewsList ] = useState([]);
     const [ post, setPost ] = useState(null);
 
-    const [ listPage, setListPage ] = useState(0);
-    const [ listLoading, listError, listData, setListGet ] = useGet([]);
+    
     const [ postLoading, postError, postData, setPostGet ] = useGet({});
 
     const [ sectionProps, setSectionProps ] = useState({});
 
     /* === infinite loading === */
-    const [ hasNextPage, setHasNextPage ] = useState(true);
-    const [ isNextPageLoading, setIsNextPageLoading ] = useState(false);
-    const loadNextPage = () => {
-        console.log('load more please');
-        setIsNextPageLoading(true);
-        setTimeout(function(){
-            setIsNextPageLoading(false);
-            setNewsList(newsList => newsList.concat(newsSet.slice(0, 5)));
-            setHasNextPage(true);
-        }, 2000);
+    const [ nextIndex, setNextIndex ] = useState(1);
+    const [ hasNext, setHasNext ] = useState(false);
+    const [ isNextLoading, setIsNextLoading ] = useState(false);
+
+    const loadNext = async () => {
+        setIsNextLoading(false);
+        // const RESPONSE = await getNewsList({ page: nextIndex });
+        const RESPONSE = await getNewsList();
+        if(RESPONSE && RESPONSE.data) {
+            setNewsList([... newsList, ...RESPONSE.data.arrayResult]);
+            setHasNext(RESPONSE.data.pageCode === 1);
+        }
+        setNextIndex(nextIndex => nextIndex + 1);
+        setIsNextLoading(false);
+    };
+
+    const loadInitial = async () => {
+        setIsNextLoading(true);
+        // const RESPONSE = await getNewsList({ page: nextIndex });
+        const RESPONSE = await getNewsList();
+        console.log(RESPONSE);
+        if(RESPONSE && RESPONSE.data)  {
+            setNewsList(RESPONSE.data.arrayResult);
+            setHasNext(RESPONSE.data.pageCode === 1);
+        }
+        setNextIndex(2);
+        setIsNextLoading(false);
     };
 
     const onCardClick = postNo => { 
         setPostGet(getNewsPost(postNo));
     };
+
     const onPostCloseClick = () => { 
         setPost(null); 
         setSectionProps(listSectionProps);
@@ -157,17 +174,9 @@ const NewsContainer = () => {
 
     useEffect(() => {
         setSectionProps(listSectionProps);
+        loadInitial();
         // setListGet(getNewsList);
     }, []);
-    
-    useEffect(() => {
-        if(listData && listData.arrayResult) {
-            // setNewsList(listData.arrayResult);
-            // setNewsList(listData => listData.concat(listData.arrayResult));
-            // setNewsList(newsList => newsList.concat(newsSet.slice(0, 5)));
-            // setListPage(listPage => listPage + 1);
-        }
-    }, [listData]);
 
     useEffect(() => {
         if(postData.arrayResult) {
@@ -202,12 +211,10 @@ const NewsContainer = () => {
                     !post &&
                     <NewsList 
                         items = { newsList } 
-                        loading={ listLoading }
-                        error={ listError } 
                         onCardClick={ onCardClick } 
-                        hasNextPage={ hasNextPage }
-                        isNextPageLoading={ isNextPageLoading }
-                        loadNextPage={ loadNextPage }
+                        hasNext={ hasNext }
+                        isNextLoading={ isNextLoading }
+                        loadNext={ loadNext } 
                     />
                 }
                 {

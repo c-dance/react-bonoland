@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CardList, CardDivider, ListWrap } from './CenterListStyle';
 import CenterCard from "../CenterCard/CenterCard";
 import { Loading, NoData, Error } from '../../ui/Inform/Inform';
-import { AutoSizer, InfiniteLoader, List, WindowScroller } from 'react-virtualized';
+import { AutoSizer, InfiniteLoader, List, CellMeasurer, CellMeasurerCache, WindowScroller } from 'react-virtualized';
 
 const CenterList = ({
     list,
@@ -10,28 +10,48 @@ const CenterList = ({
     centers,
     loading,
     error,
-    hasNextPage,
-    isNextPageLoading,
-    loadNextPage
+    hasNext,
+    isNextLoading,
+    loadNext, 
+    wrapStyle={minHeight: '100vh'}
 }) => {
     console.log(centers);
 
-    const rowRenderer = ({ key, index, style}) => {
-        return (
-          <div
-            key={key}
-            index={index}
-            style={style}
-          >
-            <CenterCard list={list} type={ type } center = { centers[index] } />
-            <CardDivider />
-          </div>
-        );
-      };
+    const cache = new CellMeasurerCache({
+        fixedWidth: true,
+        defaultHeight: 60
+    });
 
-    const isRowLoaded = ({ index }) => !!centers[index];
-    
-    const loadMoreRows = (isNextPageLoading || !hasNextPage)? () => {} : loadNextPage;
+    const isRowLoaded = ({index}) => {
+        console.log(index);
+        if(!hasNext) return true;
+        else return !!centers[index];
+    };
+
+    const rowRenderer = ({key, index, style, parent}) => (
+        <CellMeasurer
+        key={ key }
+        cache={ cache }
+        parent={ parent }
+        columnIndex={ 0 }
+        rowIndex={ index }
+      >
+        <div style={ style }>
+            {
+                index < centers.length &&
+                <>
+                    <CenterCard key={ index } list={list} type={ type } center = { centers[index] } />
+                    <CardDivider />
+                </>
+            }
+            { index === centers.length && hasNext && <span>loading...</span>  }
+            { index === centers.length && !hasNext && <span>end</span>  }
+        </div>
+      </CellMeasurer>
+    );
+
+    const loadMoreRows = isNextLoading? () => {} : loadNext;
+
 
     return (
         <CardList type={ type }>
@@ -39,48 +59,42 @@ const CenterList = ({
             { loading && Loading("목록을 조회하고 있습니다.") }
             { error && Error("목록을 조회하는 데 실패했습니다. 다시 시도해 주세요.") } */}
             <ListWrap>
-            {/* {
-                centers && centers.length > 0 &&
-                centers.map(( center, idx ) => 
-                <div key={ idx }>
-                    <CenterCard list={list} type={ type } center = { center } />
-                    <CardDivider />
-                </div>
-                )
-            } */}
             {
-                centers && centers.length && 
-                <div style={{ height: '100%' }}>
-                    <AutoSizer disableHeight={true}>
-                    {({ width }) => (
-                    <WindowScroller>
-                        {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                        <InfiniteLoader
-                            isRowLoaded={isRowLoaded}
-                            loadMoreRows={loadMoreRows}
-                            rowCount={centers.length + 1}
+                centers && centers.length > 0 && 
+                <InfiniteLoader
+                    isRowLoaded={ isRowLoaded }
+                    loadMoreRows={ loadMoreRows }
+                    rowCount={ centers.length + 1}  
+                    >
+                    {({ onRowsRendered, registerChild }) => (
+                        <div style={{height: 'auto'}}>
+                        <WindowScroller 
+                            height={'2000px'}
                         >
-                            {({ onRowsRendered, registerChild }) => (
-                            <List
-                                autoHeight
-                                onRowsRendered={onRowsRendered}
-                                ref={registerChild}
-                                height={height}
-                                isScrolling={isScrolling}
-                                onScroll={onChildScroll}
-                                rowCount={centers.length}
-                                rowHeight={270}
-                                rowRenderer={rowRenderer}
-                                scrollTop={scrollTop}
-                                width={width}
-                            />
-                            )}
-                        </InfiniteLoader>
-                        )}
-                    </WindowScroller>
+                        {
+                            ({height, isScrolling, scrollTop}) => (
+                            <AutoSizer>
+                            {({width}) => (
+                                <List
+                                    className='list'
+                                    width={ width }
+                                    height={ height }
+                                    deferredMeasurementCache={ cache }
+                                    onRowsRendered={onRowsRendered}
+                                    ref={registerChild}
+                                    rowCount={ centers.length + 1}
+                                    rowHeight={ cache.rowHeight }
+                                    rowRenderer={rowRenderer}
+                                    style={{height: 'auto'}}
+                                />
+                                )}
+                            </AutoSizer>
+                            )
+                        }
+                        </WindowScroller>
+                        </div>
                     )}
-                    </AutoSizer>
-                </div>
+                    </InfiniteLoader>
             }
             </ListWrap>
         </CardList>
