@@ -38,8 +38,6 @@ const UserAlarmContainer = () => {
     const loadInitial = async() => {
         setIsNextLoading(true);
         const RESPONSE = await getUserLocalAlarm({ userNo: USER_NO, page: 1 });
-        console.log(RESPONSE);
-        console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) { 
             setCenters(RESPONSE.data.arrayResult);
             setHasNext(RESPONSE.data.pageCode == 1);

@@ -31,6 +31,8 @@ import RadarChart from '../../Chart/RadarChart/RadarChart';
 import { isMobile } from 'react-device-detect';
 import { Loading, Error, NoData } from '../../ui/Inform/Inform';
 import { getLocalNumber, getNumber, getPyeong } from '../../../utils/number';
+import { GET_MARKETS } from '../../../scheme/chart';
+import CustomDoughnutChart from '../../Chart/CustomDoughnutChart/CustomDoughnutChart';
 
 const CenterItem = ({ 
     center, 
@@ -48,6 +50,11 @@ const CenterItem = ({
 
     const toggleTab = (idx) => { setTabIdx(idx); };
     const toggleAccordion = (accordian) => { setAccordion(!accordian); };
+
+    if(center) {
+        const localData = center["localStatistics"];
+        console.log(GET_MARKETS(localData));
+    }
 
     // 평수 계산
     //console.log(getPyeong("1,234"));
@@ -207,19 +214,24 @@ const CenterItem = ({
                                 <Description>{ center["detailedDescription"]}</Description>
                             </Section>
                             <Section>
-                                {/* <h3>시장현황</h3>
+                                <h3>시장현황</h3>
                                 <ChartWrap>
-                                    { 
-                                        center["시장 현황"] && 
-                                        Object.keys(center["시장 현황"]).map((key, idx) => (
+                                    {/* { 
+                                        center["localStatistics"] && 
+                                        (GET_MARKETS(center["localStatistics"])).map((item, idx) => (
                                             <DoughnutChart 
                                                 key={ idx }
-                                                title={ key } 
-                                                data={ center["시장 현황"][`${key}`] }     
+                                                data={ item }     
                                             />
                                         ))
+                                    } */}
+                                    { 
+                                        center["localStatistics"] && 
+                                        (GET_MARKETS(center["localStatistics"])).map((item, idx) => (
+                                            <CustomDoughnutChart data={ item } />
+                                        ))
                                     }
-                                </ChartWrap> */}
+                                </ChartWrap>
                             </Section>
                             <Section>
                                 <h3>보노지수</h3>

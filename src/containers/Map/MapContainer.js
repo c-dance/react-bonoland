@@ -25,7 +25,6 @@ import MapRegion from '../../components/MapRegion/MapRegion';
 import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/service';
-import { ZOOMS } from '../../scheme/map';
 import { getMapMarkers } from '../../api/map';
 
 const dongs = [
@@ -78,14 +77,13 @@ const MapContainer = () => {
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
     const [ mobileInfoWindow, setMobileInfoWindow ] = useState(false);
     const [ infoWindowData, setInfoWindowData ] = useState(null);
+    const [ alertMsg, setAlertMsg ] = useState(null);
     
     /* === 지도 속성 === */
     const MAP_INFOS = useSelector(state => state.Map.infos);
     const MAP_FILTER = useSelector(state => state.Map.filter); // 맵 필터링
-    const MARKERS = useSelector(state => state.Map.markers); // 마커 목록
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
-
 
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
@@ -120,7 +118,7 @@ const MapContainer = () => {
             updateMapDatas(nvMap);
             alertZoomLevel(nvMap.getZoom()); 
         });
-
+        
         naver.maps.Event.addListener(nvMap, 'zoom_changed', () => { 
             dispatch(clearMapOverlay());
         });
@@ -133,6 +131,8 @@ const MapContainer = () => {
 
         setMap(nvMap);
         setCadastralLayer(cadastralLayer);
+
+        return nvMap;
     };
 
     /* === 지적 편집도 설정 === */
@@ -146,8 +146,6 @@ const MapContainer = () => {
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
     const resetMapByFilter = mapProps => {
         if(!map) return;
-        
-        // 줌 이동
         if(mapProps.latlng.length === 2 && mapProps.zoom !== null) {
             const point = new naver.maps.Point(mapProps.latlng[1], mapProps.latlng[0]);
             map.morph(point, mapProps.zoom, "easeOutCubic");
@@ -159,22 +157,14 @@ const MapContainer = () => {
         const zoom = map.getZoom(); // 줌 레벨(raw)
         const latlng = [map.getCenter()._lat, map.getCenter()._lng]; // 위경도
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
-
-        dispatch(updateMapInfos({
-            latlng: latlng,
-            zoom: zoom,
-            region: region
-        }));
+        // save map info
+        dispatch(updateMapInfos({ latlng: latlng, zoom: zoom, region: region }));
+        updateMarkers(map, { latlng: latlng, zoom: zoom });
     };
 
     /* === 최소 줌 레벨 경고 === */
     const alertZoomLevel = zoomLevel => {
-        if(zoomLevel < 8) {
-            dispatch(activateAlert({
-                title:"",
-                contents: "지도를 확대해 주세요"
-            }))
-        }
+        if(zoomLevel < 8) dispatch(activateAlert({ title: '', contents: '지도를 확대해 주세요' }));
     };
 
     const showMobileInfoWindow = (data) => {
@@ -229,13 +219,9 @@ const MapContainer = () => {
     };
 
     /* === 그룹 마커 클릭 === */
-    const onGroupMarkerClick = latlng => {
-        const newZoom = ZOOMS[getZoomLevel(MAP_INFOS.zoom)][1];
-        console.log('마커 클릭 ==================================');
-        dispatch(updateMapFilter({
-            latlng: latlng,
-            zoom: newZoom
-        }));
+    const onGroupMarkerClick = props => {
+        dispatch(updateMapFilter({ latlng: props.latlng, zoom: props.zoom }));
+        dispatch(updateFilter({ latlng: props.latlng, zoom: props.zoom }));    
     };
 
     /* === 아이템 마커 클릭 === */
@@ -252,50 +238,23 @@ const MapContainer = () => {
 
     
     /* === 네이버 마커 설정 === */
-    const updateMarkers = async mapProps => {
-        if(!map) return;
-
-        console.log(">>> 마커 바꾸기!");
-
-        const ITEM_MARKER = getZoomLevel(mapProps.zoom) === 'dong';
-        // 맵 데이터 불러오기
-
-        const RESPONSE = await getMapMarkers({
-            // x: mapProps.latlng[0],
-            // y: mapProps.latlng[1],
-            x: 37.5652352,
-            y: 126.8350976,
-            zoom: 10
-        });
-
+    const updateMarkers = async (map, option) => {
+        const ITEM_MARKER = getZoomLevel(option.zoom) === 'dong';
+        const RESPONSE = await getMapMarkers({ x: 37.5652352, y: 126.8350976, zoom: option.zoom, page: 1 });
+        setAlertMsg(null);
         if(RESPONSE && RESPONSE.data.code === 1) {
-            console.log(RESPONSE.data.arrayResult);
+            console.log('마커 데이터 받아옴', RESPONSE.data.arrayResult);
+            const mks = ITEM_MARKER? 
+                renderItemMarkers(RESPONSE.data.arrayResult, map, onItemMarkerClick) 
+                : renderedGroupMarker(RESPONSE.data.arrayResult, map, onGroupMarkerClick);
+
+            dispatch(updateMapMarkers(mks));
             setTimeout(function(){
-                const mks = ITEM_MARKER? 
-                    renderItemMarkers(RESPONSE.data.arrayResult, map, onItemMarkerClick) 
-                    : renderedGroupMarker(RESPONSE.data.arrayResult, map, onGroupMarkerClick);
-    
-                dispatch(updateMapMarkers(mks));
-                // setMapMarkers(mks);
             }, 500)
         } else {
-            console.log(RESPONSE);
+            if(map.zoom < 8) dispatch(activateAlert({ title: '', contents: '지도를 확대해 주세요' }));
+            else setAlertMsg(`${option.region? option.region+ ' ' : ''}매물이 없습니다.`);
         }
-
-        
-
-        // const RESPONSE = ITEM_MARKER? dongs : guguns;
-        // setTimeout(function(){
-        //     let mks;
-        //     if(RESPONSE) {   
-        //         mks = ITEM_MARKER? 
-        //             renderItemMarkers(RESPONSE, map, onItemMarkerClick) 
-        //             : renderedGroupMarker(RESPONSE, map, onGroupMarkerClick);
-    
-        //         dispatch(updateMapMarkers(mks));
-        //         // setMapMarkers(mks);
-        //     }
-        // }, 500)
     };
 
     // 검색했을 때 영역 그려주기
@@ -306,33 +265,14 @@ const MapContainer = () => {
     };
 
     useEffect(()=> {
-       initMap();
+       const map = initMap();
+       updateMarkers(map, MAP_INFOS);
     }, []);
-
-    useEffect(() => {
-        if(map) updateMarkers(MAP_INFOS);
-    }, [map]);
     
     useEffect(() => {
-        // 필터 조건에 따라 지도 이동
         resetMapByFilter(MAP_FILTER); 
         // drawBoundary(MAP_FILTER.region); // (동일때) 경계 그리기
     }, [MAP_FILTER]);
-
-    useEffect(() => {
-        // 카테고리만 변경되었을 때 처리
-        dispatch(updateMapInfos({category: MAP_FILTER.category}));
-    }, [MAP_FILTER.category])
-    
-    useEffect(() => {
-        // 지도 이동시 마커 업데이트
-        console.log('===== 맵 이벤트 OR 필터 변경 > 마커 데이터 받아오기 =====', '\n', MAP_INFOS);
-        updateMarkers({
-            latlng: MAP_INFOS.latlng,
-            zoom: MAP_INFOS.zoom,
-            category: MAP_INFOS.category,
-        });
-    }, [MAP_INFOS]);
 
     useEffect(() => {
         toggleCadastralMode(CADASTRAL_MODE);
@@ -341,6 +281,7 @@ const MapContainer = () => {
     return (
         <>
             <Map />
+            { alertMsg && <div className="map-alert">{ alertMsg }</div>}
             { 
                 isBrowser && 
                 <MapRegion region = { MAP_INFOS.region } /> 

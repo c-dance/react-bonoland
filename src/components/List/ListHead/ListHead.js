@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activateLoginRequired } from '../../../store/actions/service';
 import { activateMyAlarmForm } from '../../../store/actions/page';
 import { useNavigate } from 'react-router-dom';
-import { updateFilter } from '../../../store/actions/filter';
+import { updateFilter, resetFilter } from '../../../store/actions/filter';
 
 const ListHeader = ({ title, children }) => {
 
@@ -13,8 +13,8 @@ const ListHeader = ({ title, children }) => {
     const USER_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
     const onBackClick = () => {
-        dispatch(updateFilter({}));
-        navigate(-1)
+        dispatch(resetFilter());
+        navigate('/');
     };
 
     const onAlarmClick = () => {

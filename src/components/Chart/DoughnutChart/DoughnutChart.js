@@ -1,9 +1,8 @@
 import { Chart as ChartJs, ArcElement, Legend, Title, DoughnutController, plugins } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
-import { MARKETS } from '../../../scheme/chart';
 import { ChartBox } from './DoughnutChartStyle';
 import { isBrowser } from 'react-device-detect';
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { getLocalNumber } from '../../../utils/number';
 
 const doughnutColors = ['#E4B251', '#7BF5BB', '#E98686', '#616161', '#fff'];
@@ -48,44 +47,56 @@ const getLabels = data => {
     return labels;
 }; 
 
-const DoughnutChart = ({ title, data, type }) => {
-
-    data = getMinData(data);
+const DoughnutChart = ({ data, type }) => {
     
-    ChartJs.register(ArcElement, Legend, Title, DoughnutController );
-
-
+    ChartJs.register(ArcElement, Legend, Title, DoughnutController);
     ChartJs.register({
         id: 'afterDraw',
         afterDraw: (chart, args, options) => {
+            if(!chart.config.options.subTitle) return;
+
             const current = chart.ctx;
             const cx = chart.width/2;
             const cy = chart.height/2;
-
             const canvas = chart.canvas;
 
             current.textAlign = 'center';
             current.textBaseline = 'middle';
-            current.font = "24px bold 'Noto Sans KR, sans-serif'";
+            current.font = "16px 'NotoSans KR', sans-serif";
             current.fillStyle = "#ffffff";
 
-            current.fillText('타이틀 자리', cx, cy - 10);
-            current.fillText('서브 타이틀 자리', cx, cy + 10);
+            // current.fillText(chart.config.options.subTitle.main, cx, cy - 10);
+            // current.fillText(chart.config.options.subTitle.sub, cx, cy + 10);
+            current.fillText(chart.config.options.subTitle.main, cx, cy - 40);
+            current.fillText(chart.config.options.subTitle.sub, cx, cy - 15);
+            current.fillText(chart.config.options.plugins.title.text, cx, 20);
+            chart.config.options.customLabels.forEach((label, idx) => {
+                console.log(label);
+                const x = (idx%2 > 0)? cx - 80 :  cx + 40;
+                const y = 300 + (idx<2?0 : 1)*30;
+                current.fillStyle = '#FFFFFF';
+                current.textAlign = 'left';
+                current.font = "14px 'NotoSans KR', sans-serif";
+                current.fillText(label.text, x, y);
+
+                current.beginPath();
+                current.arc(x-14, y, 6, 0, Math.PI * 2);
+                current.fillStyle = label.color;
+                current.fill();
+            })
 
             current.restore();
             current.save();
         }
     });
 
-
     //get data
-    const chartLabels = getLabels(data);
-    
-    const chartTitle = title;
+    const chartTitle = data.title;
+    const chartLabels = data.labels;
 
-    const datasets = Object.keys(data).map((key, idx) => ({
+    const datasets = Object.keys(getMinData(data.dataset)).map((key, idx) => ({
         label: (key === "합계" || key.includes("dummy")) ? "" : key,
-        data: key === "합계"? new Array(Object.keys(data).length - 1).fill(0).concat(Number(data[key])) : [Number(data[key]), Number(data["합계"]) - Number(data[key]) ],
+        data: key === "합계"? new Array(Object.keys(data.dataset).length - 1).fill(0).concat(Number(data.dataset[key])) : [Number(data.dataset[key]), Number(data.dataset["합계"]) - Number(data.dataset[key]) ],
         backgroundColor: key === "합계" ? doughnutColors : [doughnutColors[idx-1], 'transparent'],
         borderColor: 'transparent',
         borderRadius: idx===0? 0 : 30,  
@@ -96,10 +107,23 @@ const DoughnutChart = ({ title, data, type }) => {
     const styledDatasets = getStyldedDatasets(datasets);
 
     const chartOptions = {
+        customLabels: data.customLabels,
+        subTitle: {
+            main: data.chartTitle.main,
+            sub: data.chartTitle.sub
+        },
+        layout: {
+            autoPadding: false,
+            padding: {
+
+                top: 0,
+                bottom: 0,
+            }
+        },
         plugins: {
             afterDraw: true,
             legend: {
-                display: true,
+                display: false,
                 position: 'bottom',
                 labels: {
                     color: '#fff',
@@ -113,10 +137,11 @@ const DoughnutChart = ({ title, data, type }) => {
                 },
             },
             title: {
-                display: true,
+                display: false,
                 text: ( type === "main" && `•  ${chartTitle}  • ` ) || chartTitle,
                 position: 'top',
                 padding: {
+                    autoPadding: false,
                     bottom: ( type === "main" && isBrowser && 10 ) || 20
                 },
                 color: '#fff',
@@ -132,22 +157,14 @@ const DoughnutChart = ({ title, data, type }) => {
         circumference: 370, 
         elements: {
             arc: {
-                borderWidth: 10,
+                borderWidth: 13,
             }
         }, 
+        scales: {
+
+        }
     };
 
-    /* === ref === */
-
-    // const chartRef = useRef(null);
-
-    // useEffect(() => {
-    //     const chart = chartRef.current;
-    //     if (chart) {
-    //         console.log('CanvasRenderingContext2D', chart.ctx);
-    //         console.log('HTMLCanvasElement', chart.canvas);
-    //       }
-    // }, []);
 
     return (
         <ChartBox type={ type || "" }>
@@ -158,7 +175,6 @@ const DoughnutChart = ({ title, data, type }) => {
                     labels: chartLabels
                 }} 
                 options = { chartOptions }
-                // ref={ chartRef }
             />
         </ChartBox>
     )

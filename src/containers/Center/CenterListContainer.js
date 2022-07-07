@@ -10,12 +10,8 @@ import SwipePanel from "../../components/ui/SwipePanel/SwipePanel";
 import { CATEGORIES } from "../../scheme/filter";
 import { getBonoCenters, getFilteredCenters } from '../../api/centers';
 import { useGet } from "../../hooks";
-import { useNavigate, useParams } from "react-router-dom";
 
 const CenterListContainer = () => {
-
-    const navigate = useNavigate();
-    const searchParams = useParams();
 
     // redux에서 가져오도록
     const FILTER = useSelector(state => state.Filter);
@@ -31,10 +27,12 @@ const CenterListContainer = () => {
     const [ centers, setCenters ] = useState(null); // 목록 데이터
     const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
 
+    const FILTERED = (filter) => (filter.category || filter.latlng.length > 0);
+
     const loadNext = async options => {
         setIsNextLoading(true);
         console.log(`==== 메인 목록 페이지 로드 (${options.latlng.length > 0 ? '필터링 목록' : '보노추천목록'}) ====`);
-        const RESPONSE = options? 
+        const RESPONSE = FILTERED(options)? 
             await getFilteredCenters({
                 userNo: USER_NO,
                 x: options.latlng.length > 1 ? options.latlng[0] : MAP_INFO.latlng[0],
@@ -56,10 +54,10 @@ const CenterListContainer = () => {
         }, 2000);
     };
 
-    const loadInitial = async (options) => {
+    const loadInitial = async options => {
         setIsNextLoading(true);
         // console.log(`==== 메인 목록 첫 로드 (${options.latlng.length > 0 ? '필터링 목록' : '보노추천목록'}) ====`);
-        const RESPONSE = options? 
+        const RESPONSE = FILTERED(options)? 
             await getFilteredCenters({
                 userNo: USER_NO,
                 x: options.latlng.length > 1 ? options.latlng[0] : MAP_INFO.latlng[0],
@@ -84,30 +82,6 @@ const CenterListContainer = () => {
     useEffect(() => {
         loadInitial(FILTER);
     }, [FILTER])
-
-    useEffect(() => {
-        loadInitial(options);
-    }, [options])
-
-    useEffect(() => {
-        if(Object.keys(searchParams).length > 0) {
-            setOptions({
-                usreNo: USER_NO,
-                latlng: [searchParams.x, searchParams.y],
-                // x: searchParams.x,
-                // y: searchParams.y,
-                zoom: searchParams.zoom,
-                category: [
-                    { category: "단독요양원", min: searchParams.min01, max: searchParams.max01 },
-                    { category: "상가요양원", min: searchParams.min02, max: searchParams.max02 },
-                    { category: "주야간보호센터", min: searchParams.min03, max: searchParams.max03 }
-                ]
-            })
-        } else {
-            setOptions(null);
-        }
-    }, [searchParams]);
-
 
     return (
         <>

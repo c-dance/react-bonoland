@@ -5,8 +5,8 @@ import { Loading, NoData, Error } from '../../ui/Inform/Inform';
 import { AutoSizer, InfiniteLoader, List, CellMeasurer, CellMeasurerCache, WindowScroller } from 'react-virtualized';
 
 const CenterList = ({
-    list,
-    type, 
+    list="",
+    type="", 
     centers,
     loading,
     error,
@@ -15,15 +15,12 @@ const CenterList = ({
     loadNext, 
     wrapStyle={minHeight: '100vh'}
 }) => {
-    console.log(centers);
-
     const cache = new CellMeasurerCache({
         fixedWidth: true,
         defaultHeight: 60
     });
 
     const isRowLoaded = ({index}) => {
-        console.log(index);
         if(!hasNext) return true;
         else return !!centers[index];
     };
@@ -40,7 +37,7 @@ const CenterList = ({
             {
                 index < centers.length &&
                 <>
-                    <CenterCard key={ index } list={list} type={ type } center = { centers[index] } />
+                    <CenterCard list={list} type={ type } center = { centers[index] } />
                     <CardDivider />
                 </>
             }

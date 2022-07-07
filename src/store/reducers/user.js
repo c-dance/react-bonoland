@@ -17,7 +17,6 @@ const UserReducer = (state = initialState, action) => {
     switch(action.type) {
         case USER.LOGIN: 
             const user = action.payload;
-            console.log(user);
             return {...state, loggedIn: true, userInfo: user};
         case USER.UPDTATE: 
             const newInfo = action.payload;

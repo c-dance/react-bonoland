@@ -10,6 +10,23 @@ import { getCenter } from '../../api/center';
 import { activateContact, activateCalculator } from "../../store/actions/service";
 import { updateMapFilter } from "../../store/actions/map";
 import { ZOOMS } from '../../scheme/map/index';
+import CustomDoughnutChart from "../../components/Chart/CustomDoughnutChart/CustomDoughnutChart";
+
+const localStatistics = {
+    localStatisticsNo : 1,
+    siDoCd : "서울특별시",
+    siGunGuCd : "강서구",
+    highAgeManCnt : 50,
+    highAgeWomanCnt :  70,
+    ratingManCnt : 60,
+    ratingWomanCnt : 30,
+    onlyTotal : 2,
+    mallTotal : 3,
+    centerTotal : 2,
+    totalPer : 306,
+    currentPer : 153,
+    usePercent : 50
+}
 
 
 const CenterItemContainer = () => {
@@ -244,8 +261,8 @@ const CenterItemContainer = () => {
     }, [USER_NO]);
     
     useEffect(() => {
-        console.log(data);
         if(data.result) {
+            data.result.localStatistics = localStatistics;
             setCenter(data.result); // 데이터 저장
             dispatch(updateMapFilter({ latlng: [data.result.x, data.result.y], zoom: ZOOMS["dong"][0] })); // 좌표 이동
         }

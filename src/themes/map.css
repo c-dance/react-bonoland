@@ -302,3 +302,22 @@
     height:200px;
     border-radius:100px;
 }
+
+.map-alert {
+    z-index: 1;
+    position: fixed;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px 12px;
+    font-size: 16px;
+    background-color: rgba(139, 101, 62, .8);
+    border-radius: 4px;
+    color: #fff;
+
+}

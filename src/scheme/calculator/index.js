@@ -308,8 +308,7 @@ export  const TYPE_AND_ADMIN_EXPENSE = {
 }
 
 export const GET_INCOME_RESULT = dataset => {
-
-    console.log(dataset.type);
+    console.log(dataset);
 
     const currentCapacity = getNumber(dataset.commons) + getNumber(dataset.premiums);
     const INCOME = TYPE_AND_UNITS[dataset.type];

@@ -128,7 +128,6 @@ export const REGIONS = {
     stringToObject(data) {
         const initialRegion = JSON.parse(JSON.stringify(this.dataset));
         let regions = initialRegion;
-        console.log(data);
         if(data.length > 0) {
             const arrayData = data.split('/');
             regions = arrayData.filter(item => item.length > 0).reduce((acc, region) => {

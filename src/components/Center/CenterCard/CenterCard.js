@@ -27,7 +27,7 @@ const CenterCard = ({ list, type, center }) => {
         <>
             {
                 center && Object.keys(center).length > 0 &&
-                <Card className={ type === "abstract" && 'abstract' }>
+                <Card className={ type }>
                     { 
                         type ==="sub" && 
                         <Head>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인 ${center["sisulCustom"]["sisulState"]}`}</Head> 
@@ -44,7 +44,7 @@ const CenterCard = ({ list, type, center }) => {
                             { 
                                 type !== "abstract" && 
                                 <>
-                                    <Cate>{center["bonoForm"]}</Cate>
+                                    <Cate>{center["bonoForm"] || center["sisulCustom"]["sisulState"]}</Cate>
                                     <Corp>{
                                         Array.isArray(center["company"])? 
                                         center["company"].map(item => <img src={item.companyLogo}/>)
@@ -64,7 +64,7 @@ const CenterCard = ({ list, type, center }) => {
                                 <Name>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인`}</Name>
                             }
                             <Region>{`${center["sisul"]["siDoCd"]} ${center["sisul"]["siGunGuCd"]}`}</Region>
-                            <Price>{`매매 ${getLocalNumber(center["tradingPrice"])} 억`}</Price>
+                            <Price>{`매매 ${getLocalNumber(center["tradingPrice"] || center["sisulCustom"]["tradingPrice"])} 억`}</Price>
                             <Infos>
                                 <span>{`${center["sisul"]["adminPttnCd"]}, 연면적 ${getLocalNumber(center["sisul"]["totArea"])}m²`}</span>
                                 <span>{`[현원 ${center["sisul"]["maPer"] + center["sisul"]["fmPer"]}인/정원${center["sisul"]["toPer"]}인]`}</span>
@@ -74,11 +74,11 @@ const CenterCard = ({ list, type, center }) => {
                                 <Assets>
                                     <div>
                                         <em className='invest'>투자</em>
-                                        <span className='value'>{center["investmentFee"]}억</span>
+                                        <span className='value'>{center["investmentFee"] || center["sisulCustom"]["investmentFee"]}억</span>
                                     </div>
                                     <div>
                                         <em className='loan'>대출</em>
-                                        <span className='value'>{center["loans"]}억</span>
+                                        <span className='value'>{center["loans"] || center["sisulCustom"]["loans"]}억</span>
                                     </div>
                                 </Assets>
                             }

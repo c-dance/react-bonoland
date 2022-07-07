@@ -23,7 +23,6 @@ export const Wrap = styled(Link)`
     position: relative;
     display: flex;
     gap: 16px;
-    ${'' /* height: 184px; */}
     height: 184px;
     overflow: hidden;
     .abstract & { height: auto; }

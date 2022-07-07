@@ -122,10 +122,10 @@ const RecommendListContainer = () => {
     useEffect(() => {
         setCategory(PARAMS);
         dispatch(updateFilter({
-            latlng: [37.500459022881195, 126.77429450460129],
-            zoom: 8,
+            // latlng: [37.500459022881195, 126.77429450460129],
+            // zoom: 8,
             category2: RECOMMENDS_CTG[PARAMS].category2
-        }))
+        }));
     }, [PARAMS]);
 
 
