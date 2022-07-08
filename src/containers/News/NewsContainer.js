@@ -8,119 +8,6 @@ import { useDispatch } from 'react-redux/es/exports';
 import { deactivateNews } from '../../store/actions/page';
 import NewsCard from '../../components/News/NewsCard/NewsCard';
 
-const newsSet = [
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-    {
-        newsNo: 1, 
-        newsTitle: '뉴스 타이틀 테스트',
-        newsContent: '뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트 뉴스 컨텐츠 테스트'
-    },
-]
-
 const NewsContainer = () => {
 
     const dispatch = useDispatch();
@@ -140,8 +27,7 @@ const NewsContainer = () => {
 
     const loadNext = async () => {
         setIsNextLoading(false);
-        // const RESPONSE = await getNewsList({ page: nextIndex });
-        const RESPONSE = await getNewsList();
+        const RESPONSE = await getNewsList({ page: nextIndex });
         if(RESPONSE && RESPONSE.data) {
             setNewsList([... newsList, ...RESPONSE.data.arrayResult]);
             setHasNext(RESPONSE.data.pageCode === 1);
@@ -152,8 +38,7 @@ const NewsContainer = () => {
 
     const loadInitial = async () => {
         setIsNextLoading(true);
-        // const RESPONSE = await getNewsList({ page: nextIndex });
-        const RESPONSE = await getNewsList();
+        const RESPONSE = await getNewsList({ page: 1});
         console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data)  {
             setNewsList(RESPONSE.data.arrayResult);

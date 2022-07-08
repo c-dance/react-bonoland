@@ -4,13 +4,13 @@ import { isMobile, isBrowser } from 'react-device-detect';
 import { useForm } from 'react-hook-form';
 import { REGEXP } from '../../scheme/form';
 import { LOCATION } from '../../scheme/location';
+import { CONTACT_TYPES, CENTER_TYPES } from '../../scheme/contact';
 
 const Contact = ({
     user,
     center,
     onFormSubmit
 }) => {
-    
     const { register, handleSubmit, formState: { errors }, watch } = useForm({ 
         mode: "onSubmit", 
         reValidateMode: "onChange",
@@ -19,7 +19,8 @@ const Contact = ({
             uEmail: user.uEmail || "",
             uTel: user.uTel || "",
             cSido: center? center.sido : Object.keys(LOCATION)[0], 
-            cGugun: center? center.gugun : LOCATION[Object.keys(LOCATION)[0]][0]
+            cGugun: center? center.gugun : LOCATION[Object.keys(LOCATION)[0]][0],
+            cType: center? CENTER_TYPES.filter(item => item.label === center.type)[0].value : CENTER_TYPES[0].value
         }
     });
 
@@ -147,9 +148,11 @@ const Contact = ({
                                             required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
                                         })}
                                     >
-                                        <option value="단독요양원">단독요양원</option>
-                                        <option value="상가요양원">상가요양원</option>
-                                        <option value="주간보호">주야간보호센터</option>
+                                    {
+                                        CENTER_TYPES.map((item, idx) => (
+                                            <option key={idx} value={item.value}>{item.label}</option>
+                                        ))
+                                    }
                                     </select>
                                 </td>
                                 <th><label htmlFor="cContact">문의 구분</label></th>
@@ -161,10 +164,11 @@ const Contact = ({
                                             required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
                                         })}
                                     >
-                                        <option value="일반매물">일반매물</option>
-                                        <option value="신규사업자">신규사업자</option>
-                                        <option value="신규리모델링">신규리모델링</option>
-                                        <option value="기타">기타</option>
+                                    {
+                                        CONTACT_TYPES.map((item, idx) => (
+                                            <option key={idx} value={item.value}>{item.label}</option>
+                                        ))
+                                    }
                                     </select>
                                 </td>
                             </tr>
@@ -289,9 +293,11 @@ const Contact = ({
                                     required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
                                 })}
                             >
-                                <option value="단독요양원">단독요양원</option>
-                                <option value="상가요양원">상가요양원</option>
-                                <option value="주간보호">주야간보호센터</option>
+                            {
+                                CENTER_TYPES.map((item, idx) => (
+                                    <option key={idx} value={item.value}>{item.label}</option>
+                                ))
+                            }
                             </select>
                         </div>
                         <div className="wrap">
@@ -303,10 +309,11 @@ const Contact = ({
                                     required: { value: true, message: "요양시설 정보를 모두 입력 시 매물 접수가 가능합니다" } 
                                 })}
                             >
-                                <option value="일반매물">일반매물</option>
-                                <option value="신규사업자">신규사업자</option>
-                                <option value="신규리모델링">신규리모델링</option>
-                                <option value="기타">기타</option>
+                            {
+                                CONTACT_TYPES.map((item, idx) => (
+                                    <option key={idx} value={item.value}>{item.label}</option>
+                                ))
+                            }
                             </select>
                         </div>
                         <div className="wrap">

@@ -26,6 +26,24 @@ import InfoWindow from '../../components/ui/InfoWindow/InfoWindow';
 import { activateAlert } from '../../store/actions/alert';
 import { activateContact } from '../../store/actions/service';
 import { getMapMarkers } from '../../api/map';
+import { updateChart } from '../../store/actions/chart';
+import { GET_MARKETS } from '../../scheme/chart';
+
+const localStatistics = {
+    localStatisticsNo : 1,
+    siDoCd : "서울특별시",
+    siGunGuCd : "강서구",
+    highAgeManCnt : 50,
+    highAgeWomanCnt :  70,
+    ratingManCnt : 60,
+    ratingWomanCnt : 30,
+    onlyTotal : 2,
+    mallTotal : 3,
+    centerTotal : 2,
+    totalPer : 306,
+    currentPer : 153,
+    usePercent : 50
+}
 
 const dongs = [
     {
@@ -159,7 +177,7 @@ const MapContainer = () => {
         const region = getRegionByZoom(await getRegionByLatlng(latlng), zoom); // 시도/구군/읍면동에 따른 주소
         // save map info
         dispatch(updateMapInfos({ latlng: latlng, zoom: zoom, region: region }));
-        updateMarkers(map, { latlng: latlng, zoom: zoom });
+        updateMarkers(map, { latlng: latlng, zoom: zoom, region: region });
     };
 
     /* === 최소 줌 레벨 경고 === */
@@ -240,7 +258,9 @@ const MapContainer = () => {
     /* === 네이버 마커 설정 === */
     const updateMarkers = async (map, option) => {
         const ITEM_MARKER = getZoomLevel(option.zoom) === 'dong';
-        const RESPONSE = await getMapMarkers({ x: 37.5652352, y: 126.8350976, zoom: option.zoom, page: 1 });
+        const RESPONSE = await getMapMarkers({ x: option.latlng[0], y: option.latlng[1], zoom: option.zoom, page: 1 });
+
+        console.log('마커 데이터 요청');
         setAlertMsg(null);
         if(RESPONSE && RESPONSE.data.code === 1) {
             console.log('마커 데이터 받아옴', RESPONSE.data.arrayResult);
@@ -249,9 +269,12 @@ const MapContainer = () => {
                 : renderedGroupMarker(RESPONSE.data.arrayResult, map, onGroupMarkerClick);
 
             dispatch(updateMapMarkers(mks));
-            setTimeout(function(){
-            }, 500)
+
+            // if(RESPONSE.data.localStatistics) dispatch(updateChart(GET_MARKETS(RESPONSE.data.localStatistics)));
+            dispatch(updateChart(GET_MARKETS(localStatistics)));
         } else {
+            console.log('마커 데이터 없음');
+            dispatch(clearMapOverlay());
             if(map.zoom < 8) dispatch(activateAlert({ title: '', contents: '지도를 확대해 주세요' }));
             else setAlertMsg(`${option.region? option.region+ ' ' : ''}매물이 없습니다.`);
         }
@@ -281,6 +304,7 @@ const MapContainer = () => {
     return (
         <>
             <Map />
+
             { alertMsg && <div className="map-alert">{ alertMsg }</div>}
             { 
                 isBrowser && 

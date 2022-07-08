@@ -26,8 +26,8 @@ export const GET_MARKETS = mkData => [
             mkData.highAgeWomanCnt
         ],
         customLabels: [
-            { color: '#7BF5BB', text: `여자 ${getLocalNumber(mkData.highAgeWomanCnt)}`},
-            { color: '#E4B251', text: `남자 ${getLocalNumber(mkData.highAgeManCnt)}`},
+            { color: '#7BF5BB', text: `여자 ${getLocalNumber(mkData.highAgeWomanCnt)}명`},
+            { color: '#E4B251', text: `남자 ${getLocalNumber(mkData.highAgeManCnt)}명`},
         ]
     },
     {
@@ -51,17 +51,17 @@ export const GET_MARKETS = mkData => [
             mkData.ratingWomanCnt
         ],
         customLabels: [
-            { color: '#7BF5BB', text: `여자 ${getLocalNumber(mkData.ratingWomanCnt)}` },
-            { color: '#E4B251', text: `남자 ${getLocalNumber(mkData.ratingManCnt)}` },
+            { color: '#7BF5BB', text: `여자 ${getLocalNumber(mkData.ratingWomanCnt)}명` },
+            { color: '#E4B251', text: `남자 ${getLocalNumber(mkData.ratingManCnt)}명` },
         ]
     },
     {
         title: "요양시설",
         labels: [ 
             `주야간 ${getLocalNumber(mkData.centerTotal)}개`, 
-            `요양 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotal)  }개`,
-            `방문 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotal)  }개`,
-            `공생 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotal)  }개`
+            `요양 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotal)}개`,
+            `방문 ${getLocalNumber(mkData.centerTotal)}개`,
+            `공생 ${getLocalNumber(mkData.centerTotal)}개`
         ],
         chartTitle: { 
             main: `${getLocalNumber(mkData.totalPer)}명`, 
@@ -82,10 +82,10 @@ export const GET_MARKETS = mkData => [
             mkData.centerTotal 
         ],
         customLabels: [
-            { color: '#E4B251', text: `주야간 ${getLocalNumber(mkData.centerTotal)}` },
-            { color: '#7BF5BB', text: `요양시설 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotall)}` },
-            { color: '#E98686', text: `방문 ${getLocalNumber(mkData.centerTotal)}` },
-            { color: '#616161', text: `공생 ${getLocalNumber(mkData.centerTotal)}` },
+            { color: '#7BF5BB', text: `요양시설 ${getLocalNumber(mkData.onlyTotal + mkData.mallTotal)}개` },
+            { color: '#E4B251', text: `주야간 ${getLocalNumber(mkData.centerTotal)}개` },
+            { color: '#616161', text: `공생 ${getLocalNumber(mkData.centerTotal)}개` },
+            { color: '#E98686', text: `방문 ${getLocalNumber(mkData.centerTotal)}개` },
         ]
     },
     {
@@ -107,8 +107,8 @@ export const GET_MARKETS = mkData => [
             mkData.currentPer,
         ],
         customLabels: [
-            { color: '#E4B251', text: `인원 ${getLocalNumber(mkData.currentPer)} 명` },
-            { color: '#fff', text: `정원 ${getLocalNumber(mkData.totalPer)} 명` }
+            { color: '#E4B251', text: `인원 ${getLocalNumber(mkData.currentPer)}명` },
+            { color: '#fff', text: `정원 ${getLocalNumber(mkData.totalPer)}명` }
         ]
     }
 ]

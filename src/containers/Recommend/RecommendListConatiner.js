@@ -9,7 +9,7 @@ import AddressFilterContainer from '../filters/AddressFilterContainer';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { updateFilter } from '../../store/actions/filter';
 
-const RECOMMENDS_CTG = {
+const CENTERS_CTG = {
     biz: {
         title: '신규 사업지',
         index: 0, 
@@ -60,12 +60,13 @@ const RecommendListContainer = () => {
     const [ nextIndex, setNextIndex ] = useState(1);
     const [ hasNext, setHasNext ] = useState(false);
     const [ isNextLoading, setIsNextLoading ] = useState(false);
+    const [ errMsg, setErrMsg ] = useState('');
 
     const [ centers, setCenters ] = useState(null);
 
     const onNavClick = (nav) => {
-        const ctgParams = Object.keys(RECOMMENDS_CTG).filter(key => RECOMMENDS_CTG[key].title === nav)[0];
-        navigate(RECOMMENDS_CTG[ctgParams].url);
+        const ctgParams = Object.keys(CENTERS_CTG).filter(key => CENTERS_CTG[key].title === nav)[0];
+        navigate(CENTERS_CTG[ctgParams].url);
     };
 
     const loadNext = async () => {
@@ -83,6 +84,9 @@ const RecommendListContainer = () => {
             if(RESPONSE && RESPONSE.data.code ===1) {
                 setCenters([...centers, ...RESPONSE.data.arrayResult]);
                 setHasNext(RESPONSE.data.pageCode === 1);
+                setErrMsg('');
+            } else {
+                setErrMsg(`현재 지역의 ${CENTERS_CTG[category].category2} 매물이 없습니다.`);
             }
             setIsNextLoading(false);
             setNextIndex(nextIndex => nextIndex + 1);
@@ -96,10 +100,12 @@ const RecommendListContainer = () => {
         if(RESPONSE && RESPONSE.data.code ===1) {
             setCenters(RESPONSE.data.arrayResult);
             setHasNext(RESPONSE.data.pageCode === 1);
+            setErrMsg('');
         } else {
             console.log('값 없음: ', RESPONSE.data.message || '오류 발생');
-            setCenters(null);
+            setCenters([]);
             setHasNext(false);
+            setErrMsg(`현재 지역의 ${option.category2} 매물이 없습니다.`);
         }
         setIsNextLoading(false);
         setNextIndex(2);
@@ -124,20 +130,20 @@ const RecommendListContainer = () => {
         dispatch(updateFilter({
             // latlng: [37.500459022881195, 126.77429450460129],
             // zoom: 8,
-            category2: RECOMMENDS_CTG[PARAMS].category2
+            category2: CENTERS_CTG[PARAMS].category2
         }));
     }, [PARAMS]);
 
 
     return (
         <Panel>
-            <ListHeader title={RECOMMENDS_CTG[category].head}>
+            <ListHeader title={CENTERS_CTG[category].head}>
                 <AddressFilterContainer type="sub" />
             </ListHeader>
             <ListTab 
-                navs={RECOMMENDS_CTG[category].navs} 
+                navs={CENTERS_CTG[category].navs} 
                 onNavClick={ onNavClick }
-                active={RECOMMENDS_CTG[category].index}
+                active={CENTERS_CTG[category].index}
                 contents={[
                     <CenterList 
                         list={category} 
@@ -145,6 +151,7 @@ const RecommendListContainer = () => {
                         hasNext={ hasNext }
                         isNextLoading={ isNextLoading }
                         loadNext={ loadNext }
+                        msg={ errMsg }
                     />
                 ]}
             />

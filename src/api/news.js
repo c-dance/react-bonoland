@@ -5,7 +5,7 @@ const NEWS_URL = {
     post: 'api/newsListDetail'
 }
 
-export const getNewsList = async () => await api.get(NEWS_URL.list);
+export const getNewsList = async option => await api.get(NEWS_URL.list, { params: option });
 
 // export const getNewsPost = async newsNo => await api.get(NEWS_URL.post + `?newsNo=${newsNo}`);
 export const getNewsPost = async newsNo => await api.post(NEWS_URL.post, {

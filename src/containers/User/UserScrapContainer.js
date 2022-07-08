@@ -3,9 +3,7 @@ import Section from "../../components/ui/Section/Section";
 import { isBrowser, isMobile } from 'react-device-detect';
 import ListTab from '../../components/List/ListTab/ListTab';
 import React, { useState, useEffect } from "react";
-import { useGet } from '../../hooks';
 import { getUserScrapCenters, getUserScrapSales } from '../../api/user';
-import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { deactivateMyScrap } from '../../store/actions/page';
 
@@ -28,8 +26,8 @@ const UserScrapContainer = () => {
     
     const [ category, setCategory ] = useState('mamul');
     const [ total, setTotal ] = useState(0);
-    const [ sisuls, setSisuls ] = useState([]);
-    const [ mamuls, setMamuls ] = useState([]);
+    const [ sisuls, setSisuls ] = useState(null);
+    const [ mamuls, setMamuls ] = useState(null);
 
     const [ sisulNextIndex, setSisulNextIndex ] = useState(1);
     const [ sisulHasNext, setSisulHasNext ] = useState(false);

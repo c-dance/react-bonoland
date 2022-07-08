@@ -25,7 +25,7 @@ const CenterListContainer = () => {
     const [ isNextLoading, setIsNextLoading ] = useState(false);
 
     const [ centers, setCenters ] = useState(null); // 목록 데이터
-    const [ loading, error, result, setGet ] = useGet(null); // 목록 로딩
+    const [ errMsg, setErrMsg ] = useState('');
 
     const FILTERED = (filter) => (filter.category || filter.latlng.length > 0);
 
@@ -47,7 +47,10 @@ const CenterListContainer = () => {
         setTimeout(function(){
             if(RESPONSE && RESPONSE.data.code === 1) {
                 setCenters([...centers, ...RESPONSE.data.arrayResult]);
-                setHasNext(RESPONSE.data.pageCode === 1)
+                setHasNext(RESPONSE.data.pageCode === 1);
+                setErrMsg('');
+            } else {
+                setErrMsg('입력 조건에 맞는 매물이 없습니다.');
             }
             setNextIndex(nextIndex => nextIndex + 1);
             setIsNextLoading(false);
@@ -70,9 +73,11 @@ const CenterListContainer = () => {
         console.log('메인페이지 응답', RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) {
             setCenters(RESPONSE.data.arrayResult);
-            setHasNext(RESPONSE.data.pageCode === 1)
+            setHasNext(RESPONSE.data.pageCode === 1);
+            setErrMsg('');
         } else {
-            setCenters(null);
+            setCenters([]);
+            setErrMsg('입력 조건에 맞는 매물이 없습니다.')
             setHasNext(false);
         }
         setIsNextLoading(false);
@@ -103,12 +108,11 @@ const CenterListContainer = () => {
                 <CenterList 
                     list="main"
                     type={ isBrowser? "main" : "abstract" }
-                    centers={ centers }   
-                    loading={ loading }
-                    error={ error }  
+                    centers={ centers }    
                     hasNext={ hasNext }
                     isNextLoading={ isNextLoading }
                     loadNext={ loadNext }
+                    msg={ errMsg }
                 />
             </Panel>
         }
@@ -122,11 +126,10 @@ const CenterListContainer = () => {
                     list="main"
                     type={ isBrowser? "main" : "abstract" }
                     centers={ centers }   
-                    loading={ loading }
-                    error={ error }  
                     hasNext={ hasNext }
                     isNextLoading={ isNextLoading }
                     loadNext={ loadNext }
+                    msg={ errMsg }
                 />
                 </SwipePanel>
             </>

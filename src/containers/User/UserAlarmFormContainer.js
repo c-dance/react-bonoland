@@ -19,9 +19,10 @@ const UserAlarmFormContainer = () => {
 
     const onFormSubtmit = async () => {
         const alarmSet = REGIONS.objectToArray(dataset);
+
         const RESPONSE = await setUserLocalAlarm({
             userEmail: USER_EMAIL,
-            localAlertsDepth1: alarmSet
+            localAlertsDepth1: alarmSet.length > 0 ? alarmSet : alarmSet.push('없음')
         });
 
         if(RESPONSE && RESPONSE.data.code === 0) {
@@ -31,12 +32,12 @@ const UserAlarmFormContainer = () => {
             dispatch(activateAlert({
                 title: "지역 알림 설정",
                 contents: "지역알림 설정이 완료되었습니다."
-            }))
+            }));
         } else {
             dispatch(activateAlert({
                 title: "지역 알림 설정",
                 contents: RESPONSE.data.message || "지역알림 설정 중 오류가 발생했습니다. \n 다시 시도해 주세요."
-            }))
+            }));
         }
     };
 

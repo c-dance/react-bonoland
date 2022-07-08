@@ -43,7 +43,8 @@ const MainView = ({ list, children }) => {
     const CALCULATOR_MODE = useSelector(state => state.Service.calculator);
     const ALERT_MODE = useSelector(state => state.Alert.active);
     const CONTACT_MODE = useSelector(state => state.Service.contact);
-    const REGISTER_MODE = useSelector(state => state.Service.register)
+    const CONTACT_DATA= useSelector(state => state.Service.contactData);
+    const REGISTER_MODE = useSelector(state => state.Service.register);
 
     const NEWS_MODE = useSelector(state => state.Page.news);
     const MY_MENU_MODE = useSelector(state => state.Page.myMenu);
@@ -79,7 +80,7 @@ const MainView = ({ list, children }) => {
                 { FIND_PWD_MODE && <FindPwdContainer /> }
 
                 { CALCULATOR_MODE && <CalculatorContainer /> }
-                { CONTACT_MODE && <ContactContaier /> }
+                { CONTACT_MODE && <ContactContaier centerData={ CONTACT_DATA } /> }
                 { REGISTER_MODE && <RegisterContainer /> }
                 { ALERT_MODE && <Alert /> }
 

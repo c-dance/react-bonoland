@@ -6,6 +6,19 @@ import risingIcon from '../../../assets/images/envs/ico-rising.svg';
 import trafficIcon from '../../../assets/images/envs/ico-traffic.svg';
 import marketIcon from '../../../assets/images/envs/ico-market.svg';
 import roadIcon from '../../../assets/images/envs/ico-road.svg';
+
+import workIcon from '../../../assets/images/envs/ico-work.svg';
+import aptIcon from '../../../assets/images/envs/ico-apt.svg';
+import viewIcon from '../../../assets/images/envs/ico-view.svg';
+import interIcon from '../../../assets/images/envs/ico-interior.svg';
+import dayCareIcon from '../../../assets/images/envs/ico-daycare.svg';
+import devIcon from '../../../assets/images/envs/ico-develop.svg';
+import parkIcon from '../../../assets/images/envs/ico-park.svg';
+import equipIcon from '../../../assets/images/envs/ico-equip.svg';
+import homeCareIcon from '../../../assets/images/envs/ico-homecare.svg';
+import busIcon from '../../../assets/images/envs/ico-bus.svg';
+import adminIcon from '../../../assets/images/envs/ico-admin.svg';
+
 import closeIcon from '../../../assets/images/icon/ico-x.svg';
 import backIcon from '../../../assets/images/icon/ico-back.svg';
 import accrIcon from '../../../assets/images/icon/ico-accordion.svg';
@@ -244,8 +257,36 @@ export const Table = styled.table`
             top: 0;
             right: 0;
             width: 38px;
-            height: 38px;
-            background: url(${ syncIcon }) center no-repeat ${ ({theme}) => theme.colors.gray100 };
+            height: 41px;
+            background-color: ${ ({theme}) => theme.colors.gray100 };
+
+            &::after {
+                position: absolute;
+                top: calc(50% - 6px);
+                left: calc(50% - 6px);
+                width: 12px;
+                height: 12px;
+                content: '';
+                background: url(${ syncIcon }) center / 100% no-repeat;
+                transition: transform .3s ease-in-out;
+            }
+            &.on::after {
+                transform: rotate(180deg);
+            }
+            &.on + .pyeong {
+                display: block;
+            }
+
+            & + .pyeong {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: calc(100% - 38px);
+                height: 100%;
+                padding: 12px 16px;
+                background-color: #fff;
+            }
         }
 
         .mobile & { width: calc(100% - 100px);}
@@ -285,25 +326,35 @@ export const Env = styled.div`
         height: 82px;
         content: '';
         border-radius: 10px;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        background-color: #eee !important;
     }
-    &.nursing::before { background: url(${ nursingIcon }) center no-repeat #eee; }
-    &.cluster::before { background: url(${ houseIcon }) center no-repeat #eee; }
-    &.newTown::before { background: url(${ townIcon }) center no-repeat #eee; }
-    &.rising::before { background: url(${ risingIcon }) center no-repeat #eee; }
-    &.traffic::before { background: url(${ trafficIcon }) center no-repeat #eee; }
-    &.market::before { background: url(${ marketIcon }) center no-repeat #eee; }
-    &.road::before { background: url(${ roadIcon }) center no-repeat #eee; }
+    &.nursing::before { background: url(${ nursingIcon });}
+    &.cluster::before { background: url(${ houseIcon }); }
+    &.newTown::before { background: url(${ townIcon }); }
+    &.rising::before { background: url(${ risingIcon }); }
+    &.traffic::before { background: url(${ trafficIcon }); }
+    &.market::before { background: url(${ marketIcon }); }
+    &.road::before { background: url(${ roadIcon }); }
+    &.work::before { background: url(${ workIcon }); }
+    &.apt::before { background: url(${ aptIcon }); }
+    &.view::before { background: url(${ viewIcon }); }
+    &.interior::before { background: url(${ interIcon }); }
+    &.dayCare::before { background: url(${ dayCareIcon }); }
+    &.develop::before { background: url(${ devIcon }); }
+    &.park::before { background: url(${ parkIcon }); }
+    &.equip::before { background: url(${ equipIcon }); }
+    &.bus::before { background: url(${ busIcon }); }
+    &.homeCare::before { background: url(${ homeCareIcon }); }
+    &.admin::before { background: url(${ adminIcon }); }
 
     .mobile & { 
         padding-top: 64px;
-        &::before { height: 56px; }
-        &.nursing::before { background: url(${ nursingIcon }) center no-repeat #FFF; }
-        &.cluster::before { background: url(${ houseIcon }) center no-repeat #FFF; }
-        &.newTown::before { background: url(${ townIcon }) center no-repeat #FFF; }
-        &.rising::before { background: url(${ risingIcon }) center no-repeat #FFF; }
-        &.traffic::before { background: url(${ trafficIcon }) center no-repeat #FFF; }
-        &.market::before { background: url(${ marketIcon }) center no-repeat #FFF; }
-        &.road::before { background: url(${ roadIcon }) center no-repeat #FFF; }
+        &::before { 
+            height: 56px; 
+            background-color: #fff !important;
+        }
     }
 `;
 

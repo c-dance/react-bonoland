@@ -12,7 +12,14 @@ const getOptionsFromObject = (obj) => {
     return Object.keys(obj).map(key => key);
 };
 
-const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, children }) => {
+const CalculatorForm = ({ 
+    initialData, 
+    onFormSubmit, 
+    onFormReset, 
+    resetAble, 
+    inputAble, 
+    children 
+}) => {
 
     /* === 입력값 세팅 & VALIDATION === */
     const [type, setType] = useState(""); // 요양시설 타입
@@ -110,7 +117,6 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
 
     const handleSubmit = event => {
         event.preventDefault();
-
         if(commons.length <= 0){
             setWarningText("3.현원수(일반병실)은 필수 입력값 입니다.");
             setWarning(true);
@@ -131,17 +137,16 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
         
     };
 
-
     useEffect(() => {
         if(initialData) initForm(initialData);
     }, [initialData]);
 
     useEffect(() => {
-        if(type.length > 0) handleCapacityOptions(type);
+        if(type.length > 0 && inputAble) handleCapacityOptions(type);
     }, [type]);
     
     useEffect(() => {
-        if(type.length > 0 && capacity.length > 0){ 
+        if(type.length > 0 && capacity.length > 0 && inputAble){ 
             handlePriceAndRent(type, capacity);
             handleCapacity(capacity);
         }
@@ -184,14 +189,26 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
                             <tbody>
                                 <tr>
                                     <td>
-                                        <select id="cf01" name="cf01" value={type} onChange={ event => setType(event.currentTarget.value) }>
+                                        <select 
+                                            id="cf01" 
+                                            name="cf01" 
+                                            value={type} 
+                                            onChange={ event => setType(event.currentTarget.value) }
+                                            disabled={ !inputAble }
+                                        >
                                             <option value="단독요양원">단독요양원</option>
                                             <option value="상가요양원">상가요양원</option>
                                             <option value="주간보호센터">주간보호센터</option>
                                         </select>
                                     </td>
                                     <td>
-                                        <select id="cf02" name="cf02" value={capacity} onChange={ event => setCapacity(event.currentTarget.value) }>
+                                        <select 
+                                            id="cf02" 
+                                            name="cf02" 
+                                            value={capacity} 
+                                            onChange={ event => setCapacity(event.currentTarget.value) }
+                                            disabled={ !inputAble }
+                                        >
                                             {
                                                 capacityOptions.map((item, idx) => 
                                                     <option 
@@ -202,9 +219,9 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
                                             }
                                         </select>
                                     </td>
-                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "commons") }/></td>
-                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "premiums") }/></td>
-                                    <td><input type="text" id="cf05" name="cf05" value={premiumPrice} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiumPrice(event) }/></td>
+                                    <td><input type="text" id="cf03" name="cf03" value={commons} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "commons") } readOnly={ !inputAble }/></td>
+                                    <td><input type="text" id="cf04" name="cf04" value={premiums} placeholder="숫자 입력" autoComplete="off" onChange={ event => handlePeople(event, "premiums") } readOnly={ !inputAble }/></td>
+                                    <td><input type="text" id="cf05" name="cf05" value={premiumPrice} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPremiumPrice(event) } readOnly={ !inputAble }/></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -227,8 +244,8 @@ const CalculatorForm = ({ initialData, onFormSubmit, onFormReset, resetAble, chi
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" id="cf06" name="cf06" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) }/></td>
-                                    <td><input type="text" id="cf07" name="cf07" value={penalty} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPenalty(event) }/></td>
+                                    <td><input type="text" id="cf06" name="cf06" value={helpers} placeholder="숫자 입력" autoComplete="off" onChange={ event => setHelpers(event) } readOnly={ !inputAble }/></td>
+                                    <td><input type="text" id="cf07" name="cf07" value={penalty} placeholder="숫자 입력" autoComplete="off" onChange={ event => setPenalty(event) } readOnly={ !inputAble }/></td>
                                     <td><input type="text" id="cf08" name="cf08" readOnly={true} value={price}/></td>
                                     <td><input type="text" id="cf09" name="cf09" readOnly={true} value={loan}/></td>
                                     <td><input type="text" id="cf10" name="cf10" readOnly={true} value={rent}/></td>

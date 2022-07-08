@@ -18,6 +18,7 @@ const CalculatorContainer = () => {
     const [ formData, setFormData ] = useState(initialForm); // 수익계산기 입력폼(기본 데이터)
     const [ result, setResult ] = useState(null); // 수익계산기 결과
     const [ resetAble, setResetAble ] = useState(false);
+    const [ inputAble, setInputAble ] = useState(true);
 
     // 수익계산기 submit
     const submitForm = data => {
@@ -27,12 +28,13 @@ const CalculatorContainer = () => {
                 output: GET_INCOME_RESULT(data)
             }))
         }
-    }
+    };
 
     // 수익계산기 초기화
     const resetForm = event => {
         event.preventDefault();
         dispatch(resetCalculator());
+        setInputAble(true);
     };
 
     useEffect(() => {
@@ -40,10 +42,12 @@ const CalculatorContainer = () => {
             setFormData(calcData.input);
             setResult(calcData.output);
             setResetAble(true);
+            if(calcData.fixedData) setInputAble(false);
         } else {
             setFormData(initialForm);
             setResult(null);
             setResetAble(false);
+            setInputAble(true);
         }
     }, [calcData]);
     
@@ -54,6 +58,7 @@ const CalculatorContainer = () => {
             onFormSubmit={ submitForm }
             onFormReset={ resetForm }
             resetAble={ resetAble }
+            inputAble={ inputAble }
         >
             { result && <CalculatorResult result={ result } />}
         </CalculatorForm>

@@ -12,12 +12,14 @@ const UserAlarmContainer = () => {
     const dispatch = useDispatch();
 
     const USER_NO = useSelector(state => state.User.userInfo.no);
+    const USER_ALARMS = useSelector(state => state.User.userInfo.alarms);
 
     const [ nextIndex, setNextIndex ] = useState(1);
     const [ hasNext, setHasNext ] = useState(false);
     const [ isNextLoading, setIsNextLoading ] = useState(false);
     
     const [ centers, setCenters ] = useState(null);
+    const [ errMsg, setErrMsg ] = useState('');
     const [ total, setTotal ] = useState(0);
 
     
@@ -29,6 +31,9 @@ const UserAlarmContainer = () => {
                 setCenters(RESPONSE.data.arrayResult);
                 setHasNext(RESPONSE.data.pageCode == 1);
                 setTotal(RESPONSE.data.totalCount);
+                setErrMsg('');
+            } else {
+                setErrMsg('알림 지역 매물이 없습니다.');
             }
             setIsNextLoading(false);
             setNextIndex(nextIndex => nextIndex + 1);
@@ -38,20 +43,24 @@ const UserAlarmContainer = () => {
     const loadInitial = async() => {
         setIsNextLoading(true);
         const RESPONSE = await getUserLocalAlarm({ userNo: USER_NO, page: 1 });
+        console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) { 
             setCenters(RESPONSE.data.arrayResult);
             setHasNext(RESPONSE.data.pageCode == 1);
             setTotal(RESPONSE.data.totalCount);
+            setErrMsg('');
+        } else {
+            setErrMsg('알림 지역 매물이 없습니다.');
         }
         setIsNextLoading(false);
     };
 
     useEffect(() => {
-        loadInitial();
-    }, []);
+        if(USER_ALARMS.length < 0) setErrMsg('알림 받을 지역을 설정해 주세요.');
+        else loadInitial();
+    }, [USER_ALARMS]);
 
     const onCloseClick = () => { dispatch(deactivateMyAlarm()); };
-
 
     return (
         <Section
@@ -68,11 +77,10 @@ const UserAlarmContainer = () => {
             <CenterList 
                 type={ "sub" } 
                 centers={ centers }
-                // loading={ loading }
-                // error={ error } 
                 hasNext={ hasNext }
                 isNextLoading={ isNextLoading }
                 loadNext={ loadNext } 
+                msg={ errMsg }
             />
         </Section>
     )

@@ -221,6 +221,7 @@ export const removeMarkers = markers => {
   for(const marker of markers) {
     marker.setMap(null);
   }
+  console.log('remove marker');
   return markers;
 };
 

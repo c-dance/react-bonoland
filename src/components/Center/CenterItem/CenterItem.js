@@ -47,17 +47,22 @@ const CenterItem = ({
     // UI FUNCTION
     const [ tabIdx, setTabIdx ] = useState(0);
     const [ accordion, setAccordion ] = useState(isMobile? false : true );
+    const [ pyeongs, setPyeongs ] = useState([false, false, false]);
 
     const toggleTab = (idx) => { setTabIdx(idx); };
     const toggleAccordion = (accordian) => { setAccordion(!accordian); };
 
     if(center) {
-        const localData = center["localStatistics"];
-        console.log(GET_MARKETS(localData));
+        console.log(center["localStatistics"]);
     }
 
     // 평수 계산
     //console.log(getPyeong("1,234"));
+
+    const togglePyeong = index => {
+        setPyeongs(pyeongs => pyeongs.map((item, idx) => (idx === index)? !item : item));
+    };
+
     return (
         <>
         { loading && Loading() }
@@ -205,7 +210,17 @@ const CenterItem = ({
                                     { center["sisulCategory"].includes("지가 상승 거래지역") && <Env className="rising">지가 상승<br/>거래 지역</Env> }
                                     { center["sisulCategory"].includes("역세권") && <Env className="traffic">역세권</Env> }
                                     { center["sisulCategory"].includes("중심상권") && <Env className="market">중심상권</Env> }
-                                    { center["sisulCategory"].includes("대로변") && <Env className="road">대로변</Env> }
+                                    { center["sisulCategory"].includes("출퇴근 용이") && <Env className="work">출퇴근 용이</Env> }
+                                    { center["sisulCategory"].includes("아파트 밀집 지역") && <Env className="apt">아파트 밀집<br/>지역</Env> }
+                                    { center["sisulCategory"].includes("가시성 높음") && <Env className="view">가시성 높음</Env> }
+                                    { center["sisulCategory"].includes("최신 인테리어") && <Env className="interior">최신 인테리어</Env> }
+                                    { center["sisulCategory"].includes("주간보호") && <Env className="dayCare">주간보호</Env> }
+                                    { center["sisulCategory"].includes("주변 개발 계획") && <Env className="develop">주변 개발 계획</Env> }
+                                    { center["sisulCategory"].includes("경관우수") && <Env className="park">경관우수</Env> }
+                                    { center["sisulCategory"].includes("최신설비") && <Env className="equip">최신설비</Env> }
+                                    { center["sisulCategory"].includes("재가시설 포함") && <Env className="homeCare">재가시설 포함</Env> }
+                                    { center["sisulCategory"].includes("차량 포함") && <Env className="bus">차량 포함</Env> }
+                                    { center["sisulCategory"].includes("관공서 근접") && <Env className="admin">관공서 근접</Env> }
                                 </Envs>
                             </Section>
                             <Section>
@@ -265,7 +280,8 @@ const CenterItem = ({
                                                 <th>면적</th>
                                                 <td>
                                                     {center["sisul"]["lndpclAr"]}
-                                                    <button className="sync"></button>
+                                                    <button className={ `sync ${pyeongs[0] && 'on'}` } onClick={ () => togglePyeong(0) }></button>
+                                                    <span className='pyeong'>{ getPyeong(center["sisul"]["lndpclAr"]) }</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -317,14 +333,16 @@ const CenterItem = ({
                                                 <th>건축물 연면적</th>
                                                 <td>
                                                     {center["sisul"]["totArea"]}
-                                                    <button className="sync"></button>
+                                                    <button className={ `sync ${pyeongs[1] && 'on'}` } onClick={ () => togglePyeong(1) }></button>
+                                                    <span className='pyeong'>{ getPyeong(center["sisul"]["totArea"]) }</span>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>3층 면적</th>
                                                 <td>
                                                     {center["sisul"]["b"]}
-                                                    <button className="sync"></button>
+                                                    <button className={ `sync ${pyeongs[2] && 'on'}` } onClick={ () => togglePyeong(2) }></button>
+                                                    <span className='pyeong'>{ getPyeong(center["sisul"]["b"]) }</span>
                                                 </td>
                                             </tr>
                                             <tr>

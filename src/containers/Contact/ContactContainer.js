@@ -12,7 +12,7 @@ import { deactivateContact } from '../../store/actions/service'
 import { useGet } from '../../hooks/index';
 import { getPrivacyTerm } from '../../api/terms';
 
-const ContactContainer = ({ centerInfo }) => {
+const ContactContainer = ({ centerData }) => {
 
     const dispatch = useDispatch();
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
@@ -80,6 +80,7 @@ const ContactContainer = ({ centerInfo }) => {
                 agreeSubmitted && 
                 <Contact 
                     user = { user } 
+                    center = { centerData }
                     onFormSubmit={ onFormSubmit }
                 />
             }
