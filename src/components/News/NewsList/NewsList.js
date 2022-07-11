@@ -14,15 +14,12 @@ const NewsList = ({
     loadNext,
  }) => {    
 
-    console.log(items);
-
     const cache = new CellMeasurerCache({
         fixedWidth: true,
         defaultHeight: 60
     });
 
     const isRowLoaded = ({index}) => {
-        console.log(index);
         if(!hasNext) return true;
         else return !!items[index];
     };
@@ -39,17 +36,16 @@ const NewsList = ({
             {
                 index < items.length &&
                 <>
-                    <Card onClick={ () => onCardClick(items[index].newsNo) }>
+                    <Card className="bd" onClick={ () => onCardClick(items[index].newsNo) }>
                         <Post>
                             <h3>{ items[index].newsTitle }</h3>
                             <p>{ items[index].newsContent }</p>
                         </Post>
                     </Card>
-                    <hr />
                 </>
             }
-            { index === items.length && hasNext && <span>loading...</span>  }
-            { index === items.length && !hasNext && <span>end</span>  }
+            {/* { index === items.length && hasNext && <span>loading...</span>  } */}
+            {/* { index === items.length && !hasNext && <span></span>  } */}
         </div>
       </CellMeasurer>
     );

@@ -12,8 +12,8 @@ const MobileTabBar = () => {
     return (
         <TabBar>
             <ul>
-                <li><TabLink icon="sales" to="/sales">시설매매</TabLink></li>
-                <li><TabLink icon="rcmd" to="/recommend">추천매물</TabLink></li>
+                <li><TabLink icon="sales" to="/sales/nursing">시설매매</TabLink></li>
+                <li><TabLink icon="rcmd" to="/recommend/biz">추천매물</TabLink></li>
                 <li><TabBtn icon="register" onClick={() => { dispatch(activateRegister()) }}>매물접수</TabBtn></li>
                 <li><TabBtn icon="contact" onClick={() => { dispatch(activateContact()) }}>매수문의</TabBtn></li>
                 { IS_LOGGEDIN && <li><TabBtn icon="user" onClick={ () => dispatch(activateMyMenu()) }>마이페이지</TabBtn></li>}

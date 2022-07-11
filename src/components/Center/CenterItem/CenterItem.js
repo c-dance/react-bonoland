@@ -56,8 +56,6 @@ const CenterItem = ({
         console.log(center["localStatistics"]);
     }
 
-    // 평수 계산
-    //console.log(getPyeong("1,234"));
 
     const togglePyeong = index => {
         setPyeongs(pyeongs => pyeongs.map((item, idx) => (idx === index)? !item : item));

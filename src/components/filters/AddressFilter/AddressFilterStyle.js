@@ -3,6 +3,7 @@ import searchIcon from '../../../assets/images/icon/ico-search.svg'
 import symbolIcon from '../../../assets/images/logo/ico-symbol.svg'
 
 export const AddressForm = styled.form`
+    position: relative;
     display: flex;
     justify-content: start;
     align-items: center;
@@ -19,7 +20,7 @@ export const AddressForm = styled.form`
         backgo
     }
 
-    button {
+    button[type="submit"] {
         width: 28px;
         height: 28px;
         font-size: 0;
@@ -29,7 +30,6 @@ export const AddressForm = styled.form`
     .mobile & {
         height: 44px;
         padding: 0 16px 0 42px;
-        background: url(${ symbolIcon }) 16px center no-repeat #fff;
 
         &.main {
             z-index: 40;
@@ -45,4 +45,14 @@ export const AddressForm = styled.form`
         width: 100%;
         border-radius: 2px;
     }
+`;
+
+export const Home = styled.button`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: url(${ symbolIcon }) 16px center no-repeat #fff;
 `;

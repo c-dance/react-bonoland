@@ -8,6 +8,10 @@ export const Card = styled.div`
         height: calc(100% - 56px);
         overflow-y: auto;
     }
+
+    &.bd {
+        border-bottom: 10px solid ${({theme}) => theme.colors.gray100 }
+    }
 `;
 
 export const Post = styled.article`

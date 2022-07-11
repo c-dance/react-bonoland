@@ -33,9 +33,6 @@ const GlobalHeader = () => {
             <Menu>
                 <NavMenu>
                     <Nav>
-                        zoom: { useSelector(state => state.Map.infos.zoom) }
-                    </Nav>
-                    <Nav>
                         <button onClick={() => dispatch(activateRegister())}>매물접수</button>
                     </Nav>
                     <Nav>

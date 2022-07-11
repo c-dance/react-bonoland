@@ -8,6 +8,7 @@ import { getCategoryCenters } from '../../api/centers';
 import AddressFilterContainer from '../filters/AddressFilterContainer';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { updateFilter } from '../../store/actions/filter';
+import { isBrowser } from 'react-device-detect';
 
 const CENTERS_CTG = {
     biz: {
@@ -134,9 +135,12 @@ const RecommendListContainer = () => {
         }));
     }, [PARAMS]);
 
-
     return (
-        <Panel>
+        <Panel
+            type={ isBrowser? "side": "" }
+            position={ isBrowser? "left" : "" }
+            fold={ isBrowser? true : false }
+        >
             <ListHeader title={CENTERS_CTG[category].head}>
                 <AddressFilterContainer type="sub" />
             </ListHeader>

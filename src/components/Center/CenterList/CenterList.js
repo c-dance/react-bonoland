@@ -42,8 +42,8 @@ const CenterList = ({
                     <CardDivider />
                 </>
             }
-            { index === centers.length && hasNext && <span>loading...</span>  }
-            { index === centers.length && !hasNext && <span>end</span>  }
+            {/* { index === centers.length && hasNext && <span>loading...</span>  } */}
+            {/* { index === centers.length && !hasNext && <span>end</span>  } */}
         </div>
       </CellMeasurer>
     );

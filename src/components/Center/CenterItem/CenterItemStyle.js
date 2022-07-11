@@ -50,6 +50,7 @@ export const Calculator = styled.button`
     width: 38px;
     height: 38px;
     padding: 0;
+    border-radius: 2px;
     box-shadow: 3px 3px 6px rgba(0,0,0,.06);
     background: url(${calcIcon}) center no-repeat #fff;
     color: ${ props => props.theme.colors.gray700 };
@@ -59,7 +60,10 @@ export const Calculator = styled.button`
     white-space: nowrap;
 
     .mobile & {
-        display: none;
+        top: 12px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
     }
 `;
 
@@ -87,21 +91,26 @@ export const AccordionSummary = styled.div`
     justify-content: Center;
     align-items: center;
     width: 100%;
-    font-size: 18px;
 
     .mobile & {
         position: relative;
         top: 0;
         height: 56px;
+    }
 
-        &::before {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 24px;
-            height: 24px;
-            content: '';
-            background: url(${ accrIcon }) center no-repeat;
+    .name {
+        position: relative;
+        font-size: 18px;
+        .mobile & {
+            &::before {
+                position: absolute;
+                top: -3px;
+                right: -30px;
+                width: 24px;
+                height: 24px;
+                content: '';
+                background: url(${ accrIcon }) center no-repeat;
+            }
         }
     }
 `;

@@ -40,8 +40,10 @@ const quickCSS = css`
         top: 154px;
         font-size: 0;
         background: url(${alarmIcon}) center no-repeat #fff;
-        &.on {
+        &:hover {
             background: url(${alarmActiveIcon}) center no-repeat ${({theme}) => theme.colors.primary };
+        }
+        &.on {
         }
     }
     &.chart {

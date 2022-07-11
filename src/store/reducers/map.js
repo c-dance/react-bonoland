@@ -42,6 +42,7 @@ const MapReducer = ( state = initialState, action ) => {
             const infoWindow = action.payload;
             return { ...state, infoWindow: infoWindow };
         case MAP.CLEAR_MAP:
+            if(state.dataLayer) removeDataLayer(state.map);
             removeInfoWindow(state.infoWindow);
             removeMarkers(state.markers);
             return { ...state, markers: [], infoWindow: null };
@@ -49,7 +50,7 @@ const MapReducer = ( state = initialState, action ) => {
             const dataLayer = renderDataLayer(state.map, action.payload);
             return {...state, dataLayer: dataLayer, filter: {...state.filter, geoAddress: '' } };
         case MAP.CLEAR_DATA_LAYER: 
-            removeDataLayer(state.map, state.dataLayer);
+            removeDataLayer(state.map);
             return {...state, dataLayer: null };
         case MAP.ACTIVATE_CADASTRAL: 
             return {...state, cadastral: true };

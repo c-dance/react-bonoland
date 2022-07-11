@@ -45,9 +45,11 @@ export const Nav = styled.div`
 
     a {
         color: ${ ({ theme }) => theme.colors.gray900 };
+        white-space: nowrap;
     }
     button {
         background-color: #fff;
+        white-space: nowrap;
     }
 `; 
 

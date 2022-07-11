@@ -77,7 +77,7 @@ const QuickMenu = () => {
             {
                 isBrowser &&
                 <QuickBtn 
-                    className={`user ${LOCAL_ALARMS? "on" : ""}` } 
+                    className={`user ${USER_LOGGEDIN? "on" : ""}` } 
                     onClick={() => {
                         if(USER_LOGGEDIN) dispatch(activateMyMenu())
                         else dispatch(activateLogin())
@@ -87,7 +87,7 @@ const QuickMenu = () => {
             { 
                 isBrowser && 
                 <QuickBtn 
-                    className={`alarm ${LOCAL_ALARMS? "on" : ""}` }
+                    className='alarm'
                     onClick={() => {
                         if(USER_LOGGEDIN){ 
                             if(LOCAL_ALARMS) dispatch(activateMyAlarm());

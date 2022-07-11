@@ -21,8 +21,6 @@ import { getLocalNumber } from '../../../utils/number';
 
 const CenterCard = ({ list, type, center }) => {
 
-    if(!center["sisul"]) center = { ...center["sisulCustom"], ...center, sisul: center, sisulCustom: center["sisulCustom"] }
-
     return (
         <>
             {
@@ -30,7 +28,7 @@ const CenterCard = ({ list, type, center }) => {
                 <Card className={ type }>
                     { 
                         type ==="sub" && 
-                        <Head>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인 ${center["sisulCustom"]["sisulState"]}`}</Head> 
+                        <Head>{`${center["adminPttnCd"]} ${center["toPer"]}인 ${center["bonoForm"]}`}</Head> 
                     }
                     <Wrap to={ `/center/${center["longTermAdminSym"]}` }>
                         {
@@ -40,7 +38,7 @@ const CenterCard = ({ list, type, center }) => {
                             </Thumbnail>
                         }
                         <Sales>
-                            <Num><span>매물번호: {center["sisulCustomNo"]}</span></Num>
+                            <Num><span>매물번호: {center["longTermAdminSym"]}</span></Num>
                             { 
                                 type !== "abstract" && 
                                 <>
@@ -53,7 +51,7 @@ const CenterCard = ({ list, type, center }) => {
                                 </>
                             } 
                             {
-                                center["bonoDivision"] &&
+                                center["bonoDivision"] && type !== "sub" &&
                                 <Badges>
                                     {center["bonoDivision"].includes('추천') && <div className='recommend'>추천</div>}
                                     {center["bonoDivision"].includes('프리미엄') && <div className='premium'>프리미엄</div> }
@@ -61,13 +59,13 @@ const CenterCard = ({ list, type, center }) => {
                             }
                             {
                                 type === "abstract" && 
-                                <Name>{`${center["sisul"]["adminPttnCd"]} ${center["sisul"]["toPer"]}인`}</Name>
+                                <Name>{`${ center["adminPttnCd"] || center["sisul"]["adminPttnCd"]} ${ center["toPer"] || center["sisul"]["toPer"]}인`}</Name>
                             }
-                            <Region>{`${center["sisul"]["siDoCd"]} ${center["sisul"]["siGunGuCd"]}`}</Region>
+                            <Region>{`${center["siDoCd"] || center["sisul"]["siDoCd"]} ${ center["siGunGuCd"] || center["sisul"]["siGunGuCd"]}`}</Region>
                             <Price>{`매매 ${getLocalNumber(center["tradingPrice"] || center["sisulCustom"]["tradingPrice"])} 억`}</Price>
                             <Infos>
-                                <span>{`${center["sisul"]["adminPttnCd"]}, 연면적 ${getLocalNumber(center["sisul"]["totArea"])}m²`}</span>
-                                <span>{`[현원 ${center["sisul"]["maPer"] + center["sisul"]["fmPer"]}인/정원${center["sisul"]["toPer"]}인]`}</span>
+                                <span>{`${center["adminPttnCd"]}, 연면적 ${getLocalNumber(center["totArea"])}m²`}</span>
+                                <span>{`[현원 ${center["maPer"] + center["fmPer"]}인/정원${center["toPer"]}인]`}</span>
                             </Infos>
                             {
                                 type !== "abstract" && 

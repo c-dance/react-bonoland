@@ -67,7 +67,6 @@ const UserScrapContainer = () => {
     const mamulLoadInitial = async () => {
         setMamulIsNextLoading(true);
         const RESPONSE = await getUserScrapSales({ userNo: USER_NO, page: 1 });
-        console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) { 
             setMamuls(RESPONSE.data.arrayResult);
             setMamulHasNext(RESPONSE.data.pageCode == 1);
@@ -80,7 +79,6 @@ const UserScrapContainer = () => {
     const mamulLoadNext = async () => {
         setMamulIsNextLoading(true);
         const RESPONSE = await getUserScrapSales({ userNo: USER_NO, page: 1 });
-        console.log(RESPONSE);
         setTimeout(function(){
             if(RESPONSE && RESPONSE.data.code === 1) { 
                 setMamuls([...mamuls, ...RESPONSE.data.arrayResult]);
@@ -123,18 +121,14 @@ const UserScrapContainer = () => {
                 contents={[
                     <CenterList 
                         type={ "sub" } 
-                        centers={ mamuls } 
-                        // loading={ loading }
-                        // error={ error }  
+                        centers={ mamuls }  
                         hasNext={ sisulHasNext }
                         isNextLoading={ sisulIsNextLoading }
                         loadNext={ sisulLoadNext }
                     />,
                     <CenterList 
                         type={ "sub" } 
-                        centers={ sisuls } 
-                        // loading={ loading }
-                        // error={ error }  
+                        centers={ sisuls }  
                         hasNext={ mamulHasNext }
                         isNextLoading={ mamulIsNextLoading }
                         loadNext={ mamulLoadNext }

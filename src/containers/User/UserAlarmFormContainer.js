@@ -22,7 +22,7 @@ const UserAlarmFormContainer = () => {
 
         const RESPONSE = await setUserLocalAlarm({
             userEmail: USER_EMAIL,
-            localAlertsDepth1: alarmSet.length > 0 ? alarmSet : alarmSet.push('없음')
+            localAlertsDepth1: alarmSet.length > 0 ? alarmSet : ["없음"]
         });
 
         if(RESPONSE && RESPONSE.data.code === 0) {

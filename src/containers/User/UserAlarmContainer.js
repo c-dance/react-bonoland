@@ -43,7 +43,6 @@ const UserAlarmContainer = () => {
     const loadInitial = async() => {
         setIsNextLoading(true);
         const RESPONSE = await getUserLocalAlarm({ userNo: USER_NO, page: 1 });
-        console.log(RESPONSE);
         if(RESPONSE && RESPONSE.data.code === 1) { 
             setCenters(RESPONSE.data.arrayResult);
             setHasNext(RESPONSE.data.pageCode == 1);
@@ -56,7 +55,10 @@ const UserAlarmContainer = () => {
     };
 
     useEffect(() => {
-        if(USER_ALARMS.length < 0) setErrMsg('알림 받을 지역을 설정해 주세요.');
+        if(USER_ALARMS.length < 1) {
+            dispatch(deactivateMyAlarm());
+            dispatch(activateMyAlarmForm());
+        }
         else loadInitial();
     }, [USER_ALARMS]);
 

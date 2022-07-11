@@ -79,9 +79,6 @@ export const TabConts = styled.div`
     display: block;
     height: 100%;
 
-    .mobile & {
-        height: calc(100% - 104px);
-    }
 
     .tabCont {
         display: none;
@@ -90,12 +87,16 @@ export const TabConts = styled.div`
         .full & ,
         .mobile & {
             height: calc(100% - 48px);
-            height: 100%;
+            ${'' /* height: 100%; */}
         }
 
         &.on {
             display: block;
         }
+    }
+    .mobile & {
+        ${'' /* height: calc(100% - 104px); */}
+        height: calc(100% - 48px);
     }
 `;
 

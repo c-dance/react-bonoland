@@ -120,10 +120,10 @@ export const renderItemMarkers = (data, map, onMarkerClick) => {
   
   const markers = data.map(item => {
 
-    const date = item["거래일"];
-    const price = item["거래가"];
-    const bono = item["보노매물"];
-    const latlng = item["latlng"];
+    const date = '';
+    const price = `${item["tradingPrice"]}억`;
+    const bono = item["sisulState"] === '매물';
+    const latlng = [item.y, item.x];
 
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(latlng),
@@ -133,7 +133,7 @@ export const renderItemMarkers = (data, map, onMarkerClick) => {
           <div class="iMarker ${bono&&'bono'}">
             <div class="iMarker-box">
                 <em class="iMarker-date">${date} 거래</em>
-                <span class="iMarker-price">실거래가 ${price}}</span>
+                <span class="iMarker-price">실거래가 ${price}</span>
             </div>
             <div class="iMarker-tail"></sdiv>
           </div>
@@ -144,7 +144,7 @@ export const renderItemMarkers = (data, map, onMarkerClick) => {
       draggable: false
     });
   
-    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["ID"]) });
+    naver.maps.Event.addListener(marker, "click", () => { onMarkerClick(latlng, item["longTermAdminSym"]) });
 
     return marker;
   });
@@ -236,7 +236,7 @@ export const removeInfoWindow = infoWindow => {
 }
 
 const vworld = {
-  key: '6F9F5377-D787-3135-8561-E9DBA3394C1A',
+  key: '1BA5A5FF-F644-3D2A-BE62-087AC00D0658',
   url: 'http://api.vworld.kr/req/data?service=data&request=GetFeature&size=1000',
   service: {
     sido: {
@@ -261,7 +261,6 @@ export const getGeoJson = (zoom, address) => {
     type: 'GET',
     dataType: 'jsonp',
     success: function(data) {
-      console.log(data);
     },
     error: function(request, error) {
       console.log(request, error);
@@ -270,10 +269,12 @@ export const getGeoJson = (zoom, address) => {
 };
 
 export const renderDataLayer = (map, geoJson) => {
-  const layer = map.data.addGeoJson(geoJson);
-  return layer;
+  map.data.addGeoJson(geoJson);
 };
 
-export const removeDataLayer = (map, layer) => {
-  if(map && layer) map.data.removeGeoJson(layer);
+export const removeDataLayer = (map) => {
+  const geoJson = map.data.toGeoJson();
+  const feature = map.data.getFeatureById(geoJson.id);
+  if(geoJson) map.data.removeGeoJson(geoJson);
+  if(feature) map.data.removeFeature(feature);
 };

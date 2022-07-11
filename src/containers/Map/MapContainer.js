@@ -95,13 +95,14 @@ const MapContainer = () => {
     const navigate = useNavigate();
 
     /* === 지도, 지적편집도 === */
-    const [ map, setMap ] = useState(null);
+    // const [ map, setMap ] = useState(null);
     const [ cadastralLayer, setCadastralLayer ] = useState(null);
     const [ mobileInfoWindow, setMobileInfoWindow ] = useState(false);
     const [ infoWindowData, setInfoWindowData ] = useState(null);
     const [ alertMsg, setAlertMsg ] = useState(null);
     
     /* === 지도 속성 === */
+    const MAP = useSelector(state => state.Map.map);
     const MAP_INFOS = useSelector(state => state.Map.infos);
     const MAP_FILTER = useSelector(state => state.Map.filter); // 맵 필터링
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
@@ -155,7 +156,7 @@ const MapContainer = () => {
             cadastralLayer.setMap(CADASTRAL_MODE? true : null); 
         });
 
-        setMap(nvMap);
+        // setMap(nvMap);
         setCadastralLayer(cadastralLayer);
 
         return nvMap;
@@ -163,18 +164,18 @@ const MapContainer = () => {
 
     /* === 지적 편집도 설정 === */
     const toggleCadastralMode = active => {
-        if(!map || !cadastralLayer) return;
+        if(!MAP || !cadastralLayer) return;
 
-        if(active) cadastralLayer.setMap(map);
+        if(active) cadastralLayer.setMap(MAP);
         else cadastralLayer.setMap(null);
     };
 
     /* === 지도 위치 변경 (검색 필터 적용 시) === */
     const resetMapByFilter = mapProps => {
-        if(!map) return;
+        if(!MAP) return;
         if(mapProps.latlng.length === 2 && mapProps.zoom !== null) {
             const point = new naver.maps.Point(mapProps.latlng[1], mapProps.latlng[0]);
-            map.morph(point, mapProps.zoom, "easeOutCubic");
+            MAP.morph(point, mapProps.zoom, "easeOutCubic");
         }
     };
 
@@ -226,22 +227,24 @@ const MapContainer = () => {
 
     /* === 인포윈도우 활성화 === */
     const updateInfoWindow = centerId => {
-        if(!map) return; 
+        // if(!MAP) return; 
+
+        console.log(centerId);
 
         let idata = dongs[centerId];
         
         /* === 네이버 인포 윈도우 옵션 설정 === */
         const infoWindowOption = {
             data: idata,
-            map: map,
+            map: MAP,
             onCloseClick: closeInfoWindow,
             onContactClick: onContactClick,
             onDetailsClick: onDetailsClick
         };
         
-        dispatch(updateMapInfoWindow(renderInfoWindow(infoWindowOption)));
+        // dispatch(updateMapInfoWindow(renderInfoWindow(infoWindowOption)));
 
-        if(isMobile) showMobileInfoWindow(idata);
+        // if(isMobile) showMobileInfoWindow(idata);
     };
 
     /* === 그룹 마커 클릭 === */
@@ -258,7 +261,6 @@ const MapContainer = () => {
         //     }));
         // }
         // 아이템 아이디 넘기기
-
         updateInfoWindow(itemId);
     };
 
@@ -266,7 +268,9 @@ const MapContainer = () => {
     /* === 네이버 마커 설정 === */
     const updateMarkers = async (map, option) => {
         const ITEM_MARKER = getZoomLevel(option.zoom) === 'dong';
-        const RESPONSE = await getMapMarkers({ x: option.latlng[0], y: option.latlng[1], zoom: option.zoom, page: 1 });
+        const RESPONSE = await getMapMarkers({ x: option.latlng[0], y: option.latlng[1], zoom: option.zoom  });
+        // const ITEM_MARKER = true;
+        // const RESPONSE = await getMapMarkers({ x: 37.502900792274836, y: 126.7766903969554, zoom: 16 });
 
         console.log('마커 데이터 요청');
         setAlertMsg(null);
@@ -288,10 +292,13 @@ const MapContainer = () => {
         }
     };
 
-    // 검색했을 때 영역 그려주기
     const drawBoundary = async (zoom, address) => {
+        dispatch(clearDataLayer(MAP));
         const res = await getGeoJson(zoom, address);
-        console.log(res);
+        if(res.response.status === 'OK') {
+            const geoJson = res.response.result.featureCollection;
+            if(geoJson) dispatch(updateDataLayer(geoJson));
+        }
     };
 
     useEffect(()=> {
@@ -305,9 +312,8 @@ const MapContainer = () => {
     }, [MAP_FILTER.zoom, MAP_FILTER.latlng]);
 
     useEffect(() => {
-        if(MAP_FILTER.geoAddress.length > 0) {
-            drawBoundary(MAP_FILTER.zoom, MAP_FILTER.geoAddress);
-        }
+        if(MAP_FILTER.geoAddress.length < 1) return;
+        drawBoundary(MAP_FILTER.zoom, MAP_FILTER.geoAddress);
     }, [MAP_FILTER.geoAddress])
 
 
