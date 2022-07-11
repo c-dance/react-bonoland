@@ -1,6 +1,7 @@
 import { isMobile } from 'react-device-detect';
 import axios from 'axios';
 import { ZOOMS } from '../scheme/map';
+import jQuery from 'jquery';
 
 const { naver } = window;
 
@@ -68,7 +69,8 @@ export const getSearchByAddress = address => {
         if(data) {
           resolve({
             latlng: [parseFloat(data.y), parseFloat(data.x)],
-            zoom: getZoomByAddress(data.addressElements)
+            zoom: getZoomByAddress(data.addressElements),
+            address: data.roadAddress
           });
         }
       });
@@ -233,12 +235,45 @@ export const removeInfoWindow = infoWindow => {
   return infoWindow;
 }
 
-export const getBoundary = async () => {
-  const RESPONSE = await axios.post('https://sgisapi.kostat.go.kr/OpenAPI3/auth/javascriptAuth.json', {
-    consumer_key: "4c6d59d02339420baa0c",
-    consumer_secret: "b7fb326fb8fa4d93a030"
+const vworld = {
+  key: '6F9F5377-D787-3135-8561-E9DBA3394C1A',
+  url: 'http://api.vworld.kr/req/data?service=data&request=GetFeature&size=1000',
+  service: {
+    sido: {
+      id: 'LT_C_ADSIDO_INFO',
+      filter: 'ctp_kor_nm'
+    },
+    gugun: {
+      id: '	LT_C_ADSIGG_INFO',
+      filter: 'full_nm'
+    },
+    dong: {
+      id: 'LT_C_ADEMD_INFO',
+      filter: 'full_nm'
+    },
+  }
+};
+
+export const getGeoJson = (zoom, address) => {
+  const zoomLevel = getZoomLevel(zoom);
+  const url = `${vworld.url}&key=${vworld.key}&data=${vworld.service[zoomLevel].id}&attrFilter=${vworld.service[zoomLevel].filter}:=:${address}`;
+  return jQuery.ajax(url, {
+    type: 'GET',
+    dataType: 'jsonp',
+    success: function(data) {
+      console.log(data);
+    },
+    error: function(request, error) {
+      console.log(request, error);
+    }
   });
-  console.log(RESPONSE);
-  console.log('boundary');
-  // console.log(RESPONSE);
+};
+
+export const renderDataLayer = (map, geoJson) => {
+  const layer = map.data.addGeoJson(geoJson);
+  return layer;
+};
+
+export const removeDataLayer = (map, layer) => {
+  if(map && layer) map.data.removeGeoJson(layer);
 };

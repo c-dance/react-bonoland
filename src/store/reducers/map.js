@@ -1,5 +1,5 @@
 import { MAP } from '../actions/map';
-import { removeInfoWindow, removeMarkers } from '../../utils/map';
+import { removeInfoWindow, removeMarkers, removeDataLayer, renderDataLayer } from '../../utils/map';
 
 const initialState = {
     infos: {
@@ -13,16 +13,21 @@ const initialState = {
         latlng: [37.5036875, 126.7869375],
         zoom: 14,
         region: '경기도 부천시', 
+        geoAddress: '',
         category: null,
         category2: null,
     },
+    map: null,
     markers: [],
     infoWindow: null,
+    dataLayer: null,
     cadastral: false,
 };
 
 const MapReducer = ( state = initialState, action ) => {
     switch(action.type) {
+        case MAP.INIT_MAP: 
+            return {...state, map: action.payload};
         case MAP.UPDATE_INFOS:
             return {...state, infos: {...state.infos,...action.payload}}
         case MAP.UPDATE_FILTER:
@@ -40,6 +45,12 @@ const MapReducer = ( state = initialState, action ) => {
             removeInfoWindow(state.infoWindow);
             removeMarkers(state.markers);
             return { ...state, markers: [], infoWindow: null };
+        case MAP.UPDATE_DATA_LAYER: 
+            const dataLayer = renderDataLayer(state.map, action.payload);
+            return {...state, dataLayer: dataLayer, filter: {...state.filter, geoAddress: '' } };
+        case MAP.CLEAR_DATA_LAYER: 
+            removeDataLayer(state.map, state.dataLayer);
+            return {...state, dataLayer: null };
         case MAP.ACTIVATE_CADASTRAL: 
             return {...state, cadastral: true };
         case MAP.DEACTIVATE_CADASTRAL: 

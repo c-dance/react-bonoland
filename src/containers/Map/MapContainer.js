@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { 
+    initMap,
     updateMapInfos,
     updateMapFilter,
     clearMapOverlay,
     updateMapMarkers, 
-    updateMapInfoWindow, 
+    updateMapInfoWindow,
+    updateDataLayer,
+    clearDataLayer, 
 } from '../../store/actions/map';
 import { updateFilter } from '../../store/actions/filter';
 import { 
@@ -17,7 +20,8 @@ import {
     renderItemMarkers, 
     renderInfoWindow, 
     removeInfoWindow,
-    getBoundary
+    getGeoJson,
+    renderDataLayer
 } from '../../utils/map';
 import { isBrowser, isMobile } from 'react-device-detect';
 import Map from '../../components/Map/Map';
@@ -102,16 +106,20 @@ const MapContainer = () => {
     const MAP_FILTER = useSelector(state => state.Map.filter); // 맵 필터링
     const INFO_WINDOW = useSelector(state => state.Map.infoWindow); // 인포윈도우 객체
     const CADASTRAL_MODE = useSelector(state => state.Map.cadastral); // 지적도 모드
+    const MAP_DATA_LAYER = useSelector(state => state.Map.dataLayer);
 
     const IS_LOGGEDIN = useSelector(state => state.User.loggedIn);
 
    /* === 지도 생성 === */
-    const initMap = () => {
+    const NAVER_MAP = () => {
         const nvMap = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(MAP_INFOS.latlng[0], MAP_INFOS.latlng[1]),
             zoom: MAP_INFOS.zoom,
             // mapTypeId: naver.maps.MapTypeId.NORMAL,
         });
+
+        // 레이어 스타일 설정
+        nvMap.data.setStyle({ strokeColor: '#2962FF', fillColor: 'rgba(41, 98, 255, .3)' });
 
         // 줌버튼 생성
         naver.maps.Event.once(nvMap, 'init', function() {
@@ -281,21 +289,27 @@ const MapContainer = () => {
     };
 
     // 검색했을 때 영역 그려주기
-    const drawBoundary = async region => {
-        console.log(`${region} 영역 그려주기`);
-        // const res = await getBoundary();
-        // console.log(res);
+    const drawBoundary = async (zoom, address) => {
+        const res = await getGeoJson(zoom, address);
+        console.log(res);
     };
 
     useEffect(()=> {
-       const map = initMap();
+       const map = NAVER_MAP();
+       dispatch(initMap(map));
        updateMarkers(map, MAP_INFOS);
     }, []);
     
     useEffect(() => {
         resetMapByFilter(MAP_FILTER); 
-        // drawBoundary(MAP_FILTER.region); // (동일때) 경계 그리기
-    }, [MAP_FILTER]);
+    }, [MAP_FILTER.zoom, MAP_FILTER.latlng]);
+
+    useEffect(() => {
+        if(MAP_FILTER.geoAddress.length > 0) {
+            drawBoundary(MAP_FILTER.zoom, MAP_FILTER.geoAddress);
+        }
+    }, [MAP_FILTER.geoAddress])
+
 
     useEffect(() => {
         toggleCadastralMode(CADASTRAL_MODE);

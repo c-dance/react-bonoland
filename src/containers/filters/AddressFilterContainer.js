@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AddressFilter from "../../components/filters/AddressFilter/AddressFilter";
 import { useDispatch } from 'react-redux';
-import { getSearchByAddress } from '../../utils/map';
+import { getRegionByLatlng, getSearchByAddress } from '../../utils/map';
 import { activateAlert } from '../../store/actions/alert';
 import { updateFilter } from '../../store/actions/filter';
 import { updateMapFilter } from '../../store/actions/map';
@@ -21,9 +21,8 @@ const AddressFilterContainer = ({ type }) => {
 
         await getSearchByAddress(address)
             .then(res => {
-                console.log(res);
-                dispatch(updateFilter(res));
-                dispatch(updateMapFilter(res));
+                dispatch(updateFilter({ zoom: res.zoom, latlng: res.latlng }));
+                dispatch(updateMapFilter({ zoom: res.zoom, latlng: res.latlng, geoAddress: res.address }));
             })
             .catch(err => {
                 dispatch(activateAlert({
